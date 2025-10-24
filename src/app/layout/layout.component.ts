@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
-import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
 import { CommonModule } from '@angular/common';
-import { RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
+import {  RouterModule, RouterOutlet } from '@angular/router';
+import { SidebarComponent } from "./sidebar/sidebar.component";
 
 @Component({
   selector: 'school-layout-component',
-  imports: [DrawerModule, ButtonModule, AvatarModule, RouterOutlet, RouterModule, CommonModule, RouterLinkActive],
+  imports: [ButtonModule, RouterOutlet, RouterModule, CommonModule, SidebarComponent],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,0 +1,30 @@
+<div class="flex flex-col bg-white dark:bg-gray-900 h-full">
+        <div class="flex items-center justify-between px-6 pt-4 shrink-0 border-b border-gray-200 dark:border-gray-700">
+          <span class="inline-flex items-center gap-2">
+            <svg width="31" height="33" viewBox="0 0 31 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="..." />
+            </svg>
+            <span class="font-semibold text-2xl text-primary">SchoolSys</span>
+          </span>
+        </div>
+
+        <div class="overflow-y-auto flex-1">
+          <ul class="list-none p-4 m-0 space-y-1">
+            @for (item of SIDEBAR_ITEMS; track $index) {
+              <li>
+              <a [routerLink]="item.url" routerLinkActive="bg-blue-50" pRipple class="flex items-center gap-2 p-3 rounded-lg text-gray-700 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                <i [class]="item.icon"></i>
+                <span class="font-medium">{{item.name}}</span>
+              </a>
+            </li>
+            }
+          </ul>
+        </div>
+
+        <div class="mt-auto border-t border-gray-200 dark:border-gray-700 p-4">
+          <a pRipple class="flex items-center gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-150">
+            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+            <span class="font-bold">Amy Elsner</span>
+          </a>
+        </div>
+      </div>
