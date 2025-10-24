@@ -20,7 +20,7 @@
     "@primeng/themes": "^20.2.0",
     "@tailwindcss/postcss": "^4.1.16",
     "primeicons": "^7.0.0",
-    "primeng": "^20.2.0",
+    "primeng": "^19.1.4",
     "rxjs": "~7.8.0",
     "tailwindcss-primeui": "^0.6.1",
     "tslib": "^2.3.0",

@@ -1,2 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@use 'tailwindcss'
+@use "primeicons/primeicons.css";
+@use 'tailwindcss';
+
+body {
+  background-color: #eff6ff;
+}

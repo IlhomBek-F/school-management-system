@@ -1,1 +1,104 @@
-<p>layout works!</p>,
+<p-drawer #drawerRef [visible]="true" transitionOptions="0" modal="false" >
+  <ng-template #headless>
+    <div class="flex flex-col h-full bg-white dark:bg-gray-900">
+
+      <!-- Header / Logo -->
+      <div class="flex items-center justify-between px-6 pt-4 shrink-0 border-b border-gray-200 dark:border-gray-700">
+        <span class="inline-flex items-center gap-2">
+          <svg width="31" height="33" viewBox="0 0 31 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="..." />
+          </svg>
+          <span class="font-semibold text-2xl text-primary">SchoolSys</span>
+        </span>
+      </div>
+
+      <!-- Navigation -->
+      <div class="overflow-y-auto flex-1">
+        <ul class="list-none p-4 m-0 space-y-1">
+
+          <!-- Dashboard -->
+          <li>
+            <a routerLink="/dashboard" routerLinkActive="bg-blue-50" pRipple class="flex items-center gap-2 p-3 rounded-lg text-gray-700 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-150">
+              <i class="pi pi-home"></i>
+              <span class="font-medium">Dashboard</span>
+            </a>
+          </li>
+
+          <!-- Students -->
+          <li>
+            <a pRipple class="flex items-center gap-2 p-3 rounded-lg text-gray-700 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-150">
+              <i class="pi pi-users"></i>
+              <span class="font-medium">Students</span>
+            </a>
+          </li>
+
+          <!-- Classes -->
+          <li>
+            <a pRipple class="flex items-center gap-2 p-3 rounded-lg text-gray-700 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-150">
+              <i class="pi pi-book"></i>
+              <span class="font-medium">Classes</span>
+            </a>
+          </li>
+
+          <!-- Attendance -->
+          <li>
+            <a pRipple class="flex items-center gap-2 p-3 rounded-lg text-gray-700 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-150">
+              <i class="pi pi-calendar-check"></i>
+              <span class="font-medium">Attendance</span>
+            </a>
+          </li>
+
+          <!-- Exams & Reports with submenu -->
+          <li>
+            <div
+              pRipple
+              class="flex items-center justify-between gap-2 p-3 rounded-lg cursor-pointer text-gray-700 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-150"
+            >
+              <span class="flex items-center gap-2">
+                <i class="pi pi-chart-line"></i>
+                <span class="font-medium">Exams & Reports</span>
+              </span>
+              <i class="pi pi-chevron-down"></i>
+            </div>
+            <ul *ngIf="openSubmenu === 'reports'" class="pl-6 mt-1 space-y-1">
+              <li>
+                <a pRipple class="flex items-center gap-2 p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors duration-150">
+                  <i class="pi pi-file"></i>
+                  <span>Exam Schedule</span>
+                </a>
+              </li>
+              <li>
+                <a pRipple class="flex items-center gap-2 p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors duration-150">
+                  <i class="pi pi-chart-bar"></i>
+                  <span>Reports</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Settings -->
+          <li>
+            <a pRipple class="flex items-center gap-2 p-3 rounded-lg text-gray-700 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-150">
+              <i class="pi pi-cog"></i>
+              <span class="font-medium">Settings</span>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+
+      <!-- Footer / Profile -->
+      <div class="mt-auto border-t border-gray-200 dark:border-gray-700 p-4">
+        <a pRipple class="flex items-center gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-150">
+          <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+          <span class="font-bold">Amy Elsner</span>
+        </a>
+      </div>
+
+    </div>
+  </ng-template>
+  <router-outlet></router-outlet>
+</p-drawer>
+
+<!-- Drawer toggle button -->
+<p-button (click)="visible = true" icon="pi pi-bars" rounded="true" styleClass="fixed top-4 left-4 z-50"></p-button>
