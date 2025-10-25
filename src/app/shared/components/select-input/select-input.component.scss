@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.p-dropdown {
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+
+    &:not(.p-disabled):hover {
+      border-color: #3b82f6;
+    }
+
+    &:not(.p-disabled).p-focus {
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+      border-color: #3b82f6;
+    }
+  }

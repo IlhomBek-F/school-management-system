@@ -12,6 +12,7 @@ import { SchoolStatsCardComponent } from '../../shared/components/stats-card/sta
 import { EmptyListComponent } from "../../shared/components/empty-list/empty-list.component";
 import { StudentListViewComponent } from './components/student-list-view/student-list-view.component';
 import { TextInputComponent } from "../../shared/components/text-input/text-input.component";
+import { SelectInputComponent } from "../../shared/components/select-input/select-input.component";
 
 type Student = any
 
@@ -25,7 +26,7 @@ type Student = any
     DropdownModule, FormsModule,
     InputTextModule, StudentGridCardComponent,
     SchoolStatsCardComponent, EmptyListComponent,
-    StudentListViewComponent, TextInputComponent],
+    StudentListViewComponent, TextInputComponent, SelectInputComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentsComponent implements OnInit {
@@ -153,7 +154,8 @@ export class StudentsComponent implements OnInit {
     this.filterStudents();
   }
 
-  onGradeChange(): void {
+  onGradeChange(view: string): void {
+    this.selectedGrade = view;
     this.filterStudents();
   }
 

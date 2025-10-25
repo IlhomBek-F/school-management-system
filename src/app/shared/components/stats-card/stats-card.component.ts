@@ -4,7 +4,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 @Component({
   selector: 'school-stats-card',
   templateUrl: './stats-card.component.html',
-  styleUrls: ['./stats-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
 })

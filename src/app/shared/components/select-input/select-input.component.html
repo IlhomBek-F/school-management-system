@@ -1,0 +1,14 @@
+<div class="flex flex-col gap-1">
+  @if (label()) {
+    <label class="text-sm font-medium text-gray-700">{{ label() }}</label>
+  }
+  <p-dropdown
+    [options]="options()"
+    [optionLabel]="optionLabel()"
+    [optionValue]="optionValue()"
+    [placeholder]="placeholder()"
+    [disabled]="disabled"
+    (onChange)="handleChange($event)"
+    class="w-full"
+  ></p-dropdown>
+</div>

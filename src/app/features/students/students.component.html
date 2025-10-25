@@ -28,17 +28,8 @@
     <!-- Controls -->
     <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
       <div class="flex flex-col md:flex-row gap-4">
-          <school-text-input icon="pi pi-search" (onChangeEmit)="onSearchChange($event)"/>
-          <p-dropdown
-            [(ngModel)]="selectedGrade"
-            [options]="grades"
-            (onChange)="onGradeChange()"
-            optionLabel="label"
-            optionValue="value"
-            >
-          </p-dropdown>
-
-        <!-- Grade Filter -->
+          <school-text-input icon="pi pi-search" placeholder="Search students by name or class..." (onChangeEmit)="onSearchChange($event)"/>
+          <school-select-input [options]="grades" (onChangeEmit)="onGradeChange($event)"/>
 
         <!-- View Toggle -->
         <div class="flex gap-2">

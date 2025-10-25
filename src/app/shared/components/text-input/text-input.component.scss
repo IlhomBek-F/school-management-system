@@ -1,10 +1,10 @@
 :host {
   display: block;
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
-:host ::ng-deep {
-  .p-inputtext {
+.p-inputtext {
     border-radius: 0.5rem;
     border: 1px solid #e5e7eb;
 
@@ -12,7 +12,7 @@
       box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
       border-color: #3b82f6;
     }
-  }
+}
 
   .p-input-icon-left> i:first-of-type {
     left: 1rem;
@@ -21,4 +21,3 @@
   .p-input-icon-left {
     position: relative;
   }
-}
