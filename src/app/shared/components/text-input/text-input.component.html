@@ -1,0 +1,10 @@
+<div class="flex flex-col gap-1">
+  @if(label()) {
+  <label class="text-sm font-medium text-gray-700">{{ label() }}</label>
+  }
+  <span class="w-full" [ngClass]="{'p-input-icon-left': icon()}">
+    <i class="pi pi-search" [ngClass]="{'absolute top-[12px]': icon()}"></i>
+    <input pInputText type="text" class="p-inputtext w-full" [placeholder]="placeholder()" [disabled]="disabled"
+      [value]="value" (input)="handleInput($event)" />
+  </span>
+</div>

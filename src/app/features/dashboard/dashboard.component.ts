@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { PageTitleComponent } from "../../shared/components/page-title.component/page-title.component";
 
 @Component({
   selector: 'school-dashboard',
-  imports: [],
+  imports: [PageTitleComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

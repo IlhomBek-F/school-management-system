@@ -1,0 +1,11 @@
+<div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500" [ngClass]="rootClassName()">
+  <div class="flex items-center justify-between">
+    <div>
+      <p class="text-gray-500 text-sm mb-1" [ngClass]="titleClassName()">{{title()}}</p>
+      <p class="text-3xl font-bold text-gray-800" [ngClass]="valueClassName()">{{ value() }}</p>
+    </div>
+    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center" [ngClass]="iconWrapperClassName()">
+      <i [class]="'text-blue-600 text-2xl ' + icon()"></i>
+    </div>
+  </div>
+</div>

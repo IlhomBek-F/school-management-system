@@ -1,0 +1,49 @@
+ <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <p-table [value]="studentList()" [tableStyle]="{ 'min-width': '60rem' }">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Student</th>
+            <th>Grade</th>
+            <th>Class</th>
+            <th>Contact</th>
+            <th>GPA</th>
+            <th>Attendance</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-student>
+          <tr class="hover:bg-gray-50">
+            <td>
+              <div class="flex items-center gap-3">
+                <div [class]="'w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ' + student.color">
+                  {{ student.avatar }}
+                </div>
+                <span class="font-medium text-gray-800">{{ student.name }}</span>
+              </div>
+            </td>
+            <td class="text-gray-600">{{ student.grade }}</td>
+            <td class="text-gray-600">{{ student.class }}</td>
+            <td>
+              <div class="text-sm text-gray-600">
+                <div class="truncate max-w-xs">{{ student.email }}</div>
+                <div>{{ student.phone }}</div>
+              </div>
+            </td>
+            <td>
+              <span class="font-semibold text-gray-800">{{ student.gpa }}</span>
+            </td>
+            <td>
+              <span class="font-semibold text-green-600">{{ student.attendance }}%</span>
+            </td>
+            <td>
+              <p-button
+                label="View"
+                [outlined]="true"
+                (onClick)="viewProfile(student)"
+                styleClass="p-button-sm">
+              </p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>

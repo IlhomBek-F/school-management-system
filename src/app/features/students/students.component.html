@@ -1,1 +1,85 @@
-<p>students.component works!</p>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6">
+  <div class="w-full mx-auto">
+    <school-page-title title="Students" subTitle="Manage and view all student information"/>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+       <school-stats-card title="Total Students"
+                                 [value]="totalStudents"
+                                 icon="pi pi-users"></school-stats-card>
+
+      <school-stats-card title="Avg. Attendance"
+                                 rootClassName="border-l-4 border-green-500"
+                                 iconWrapperClassName="bg-green-100"
+                                 [value]="avgAttendance + '%'"
+                                 icon="pi pi-calendar text-green-600"></school-stats-card>
+
+      <school-stats-card title="Avg. GPA"
+                                 rootClassName="border-purple-500"
+                                 iconWrapperClassName="bg-purple-100"
+                                 [value]="avgGPA"
+                                 icon="pi pi-star text-purple-600"></school-stats-card>
+
+      <school-stats-card title="Active Classes"
+                                 rootClassName="border-orange-500"
+                                 iconWrapperClassName="bg-orange-100"
+                                 [value]="activeClasses"
+                                 icon="pi pi-book text-orange-600"></school-stats-card>
+    </div>
+
+    <!-- Controls -->
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+          <school-text-input icon="pi pi-search" (onChangeEmit)="onSearchChange($event)"/>
+          <p-dropdown
+            [(ngModel)]="selectedGrade"
+            [options]="grades"
+            (onChange)="onGradeChange()"
+            optionLabel="label"
+            optionValue="value"
+            >
+          </p-dropdown>
+
+        <!-- Grade Filter -->
+
+        <!-- View Toggle -->
+        <div class="flex gap-2">
+          <p-button
+            label="Grid"
+            [outlined]="viewMode !== 'grid'"
+            (onClick)="setViewMode('grid')"
+            styleClass="p-button-sm">
+          </p-button>
+          <p-button
+            label="List"
+            [outlined]="viewMode !== 'list'"
+            (onClick)="setViewMode('list')"
+            styleClass="p-button-sm">
+          </p-button>
+        </div>
+
+        <!-- Action Buttons -->
+        <p-button
+          label="Add Student"
+          icon="pi pi-plus"
+          (onClick)="addStudent()"
+          styleClass="p-button-sm">
+        </p-button>
+      </div>
+    </div>
+
+     @if (viewMode === 'grid') {
+       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (student of filteredStudents; track $index) {
+            <school-student-grid-card [student]="student"></school-student-grid-card>
+          }
+       </div>
+     }
+
+    @if (viewMode === 'list') {
+      <school-student-list-view [studentList]="filteredStudents"></school-student-list-view>
+    }
+
+     @if (filteredStudents.length === 0) {
+       <school-empty-list title="No students found"></school-empty-list>
+     }
+  </div>
+</div>
