@@ -25,13 +25,11 @@
                                  icon="pi pi-book text-orange-600"></school-stats-card>
     </div>
 
-    <!-- Controls -->
     <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
       <div class="flex flex-col md:flex-row gap-4">
           <school-text-input icon="pi pi-search" placeholder="Search students by name or class..." (onChangeEmit)="onSearchChange($event)"/>
           <school-select-input [options]="grades" (onChangeEmit)="onGradeChange($event)"/>
 
-        <!-- View Toggle -->
         <div class="flex gap-2">
           <p-button
             label="Grid"
@@ -47,7 +45,6 @@
           </p-button>
         </div>
 
-        <!-- Action Buttons -->
         <p-button
           label="Add Student"
           icon="pi pi-plus"

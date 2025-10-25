@@ -1,1 +1,53 @@
-<school-page-title title="Teachers">
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6">
+  <div class="w-full mx-auto">
+    <school-page-title title="Teachers" subTitle="Manage faculty members and their information" />
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <school-stats-card title="Total Teachers" [value]="totalTeachers" icon="pi pi-user text-indigo-600"
+        rootClassName="border-indigo-500" iconWrapperClassName="bg-indigo-100" />
+
+      <school-stats-card title="Avg. Experience" [value]="avgExperience + 'yrs'" icon="pi pi-briefcase text-purple-600"
+        rootClassName="border-purple-500" iconWrapperClassName="bg-purple-100 " />
+
+      <school-stats-card title="Total Students" [value]="totalStudents" icon="pi pi-users text-pink-600"
+        rootClassName="border-pink-500" iconWrapperClassName="bg-pink-100" />
+
+      <school-stats-card title="Avg. Rating" [value]="avgRating" icon="pi pi-star-fill !text-amber-600"
+        rootClassName="!border-amber-500" iconWrapperClassName="!bg-amber-100" />
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <school-text-input icon="pi pi-search" placeholder="Search teachers by name or subject..."
+          (onChangeEmit)="onSearchChange($event)" />
+        <school-select-input [options]="departments" (onChangeEmit)="onDepartmentChange($event)" />
+
+        <div class="flex gap-2">
+          <p-button label="Grid" [outlined]="viewMode !== 'grid'" (onClick)="setViewMode('grid')"
+            styleClass="p-button-sm">
+          </p-button>
+          <p-button label="List" [outlined]="viewMode !== 'list'" (onClick)="setViewMode('list')"
+            styleClass="p-button-sm">
+          </p-button>
+        </div>
+
+        <p-button label="Add Teacher" icon="pi pi-plus" (onClick)="addTeacher()" styleClass="p-button-sm">
+        </p-button>
+      </div>
+    </div>
+
+    @if (viewMode === 'grid') {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      @for (teacher of filteredTeachers; track $index) {
+      <school-teacher-grid-card [teacher]="teacher" />
+      }
+    </div>
+    } @else {
+    <school-teacher-view-list [teacherList]="filteredTeachers" />
+    }
+
+    @if (filteredTeachers.length === 0) {
+    <school-empty-list title="No teachers found" />
+    }
+  </div>
+</div>

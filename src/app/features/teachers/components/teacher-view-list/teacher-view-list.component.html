@@ -1,0 +1,72 @@
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <p-table [value]="teacherList()" [tableStyle]="{ 'min-width': '70rem' }">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Teacher</th>
+            <th>Subject</th>
+            <th>Department</th>
+            <th>Contact</th>
+            <th>Experience</th>
+            <th>Students</th>
+            <th>Rating</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-teacher>
+          <tr class="hover:bg-gray-50">
+            <td>
+              <div class="flex items-center gap-3">
+                <div [class]="'w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ' + teacher.color">
+                  {{ teacher.avatar }}
+                </div>
+                <span class="font-medium text-gray-800">{{ teacher.name }}</span>
+              </div>
+            </td>
+            <td class="text-gray-600">{{ teacher.subject }}</td>
+            <td>
+              <p-tag [value]="teacher.department" severity="info" [rounded]="true"></p-tag>
+            </td>
+            <td>
+              <div class="text-sm text-gray-600">
+                <div class="truncate max-w-xs">{{ teacher.email }}</div>
+                <div>{{ teacher.phone }}</div>
+              </div>
+            </td>
+            <td>
+              <span class="font-semibold text-gray-800">{{ teacher.experience }} years</span>
+            </td>
+            <td>
+              <span class="font-semibold text-gray-800">{{ teacher.students }}</span>
+            </td>
+            <td>
+              <div class="flex items-center gap-2">
+                <span class="font-semibold text-amber-600">{{ teacher.rating }}</span>
+                <div class="flex gap-1">
+                   @for (star of getRatingStars(teacher.rating); track $index) {
+                    <i [class]="star === 'full' ? 'pi pi-star-fill text-amber-400 text-xs' :
+                              star === 'half' ? 'pi pi-star-half-fill text-amber-400 text-xs' :
+                              'pi pi-star text-gray-300 text-xs'">
+                  </i>
+                   }
+                </div>
+              </div>
+            </td>
+            <td>
+              <p-tag
+                [value]="teacher.status"
+                [severity]="teacher.status === 'Active' ? 'success' : 'warning'">
+              </p-tag>
+            </td>
+            <td>
+              <p-button
+                label="View"
+                [outlined]="true"
+                (onClick)="viewProfile(teacher)"
+                styleClass="p-button-sm">
+              </p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
