@@ -6,6 +6,11 @@ import { InputNumber } from "primeng/inputnumber";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
+import { GeneralComponent } from './components/general/general.component';
+import { AcademicComponent } from './components/academic/academic.component';
+import { NotificationComponent } from './components/notification/notification.component';
+import { SecurityComponent } from './components/security/security.component';
+import { AppearanceComponent } from './components/appearance/appearance.component';
 
 interface SchoolInfo {
   name: string;
@@ -18,7 +23,9 @@ interface SchoolInfo {
 
 @Component({
   selector: 'school-settings',
-  imports: [PageTitleComponent, Button, DropdownModule, InputNumber, FormsModule, CommonModule, InputTextModule],
+  imports: [PageTitleComponent, DropdownModule,
+            SecurityComponent, FormsModule, CommonModule,
+            NotificationComponent, InputTextModule, GeneralComponent, AcademicComponent, AppearanceComponent],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,11 +49,7 @@ export class SettingsComponent implements OnInit {
   gradeSystem: string = 'gpa';
   passingGrade: number = 60;
 
-  gradeSystemOptions = [
-    { label: 'GPA (0-4.0)', value: 'gpa' },
-    { label: 'Percentage (0-100)', value: 'percentage' },
-    { label: 'Letter Grades (A-F)', value: 'letter' }
-  ];
+
 
   // Notification Settings
   emailNotifications: boolean = true;
@@ -61,36 +64,12 @@ export class SettingsComponent implements OnInit {
   sessionTimeout: number = 30;
   passwordExpiry: number = 90;
 
-  timeoutOptions = [
-    { label: '15 minutes', value: 15 },
-    { label: '30 minutes', value: 30 },
-    { label: '1 hour', value: 60 },
-    { label: '2 hours', value: 120 }
-  ];
+
 
   // Appearance Settings
   theme: string = 'light';
   language: string = 'en';
   dateFormat: string = 'MM/DD/YYYY';
-
-  themeOptions = [
-    { label: 'Light Mode', value: 'light' },
-    { label: 'Dark Mode', value: 'dark' },
-    { label: 'Auto', value: 'auto' }
-  ];
-
-  languageOptions = [
-    { label: 'English', value: 'en' },
-    { label: 'Spanish', value: 'es' },
-    { label: 'French', value: 'fr' },
-    { label: 'German', value: 'de' }
-  ];
-
-  dateFormatOptions = [
-    { label: 'MM/DD/YYYY', value: 'MM/DD/YYYY' },
-    { label: 'DD/MM/YYYY', value: 'DD/MM/YYYY' },
-    { label: 'YYYY-MM-DD', value: 'YYYY-MM-DD' }
-  ];
 
   ngOnInit(): void {
     // Load settings from service
@@ -105,34 +84,16 @@ export class SettingsComponent implements OnInit {
     // Save logic here
   }
 
-  saveAcademicSettings(): void {
-    console.log('Saving academic settings...');
-    // Save logic here
-  }
 
-  saveNotificationSettings(): void {
-    console.log('Saving notification settings...');
-    // Save logic here
-  }
 
-  saveSecuritySettings(): void {
-    console.log('Saving security settings...');
-    // Save logic here
-  }
 
-  saveAppearanceSettings(): void {
-    console.log('Saving appearance settings...');
-    // Save logic here
-  }
 
-  uploadLogo(event: any): void {
-    console.log('Logo upload:', event);
-    // Handle logo upload
-  }
 
-  resetSettings(): void {
-    console.log('Resetting settings...');
-    // Reset logic here
-  }
+
+
+
+
+
+
 
 }

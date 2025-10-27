@@ -1,32 +1,20 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6">
   <div class="w-full mx-auto">
-    <!-- Header -->
     <div class="mb-8">
       <div class="flex items-center justify-between flex-wrap gap-4">
-        <div>
-          <h1 class="text-4xl font-bold text-gray-800 mb-2">Dashboard</h1>
-          <p class="text-gray-600">Welcome back! Here's what's happening today.</p>
-        </div>
+        <school-page-title title="Dashboard" subTitle="Welcome back! Here's what's happening today." />
         <div class="flex gap-3">
-          <p-button
-            label="Download Report"
-            icon="pi pi-download"
-            [outlined]="true"
-            styleClass="p-button-sm">
+          <p-button label="Download Report" icon="pi pi-download" [outlined]="true" styleClass="p-button-sm">
           </p-button>
-          <p-button
-            label="Add Event"
-            icon="pi pi-plus"
-            styleClass="p-button-sm">
+          <p-button label="Add Event" icon="pi pi-plus" styleClass="p-button-sm">
           </p-button>
         </div>
       </div>
     </div>
 
-    <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-      <div *ngFor="let stat of statCards"
-           class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+      @for (stat of statCards; track $index) {
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow">
         <div class="flex items-start justify-between mb-4">
           <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center ' + stat.bgColor">
             <i [class]="'pi ' + stat.icon + ' text-white text-xl'"></i>
@@ -39,50 +27,40 @@
         <h3 class="text-gray-600 text-sm font-medium mb-1">{{ stat.title }}</h3>
         <p class="text-3xl font-bold text-gray-800">{{ stat.value }}</p>
       </div>
+      }
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-      <!-- Attendance Chart -->
       <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div class="flex items-center justify-between mb-6">
           <div>
             <h2 class="text-xl font-bold text-gray-800 mb-1">Weekly Attendance</h2>
             <p class="text-sm text-gray-600">Student attendance over the week</p>
           </div>
-          <p-button
-            icon="pi pi-ellipsis-v"
-            [text]="true"
-            [rounded]="true"
-            styleClass="p-button-sm">
+          <p-button icon="pi pi-ellipsis-v" [text]="true" [rounded]="true" styleClass="p-button-sm">
           </p-button>
         </div>
         <div class="h-64">
-          <!-- <p-chart type="line" [data]="attendanceChartData" [options]="attendanceChartOptions"></p-chart> -->
+          <p-chart type="line" [data]="attendanceChartData" [options]="attendanceChartOptions"></p-chart>
         </div>
       </div>
 
-      <!-- Grade Distribution -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div class="flex items-center justify-between mb-6">
           <div>
             <h2 class="text-xl font-bold text-gray-800 mb-1">Grade Distribution</h2>
             <p class="text-sm text-gray-600">Overall grades breakdown</p>
           </div>
-          <p-button
-            icon="pi pi-ellipsis-v"
-            [text]="true"
-            [rounded]="true"
-            styleClass="p-button-sm">
+          <p-button icon="pi pi-ellipsis-v" [text]="true" [rounded]="true" styleClass="p-button-sm">
           </p-button>
         </div>
         <div class="h-64 flex items-center justify-center">
-          <!-- <p-chart type="doughnut" [data]="gradeChartData" [options]="gradeChartOptions"></p-chart> -->
+          <p-chart type="doughnut" [data]="gradeChartData" [options]="gradeChartOptions"></p-chart>
         </div>
       </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-      <!-- Recent Activities -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div class="flex items-center justify-between mb-6">
           <div>
@@ -92,8 +70,8 @@
           <a class="text-sm text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer">View All</a>
         </div>
         <div class="space-y-4">
-          <div *ngFor="let activity of recentActivities"
-               class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+          @for (activity of recentActivities; track $index) {
+          <div class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
             <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ' + activity.iconColor">
               <i [class]="'pi ' + activity.icon"></i>
             </div>
@@ -105,89 +83,28 @@
               <p class="text-xs text-gray-500 mt-1">{{ activity.time }}</p>
             </div>
           </div>
+          }
         </div>
       </div>
 
       <!-- Upcoming Events -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h2 class="text-xl font-bold text-gray-800 mb-1">Upcoming Events</h2>
-            <p class="text-sm text-gray-600">Important dates and events</p>
-          </div>
-          <a class="text-sm text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer">View Calendar</a>
-        </div>
-        <div class="space-y-3">
-          <div *ngFor="let event of upcomingEvents"
-               class="flex items-start gap-3 p-4 border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50/50 transition-all cursor-pointer">
-            <div [class]="'w-12 h-12 rounded-lg flex flex-col items-center justify-center text-white shrink-0 ' + event.color">
-              <span class="text-xs font-medium">{{ event.date.split(' ')[1].replace(',', '') }}</span>
-              <span class="text-lg font-bold leading-none">{{ event.date.split(' ')[0] }}</span>
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2 mb-1">
-                <h3 class="font-semibold text-gray-800 text-sm">{{ event.title }}</h3>
-                <p-tag [value]="event.type" severity="info" [rounded]="true" styleClass="text-xs"></p-tag>
-              </div>
-              <div class="flex items-center gap-3 text-xs text-gray-600">
-                <span class="flex items-center gap-1">
-                  <i class="pi pi-calendar text-xs"></i>
-                  {{ event.date }}
-                </span>
-                <span class="flex items-center gap-1">
-                  <i class="pi pi-clock text-xs"></i>
-                  {{ event.time }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <school-upcoming-events [upcomingEvents]="upcomingEvents" />
     </div>
 
-    <!-- Top Students & Quick Actions -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Top Students -->
-      <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h2 class="text-xl font-bold text-gray-800 mb-1">Top Students</h2>
-            <p class="text-sm text-gray-600">Highest performing students this month</p>
-          </div>
-          <a class="text-sm text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer">View All</a>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div *ngFor="let student of topStudents; let i = index"
-               class="relative bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-all">
-            <div class="absolute top-3 right-3">
-              <div class="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                #{{ i + 1 }}
-              </div>
-            </div>
-            <div class="flex flex-col items-center text-center pt-2">
-              <div [class]="'w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl mb-3 shadow-lg ' + student.color">
-                {{ student.avatar }}
-              </div>
-              <h3 class="font-bold text-gray-800 text-sm mb-1">{{ student.name }}</h3>
-              <p class="text-xs text-gray-600 mb-3">{{ student.grade }}</p>
-              <div class="flex items-center gap-2">
-                <span class="text-xs text-gray-500">GPA:</span>
-                <span class="text-lg font-bold text-indigo-600">{{ student.gpa }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <school-top-students [students]="topStudents" />
 
-      <!-- Quick Actions -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div class="mb-6">
           <h2 class="text-xl font-bold text-gray-800 mb-1">Quick Actions</h2>
           <p class="text-sm text-gray-600">Frequently used features</p>
         </div>
         <div class="space-y-3">
-          <button class="w-full flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 border border-blue-200 rounded-lg transition-all text-left group">
-            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+          <button
+            class="w-full flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 border border-blue-200 rounded-lg transition-all text-left group">
+            <div
+              class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
               <i class="pi pi-user-plus"></i>
             </div>
             <div>
@@ -196,8 +113,10 @@
             </div>
           </button>
 
-          <button class="w-full flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 border border-purple-200 rounded-lg transition-all text-left group">
-            <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+          <button
+            class="w-full flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 border border-purple-200 rounded-lg transition-all text-left group">
+            <div
+              class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
               <i class="pi pi-calendar-plus"></i>
             </div>
             <div>
@@ -206,8 +125,10 @@
             </div>
           </button>
 
-          <button class="w-full flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 border border-green-200 rounded-lg transition-all text-left group">
-            <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+          <button
+            class="w-full flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 border border-green-200 rounded-lg transition-all text-left group">
+            <div
+              class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
               <i class="pi pi-file-edit"></i>
             </div>
             <div>
@@ -216,8 +137,10 @@
             </div>
           </button>
 
-          <button class="w-full flex items-center gap-3 p-4 bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 border border-orange-200 rounded-lg transition-all text-left group">
-            <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+          <button
+            class="w-full flex items-center gap-3 p-4 bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 border border-orange-200 rounded-lg transition-all text-left group">
+            <div
+              class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
               <i class="pi pi-chart-bar"></i>
             </div>
             <div>

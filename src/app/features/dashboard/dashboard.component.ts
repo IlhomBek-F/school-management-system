@@ -3,6 +3,9 @@ import { PageTitleComponent } from "../../shared/components/page-title.component
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { CommonModule } from '@angular/common';
+import { ChartModule } from 'primeng/chart';
+import { TopStudentsComponent } from "./components/top-students/top-students.component";
+import { UpcomingEventsComponent } from './components/upcoming-events/upcoming-events.component';
 
 interface TopStudent {
   id: number;
@@ -15,7 +18,7 @@ interface TopStudent {
 
 @Component({
   selector: 'school-dashboard',
-  imports: [PageTitleComponent, TagModule, ButtonModule, CommonModule],
+  imports: [PageTitleComponent, TagModule, ButtonModule, CommonModule, ChartModule, TopStudentsComponent, UpcomingEventsComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

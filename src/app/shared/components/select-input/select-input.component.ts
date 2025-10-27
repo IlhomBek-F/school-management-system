@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { ControlValueAccessor, FormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@angular/core';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropdownModule } from "primeng/dropdown";
 
 @Component({
@@ -8,6 +8,13 @@ import { DropdownModule } from "primeng/dropdown";
   imports: [DropdownModule, FormsModule, CommonModule],
   templateUrl: './select-input.component.html',
   styleUrl: './select-input.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectInputComponent),
+      multi: true
+    }
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectInputComponent implements ControlValueAccessor {

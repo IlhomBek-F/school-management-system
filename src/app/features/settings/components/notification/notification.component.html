@@ -1,0 +1,82 @@
+<div class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <i class="pi pi-bell text-white text-xl"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-800">Notification Preferences</h2>
+                <p class="text-sm text-gray-600">Choose how you want to receive notifications</p>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Notification Channels</h3>
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="pi pi-envelope text-indigo-600"></i>
+                      </div>
+                      <div>
+                        <p class="font-semibold text-gray-800">Email Notifications</p>
+                        <p class="text-sm text-gray-600">Receive updates via email</p>
+                      </div>
+                    </div>
+                    <!-- <p-inputSwitch ></p-inputSwitch> -->
+                  </div>
+
+                  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="pi pi-mobile text-green-600"></i>
+                      </div>
+                      <div>
+                        <p class="font-semibold text-gray-800">SMS Notifications</p>
+                        <p class="text-sm text-gray-600">Receive text messages</p>
+                      </div>
+                    </div>
+                    <!-- <p-inputSwitch ></p-inputSwitch> -->
+                  </div>
+
+                  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="pi pi-bell text-purple-600"></i>
+                      </div>
+                      <div>
+                        <p class="font-semibold text-gray-800">Push Notifications</p>
+                        <p class="text-sm text-gray-600">Browser push notifications</p>
+                      </div>
+                    </div>
+                    <!-- <p-inputSwitch ></p-inputSwitch> -->
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Alert Types</h3>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <span class="text-gray-700">Attendance Alerts</span>
+                    <!-- <p-inputSwitch ></p-inputSwitch> -->
+                  </div>
+                  <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <span class="text-gray-700">Grade Updates</span>
+                    <!-- <p-inputSwitch ></p-inputSwitch> -->
+                  </div>
+                  <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <span class="text-gray-700">Announcements</span>
+                    <!-- <p-inputSwitch ></p-inputSwitch> -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                <p-button label="Reset" [outlined]="true" severity="secondary" (onClick)="resetSettings()"></p-button>
+                <p-button label="Save Changes" icon="pi pi-check" (onClick)="saveNotificationSettings()"></p-button>
+              </div>
+            </div>
+          </div>
+        </div>

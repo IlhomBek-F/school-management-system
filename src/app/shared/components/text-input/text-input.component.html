@@ -6,8 +6,10 @@
     <i class="pi pi-search" [ngClass]="{'absolute top-[12px]': icon()}"></i>
     <input pInputText type="text"
            class="p-inputtext w-full"
-           [ngClass]="{'!pl-[40px]': icon()}" [placeholder]="placeholder()"
+           [ngClass]="{'!pl-[40px]': icon()}"
+           [placeholder]="placeholder()"
            [disabled]="disabled"
-           [value]="value" (input)="handleInput($event)" />
+           [value]="value"
+           (input)="handleInput($event)" />
   </span>
 </div>
