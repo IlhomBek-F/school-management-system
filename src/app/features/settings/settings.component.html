@@ -1,1 +1,406 @@
-<school-page-title title="Settings">
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 p-6">
+  <div class="w-full mx-auto">
+     <school-page-title title="Settings" subTitle="Manage your school system preferences and configurations"/>
+
+    <div class="grid grid-cols-12 gap-6">
+      <!-- Sidebar Navigation -->
+      <div class="col-span-12 lg:col-span-3">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sticky top-6">
+          <nav class="space-y-1">
+            <button
+              (click)="setActiveTab('general')"
+              [class.bg-gradient-to-r]="activeTab === 'general'"
+              [class.from-indigo-50]="activeTab === 'general'"
+              [class.to-purple-50]="activeTab === 'general'"
+              [class.text-indigo-600]="activeTab === 'general'"
+              [class.font-semibold]="activeTab === 'general'"
+              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
+              <i class="pi pi-building text-lg"></i>
+              <span>General</span>
+            </button>
+
+            <button
+              (click)="setActiveTab('academic')"
+              [class.bg-gradient-to-r]="activeTab === 'academic'"
+              [class.from-indigo-50]="activeTab === 'academic'"
+              [class.to-purple-50]="activeTab === 'academic'"
+              [class.text-indigo-600]="activeTab === 'academic'"
+              [class.font-semibold]="activeTab === 'academic'"
+              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
+              <i class="pi pi-graduation-cap text-lg"></i>
+              <span>Academic</span>
+            </button>
+
+            <button
+              (click)="setActiveTab('notifications')"
+              [class.bg-gradient-to-r]="activeTab === 'notifications'"
+              [class.from-indigo-50]="activeTab === 'notifications'"
+              [class.to-purple-50]="activeTab === 'notifications'"
+              [class.text-indigo-600]="activeTab === 'notifications'"
+              [class.font-semibold]="activeTab === 'notifications'"
+              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
+              <i class="pi pi-bell text-lg"></i>
+              <span>Notifications</span>
+            </button>
+
+            <button
+              (click)="setActiveTab('security')"
+              [class.bg-gradient-to-r]="activeTab === 'security'"
+              [class.from-indigo-50]="activeTab === 'security'"
+              [class.to-purple-50]="activeTab === 'security'"
+              [class.text-indigo-600]="activeTab === 'security'"
+              [class.font-semibold]="activeTab === 'security'"
+              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
+              <i class="pi pi-shield text-lg"></i>
+              <span>Security</span>
+            </button>
+
+            <button
+              (click)="setActiveTab('appearance')"
+              [class.bg-gradient-to-r]="activeTab === 'appearance'"
+              [class.from-indigo-50]="activeTab === 'appearance'"
+              [class.to-purple-50]="activeTab === 'appearance'"
+              [class.text-indigo-600]="activeTab === 'appearance'"
+              [class.font-semibold]="activeTab === 'appearance'"
+              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
+              <i class="pi pi-palette text-lg"></i>
+              <span>Appearance</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="col-span-12 lg:col-span-9">
+        <!-- General Settings -->
+        <div *ngIf="activeTab === 'general'" class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <i class="pi pi-building text-white text-xl"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-800">School Information</h2>
+                <p class="text-sm text-gray-600">Update your school's basic information</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <!-- School Logo -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">School Logo</label>
+                <div class="flex items-center gap-4">
+                  <div class="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center">
+                    <i class="pi pi-image text-indigo-600 text-2xl"></i>
+                  </div>
+                  <div>
+                    <!-- <p-fileUpload
+                      mode="basic"
+                      chooseLabel="Upload Logo"
+                      accept="image/*"
+                      [maxFileSize]="1000000"
+                      (onSelect)="uploadLogo($event)"
+                      styleClass="p-button-sm p-button-outlined">
+                    </p-fileUpload> -->
+                    <p class="text-xs text-gray-500 mt-1">PNG, JPG up to 1MB</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">School Name</label>
+                  <input pInputText [(ngModel)]="schoolInfo.name" class="w-full" />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                  <input pInputText type="email" [(ngModel)]="schoolInfo.email" class="w-full" />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
+                  <input pInputText [(ngModel)]="schoolInfo.phone" class="w-full" />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Website</label>
+                  <input pInputText [(ngModel)]="schoolInfo.website" class="w-full" />
+                </div>
+
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Address</label>
+                  <textarea pInputTextarea [(ngModel)]="schoolInfo.address" rows="3" class="w-full"></textarea>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                <p-button label="Reset" [outlined]="true" severity="secondary" (onClick)="resetSettings()"></p-button>
+                <p-button label="Save Changes" icon="pi pi-check" (onClick)="saveGeneralSettings()"></p-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic Settings -->
+        <div *ngIf="activeTab === 'academic'" class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <i class="pi pi-graduation-cap text-white text-xl"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-800">Academic Configuration</h2>
+                <p class="text-sm text-gray-600">Configure academic year and grading system</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Academic Year</label>
+                  <input pInputText [(ngModel)]="academicYear" class="w-full" />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Grade System</label>
+                  <p-dropdown
+                    [(ngModel)]="gradeSystem"
+                    [options]="gradeSystemOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Passing Grade (%)</label>
+                  <p-inputNumber
+                    [(ngModel)]="passingGrade"
+                    [min]="0"
+                    [max]="100"
+                    [style]="{'width': '100%'}">
+                  </p-inputNumber>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                <p-button label="Reset" [outlined]="true" severity="secondary" (onClick)="resetSettings()"></p-button>
+                <p-button label="Save Changes" icon="pi pi-check" (onClick)="saveAcademicSettings()"></p-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div *ngIf="activeTab === 'notifications'" class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <i class="pi pi-bell text-white text-xl"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-800">Notification Preferences</h2>
+                <p class="text-sm text-gray-600">Choose how you want to receive notifications</p>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Notification Channels</h3>
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="pi pi-envelope text-indigo-600"></i>
+                      </div>
+                      <div>
+                        <p class="font-semibold text-gray-800">Email Notifications</p>
+                        <p class="text-sm text-gray-600">Receive updates via email</p>
+                      </div>
+                    </div>
+                    <p-inputSwitch [(ngModel)]="emailNotifications"></p-inputSwitch>
+                  </div>
+
+                  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="pi pi-mobile text-green-600"></i>
+                      </div>
+                      <div>
+                        <p class="font-semibold text-gray-800">SMS Notifications</p>
+                        <p class="text-sm text-gray-600">Receive text messages</p>
+                      </div>
+                    </div>
+                    <p-inputSwitch [(ngModel)]="smsNotifications"></p-inputSwitch>
+                  </div>
+
+                  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="pi pi-bell text-purple-600"></i>
+                      </div>
+                      <div>
+                        <p class="font-semibold text-gray-800">Push Notifications</p>
+                        <p class="text-sm text-gray-600">Browser push notifications</p>
+                      </div>
+                    </div>
+                    <p-inputSwitch [(ngModel)]="pushNotifications"></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Alert Types</h3>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <span class="text-gray-700">Attendance Alerts</span>
+                    <p-inputSwitch [(ngModel)]="attendanceAlerts"></p-inputSwitch>
+                  </div>
+                  <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <span class="text-gray-700">Grade Updates</span>
+                    <p-inputSwitch [(ngModel)]="gradeAlerts"></p-inputSwitch>
+                  </div>
+                  <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <span class="text-gray-700">Announcements</span>
+                    <p-inputSwitch [(ngModel)]="announcementAlerts"></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                <p-button label="Reset" [outlined]="true" severity="secondary" (onClick)="resetSettings()"></p-button>
+                <p-button label="Save Changes" icon="pi pi-check" (onClick)="saveNotificationSettings()"></p-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div *ngIf="activeTab === 'security'" class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <i class="pi pi-shield text-white text-xl"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-800">Security Settings</h2>
+                <p class="text-sm text-gray-600">Manage security and authentication preferences</p>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <div class="flex items-center justify-between p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-100">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
+                    <i class="pi pi-lock text-white"></i>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-gray-800">Two-Factor Authentication</p>
+                    <p class="text-sm text-gray-600">Add an extra layer of security</p>
+                  </div>
+                </div>
+                <p-inputSwitch [(ngModel)]="twoFactorAuth"></p-inputSwitch>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Session Timeout</label>
+                  <p-dropdown
+                    [(ngModel)]="sessionTimeout"
+                    [options]="timeoutOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Password Expiry (days)</label>
+                  <p-inputNumber
+                    [(ngModel)]="passwordExpiry"
+                    [min]="30"
+                    [max]="365"
+                    [style]="{'width': '100%'}">
+                  </p-inputNumber>
+                </div>
+              </div>
+
+              <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <div class="flex gap-3">
+                  <i class="pi pi-exclamation-triangle text-amber-600 text-xl"></i>
+                  <div>
+                    <p class="font-semibold text-amber-800">Security Recommendation</p>
+                    <p class="text-sm text-amber-700">Enable two-factor authentication for enhanced account security.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                <p-button label="Reset" [outlined]="true" severity="secondary" (onClick)="resetSettings()"></p-button>
+                <p-button label="Save Changes" icon="pi pi-check" (onClick)="saveSecuritySettings()"></p-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appearance Settings -->
+        <div *ngIf="activeTab === 'appearance'" class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <i class="pi pi-palette text-white text-xl"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-800">Appearance & Language</h2>
+                <p class="text-sm text-gray-600">Customize the look and feel of your system</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Theme</label>
+                  <p-dropdown
+                    [(ngModel)]="theme"
+                    [options]="themeOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Language</label>
+                  <p-dropdown
+                    [(ngModel)]="language"
+                    [options]="languageOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Date Format</label>
+                  <p-dropdown
+                    [(ngModel)]="dateFormat"
+                    [options]="dateFormatOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                <p-button label="Reset" [outlined]="true" severity="secondary" (onClick)="resetSettings()"></p-button>
+                <p-button label="Save Changes" icon="pi pi-check" (onClick)="saveAppearanceSettings()"></p-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

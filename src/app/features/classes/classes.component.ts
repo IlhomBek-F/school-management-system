@@ -2,10 +2,15 @@ import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
 import { PageTitleComponent } from "../../shared/components/page-title.component/page-title.component";
 import { DropdownModule } from "primeng/dropdown";
 import { Button } from "primeng/button";
-import { Tag } from "primeng/tag";
 import { TableModule } from "primeng/table";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SchoolStatsCardComponent } from "../../shared/components/stats-card/stats-card.component";
+import { TextInputComponent } from "../../shared/components/text-input/text-input.component";
+import { SelectInputComponent } from "../../shared/components/select-input/select-input.component";
+import { ClassesGridViewListComponent } from './components/classes-grid-view-list/classes-grid-view-list.component';
+import { ClassesTableViewListComponent } from './components/classes-table-view-list.component/classes-table-view-list.component';
+import { EmptyListComponent } from "../../shared/components/empty-list/empty-list.component";
 
 interface Class {
   id: number;
@@ -27,7 +32,9 @@ interface Class {
 
 @Component({
   selector: 'school-classes.component',
-  imports: [PageTitleComponent, DropdownModule, Button, Tag, TableModule, FormsModule, CommonModule],
+  imports: [PageTitleComponent, DropdownModule, Button,
+    TableModule, FormsModule, CommonModule, SchoolStatsCardComponent,
+    ClassesGridViewListComponent, TextInputComponent, SelectInputComponent, ClassesTableViewListComponent, EmptyListComponent],
   templateUrl: './classes.component.html',
   styleUrl: './classes.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -226,11 +233,13 @@ export class ClassesComponent implements OnInit {
     });
   }
 
-  onSearchChange(): void {
+  onSearchChange(term: string): void {
+    this.searchTerm = term
     this.filterClasses();
   }
 
-  onGradeChange(): void {
+  onGradeChange(grade: string): void {
+    this.selectedGrade = grade;
     this.filterClasses();
   }
 

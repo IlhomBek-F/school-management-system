@@ -2,95 +2,38 @@
   <div class="w-full mx-auto">
      <school-page-title title="Classes" subTitle="Manage class schedules and information"/>
 
-    <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-cyan-500">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500 text-sm mb-1">Total Classes</p>
-            <p class="text-3xl font-bold text-gray-800">{{ totalClasses }}</p>
-          </div>
-          <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
-            <i class="pi pi-book text-cyan-600 text-2xl"></i>
-          </div>
-        </div>
-      </div>
+      <school-stats-card title="Total Classes"
+                         [value]="totalClasses"
+                         rootClassName="border-cyan-500"
+                         iconWrapperClassName="bg-cyan-100"
+                         icon="pi pi-book text-cyan-600"></school-stats-card>
 
-      <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-teal-500">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500 text-sm mb-1">Active Classes</p>
-            <p class="text-3xl font-bold text-gray-800">{{ activeClasses }}</p>
-          </div>
-          <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
-            <i class="pi pi-check-circle text-teal-600 text-2xl"></i>
-          </div>
-        </div>
-      </div>
+      <school-stats-card title="Active Classes"
+                         [value]="activeClasses"
+                         rootClassName="border-teal-500"
+                         iconWrapperClassName="bg-teal-100"
+                         icon="pi pi-check-circle text-teal-600"></school-stats-card>
 
-      <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-emerald-500">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500 text-sm mb-1">Total Enrolled</p>
-            <p class="text-3xl font-bold text-gray-800">{{ totalStudents }}</p>
-          </div>
-          <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-            <i class="pi pi-users text-emerald-600 text-2xl"></i>
-          </div>
-        </div>
-      </div>
+      <school-stats-card title="Total Enrolled"
+                         [value]="totalStudents"
+                         rootClassName="border-emerald-500"
+                         iconWrapperClassName="bg-emerald-100"
+                         icon="pi pi-users text-emerald-600"></school-stats-card>
 
-      <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-amber-500">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500 text-sm mb-1">Avg. Capacity</p>
-            <p class="text-3xl font-bold text-gray-800">{{ avgCapacity }}%</p>
-          </div>
-          <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
-            <i class="pi pi-chart-line text-amber-600 text-2xl"></i>
-          </div>
-        </div>
-      </div>
+      <school-stats-card title="Avg. Capacity"
+                         [value]="avgCapacity + '%'"
+                         rootClassName="border-amber-500"
+                         iconWrapperClassName="bg-amber-100"
+                         icon="pi pi-chart-line text-amber-600"></school-stats-card>
     </div>
 
     <!-- Controls -->
     <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
       <div class="flex flex-col md:flex-row gap-4">
-        <!-- Search -->
-        <div class="flex-1">
-          <span class="p-input-icon-left w-full">
-            <i class="pi pi-search"></i>
-            <input
-              pInputText
-              type="text"
-              [(ngModel)]="searchTerm"
-              (input)="onSearchChange()"
-              placeholder="Search by class name, code, or teacher..."
-              class="w-full" />
-          </span>
-        </div>
+          <school-text-input icon="pi pi-search" placeholder="Search students by name or class..." (onChangeEmit)="onSearchChange($event)"/>
+          <school-select-input [options]="grades" (onChangeEmit)="onGradeChange($event)"/>
 
-        <!-- Grade Filter -->
-        <p-dropdown
-          [(ngModel)]="selectedGrade"
-          [options]="grades"
-          (onChange)="onGradeChange()"
-          optionLabel="label"
-          optionValue="value"
-          [style]="{'width': '180px'}">
-        </p-dropdown>
-
-        <!-- Status Filter -->
-        <p-dropdown
-          [(ngModel)]="selectedStatus"
-          [options]="statuses"
-          (onChange)="onStatusChange()"
-          optionLabel="label"
-          optionValue="value"
-          [style]="{'width': '160px'}">
-        </p-dropdown>
-
-        <!-- View Toggle -->
         <div class="flex gap-2">
           <p-button
             label="Grid"
@@ -106,9 +49,8 @@
           </p-button>
         </div>
 
-        <!-- Action Button -->
         <p-button
-          label="Add Class"
+          label="Add Teacher"
           icon="pi pi-plus"
           (onClick)="addClass()"
           styleClass="p-button-sm">
@@ -117,174 +59,15 @@
     </div>
 
     <!-- Grid View -->
-    <div *ngIf="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div *ngFor="let class of filteredClasses"
-           class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border-t-4 relative overflow-hidden group"
-           [style.border-top-color]="class.color.replace('bg-', '#')">
+     @if (viewMode === 'grid') {
+       <school-classes-grid-view-list [classList]="filteredClasses"/>
+     } @else {
+       <school-classes-table-view-list [classesList]="filteredClasses" />
+     }
 
-        <!-- Header -->
-        <div class="flex items-start justify-between mb-4">
-          <div class="flex-1">
-            <div class="flex items-center gap-2 mb-2">
-              <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm ' + class.color">
-                <i class="pi pi-book"></i>
-              </div>
-              <div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight">{{ class.name }}</h3>
-                <p class="text-gray-500 text-sm">{{ class.code }}</p>
-              </div>
-            </div>
-          </div>
-          <p-tag
-            [value]="class.status"
-            [severity]="getStatusSeverity(class.status)"
-            [rounded]="true">
-          </p-tag>
-        </div>
 
-        <!-- Teacher & Grade -->
-        <div class="mb-4 pb-4 border-b border-gray-100">
-          <div class="flex items-center gap-2 text-gray-600 text-sm mb-2">
-            <i class="pi pi-user text-gray-400"></i>
-            <span class="font-medium">{{ class.teacher }}</span>
-          </div>
-          <div class="flex items-center gap-2 text-gray-600 text-sm">
-            <i class="pi pi-graduation-cap text-gray-400"></i>
-            <span>{{ class.grade }} • {{ class.subject }}</span>
-          </div>
-        </div>
-
-        <!-- Schedule Info -->
-        <div class="space-y-2 mb-4 pb-4 border-b border-gray-100">
-          <div class="flex items-center gap-2 text-gray-600 text-sm">
-            <i class="pi pi-clock text-gray-400"></i>
-            <span>{{ class.schedule }}</span>
-          </div>
-          <div class="flex items-center gap-2 text-gray-600 text-sm">
-            <i class="pi pi-map-marker text-gray-400"></i>
-            <span>{{ class.room }} • {{ class.duration }}</span>
-          </div>
-        </div>
-
-        <!-- Capacity Bar -->
-        <div class="mb-4">
-          <div class="flex items-center justify-between text-sm mb-2">
-            <span class="text-gray-600">Capacity</span>
-            <span class="font-semibold text-gray-800">{{ class.students }}/{{ class.capacity }}</span>
-          </div>
-          <div class="w-full bg-gray-200 rounded-full h-2">
-            <div
-              [class]="'h-2 rounded-full transition-all ' +
-                      (getCapacityPercentage(class.students, class.capacity) >= 90 ? 'bg-red-500' :
-                       getCapacityPercentage(class.students, class.capacity) >= 70 ? 'bg-amber-500' : 'bg-green-500')"
-              [style.width.%]="getCapacityPercentage(class.students, class.capacity)">
-            </div>
-          </div>
-        </div>
-
-        <!-- Actions -->
-        <div class="flex gap-2">
-          <p-button
-            label="Details"
-            icon="pi pi-eye"
-            [outlined]="true"
-            (onClick)="viewDetails(class)"
-            styleClass="flex-1 p-button-sm">
-          </p-button>
-          <p-button
-            icon="pi pi-pencil"
-            [outlined]="true"
-            (onClick)="editClass(class)"
-            styleClass="p-button-sm"
-            [style]="{'width': '40px'}">
-          </p-button>
-        </div>
-      </div>
-    </div>
-
-    <!-- List View -->
-    <div *ngIf="viewMode === 'list'" class="bg-white rounded-xl shadow-sm overflow-hidden">
-      <p-table [value]="filteredClasses" [tableStyle]="{ 'min-width': '80rem' }">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Class</th>
-            <th>Teacher</th>
-            <th>Grade</th>
-            <th>Schedule</th>
-            <th>Room</th>
-            <th>Capacity</th>
-            <th>Duration</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-class>
-          <tr class="hover:bg-gray-50">
-            <td>
-              <div class="flex items-center gap-3">
-                <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold ' + class.color">
-                  <i class="pi pi-book"></i>
-                </div>
-                <div>
-                  <div class="font-semibold text-gray-800">{{ class.name }}</div>
-                  <div class="text-sm text-gray-500">{{ class.code }} • {{ class.subject }}</div>
-                </div>
-              </div>
-            </td>
-            <td class="text-gray-600">{{ class.teacher }}</td>
-            <td class="text-gray-600">{{ class.grade }}</td>
-            <td class="text-gray-600 text-sm">{{ class.schedule }}</td>
-            <td class="text-gray-600">{{ class.room }}</td>
-            <td>
-              <div class="flex items-center gap-2">
-                <span class="font-semibold text-gray-800">{{ class.students }}/{{ class.capacity }}</span>
-                <div class="w-16 bg-gray-200 rounded-full h-1.5">
-                  <div
-                    [class]="'h-1.5 rounded-full ' +
-                            (getCapacityPercentage(class.students, class.capacity) >= 90 ? 'bg-red-500' :
-                             getCapacityPercentage(class.students, class.capacity) >= 70 ? 'bg-amber-500' : 'bg-green-500')"
-                    [style.width.%]="getCapacityPercentage(class.students, class.capacity)">
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td class="text-gray-600">{{ class.duration }}</td>
-            <td>
-              <p-tag
-                [value]="class.status"
-                [severity]="getStatusSeverity(class.status)">
-              </p-tag>
-            </td>
-            <td>
-              <div class="flex gap-2">
-                <p-button
-                  icon="pi pi-eye"
-                  [outlined]="true"
-                  (onClick)="viewDetails(class)"
-                  styleClass="p-button-sm"
-                  [style]="{'width': '36px', 'height': '36px'}">
-                </p-button>
-                <p-button
-                  icon="pi pi-pencil"
-                  [outlined]="true"
-                  (onClick)="editClass(class)"
-                  styleClass="p-button-sm"
-                  [style]="{'width': '36px', 'height': '36px'}">
-                </p-button>
-              </div>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-
-    <!-- No Results -->
-    <div *ngIf="filteredClasses.length === 0" class="bg-white rounded-xl shadow-sm p-12 text-center">
-      <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <i class="pi pi-search text-gray-400 text-3xl"></i>
-      </div>
-      <h3 class="text-xl font-semibold text-gray-800 mb-2">No classes found</h3>
-      <p class="text-gray-600">Try adjusting your search or filter criteria</p>
-    </div>
+     @if (filteredClasses.length === 0) {
+       <school-empty-list title="No classes found"/>
+     }
   </div>
 </div>
