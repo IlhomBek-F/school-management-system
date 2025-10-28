@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   ],
   template: `
     <form [formGroup]="form()">
-      <div class="space-y-6 w-full">
+      <div class="space-y-2 w-full">
         @for (container of formContainer(); track container) {
         <div class="grid gap-4 w-full" [ngStyle]="{'grid-template-columns': 'repeat(' + container.containers.length + ', minmax(0, 1fr))'}">
           @for (question of container.containers; track question) {

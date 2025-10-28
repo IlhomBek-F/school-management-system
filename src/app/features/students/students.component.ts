@@ -183,7 +183,7 @@ export class StudentsComponent implements OnInit {
        dismissableMask: true,
        modal: true,
        header: 'Add new student',
-       width: '50%',
+       width: '45%',
        data: {
          footer: {
            onConfirm: (formValue: any) => console.log(formValue),
@@ -198,61 +198,5 @@ export class StudentsComponent implements OnInit {
   viewProfile(student: Student): void {
     // Implement view profile logic
     console.log('View profile:', student);
-  }
-
-  private _getFormContainer(): FormContainer[] {
-    return [
-    {
-      containers: [
-        new QuestionSelectInput({
-          key: 'animal',
-          label: 'Favorite Animal',
-          options: [
-            { value: 'cat', label: 'Cat' },
-            { value: 'dog', label: 'Dog' },
-            { value: 'horse', label: 'Horse' },
-            { value: 'capybara', label: 'Capybara' },
-          ],
-          value: 'capybara',
-          onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
-            console.log(value, questions);
-          },
-        }),
-
-        new QuestionTextInput({
-          key: 'firstName',
-          label: 'First name',
-          value: 'Alex',
-          type: QuestionFieldTypeEnum.Number,
-          required: true,
-          onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
-            console.log(value, questions);
-          },
-        }),
-      ],
-    },
-    {
-      containers: [
-        new QuestionTextInput({
-          key: 'emailAddress1',
-          label: 'Email',
-          type: QuestionFieldTypeEnum.Email,
-          order: 2,
-          onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
-            console.log(value, questions);
-          },
-        }),
-        new QuestionTextInput({
-          key: 'emailAddress2',
-          label: 'Email',
-          type: QuestionFieldTypeEnum.Email,
-          order: 2,
-          onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
-            console.log(value, questions);
-          },
-        }),
-      ],
-    },
-  ]
   }
 }

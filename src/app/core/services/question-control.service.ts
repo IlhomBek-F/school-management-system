@@ -12,7 +12,7 @@ export class QuestionControlService {
 
     const group: Record<string, AbstractControl> = {};
     questions.forEach((question) => {
-      const control = new FormControl(question.value || '')
+      const control = new FormControl(question.value || null)
 
       if(question.required) {
         control.addValidators(Validators.required)

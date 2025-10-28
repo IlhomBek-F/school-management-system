@@ -1,7 +1,7 @@
 export enum QuestionTypeEnum {
   TextInput = 'textInput',
   SelectInput = 'selectInput',
-  Tab = 'tab'
+  DatePicker = 'datePicker'
 }
 
 export enum QuestionFieldTypeEnum {

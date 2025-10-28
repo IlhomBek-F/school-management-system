@@ -8,7 +8,10 @@
      }
     <input pInputText type="text"
            class="p-inputtext w-full"
-           [ngClass]="{'!pl-[40px]': icon()}"
+           [ngClass]="{
+            '!pl-[40px]': icon(),
+            'ng-invalid ng-dirty': required() && !value,
+            }"
            [placeholder]="placeholder()"
            [disabled]="disabled"
            [value]="value"

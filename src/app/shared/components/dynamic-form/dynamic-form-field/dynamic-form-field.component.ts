@@ -5,10 +5,11 @@ import { QuestionFieldTypeEnum, QuestionTypeEnum } from '../../../../core/enums/
 import { TextInputComponent } from "../../text-input/text-input.component";
 import { SelectInputComponent } from "../../select-input/select-input.component";
 import { TextInputNumberComponent } from '../../text-input-number/text-input-number.component';
+import { DatepickerComponent } from '../../datepicker/datepicker.component';
 
 @Component({
   selector: 'school-dynamic-form-field',
-  imports: [TextInputComponent, SelectInputComponent, ReactiveFormsModule, TextInputNumberComponent],
+  imports: [TextInputComponent, SelectInputComponent, ReactiveFormsModule, TextInputNumberComponent, DatepickerComponent],
   templateUrl: './dynamic-form-field.component.html',
   styleUrl: './dynamic-form-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

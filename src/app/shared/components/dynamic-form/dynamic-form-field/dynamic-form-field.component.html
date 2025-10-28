@@ -1,20 +1,32 @@
 <div [formGroup]="form()">
-  <label [attr.for]="question().key">{{ question().label }}</label>
+  <label class="text-sm font-medium text-gray-700" [attr.for]="question().key">
+    {{ question().label }} @if(question().required) {<span class="text-red-500">*</span>}
+  </label>
   <div>
     @switch (question().controlType) {
       @case (QuestionTypeEnum.TextInput) {
          @if (question().type === QuestionFieldTypeEnum.Number) {
-            <school-text-input-number [formControlName]="question().key" [id]="question().key"/>
+        <school-text-input-number [formControlName]="question().key"
+                                  [id]="question().key"
+                                  [required]="question().required"
+                                  [placeholder]="question().placeholder"/>
          } @else {
-            <school-text-input [formControlName]="question().key" [id]="question().key"/>
+        <school-text-input [formControlName]="question().key"
+                           [id]="question().key"
+                           [required]="question().required"
+                           [placeholder]="question().placeholder"/>
          }
       }
       @case (QuestionTypeEnum.SelectInput) {
-        <school-select-input [options]="question().options" [formControlName]="question().key"/>
+        <school-select-input [options]="question().options"
+                             [formControlName]="question().key"
+                             [required]="question().required"
+                             [placeholder]="question().placeholder"/>
+      }
+      @case (QuestionTypeEnum.DatePicker) {
+        <school-datepicker [formControlName]="question().key"
+                           [required]="question().required"/>
       }
     }
   </div>
-  @if (!isValid) {
-    <div class="errorMessage">{{ question().label }} is required</div>
-  }
 </div>

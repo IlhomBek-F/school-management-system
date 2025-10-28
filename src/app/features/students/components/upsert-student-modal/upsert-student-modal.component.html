@@ -12,3 +12,8 @@
             }
         </p-tabpanels>
 </p-tabs>
+
+<footer class="flex justify-end gap-3 mt-5">
+  <button pButton (click)="cancel()" outlined icon="pi pi-times-circle">cancel</button>
+  <button pButton (click)="confirm()" [disabled]="form.invalid" icon="pi pi-save">save</button>
+</footer>

@@ -22,6 +22,7 @@ export class TextInputComponent implements ControlValueAccessor {
   icon = input()
   placeholder = input('')
   onChangeEmit = output<string>()
+  required = input()
 
   value: string = '';
   disabled = false;

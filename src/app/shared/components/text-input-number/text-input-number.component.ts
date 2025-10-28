@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputNumberModule } from "primeng/inputnumber";
@@ -10,7 +11,7 @@ const VALUE_ACCESSOR_PROVIDER = {
 
 @Component({
   selector: 'school-text-input-number',
-  imports: [InputNumberModule],
+  imports: [InputNumberModule, CommonModule],
   templateUrl: './text-input-number.component.html',
   styleUrl: './text-input-number.component.scss',
   providers: [VALUE_ACCESSOR_PROVIDER],
@@ -21,6 +22,8 @@ export class TextInputNumberComponent {
   placeholder = input('')
   min = input()
   max = input()
+  required = input()
+
   onChangeEmit = output<number>()
 
   value: string = '';
