@@ -1,25 +1,34 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { QuestionBase } from '../../../core/dynamic-form/question-base';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { QuestionControlService } from '../../../core/services/question-control.service';
-import { DynamicFormFieldComponent } from "./dynamic-form-field/dynamic-form-field.component";
-import { ButtonDirective, ButtonModule } from "primeng/button";
+import { DynamicFormFieldComponent } from './dynamic-form-field/dynamic-form-field.component';
+import { ButtonModule } from 'primeng/button';
+import { FormContainer } from '../../../core/models/form-container';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'school-dynamic-form',
-  imports: [ReactiveFormsModule, DynamicFormFieldComponent, ButtonDirective, ButtonModule],
-  templateUrl: './dynamic-form.component.html',
-  styleUrl: './dynamic-form.component.scss',
+  imports: [
+    ReactiveFormsModule,
+    DynamicFormFieldComponent,
+    ButtonModule,
+    CommonModule,
+  ],
+  template: `
+    <form [formGroup]="form()">
+      <div class="space-y-6 w-full">
+        @for (container of formContainer(); track container) {
+        <div class="grid gap-4 w-full" [ngStyle]="{'grid-template-columns': 'repeat(' + container.containers.length + ', minmax(0, 1fr))'}">
+          @for (question of container.containers; track question) {
+            <school-dynamic-form-field [question]="question" [form]="form()" />
+          }
+        </div>
+        }
+      </div>
+    </form>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicFormComponent {
-private readonly qcs = inject(QuestionControlService);
-  readonly questions = input<QuestionBase<string>[] | null>([]);
-  readonly form = computed<FormGroup>(() =>
-    this.qcs.toFormGroup(this.questions() as QuestionBase<string>[]),
-  );
-
-  onSubmit() {
-    console.log(this.form().getRawValue())
-  }
+  readonly formContainer = input<FormContainer[]>([]);
+  readonly form = input.required<FormGroup>();
 }

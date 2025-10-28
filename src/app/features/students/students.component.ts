@@ -14,7 +14,15 @@ import { StudentListViewComponent } from './components/student-list-view/student
 import { TextInputComponent } from "../../shared/components/text-input/text-input.component";
 import { SelectInputComponent } from "../../shared/components/select-input/select-input.component";
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DynamicModalComponent } from '../../shared/components/dynamic-modal/dynamic-modal.component';
+import { DynamicModalComponent } from '../../shared/components/dynamic-form-modal/dynamic-form-modal.component';
+import { LoginCompoent } from '../login/login.component';
+import { FormContainer } from '../../core/models/form-container';
+import { QuestionSelectInput } from '../../core/dynamic-form/question-select-input';
+import { QuestionBase } from '../../core/dynamic-form/question-base';
+import { QuestionTextInput } from '../../core/dynamic-form/question-text-input';
+import { QuestionFieldTypeEnum } from '../../core/enums/question-type.enum';
+import { DynamicFormModalDataModel } from '../../core/models/dynamic-form-modal-data';
+import { UpsertStudentModalComponent } from './components/upsert-student-modal/upsert-student-modal.component';
 
 type Student = any
 
@@ -170,12 +178,18 @@ export class StudentsComponent implements OnInit {
   }
 
   addStudent(): void {
-    this._dialogService.open(DynamicModalComponent, {
+    const dialogRef = this._dialogService.open<any>(UpsertStudentModalComponent, {
        focusOnShow: false,
        dismissableMask: true,
        modal: true,
-       header: 'Select a Product',
+       header: 'Add new student',
        width: '50%',
+       data: {
+         footer: {
+           onConfirm: (formValue: any) => console.log(formValue),
+           onCancel: () => dialogRef.close()
+         }
+       }
      })
     // Implement add student logic
     console.log('Add student clicked');
@@ -186,4 +200,59 @@ export class StudentsComponent implements OnInit {
     console.log('View profile:', student);
   }
 
+  private _getFormContainer(): FormContainer[] {
+    return [
+    {
+      containers: [
+        new QuestionSelectInput({
+          key: 'animal',
+          label: 'Favorite Animal',
+          options: [
+            { value: 'cat', label: 'Cat' },
+            { value: 'dog', label: 'Dog' },
+            { value: 'horse', label: 'Horse' },
+            { value: 'capybara', label: 'Capybara' },
+          ],
+          value: 'capybara',
+          onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
+            console.log(value, questions);
+          },
+        }),
+
+        new QuestionTextInput({
+          key: 'firstName',
+          label: 'First name',
+          value: 'Alex',
+          type: QuestionFieldTypeEnum.Number,
+          required: true,
+          onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
+            console.log(value, questions);
+          },
+        }),
+      ],
+    },
+    {
+      containers: [
+        new QuestionTextInput({
+          key: 'emailAddress1',
+          label: 'Email',
+          type: QuestionFieldTypeEnum.Email,
+          order: 2,
+          onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
+            console.log(value, questions);
+          },
+        }),
+        new QuestionTextInput({
+          key: 'emailAddress2',
+          label: 'Email',
+          type: QuestionFieldTypeEnum.Email,
+          order: 2,
+          onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
+            console.log(value, questions);
+          },
+        }),
+      ],
+    },
+  ]
+  }
 }

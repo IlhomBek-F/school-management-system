@@ -3,7 +3,11 @@
   <div>
     @switch (question().controlType) {
       @case (QuestionTypeEnum.TextInput) {
-        <school-text-input [formControlName]="question().key" [id]="question().key"/>
+         @if (question().type === QuestionFieldTypeEnum.Number) {
+            <school-text-input-number [formControlName]="question().key" [id]="question().key"/>
+         } @else {
+            <school-text-input [formControlName]="question().key" [id]="question().key"/>
+         }
       }
       @case (QuestionTypeEnum.SelectInput) {
         <school-select-input [options]="question().options" [formControlName]="question().key"/>

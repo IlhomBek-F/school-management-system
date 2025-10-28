@@ -1,0 +1,14 @@
+<p-tabs value="personal_information">
+        <p-tablist>
+            @for (tab of tabItems; track tab.value) {
+                <p-tab [value]="tab.value">{{ tab.title }}</p-tab>
+            }
+        </p-tablist>
+        <p-tabpanels>
+            @for (tab of tabItems; track tab.value) {
+                <p-tabpanel [value]="tab.value">
+                    <school-dynamic-form [form]="form" [formContainer]="tab.formContainers()"/>
+                </p-tabpanel>
+            }
+        </p-tabpanels>
+</p-tabs>

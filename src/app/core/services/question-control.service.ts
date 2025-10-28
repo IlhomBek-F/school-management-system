@@ -2,11 +2,14 @@ import {Injectable} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {QuestionBase} from '../dynamic-form/question-base';
 import { debounceTime } from 'rxjs';
+import { FormContainer } from '../models/form-container';
 
 @Injectable()
 export class QuestionControlService {
 
-  toFormGroup(questions: QuestionBase<string>[]) {
+  toFormGroup(containers: FormContainer[]) {
+    const questions = this._getQuestionsFromContainer(containers);
+
     const group: Record<string, AbstractControl> = {};
     questions.forEach((question) => {
       const control = new FormControl(question.value || '')
@@ -35,5 +38,12 @@ export class QuestionControlService {
     })
 
     return new FormGroup(group);
+  }
+
+  private _getQuestionsFromContainer(containers: FormContainer[]) {
+    return containers.reduce((prev: QuestionBase<any>[], curr: FormContainer) => {
+      prev.push(...curr.containers)
+      return prev
+    }, [])
   }
 }
