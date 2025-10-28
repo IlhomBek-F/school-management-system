@@ -10,7 +10,9 @@ export class QuestionBase<T> {
   controlType: QuestionTypeEnum;
   type: string;
   options: {value: string; label: string}[];
-  validators: ValidatorFn[]
+  validators: ValidatorFn[];
+  onValueChange?: (value: any, questions?: QuestionBase<T>[]) => void;
+
   constructor(
     options: {
       value?: T;
@@ -21,7 +23,8 @@ export class QuestionBase<T> {
       controlType?: QuestionTypeEnum;
       type?: string;
       options?: {value: string; label: string}[];
-      validators?: ValidatorFn[]
+      validators?: ValidatorFn[],
+      onValueChange?: (value: any, questions?: QuestionBase<T>[]) => void
     } = {},
   ) {
     this.value = options.value;
@@ -33,5 +36,6 @@ export class QuestionBase<T> {
     this.type = options.type || '';
     this.options = options.options || [];
     this.validators = options.validators || []
+    this.onValueChange = options.onValueChange
   }
 }

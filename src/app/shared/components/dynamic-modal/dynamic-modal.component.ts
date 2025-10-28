@@ -3,7 +3,7 @@ import { DynamicFormComponent } from "../dynamic-form/dynamic-form.component";
 import { QuestionTextInput } from '../../../core/dynamic-form/question-text-input';
 import { QuestionSelectInput } from '../../../core/dynamic-form/question-select-input';
 import { QuestionControlService } from '../../../core/services/question-control.service';
-import { Validators } from '@angular/forms';
+import { QuestionBase } from '../../../core/dynamic-form/question-base';
 
 @Component({
   selector: 'school-dynamic-modal',
@@ -26,7 +26,10 @@ export class DynamicModalComponent {
           {value: 'capybara', label: 'Capybara'},
         ],
         order: 3,
-        value: 'capybara'
+        value: 'capybara',
+        onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
+             console.log(value, questions)
+        }
       }),
       new QuestionTextInput({
         key: 'firstName',
@@ -34,12 +37,18 @@ export class DynamicModalComponent {
         value: 'Alex',
         required: true,
         order: 1,
+        onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
+             console.log(value, questions)
+        }
       }),
       new QuestionTextInput({
         key: 'emailAddress',
         label: 'Email',
         type: 'email',
         order: 2,
+        onValueChange: (value: any, questions?: QuestionBase<string>[]) => {
+             console.log(value, questions)
+        }
       }),
     ])
 }
