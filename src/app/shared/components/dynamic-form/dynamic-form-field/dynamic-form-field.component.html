@@ -1,0 +1,16 @@
+<div [formGroup]="form()">
+  <label [attr.for]="question().key">{{ question().label }}</label>
+  <div>
+    @switch (question().controlType) {
+      @case (QuestionTypeEnum.TextInput) {
+        <school-text-input [formControlName]="question().key" [id]="question().key"/>
+      }
+      @case (QuestionTypeEnum.SelectInput) {
+        <school-select-input [options]="question().options" [formControlName]="question().key"/>
+      }
+    }
+  </div>
+  @if (!isValid) {
+    <div class="errorMessage">{{ question().label }} is required</div>
+  }
+</div>

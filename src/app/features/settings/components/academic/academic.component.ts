@@ -3,10 +3,11 @@ import { TextInputComponent } from "../../../../shared/components/text-input/tex
 import { SelectInputComponent } from "../../../../shared/components/select-input/select-input.component";
 import { InputNumberModule } from "primeng/inputnumber";
 import { ButtonModule } from "primeng/button";
+import { TextInputNumberComponent } from "../../../../shared/components/text-input-number/text-input-number.component";
 
 @Component({
   selector: 'school-academic',
-  imports: [TextInputComponent, SelectInputComponent, InputNumberModule, ButtonModule],
+  imports: [TextInputComponent, SelectInputComponent, InputNumberModule, ButtonModule, TextInputNumberComponent],
   templateUrl: './academic.component.html',
   styleUrl: './academic.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

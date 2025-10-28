@@ -27,6 +27,6 @@ export class LoginCompoent {
   });
 
   login() {
-    this._router.navigate(['/'])
+    this._router.navigate(['/teachers'])
   }
 }

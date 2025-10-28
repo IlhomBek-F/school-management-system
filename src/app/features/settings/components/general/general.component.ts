@@ -4,9 +4,10 @@ import { TextInputComponent } from "../../../../shared/components/text-input/tex
 import { FormsModule } from "@angular/forms";
 import { TextareaModule } from 'primeng/textarea';
 import { FileUploadModule } from 'primeng/fileupload';
+import { TextareaInputComponent } from "../../../../shared/components/textarea-input/textarea-input.component";
 @Component({
   selector: 'school-general',
-  imports: [ButtonModule, TextInputComponent, FormsModule, TextareaModule, FileUploadModule],
+  imports: [ButtonModule, TextInputComponent, FormsModule, TextareaModule, FileUploadModule, TextareaInputComponent],
   templateUrl: './general.component.html',
   styleUrl: './general.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

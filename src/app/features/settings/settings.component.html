@@ -7,65 +7,19 @@
       <div class="col-span-12 lg:col-span-3">
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sticky top-6">
           <nav class="space-y-1">
-            <button
-              (click)="setActiveTab('general')"
-              [class.bg-gradient-to-r]="activeTab === 'general'"
-              [class.from-indigo-50]="activeTab === 'general'"
-              [class.to-purple-50]="activeTab === 'general'"
-              [class.text-indigo-600]="activeTab === 'general'"
-              [class.font-semibold]="activeTab === 'general'"
-              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
-              <i class="pi pi-building text-lg"></i>
-              <span>General</span>
+            @for (item of tabItems; track $index) {
+                 <button
+              (click)="setActiveTab(item.title)"
+              [class.bg-gradient-to-r]="activeTab === item.title"
+              [class.from-indigo-50]="activeTab === item.title"
+              [class.to-purple-50]="activeTab === item.title"
+              [class.text-indigo-600]="activeTab === item.title"
+              [class.font-semibold]="activeTab === item.title"
+              class="w-full flex items-center gap-3 px-4 py-3 cursor-pointer rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
+              <i [class]="item.icon + ' text-lg'"></i>
+              <span>{{item.title[0] | uppercase}}{{item.title.slice(1)}}</span>
             </button>
-
-            <button
-              (click)="setActiveTab('academic')"
-              [class.bg-gradient-to-r]="activeTab === 'academic'"
-              [class.from-indigo-50]="activeTab === 'academic'"
-              [class.to-purple-50]="activeTab === 'academic'"
-              [class.text-indigo-600]="activeTab === 'academic'"
-              [class.font-semibold]="activeTab === 'academic'"
-              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
-              <i class="pi pi-graduation-cap text-lg"></i>
-              <span>Academic</span>
-            </button>
-
-            <button
-              (click)="setActiveTab('notifications')"
-              [class.bg-gradient-to-r]="activeTab === 'notifications'"
-              [class.from-indigo-50]="activeTab === 'notifications'"
-              [class.to-purple-50]="activeTab === 'notifications'"
-              [class.text-indigo-600]="activeTab === 'notifications'"
-              [class.font-semibold]="activeTab === 'notifications'"
-              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
-              <i class="pi pi-bell text-lg"></i>
-              <span>Notifications</span>
-            </button>
-
-            <button
-              (click)="setActiveTab('security')"
-              [class.bg-gradient-to-r]="activeTab === 'security'"
-              [class.from-indigo-50]="activeTab === 'security'"
-              [class.to-purple-50]="activeTab === 'security'"
-              [class.text-indigo-600]="activeTab === 'security'"
-              [class.font-semibold]="activeTab === 'security'"
-              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
-              <i class="pi pi-shield text-lg"></i>
-              <span>Security</span>
-            </button>
-
-            <button
-              (click)="setActiveTab('appearance')"
-              [class.bg-gradient-to-r]="activeTab === 'appearance'"
-              [class.from-indigo-50]="activeTab === 'appearance'"
-              [class.to-purple-50]="activeTab === 'appearance'"
-              [class.text-indigo-600]="activeTab === 'appearance'"
-              [class.font-semibold]="activeTab === 'appearance'"
-              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 text-left">
-              <i class="pi pi-palette text-lg"></i>
-              <span>Appearance</span>
-            </button>
+            }
           </nav>
         </div>
       </div>

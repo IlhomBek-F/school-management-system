@@ -3,18 +3,18 @@ import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropdownModule } from "primeng/dropdown";
 
+const VALUE_ACCESSOR_PROVIDER = {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectInputComponent),
+      multi: true
+    }
+
 @Component({
   selector: 'school-select-input',
   imports: [DropdownModule, FormsModule, CommonModule],
   templateUrl: './select-input.component.html',
   styleUrl: './select-input.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SelectInputComponent),
-      multi: true
-    }
-  ],
+  providers: [VALUE_ACCESSOR_PROVIDER],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectInputComponent implements ControlValueAccessor {

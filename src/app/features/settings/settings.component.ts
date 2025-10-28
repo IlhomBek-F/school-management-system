@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
-import { PageTitleComponent } from "../../shared/components/page-title.component/page-title.component";
-import { Button } from "primeng/button";
+import { PageTitleComponent } from "../../shared/components/page-title/page-title.component";
 import { DropdownModule } from "primeng/dropdown";
-import { InputNumber } from "primeng/inputnumber";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
@@ -31,6 +29,28 @@ interface SchoolInfo {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsComponent implements OnInit {
+  tabItems = [
+    {
+      title: 'general',
+      icon: 'pi pi-building',
+    },
+    {
+      title: 'academic',
+      icon: 'pi pi-graduation-cap',
+    },
+    {
+      title: 'notifications',
+      icon: 'pi pi-bell',
+    },
+    {
+      title: 'security',
+      icon: 'pi pi-shield',
+    },
+    {
+      title: 'appearance',
+      icon: 'pi pi-palette',
+    }
+  ]
 
   activeTab: string = 'general';
 

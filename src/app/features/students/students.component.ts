@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
-import { PageTitleComponent } from "../../shared/components/page-title.component/page-title.component";
+import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
+import { PageTitleComponent } from "../../shared/components/page-title/page-title.component";
 import { Button } from "primeng/button";
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -13,6 +13,8 @@ import { EmptyListComponent } from "../../shared/components/empty-list/empty-lis
 import { StudentListViewComponent } from './components/student-list-view/student-list-view.component';
 import { TextInputComponent } from "../../shared/components/text-input/text-input.component";
 import { SelectInputComponent } from "../../shared/components/select-input/select-input.component";
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicModalComponent } from '../../shared/components/dynamic-modal/dynamic-modal.component';
 
 type Student = any
 
@@ -27,6 +29,7 @@ type Student = any
     InputTextModule, StudentGridCardComponent,
     SchoolStatsCardComponent, EmptyListComponent,
     StudentListViewComponent, TextInputComponent, SelectInputComponent],
+    providers: [DialogService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentsComponent implements OnInit {
@@ -105,6 +108,7 @@ export class StudentsComponent implements OnInit {
     }
   ];
 
+
   filteredStudents: Student[] = [];
   searchTerm: string = '';
   selectedGrade: string = 'all';
@@ -122,6 +126,8 @@ export class StudentsComponent implements OnInit {
   avgAttendance: number = 0;
   avgGPA: number = 0;
   activeClasses: number = 12;
+
+  constructor(private _dialogService: DialogService) {}
 
   ngOnInit(): void {
     this.filteredStudents = [...this.students];
@@ -164,6 +170,13 @@ export class StudentsComponent implements OnInit {
   }
 
   addStudent(): void {
+    this._dialogService.open(DynamicModalComponent, {
+       focusOnShow: false,
+       dismissableMask: true,
+       modal: true,
+       header: 'Select a Product',
+       width: '50%',
+     })
     // Implement add student logic
     console.log('Add student clicked');
   }

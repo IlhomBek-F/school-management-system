@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from './app.routes';
 import { primengProvider } from '../../primeng.config';
+import { provideHttpClient } from '@angular/common/http';
 
 
 export const appConfig: ApplicationConfig = {
@@ -10,6 +11,7 @@ export const appConfig: ApplicationConfig = {
     primengProvider,
     provideAnimationsAsync(),
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(),
     provideRouter(routes)]
 };
 

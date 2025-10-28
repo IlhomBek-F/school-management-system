@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
 import { AvatarModule } from "primeng/avatar";
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 
@@ -18,6 +18,8 @@ export type SidebarItemType = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent implements OnInit {
+  private _router = inject(Router)
+
   SIDEBAR_ITEMS: SidebarItemType[] = [{
     name: 'Dashboard',
     icon: 'pi pi-home',
@@ -47,4 +49,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  logout() {
+    this._router.navigate(['/login'])
+  }
 }

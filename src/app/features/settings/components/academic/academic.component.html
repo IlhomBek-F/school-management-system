@@ -14,15 +14,7 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <school-text-input label="Academic Year"/>
                 <school-select-input label="Grade System" [options]="gradeSystemOptions"/>
-
-                <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">Passing Grade (%)</label>
-                  <p-inputNumber
-                    [min]="0"
-                    [max]="100"
-                    [style]="{'width': '100%'}">
-                  </p-inputNumber>
-                </div>
+                <school-text-input-number label="Passing Grade (%)" max="100"/>
               </div>
 
               <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">

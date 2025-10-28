@@ -3,7 +3,9 @@
   <label class="text-sm font-medium text-gray-700">{{ label() }}</label>
   }
   <span class="w-full" [ngClass]="{'p-input-icon-left': icon()}">
-    <i class="pi pi-search" [ngClass]="{'absolute top-[12px]': icon()}"></i>
+     @if (icon()) {
+       <i class="pi pi-search" [ngClass]="{'absolute top-[12px]': icon()}"></i>
+     }
     <input pInputText type="text"
            class="p-inputtext w-full"
            [ngClass]="{'!pl-[40px]': icon()}"

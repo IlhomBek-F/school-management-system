@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ButtonModule } from "primeng/button";
 import { InputNumberModule } from "primeng/inputnumber";
 import { SelectInputComponent } from "../../../../shared/components/select-input/select-input.component";
+import { TextInputNumberComponent } from "../../../../shared/components/text-input-number/text-input-number.component";
 
 @Component({
   selector: 'school-security',
-  imports: [ButtonModule, InputNumberModule, SelectInputComponent],
+  imports: [ButtonModule, InputNumberModule, SelectInputComponent, TextInputNumberComponent],
   templateUrl: './security.component.html',
   styleUrl: './security.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
-import { PageTitleComponent } from "../../shared/components/page-title.component/page-title.component";
+import { PageTitleComponent } from "../../shared/components/page-title/page-title.component";
 import { DropdownModule } from "primeng/dropdown";
 import { Button } from "primeng/button";
 import { TableModule } from "primeng/table";

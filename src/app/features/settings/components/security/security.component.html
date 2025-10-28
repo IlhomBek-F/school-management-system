@@ -26,15 +26,7 @@
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <school-select-input label="Session Timeout" [options]="timeoutOptions"/>
-
-                <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">Password Expiry (days)</label>
-                  <p-inputNumber
-                    [min]="30"
-                    [max]="365"
-                    [style]="{'width': '100%'}">
-                  </p-inputNumber>
-                </div>
+                <school-text-input-number [min]="30" [max]="365" label="Password Expiry (days)"/>
               </div>
 
               <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
