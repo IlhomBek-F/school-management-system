@@ -6,17 +6,16 @@ import {
   signal,
 } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
-import { FormContainer } from '../../../../core/models/form-container';
-import { QuestionSelectInput } from '../../../../core/dynamic-form/question-select-input';
-import { QuestionTextInput } from '../../../../core/dynamic-form/question-text-input';
-import { QuestionBase } from '../../../../core/dynamic-form/question-base';
-import { QuestionFieldTypeEnum } from '../../../../core/enums/question-type.enum';
-import { QuestionControlService } from '../../../../core/services/question-control.service';
+import { FormContainer } from '@core/models/form-container';
+import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
+import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
+import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
+import { QuestionControlService } from '@core/services/question-control.service';
 import { FormGroup } from '@angular/forms';
-import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from '@shared/components/dynamic-form/dynamic-form.component';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { QuestionDatePicker } from '../../../../core/dynamic-form/question-datepicker';
+import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
 
 @Component({
   selector: 'school-upsert-student-modal.component',
@@ -58,6 +57,10 @@ export class UpsertStudentModalComponent implements OnInit {
       ...formContainer['personal_information'],
       ...formContainer['academic_information'],
     ]);
+
+    if(this._dialogConfig.data.student) {
+       this.form.patchValue(this._dialogConfig.data.student)
+    }
 
     this.tabItems.forEach(({ formContainers, value }) =>
       formContainers.set(formContainer[value])

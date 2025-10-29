@@ -1,0 +1,34 @@
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+  <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+    <i class="pi pi-chart-bar text-indigo-600"></i>
+    Monthly Attendance Trend
+  </h2>
+  <div class="h-64">
+    <p-chart type="bar" [data]="attendanceChartData()" [options]="attendanceChartOptions()"></p-chart>
+  </div>
+</div>
+
+<!-- Recent Attendance -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+    <i class="pi pi-calendar text-indigo-600"></i>
+    Recent Attendance Records
+  </h2>
+  <div class="space-y-3">
+     @for (record of recentAttendance(); track $index) {
+    <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+          <i class="pi pi-calendar text-gray-600"></i>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-800">{{ record.date }}</p>
+          <p class="text-xs text-gray-500">{{ record.remarks }}</p>
+        </div>
+      </div>
+      <p-tag [value]="record.status" [severity]="record.status === 'Present' ? 'success' : 'danger'">
+      </p-tag>
+    </div>
+  }
+  </div>
+</div>

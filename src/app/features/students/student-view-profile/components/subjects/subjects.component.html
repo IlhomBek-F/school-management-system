@@ -1,0 +1,30 @@
+<div class="space-y-4">
+  @for (subject of subjects(); track $index) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div class="flex items-start justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center text-white ' + subject.color">
+          <i class="pi pi-book text-xl"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-gray-800">{{ subject.name }}</h3>
+          <p class="text-sm text-gray-600">{{ subject.teacher }}</p>
+        </div>
+      </div>
+      <div class="text-right">
+        <div class="text-2xl font-bold text-indigo-600">{{ subject.grade }}</div>
+        <p class="text-xs text-gray-500">Current Grade</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 mb-2">
+      <span class="text-sm text-gray-600">Attendance:</span>
+      <div class="flex-1 bg-gray-200 rounded-full h-2">
+        <div [class]="'h-2 rounded-full ' + (subject.attendance >= 90 ? 'bg-green-500' : 'bg-orange-500')"
+          [style.width.%]="subject.attendance">
+        </div>
+      </div>
+      <span class="text-sm font-semibold text-gray-800">{{ subject.attendance }}%</span>
+    </div>
+  </div>
+  }
+</div>

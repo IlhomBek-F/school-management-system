@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { Tag } from "primeng/tag";
 import { Button } from "primeng/button";
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'school-student-grid-card',
@@ -13,8 +14,10 @@ import { CommonModule } from '@angular/common';
 export class StudentGridCardComponent {
   student = input.required<any>();
 
+  private _router = inject(Router)
+  private _activeRoute = inject(ActivatedRoute)
+
    viewProfile(student: any): void {
-    // Implement view profile logic
-    console.log('View profile:', student);
+     this._router.navigate([student.id], {relativeTo: this._activeRoute})
   }
 }
