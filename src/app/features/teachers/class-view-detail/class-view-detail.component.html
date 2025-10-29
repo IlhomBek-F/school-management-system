@@ -1,8 +1,8 @@
-    <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6">
-      <div class="w-full mx-auto">
-       <div class="mb-6">
-      <button pButton icon="pi pi-arrow-left" label="Back to Teacher Classes" [text]="true" (click)="backToTeacherDetailPage()"
-        styleClass="p-button-secondary mb-4">
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6">
+  <div class="w-full mx-auto">
+    <div class="mb-6">
+      <button pButton icon="pi pi-arrow-left" label="Back to Teacher Classes" [text]="true"
+        (click)="backToTeacherDetailPage()" styleClass="p-button-secondary mb-4">
       </button>
     </div>
 
@@ -44,7 +44,8 @@
 
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
-                    <div class="bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold">
+                    <div
+                      class="bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold">
                       SJ
                     </div>
                     <div>
@@ -68,13 +69,11 @@
               </div>
 
               <div class="flex gap-2">
-                <p-button icon="pi pi-envelope" [rounded]="true" [outlined]="true" severity="secondary"
-                  >
+                <p-button icon="pi pi-envelope" [rounded]="true" [outlined]="true" severity="secondary">
                 </p-button>
-                <p-button icon="pi pi-download" [rounded]="true" [outlined]="true" severity="secondary"
-                  >
+                <p-button icon="pi pi-download" [rounded]="true" [outlined]="true" severity="secondary">
                 </p-button>
-                <p-button icon="pi pi-pencil" label="Edit" >
+                <p-button icon="pi pi-pencil" label="Edit">
                 </p-button>
               </div>
             </div>
@@ -83,408 +82,196 @@
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-            <div class="bg-blue-50 rounded-lg p-4">
-              <div class="flex items-center gap-3">
-                <div class="bg-blue-500 rounded-lg p-3">
-                  <i class="pi pi-users text-white text-xl"></i>
-                </div>
-                <div>
-                  <div class="text-gray-600 text-sm">Students</div>
-                  <div class="text-2xl font-bold text-gray-900">28</div>
-                </div>
+          <div class="bg-blue-50 rounded-lg p-4">
+            <div class="flex items-center gap-3">
+              <div class="bg-blue-500 rounded-lg p-3">
+                <i class="pi pi-users text-white text-xl"></i>
               </div>
-            </div>
-
-            <div class="bg-purple-50 rounded-lg p-4">
-              <div class="flex items-center gap-3">
-                <div class="bg-purple-500 rounded-lg p-3">
-                  <i class="pi pi-chart-line text-white text-xl"></i>
-                </div>
-                <div>
-                  <div class="text-gray-600 text-sm">Attendance</div>
-                  <div class="text-2xl font-bold text-gray-900">92%</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-green-50 rounded-lg p-4">
-              <div class="flex items-center gap-3">
-                <div class="bg-green-500 rounded-lg p-3">
-                  <i class="pi pi-file text-white text-xl"></i>
-                </div>
-                <div>
-                  <div class="text-gray-600 text-sm">Assignments</div>
-                  <div class="text-2xl font-bold text-gray-900">12</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-orange-50 rounded-lg p-4">
-              <div class="flex items-center gap-3">
-                <div class="bg-orange-500 rounded-lg p-3">
-                  <i class="pi pi-calendar text-white text-xl"></i>
-                </div>
-                <div>
-                  <div class="text-gray-600 text-sm">Classes/Week</div>
-                  <div class="text-2xl font-bold text-gray-900">3</div>
-                </div>
-              </div>
-            </div>
-          </div>
-      </div>
-    </div>
-
-      <div class="px-8 pb-8">
-        <div class="grid grid-cols-3 gap-6">
-          <!-- Main Content -->
-          <div class="col-span-2 space-y-6">
-            <!-- Tabs -->
-            <div class="bg-white rounded-lg shadow-sm">
-              <div class="flex border-b">
-                <button
-                  *ngFor="let tab of tabs"
-                  (click)="activeTab = tab.id"
-                  [class.border-b-2]="activeTab === tab.id"
-                  [class.border-indigo-600]="activeTab === tab.id"
-                  [class.text-indigo-600]="activeTab === tab.id"
-                  [class.text-gray-600]="activeTab !== tab.id"
-                  class="px-6 py-4 font-medium transition-colors hover:text-indigo-600 flex items-center gap-2">
-                  <i [class]="tab.icon"></i>
-                  <span>{{ tab.label }}</span>
-                </button>
-              </div>
-
-              <!-- Overview Tab -->
-              <div *ngIf="activeTab === 'overview'" class="p-6">
-                <div class="space-y-6">
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Course Description</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                      This advanced mathematics course covers calculus, linear algebra, and differential equations.
-                      Students will develop problem-solving skills and mathematical reasoning through rigorous theoretical
-                      and practical applications. The course prepares students for higher education in STEM fields.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Learning Objectives</h3>
-                    <ul class="space-y-2">
-                      <li class="flex items-start gap-2 text-gray-600">
-                        <i class="pi pi-check-circle text-green-500 mt-1"></i>
-                        <span>Master advanced calculus concepts including limits, derivatives, and integrals</span>
-                      </li>
-                      <li class="flex items-start gap-2 text-gray-600">
-                        <i class="pi pi-check-circle text-green-500 mt-1"></i>
-                        <span>Understand linear algebra fundamentals and matrix operations</span>
-                      </li>
-                      <li class="flex items-start gap-2 text-gray-600">
-                        <i class="pi pi-check-circle text-green-500 mt-1"></i>
-                        <span>Apply differential equations to real-world problems</span>
-                      </li>
-                      <li class="flex items-start gap-2 text-gray-600">
-                        <i class="pi pi-check-circle text-green-500 mt-1"></i>
-                        <span>Develop critical thinking and analytical skills</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Grading Criteria</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                      <div class="border rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                          <span class="text-gray-700">Assignments</span>
-                          <span class="font-semibold text-gray-900">30%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                          <div class="bg-blue-500 h-2 rounded-full" style="width: 30%"></div>
-                        </div>
-                      </div>
-                      <div class="border rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                          <span class="text-gray-700">Quizzes</span>
-                          <span class="font-semibold text-gray-900">20%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                          <div class="bg-purple-500 h-2 rounded-full" style="width: 20%"></div>
-                        </div>
-                      </div>
-                      <div class="border rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                          <span class="text-gray-700">Midterm Exam</span>
-                          <span class="font-semibold text-gray-900">25%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                          <div class="bg-green-500 h-2 rounded-full" style="width: 25%"></div>
-                        </div>
-                      </div>
-                      <div class="border rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                          <span class="text-gray-700">Final Exam</span>
-                          <span class="font-semibold text-gray-900">25%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                          <div class="bg-orange-500 h-2 rounded-full" style="width: 25%"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Students Tab -->
-              <div *ngIf="activeTab === 'students'" class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900">Enrolled Students</h3>
-                    <p class="text-sm text-gray-600">{{ students.length }} students in this class</p>
-                  </div>
-                  <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium transition-colors">
-                    <i class="pi pi-plus"></i>
-                    <span>Add Student</span>
-                  </button>
-                </div>
-
-                <div class="space-y-3">
-                  <div *ngFor="let student of students" class="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between">
-                      <div class="flex items-center gap-4">
-                        <div [style.background-color]="getRandomColor()" class="w-12 h-12 rounded-lg flex items-center justify-center text-white font-semibold">
-                          {{ student.initials }}
-                        </div>
-                        <div>
-                          <h4 class="font-semibold text-gray-900">{{ student.name }}</h4>
-                          <p class="text-sm text-gray-500">Roll No: {{ student.rollNumber }}</p>
-                        </div>
-                      </div>
-                      <div class="flex items-center gap-6">
-                        <div class="text-center">
-                          <p class="text-xs text-gray-500 mb-1">Attendance</p>
-                          <p class="text-sm font-semibold text-gray-900">{{ student.attendance }}%</p>
-                        </div>
-                        <div class="text-center">
-                          <p class="text-xs text-gray-500 mb-1">Last Grade</p>
-                          <p class="text-sm font-semibold text-gray-900">{{ student.lastGrade }}</p>
-                        </div>
-                        <span [class]="'px-3 py-1 rounded-full text-sm font-medium ' + getStatusClass(student.status)">
-                          {{ student.status }}
-                        </span>
-                        <button class="text-indigo-600 hover:text-indigo-700 p-2 hover:bg-indigo-50 rounded-lg transition-colors">
-                          <i class="pi pi-ellipsis-v"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Assignments Tab -->
-              <div *ngIf="activeTab === 'assignments'" class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900">Class Assignments</h3>
-                    <p class="text-sm text-gray-600">Manage and track student submissions</p>
-                  </div>
-                  <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium transition-colors">
-                    <i class="pi pi-plus"></i>
-                    <span>New Assignment</span>
-                  </button>
-                </div>
-
-                <div class="space-y-3">
-                  <div *ngFor="let assignment of assignments" class="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between mb-3">
-                      <div class="flex items-center gap-3">
-                        <div class="bg-indigo-100 p-3 rounded-lg">
-                          <i class="pi pi-file text-indigo-600 text-xl"></i>
-                        </div>
-                        <div>
-                          <h4 class="font-semibold text-gray-900">{{ assignment.title }}</h4>
-                          <p class="text-sm text-gray-500">Due: {{ assignment.dueDate | date: 'MMM dd, yyyy' }}</p>
-                        </div>
-                      </div>
-                      <span [class]="'px-3 py-1 rounded-full text-sm font-medium ' + getStatusClass(assignment.status)">
-                        {{ assignment.status }}
-                      </span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                      <div class="flex-1">
-                        <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                          <span>Submissions:</span>
-                          <span class="font-semibold text-gray-900">{{ assignment.submitted }}/{{ assignment.total }}</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                          <div class="bg-indigo-600 h-2 rounded-full" [style.width.%]="(assignment.submitted / assignment.total) * 100"></div>
-                        </div>
-                      </div>
-                      <div class="flex items-center gap-2 ml-6">
-                        <button class="text-indigo-600 hover:text-indigo-700 px-3 py-2 hover:bg-indigo-50 rounded-lg transition-colors text-sm font-medium">
-                          View Details
-                        </button>
-                        <button class="text-gray-600 hover:text-gray-700 p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                          <i class="pi pi-ellipsis-v"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Attendance Tab -->
-              <div *ngIf="activeTab === 'attendance'" class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900">Attendance Records</h3>
-                    <p class="text-sm text-gray-600">Overall attendance: 92%</p>
-                  </div>
-                  <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium transition-colors">
-                    <i class="pi pi-check"></i>
-                    <span>Mark Today</span>
-                  </button>
-                </div>
-
-                <!-- <div class="grid grid-cols-7 gap-2 mb-6">
-                  <div *ngFor="let day of weekDays" class="text-center">
-                    <div class="text-xs font-medium text-gray-600 mb-2">{{ day }}</div>
-                    <div class="bg-green-100 rounded-lg p-3">
-                      <div class="text-lg font-bold text-green-700">95%</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="border-t pt-4">
-                  <h4 class="font-semibold text-gray-900 mb-3">Recent Sessions</h4>
-                  <div class="space-y-2">
-                    <div *ngFor="let session of recentSessions" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <div class="flex items-center gap-3">
-                        <i class="pi pi-calendar text-gray-400"></i>
-                        <span class="text-sm text-gray-900 font-medium">{{ session.date }}</span>
-                      </div>
-                      <div class="flex items-center gap-4">
-                        <span class="text-sm text-gray-600">Present: <span class="font-semibold text-gray-900">{{ session.present }}</span></span>
-                        <span class="text-sm text-gray-600">Absent: <span class="font-semibold text-gray-900">{{ session.absent }}</span></span>
-                        <span [class]="'px-3 py-1 rounded-full text-xs font-medium ' + (session.status === 'Marked' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700')">
-                          {{ session.status }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
+              <div>
+                <div class="text-gray-600 text-sm">Students</div>
+                <div class="text-2xl font-bold text-gray-900">28</div>
               </div>
             </div>
           </div>
 
-          <!-- Sidebar -->
-          <div class="space-y-6">
-            <!-- Quick Actions -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-              <div class="flex items-center gap-2 mb-4">
-                <i class="pi pi-bolt text-gray-700"></i>
-                <h3 class="font-semibold text-gray-900">Quick Actions</h3>
+          <div class="bg-purple-50 rounded-lg p-4">
+            <div class="flex items-center gap-3">
+              <div class="bg-purple-500 rounded-lg p-3">
+                <i class="pi pi-chart-line text-white text-xl"></i>
               </div>
-
-              <div class="space-y-3">
-                <button class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg p-4 flex items-start gap-3 transition-colors">
-                  <div class="bg-blue-500 rounded-lg p-2 flex-shrink-0">
-                    <i class="pi pi-check-square text-white"></i>
-                  </div>
-                  <div class="text-left">
-                    <div class="font-medium">Mark Attendance</div>
-                    <div class="text-sm opacity-80">Today's session</div>
-                  </div>
-                </button>
-
-                <button class="w-full bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg p-4 flex items-start gap-3 transition-colors">
-                  <div class="bg-purple-500 rounded-lg p-2 flex-shrink-0">
-                    <i class="pi pi-plus text-white"></i>
-                  </div>
-                  <div class="text-left">
-                    <div class="font-medium">Create Assignment</div>
-                    <div class="text-sm opacity-80">Add new task</div>
-                  </div>
-                </button>
-
-                <button class="w-full bg-green-50 hover:bg-green-100 text-green-700 rounded-lg p-4 flex items-start gap-3 transition-colors">
-                  <div class="bg-green-500 rounded-lg p-2 flex-shrink-0">
-                    <i class="pi pi-chart-bar text-white"></i>
-                  </div>
-                  <div class="text-left">
-                    <div class="font-medium">Post Grades</div>
-                    <div class="text-sm opacity-80">Update scores</div>
-                  </div>
-                </button>
-
-                <button class="w-full bg-orange-50 hover:bg-orange-100 text-orange-700 rounded-lg p-4 flex items-start gap-3 transition-colors">
-                  <div class="bg-orange-500 rounded-lg p-2 flex-shrink-0">
-                    <i class="pi pi-upload text-white"></i>
-                  </div>
-                  <div class="text-left">
-                    <div class="font-medium">Upload Material</div>
-                    <div class="text-sm opacity-80">Share resources</div>
-                  </div>
-                </button>
+              <div>
+                <div class="text-gray-600 text-sm">Attendance</div>
+                <div class="text-2xl font-bold text-gray-900">92%</div>
               </div>
             </div>
+          </div>
 
-            <!-- Recent Announcements -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-              <div class="flex items-center justify-between mb-4">
-                <h3 class="font-semibold text-gray-900">Announcements</h3>
-                <button class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
-                  View All
-                </button>
+          <div class="bg-green-50 rounded-lg p-4">
+            <div class="flex items-center gap-3">
+              <div class="bg-green-500 rounded-lg p-3">
+                <i class="pi pi-file text-white text-xl"></i>
               </div>
-
-              <div class="space-y-3">
-                <div *ngFor="let announcement of announcements" class="border-l-4 pl-3 py-2" [class.border-blue-500]="announcement.type === 'info'" [class.border-orange-500]="announcement.type === 'warning'">
-                  <h4 class="text-sm font-semibold text-gray-900 mb-1">{{ announcement.title }}</h4>
-                  <p class="text-xs text-gray-600 mb-2">{{ announcement.message }}</p>
-                  <p class="text-xs text-gray-400">{{ announcement.date | date: 'MMM dd, yyyy' }}</p>
-                </div>
+              <div>
+                <div class="text-gray-600 text-sm">Assignments</div>
+                <div class="text-2xl font-bold text-gray-900">12</div>
               </div>
-
-              <button class="w-full mt-4 border-2 border-dashed border-gray-300 hover:border-indigo-400 hover:bg-indigo-50 rounded-lg p-3 text-gray-600 hover:text-indigo-600 font-medium text-sm transition-colors">
-                <i class="pi pi-plus mr-2"></i>
-                Add Announcement
-              </button>
             </div>
+          </div>
 
-            <!-- Class Schedule -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-              <h3 class="font-semibold text-gray-900 mb-4">Class Schedule</h3>
-
-              <div class="space-y-3">
-                <div class="flex items-start gap-3">
-                  <div class="bg-indigo-100 rounded-lg p-2">
-                    <i class="pi pi-calendar text-indigo-600"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm font-medium text-gray-900">Monday</p>
-                    <p class="text-xs text-gray-600">9:00 AM - 10:00 AM</p>
-                  </div>
-                </div>
-                <div class="flex items-start gap-3">
-                  <div class="bg-indigo-100 rounded-lg p-2">
-                    <i class="pi pi-calendar text-indigo-600"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm font-medium text-gray-900">Wednesday</p>
-                    <p class="text-xs text-gray-600">9:00 AM - 10:00 AM</p>
-                  </div>
-                </div>
-                <div class="flex items-start gap-3">
-                  <div class="bg-indigo-100 rounded-lg p-2">
-                    <i class="pi pi-calendar text-indigo-600"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm font-medium text-gray-900">Friday</p>
-                    <p class="text-xs text-gray-600">9:00 AM - 10:00 AM</p>
-                  </div>
-                </div>
+          <div class="bg-orange-50 rounded-lg p-4">
+            <div class="flex items-center gap-3">
+              <div class="bg-orange-500 rounded-lg p-3">
+                <i class="pi pi-calendar text-white text-xl"></i>
+              </div>
+              <div>
+                <div class="text-gray-600 text-sm">Classes/Week</div>
+                <div class="text-2xl font-bold text-gray-900">3</div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="px-8 pb-8">
+      <div class="grid grid-cols-1 gap-6">
+        <div class="col-span-2 space-y-6">
+          <div class="bg-white rounded-lg shadow-sm">
+            <p-card styleClass="shadow-sm">
+              <p-tabView [(activeIndex)]="activeIndex">
+                <p-tabPanel header="Overview" leftIcon="pi pi-info-circle">
+                  <div class="space-y-4">
+                    <div>
+                      <h3 class="text-lg font-semibold text-gray-800 mb-2">Course Description</h3>
+                      <p class="text-gray-600 leading-relaxed">{{ classData.description }}</p>
+                    </div>
+                    <p-divider></p-divider>
+                    <div>
+                      <h3 class="text-lg font-semibold text-gray-800 mb-3">Topics Covered</h3>
+                      <div class="flex flex-wrap gap-2">
+                        <p-chip *ngFor="let tag of classData.tags" [label]="tag" styleClass="bg-gray-100"></p-chip>
+                      </div>
+                    </div>
+                    <p-divider></p-divider>
+                    <div>
+                      <h3 class="text-lg font-semibold text-gray-800 mb-3">Course Schedule</h3>
+                      <p-table [value]="schedule" styleClass="text-sm">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th style="width: 15%">Week</th>
+                            <th>Topic</th>
+                            <th style="width: 20%">Date</th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item>
+                          <tr>
+                            <td>{{ item.week }}</td>
+                            <td>{{ item.topic }}</td>
+                            <td>{{ item.date }}</td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Students" leftIcon="pi pi-users">
+                  <p-table [value]="students" [paginator]="true" [rows]="10" styleClass="text-sm">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                        <th>Email</th>
+                        <th pSortableColumn="grade">Grade <p-sortIcon field="grade"></p-sortIcon></th>
+                        <th pSortableColumn="attendance">Attendance <p-sortIcon field="attendance"></p-sortIcon></th>
+                        <th>Actions</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-student>
+                      <tr>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.email }}</td>
+                        <td>
+                          <span [class]="'font-semibold ' + getGradeColor(student.grade)">{{ student.grade }}</span>
+                        </td>
+                        <td>
+                          <div class="flex items-center gap-2">
+                            <span>{{ student.attendance }}%</span>
+                            <p-progressBar [value]="student.attendance" [showValue]="false"
+                              styleClass="w-20 h-2"></p-progressBar>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="flex gap-2">
+                            <p-button icon="pi pi-eye" styleClass="p-button-text p-button-sm" pTooltip="View Profile"
+                              (onClick)="onViewProfile(student)"></p-button>
+                            <p-button icon="pi pi-envelope" styleClass="p-button-text p-button-sm"
+                              pTooltip="Send Message" (onClick)="onSendMessage(student)"></p-button>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </p-tabPanel>
+
+                <p-tabPanel header="Assignments" leftIcon="pi pi-file-edit">
+                  <div class="flex justify-end mb-4">
+                    <p-button label="Create Assignment" icon="pi pi-plus" (onClick)="onCreateAssignment()"></p-button>
+                  </div>
+                  <p-table [value]="assignments" styleClass="text-sm">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th>Assignment Title</th>
+                        <th pSortableColumn="dueDate">Due Date <p-sortIcon field="dueDate"></p-sortIcon></th>
+                        <th>Status</th>
+                        <th>Submissions</th>
+                        <th>Actions</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-assignment>
+                      <tr>
+                        <td>{{ assignment.title }}</td>
+                        <td>{{ assignment.dueDate }}</td>
+                        <td>
+                          <p-badge [value]="assignment.status"
+                            [severity]="getStatusSeverity(assignment.status)"></p-badge>
+                        </td>
+                        <td>{{ assignment.submissions }}</td>
+                        <td>
+                          <div class="flex gap-2">
+                            <p-button icon="pi pi-pencil" styleClass="p-button-text p-button-sm" pTooltip="Edit"
+                              (onClick)="onEditAssignment(assignment)"></p-button>
+                            <p-button icon="pi pi-eye" styleClass="p-button-text p-button-sm" pTooltip="View Details"
+                              (onClick)="onViewAssignment(assignment)"></p-button>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </p-tabPanel>
+
+                <p-tabPanel header="Resources" leftIcon="pi pi-book">
+                  <div class="space-y-3">
+                    <p-card *ngFor="let resource of resources"
+                      styleClass="shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                          <i [class]="'pi ' + resource.icon + ' ' + resource.color + ' text-2xl'"></i>
+                          <div>
+                            <p class="font-semibold text-gray-800">{{ resource.name }}</p>
+                            <p class="text-sm text-gray-500">{{ resource.type }} • {{ resource.size }}</p>
+                          </div>
+                        </div>
+                        <p-button icon="pi pi-download" styleClass="p-button-text"
+                          (onClick)="onDownloadResource(resource)"></p-button>
+                      </div>
+                    </p-card>
+                  </div>
+                </p-tabPanel>
+              </p-tabView>
+            </p-card>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+</div>

@@ -10,6 +10,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { ChipModule } from 'primeng/chip';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { DividerModule } from 'primeng/divider';
+import { BadgeModule } from 'primeng/badge';
 import { TooltipModule } from 'primeng/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
@@ -53,6 +54,7 @@ interface Announcement {
     ChipModule,
     ProgressBarModule,
     RouterLink,
+    BadgeModule,
     DividerModule,
     TooltipModule],
   templateUrl: './class-view-detail.component.html',
@@ -68,6 +70,28 @@ export class ClassViewDetailComponent {
     { id: 'schedule', label: 'Schedule', icon: 'pi pi-calendar' },
     { id: 'assignments', label: 'Assignments', icon: 'pi pi-file' },
     { id: 'activity', label: 'Activity', icon: 'pi pi-history' }
+  ];
+
+   classData = {
+    title: "Advanced Web Development",
+    code: "CS401",
+    instructor: "Dr. Sarah Johnson",
+    term: "Fall 2024",
+    schedule: "Mon, Wed, Fri - 10:00 AM - 11:30 AM",
+    location: "Room 302, Engineering Building",
+    credits: 3,
+    capacity: 30,
+    enrolled: 27,
+    description: "This course covers advanced topics in web development including modern frameworks, responsive design, API integration, and deployment strategies. Students will build full-stack applications using industry-standard tools and best practices.",
+    tags: ["Web Development", "Full Stack", "JavaScript", "React"]
+  };
+  activeIndex: number = 0;
+
+   resources: any[] = [
+    { name: "Course Syllabus", type: "PDF", size: "2.4 MB", icon: "pi-file-pdf", color: "text-red-600" },
+    { name: "Lecture Slides - Week 1", type: "PPTX", size: "15.2 MB", icon: "pi-file", color: "text-orange-600" },
+    { name: "Reading List", type: "DOCX", size: "1.1 MB", icon: "pi-file-word", color: "text-blue-600" },
+    { name: "Code Examples Repository", type: "Link", size: "-", icon: "pi-link", color: "text-purple-600" }
   ];
 
  students: Student[] = [
@@ -247,13 +271,22 @@ export class ClassViewDetailComponent {
   }
 ];
 
+ schedule: any[] = [
+    { week: 1, topic: "Introduction & Course Overview", date: "Sep 4" },
+    { week: 2, topic: "Modern JavaScript & ES6+", date: "Sep 11" },
+    { week: 3, topic: "React Fundamentals", date: "Sep 18" },
+    { week: 4, topic: "State Management", date: "Sep 25" },
+    { week: 5, topic: "API Integration & Fetch", date: "Oct 2" },
+    { week: 6, topic: "Backend Development with Node.js", date: "Oct 9" }
+  ];
+enrollmentPercentage!: number;
+
 private _activeRoute = inject(ActivatedRoute)
 private _router = inject(Router)
 
   ngOnInit() {
     this.activeTab = 'students';
-    const queryPa = this._activeRoute.snapshot.paramMap.get('teacher_id')
-    console.log(queryPa)
+    this.enrollmentPercentage = (this.classData.enrolled / this.classData.capacity) * 100;
   }
 
   backToTeacherDetailPage() {
@@ -282,5 +315,56 @@ private _router = inject(Router)
       case 'Overdue': return 'bg-red-100 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
+  }
+
+   getStatusSeverity(status: string): any {
+    const statusMap: { [key: string]: string } = {
+      'Completed': 'success',
+      'In Progress': 'warning',
+      'Upcoming': 'info'
+    };
+    return statusMap[status] || 'info';
+  }
+
+  getGradeColor(grade: string): string {
+    const gradeColors: { [key: string]: string } = {
+      'A': 'text-green-600',
+      'A-': 'text-green-500',
+      'B+': 'text-blue-600',
+      'B': 'text-blue-500'
+    };
+    return gradeColors[grade] || 'text-gray-600';
+  }
+
+  onEditClass(): void {
+    console.log('Edit class clicked');
+  }
+
+  onEnrollStudent(): void {
+    console.log('Enroll student clicked');
+  }
+
+  onViewProfile(student: Student): void {
+    console.log('View profile:', student);
+  }
+
+  onSendMessage(student: Student): void {
+    console.log('Send message to:', student);
+  }
+
+  onCreateAssignment(): void {
+    console.log('Create assignment clicked');
+  }
+
+  onEditAssignment(assignment: Assignment): void {
+    console.log('Edit assignment:', assignment);
+  }
+
+  onViewAssignment(assignment: Assignment): void {
+    console.log('View assignment:', assignment);
+  }
+
+  onDownloadResource(resource: any): void {
+    console.log('Download resource:', resource);
   }
 }

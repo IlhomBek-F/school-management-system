@@ -1,0 +1,19 @@
+<p-tabs value="basic_info">
+        <p-tablist>
+            @for (tab of tabItems; track tab.value) {
+                <p-tab [value]="tab.value">{{ tab.title }}</p-tab>
+            }
+        </p-tablist>
+        <p-tabpanels>
+            @for (tab of tabItems; track tab.value) {
+                <p-tabpanel [value]="tab.value">
+                    <school-dynamic-form [form]="form" [formContainer]="tab.formContainers"/>
+                </p-tabpanel>
+            }
+        </p-tabpanels>
+</p-tabs>
+
+<footer class="flex justify-end gap-3 mt-5">
+  <button pButton (click)="cancel()" outlined icon="pi pi-times-circle">cancel</button>
+  <button pButton (click)="confirm()" [disabled]="form.invalid" icon="pi pi-save">save</button>
+</footer>

@@ -27,6 +27,16 @@
         <school-datepicker [formControlName]="question().key"
                            [required]="question().required"/>
       }
+      @case (QuestionTypeEnum.TextArea) {
+        <school-textarea-input [formControlName]="question().key"
+                               [required]="question().required"/>
+      }
+      @case (QuestionTypeEnum.TimePicker) {
+        <school-time-picker [formControlName]="question().key"
+                            [required]="question().required"
+                            [hourFormat]="$any(question()).hourFormat"
+                            />
+      }
     }
   </div>
 </div>

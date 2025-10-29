@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
 import { PageTitleComponent } from "../../shared/components/page-title/page-title.component";
 import { DropdownModule } from "primeng/dropdown";
 import { Button } from "primeng/button";
@@ -11,6 +11,8 @@ import { SelectInputComponent } from "../../shared/components/select-input/selec
 import { ClassesGridViewListComponent } from './components/classes-grid-view-list/classes-grid-view-list.component';
 import { ClassesTableViewListComponent } from './components/classes-table-view-list.component/classes-table-view-list.component';
 import { EmptyListComponent } from "../../shared/components/empty-list/empty-list.component";
+import { DialogService } from 'primeng/dynamicdialog';
+import { UpsertClassModalCompoment } from './components/upsert-class-modal/upsert-class-modal.compoment';
 
 interface Class {
   id: number;
@@ -205,6 +207,7 @@ export class ClassesComponent implements OnInit {
   totalStudents: number = 0;
   avgCapacity: number = 0;
 
+  private _dialogService = inject(DialogService)
   ngOnInit(): void {
     this.filteredClasses = [...this.classes];
     this.calculateStats();
@@ -252,7 +255,19 @@ export class ClassesComponent implements OnInit {
   }
 
   addClass(): void {
-    console.log('Add class clicked');
+    const dialogRef = this._dialogService.open(UpsertClassModalCompoment, {
+      focusOnShow: false,
+      dismissableMask: true,
+      modal: true,
+      header: 'Add new class',
+      width: '45%',
+      data: {
+        footer: {
+          onConfirm: (formValue: any) => console.log(formValue),
+          onCancel: () => dialogRef.close()
+        }
+      }
+    })
   }
 
   viewDetails(cls: Class): void {

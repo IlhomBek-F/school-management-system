@@ -1,6 +1,6 @@
 import { ValidatorFn } from "@angular/forms";
 import { QuestionFieldTypeEnum, QuestionTypeEnum } from "../enums/question-type.enum";
-import { FormContainer } from "../models/form-container";
+import { QuestionOptionsModel } from "@core/models/question-base";
 
 export class QuestionBase<T> {
   value: T | undefined;
@@ -16,19 +16,7 @@ export class QuestionBase<T> {
   onValueChange?: (value: any, questions?: QuestionBase<T>[]) => void;
 
   constructor(
-    options: {
-      value?: T;
-      key?: string;
-      label?: string;
-      required?: boolean;
-      order?: number;
-      controlType?: QuestionTypeEnum;
-      type?: QuestionFieldTypeEnum;
-      placeholder?: string;
-      options?: {value: string; label: string}[];
-      validators?: ValidatorFn[],
-      onValueChange?: (value: any, questions?: QuestionBase<T>[]) => void
-    } = {},
+    options: QuestionOptionsModel = {},
   ) {
     this.value = options.value;
     this.key = options.key || '';
