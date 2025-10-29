@@ -26,7 +26,7 @@ export class TextInputNumberComponent {
 
   onChangeEmit = output<number>()
 
-  value: string = '';
+  value!: number;
   disabled = false;
 
   onChange = (value: any) => {};
@@ -48,8 +48,7 @@ export class TextInputNumberComponent {
     this.disabled = isDisabled;
   }
 
-  handleInput(event: any): void {
-    const value = event.target.value;
+  handleInput(value: any): void {
     this.value = value;
     this.onChange(value);
     this.onChangeEmit.emit(value)

@@ -13,7 +13,7 @@ import { SelectInputComponent } from "@shared/components/select-input/select-inp
 import { TeacherViewListComponent } from './components/teacher-view-list/teacher-view-list.component';
 import { TeacherGridCardComponent } from './components/teacher-grid-card/teacher-grid-card.component';
 import { DialogService } from 'primeng/dynamicdialog';
-import { UpsertTeacherModalComponent } from './components/upsert-teacher-modal.component/upsert-teacher-modal.component';
+import { UpsertTeacherModalComponent } from './components/upsert-teacher-modal/upsert-teacher-modal.component';
 
 @Component({
   selector: 'school-teachers',

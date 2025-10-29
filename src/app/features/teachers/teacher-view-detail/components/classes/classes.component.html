@@ -1,0 +1,32 @@
+<div class="space-y-4">
+  @for (class of classes(); track $index) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div class="flex items-start justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center text-white ' + class.color">
+          <i class="pi pi-book text-xl"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-gray-800">{{ class.name }}</h3>
+          <p class="text-sm text-gray-600">{{ class.code }} • {{ class.grade }}</p>
+        </div>
+      </div>
+      <p-tag [value]="class.students + ' Students'" severity="info"></p-tag>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i class="pi pi-clock"></i>
+        <span>{{ class.schedule }}</span>
+      </div>
+      <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i class="pi pi-map-marker"></i>
+        <span>{{ class.room }}</span>
+      </div>
+    </div>
+    <div class="flex gap-2 mt-4 pt-4 border-t border-gray-200">
+      <p-button label="View Details" icon="pi pi-eye" [outlined]="true" styleClass="flex-1 p-button-sm" (onClick)="viewDetail(class)"></p-button>
+      <p-button label="Attendance" icon="pi pi-calendar" [outlined]="true" styleClass="flex-1 p-button-sm"></p-button>
+    </div>
+  </div>
+  }
+</div>

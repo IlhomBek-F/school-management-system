@@ -1,0 +1,39 @@
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+    <i class="pi pi-calendar text-indigo-600"></i>
+    Weekly Schedule
+  </h2>
+  <div class="space-y-6">
+    @for (schedule of weekSchedule(); track $index) {
+    <div class="border-l-4 border-indigo-500 pl-4">
+      <h3 class="font-bold text-gray-800 text-lg mb-3">{{ schedule.day }}</h3>
+      <div class="space-y-3">
+        @for (classItem of schedule.classes; track $index) {
+        <div
+          class="bg-gradient-to-r from-gray-50 to-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-all">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <i class="pi pi-clock text-indigo-600"></i>
+                <span class="font-semibold text-gray-800">{{ classItem.time }}</span>
+              </div>
+              <p class="text-gray-700 font-medium">{{ classItem.subject }}</p>
+              <div class="flex items-center gap-4 mt-2 text-sm text-gray-600">
+                <span class="flex items-center gap-1">
+                  <i class="pi pi-users"></i>
+                  {{ classItem.class }}
+                </span>
+                <span class="flex items-center gap-1">
+                  <i class="pi pi-map-marker"></i>
+                  {{ classItem.room }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>

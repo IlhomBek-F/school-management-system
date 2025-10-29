@@ -1,0 +1,41 @@
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+  <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+    <i class="pi pi-chart-pie text-indigo-600"></i>
+    Student Performance Distribution
+  </h2>
+  <div class="h-80 flex items-center justify-center">
+    <p-chart type="doughnut" [data]="studentProgressChartData()" [options]="studentProgressChartOptions()"></p-chart>
+  </div>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+    <i class="pi pi-star text-indigo-600"></i>
+    Top Performing Students
+  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    @for (student of topStudents(); track $index) {
+    <div
+      class="relative bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-all">
+      <div class="absolute top-3 right-3">
+        <div
+          class="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+          #{{ $index + 1 }}
+        </div>
+      </div>
+      <div class="flex flex-col items-center text-center pt-2">
+        <div
+          [class]="'w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl mb-3 shadow-lg ' + student.color">
+          {{ student.avatar }}
+        </div>
+        <h3 class="font-bold text-gray-800 text-sm mb-1">{{ student.name }}</h3>
+        <p class="text-xs text-gray-600 mb-1">{{ student.grade }} - {{ student.class }}</p>
+        <div class="flex items-center gap-2 mt-2">
+          <span class="text-xs text-gray-500">GPA:</span>
+          <span class="text-lg font-bold text-indigo-600">{{ student.gpa }}</span>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

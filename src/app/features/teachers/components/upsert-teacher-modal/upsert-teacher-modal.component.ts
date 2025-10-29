@@ -30,7 +30,7 @@ export class UpsertTeacherModalComponent implements OnInit {
     this._createTabItems()
 
     if (this._dialogConfig.data.teacher) {
-      this.form.patchValue(this._dialogConfig.data.student)
+      this.form.patchValue(this._dialogConfig.data.teacher)
     }
   }
 

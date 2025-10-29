@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { Tag } from "primeng/tag";
 import { Button } from "primeng/button";
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'school-teacher-grid-card',
@@ -11,6 +12,9 @@ import { Button } from "primeng/button";
 })
 export class TeacherGridCardComponent {
   teacher = input.required<any>()
+
+  private _router = inject(Router)
+  private _activateRoute = inject(ActivatedRoute)
 
   getRatingStars(rating: number): string[] {
     const stars = [];
@@ -30,6 +34,7 @@ export class TeacherGridCardComponent {
   }
 
   viewProfile(teacher: any): void {
+    this._router.navigate([teacher.id], {relativeTo: this._activateRoute})
     console.log('View profile:', teacher);
   }
 }

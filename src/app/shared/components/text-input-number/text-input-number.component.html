@@ -3,7 +3,7 @@
   <label class="text-sm font-medium text-gray-700">{{ label() }}</label>
   }
   <span class="w-full">
-    <p-inputNumber [min]="min()" [max]="max()" [placeholder]="placeholder()" (input)="handleInput($event)"
+    <p-inputNumber [min]="min()" [max]="max()" [placeholder]="placeholder()" (onInput)="handleInput($event)" [showButtons]="true"
       class="p-inputnumber w-full" [ngClass]="{'ng-invalid ng-dirty': required() && !value}">
     </p-inputNumber>
   </span>

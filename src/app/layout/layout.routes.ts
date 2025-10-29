@@ -15,7 +15,7 @@ export const LAYOUT_ROUTES: Routes = [
       },
       {
         path: "teachers",
-        loadComponent: () => import("../features/teachers/teachers.component").then(c => c.TeachersComponent),
+        loadChildren: () => import("../features/teachers/teacher.routes").then(r => r.TEACHER_ROUTES),
       },
       {
         path: "classes",

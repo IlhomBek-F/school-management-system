@@ -1,0 +1,22 @@
+<div class="space-y-4">
+  @for (log of activityLogs(); track $index) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div class="flex items-start gap-4">
+      <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ' + log.color">
+        <i [class]="'pi ' + log.icon + ' text-lg'"></i>
+      </div>
+      <div class="flex-1">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="font-bold text-gray-800">{{ log.title }}</h3>
+          <span class="text-xs text-gray-500">{{ log.time }}</span>
+        </div>
+        <p class="text-sm text-gray-600 mb-2">{{ log.description }}</p>
+        <div class="flex items-center gap-2 text-xs text-gray-500">
+          <i class="pi pi-calendar"></i>
+          <span>{{ log.date }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>
