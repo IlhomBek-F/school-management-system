@@ -191,8 +191,6 @@ export class StudentsComponent implements OnInit {
          }
        }
      })
-    // Implement add student logic
-    console.log('Add student clicked');
   }
 
   viewProfile(student: Student): void {

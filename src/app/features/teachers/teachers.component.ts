@@ -1,31 +1,34 @@
-import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
-import { PageTitleComponent } from "../../shared/components/page-title/page-title.component";
+import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
+import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { TableModule } from "primeng/table";
 import { DropdownModule } from "primeng/dropdown";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SchoolStatsCardComponent } from "../../shared/components/stats-card/stats-card.component";
-import { EmptyListComponent } from "../../shared/components/empty-list/empty-list.component";
-import { TextInputComponent } from "../../shared/components/text-input/text-input.component";
-import { SelectInputComponent } from "../../shared/components/select-input/select-input.component";
+import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-card.component";
+import { EmptyListComponent } from "@shared/components/empty-list/empty-list.component";
+import { TextInputComponent } from "@shared/components/text-input/text-input.component";
+import { SelectInputComponent } from "@shared/components/select-input/select-input.component";
 import { TeacherViewListComponent } from './components/teacher-view-list/teacher-view-list.component';
 import { TeacherGridCardComponent } from './components/teacher-grid-card/teacher-grid-card.component';
+import { DialogService } from 'primeng/dynamicdialog';
+import { UpsertTeacherModalComponent } from './components/upsert-teacher-modal.component/upsert-teacher-modal.component';
 
 @Component({
   selector: 'school-teachers',
   imports: [PageTitleComponent, TagModule,
-            ButtonModule, TableModule,
-            DropdownModule, CommonModule,
-            FormsModule, SchoolStatsCardComponent,
-            EmptyListComponent, TextInputComponent, SelectInputComponent, TeacherViewListComponent, TeacherGridCardComponent],
+    ButtonModule, TableModule,
+    DropdownModule, CommonModule,
+    FormsModule, SchoolStatsCardComponent,
+    EmptyListComponent, TextInputComponent, SelectInputComponent, TeacherViewListComponent, TeacherGridCardComponent],
   templateUrl: './teachers.component.html',
   styleUrl: './teachers.component.scss',
+  providers: [DialogService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeachersComponent implements OnInit {
- teachers: any[] = [
+  teachers: any[] = [
     {
       id: 1,
       name: 'Dr. Sarah Johnson',
@@ -158,6 +161,8 @@ export class TeachersComponent implements OnInit {
   totalStudents: number = 0;
   avgRating: number = 0;
 
+  private _dialogService = inject(DialogService)
+
   ngOnInit(): void {
     this.filteredTeachers = [...this.teachers];
     this.calculateStats();
@@ -200,7 +205,19 @@ export class TeachersComponent implements OnInit {
   }
 
   addTeacher(): void {
-    console.log('Add teacher clicked');
+    const dialogRef = this._dialogService.open<any>(UpsertTeacherModalComponent, {
+      focusOnShow: false,
+      dismissableMask: true,
+      modal: true,
+      header: 'Add new teacher',
+      width: '45%',
+      data: {
+        footer: {
+          onConfirm: (formValue: any) => console.log(formValue),
+          onCancel: () => dialogRef.close()
+        }
+      }
+    })
   }
 
   viewProfile(teacher: any): void {

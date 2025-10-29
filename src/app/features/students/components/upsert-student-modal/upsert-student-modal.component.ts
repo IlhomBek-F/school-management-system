@@ -3,7 +3,6 @@ import {
   Component,
   inject,
   OnInit,
-  signal,
 } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
 import { FormContainer } from '@core/models/form-container';
@@ -26,45 +25,18 @@ import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpsertStudentModalComponent implements OnInit {
+  form!: FormGroup;
+  tabItems!: { title: string, value: string, formContainers: FormContainer[] }[];
+
   private _dialogConfig = inject(DynamicDialogConfig);
   private _questionControlService = inject(QuestionControlService);
-  form!: FormGroup;
-
-  tabItems = [
-    {
-      title: 'Personal Information',
-      value: 'personal_information',
-      formContainers: signal<FormContainer[]>([]),
-    },
-    {
-      title: 'Academic Information',
-      value: 'academic_information',
-      formContainers: signal<FormContainer[]>([]),
-    },
-  ];
-
-  genders: any[] = [];
-
-  bloodGroups: any[] = [];
 
   ngOnInit(): void {
-    const formContainer: Record<any, FormContainer[]> = {
-      personal_information: this._getPersonalFormContainer(),
-      academic_information: this._getAcademicFormContainer(),
-    };
+    this._createTabItems();
 
-    this.form = this._questionControlService.toFormGroup([
-      ...formContainer['personal_information'],
-      ...formContainer['academic_information'],
-    ]);
-
-    if(this._dialogConfig.data.student) {
-       this.form.patchValue(this._dialogConfig.data.student)
+    if (this._dialogConfig.data.student) {
+      this.form.patchValue(this._dialogConfig.data.student)
     }
-
-    this.tabItems.forEach(({ formContainers, value }) =>
-      formContainers.set(formContainer[value])
-    );
   }
 
   confirm() {
@@ -73,6 +45,23 @@ export class UpsertStudentModalComponent implements OnInit {
 
   cancel() {
     this._dialogConfig.data.footer.onCancel();
+  }
+
+  private _createTabItems() {
+    this.tabItems = [
+      {
+        title: 'Personal Information',
+        value: 'personal_information',
+        formContainers: this._getPersonalFormContainer(),
+      },
+      {
+        title: 'Academic Information',
+        value: 'academic_information',
+        formContainers: this._getAcademicFormContainer(),
+      },
+    ]
+
+    this.form = this._questionControlService.toFormGroup(this.tabItems.flatMap(t => t.formContainers))
   }
 
   private _getPersonalFormContainer(): FormContainer[] {
