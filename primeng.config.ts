@@ -48,7 +48,7 @@ const SchoolPreset = definePreset(Aura, {
   },
 });
 
-export const primengProvider = providePrimeNG({
+export const PRIMENG_PROVIDER = providePrimeNG({
   theme: {
     preset: SchoolPreset,
   },

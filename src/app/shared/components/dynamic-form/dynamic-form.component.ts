@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormFieldComponent } from './dynamic-form-field/dynamic-form-field.component';
 import { ButtonModule } from 'primeng/button';
-import { FormContainer } from '@core/models/form-container';
 import { CommonModule } from '@angular/common';
+import { FormContainer } from '@core/models/question-base';
 
 @Component({
   selector: 'school-dynamic-form',

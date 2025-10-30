@@ -5,7 +5,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
-import { FormContainer } from '@core/models/form-container';
 import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
 import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
@@ -15,6 +14,7 @@ import { DynamicFormComponent } from '@shared/components/dynamic-form/dynamic-fo
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
+import { FormContainer } from '@core/models/question-base';
 
 @Component({
   selector: 'school-upsert-student-modal.component',

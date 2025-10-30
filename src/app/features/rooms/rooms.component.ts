@@ -10,11 +10,11 @@ import { SelectInputComponent } from "@shared/components/dynamic-form/select-inp
 import { EmptyListComponent } from "@shared/components/empty-list/empty-list.component";
 import { DialogService } from 'primeng/dynamicdialog';
 import { DynamicFormModalComponent } from '@shared/components/dynamic-form-modal/dynamic-form-modal.component';
-import { FormContainer } from '@core/models/form-container';
 import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { QuestionTextArea } from '@core/dynamic-form/question-textarea';
 import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
+import { FormContainer } from '@core/models/question-base';
 
 interface Room {
   id: number;
@@ -47,7 +47,6 @@ interface Room {
     TextInputComponent,
     SelectInputComponent,
     EmptyListComponent,
-    DynamicFormModalComponent
   ],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.scss',
@@ -245,7 +244,7 @@ export class RoomsComponent {
     });
   }
 
-   addRoom(): void {
+   upsertRoom(room?: any): void {
     const dialogRef = this._dialogService.open(DynamicFormModalComponent, {
       focusOnShow: false,
        dismissableMask: true,
@@ -253,6 +252,7 @@ export class RoomsComponent {
        header: 'Add new room',
        width: '45%',
        data: {
+         payload: room,
          formContainers: this._getRoomFormContainer(),
          footer: {
            onConfirm: (formValue: any) => console.log(formValue),

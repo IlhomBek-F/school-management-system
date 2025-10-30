@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TabsModule } from "primeng/tabs";
 import { DynamicFormComponent } from "@shared/components/dynamic-form/dynamic-form.component";
 import { FormGroup } from '@angular/forms';
-import { FormContainer } from '@core/models/form-container';
 import { QuestionControlService } from '@core/services/question-control.service';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
@@ -13,6 +12,7 @@ import { QuestionTimePicker } from '@core/dynamic-form/question-time-picker';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { ButtonModule } from 'primeng/button';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
+import { FormContainer } from '@core/models/question-base';
 
 @Component({
   selector: 'school-upsert-class-modal',

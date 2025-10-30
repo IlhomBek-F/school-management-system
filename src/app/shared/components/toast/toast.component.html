@@ -1,0 +1,36 @@
+<p-toast position="top-right" [baseZIndex]="10000">
+  <ng-template let-message pTemplate="message">
+    <div class="custom-toast-message" [ngClass]="'toast-' + message.severity">
+      <div class="flex items-start gap-3">
+        <div class="toast-icon-container" [ngClass]="'icon-' + message.severity">
+          @switch (message.severity) {
+          @case ('succes') {
+          <i class="pi pi-check-circle text-white text-xl"></i>
+          }
+          @case ('error') {
+          <i class="pi pi-times-circle text-white text-xl"></i>
+          }
+          @case ('warn') {
+          <i class="pi pi-exclamation-triangle text-white text-xl"></i>
+          }
+          }
+        </div>
+
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-gray-900 mb-1 text-base">
+            {{ message.summary }}
+          </div>
+          <div class="text-gray-600 text-sm">
+            {{ message.detail }}
+          </div>
+        </div>
+
+        <button type="button" class="toast-close-btn" (click)="onCloseClick()">
+          <i class="pi pi-times text-gray-400 hover:text-gray-600"></i>
+        </button>
+      </div>
+
+      <div class="toast-progress-bar" [ngClass]="'progress-' + message.severity"></div>
+    </div>
+  </ng-template>
+</p-toast>

@@ -1,4 +1,4 @@
-import { FormContainer } from "./form-container";
+import { FormContainer } from "./question-base";
 
 export interface DynamicFormModalDataModel {
    formContainers: FormContainer[],

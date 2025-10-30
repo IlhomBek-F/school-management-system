@@ -4,7 +4,7 @@ import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
 import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
 import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
-import { FormContainer } from '@core/models/form-container';
+import { FormContainer } from '@core/models/question-base';
 import { QuestionControlService } from '@core/services/question-control.service';
 import { DynamicFormComponent } from '@shared/components/dynamic-form/dynamic-form.component';
 import {  ButtonModule } from 'primeng/button';

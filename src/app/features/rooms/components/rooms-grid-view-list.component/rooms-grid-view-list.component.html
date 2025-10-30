@@ -3,7 +3,6 @@
     class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border-t-4 relative overflow-hidden"
     [style.border-top-color]="room.color.replace('bg-', '#')">
 
-    <!-- Header -->
     <div class="flex items-start justify-between mb-4">
       <div class="flex items-center gap-3">
         <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center text-white ' + room.color">
@@ -18,7 +17,6 @@
       </p-tag>
     </div>
 
-    <!-- Room Info -->
     <div class="space-y-3 mb-4 pb-4 border-b border-gray-100">
       <div class="flex items-center gap-2 text-sm text-gray-600">
         <i class="pi pi-tag"></i>
@@ -34,7 +32,6 @@
       </div>
     </div>
 
-    <!-- Occupancy Bar -->
     <div class="mb-4">
       <div class="flex items-center justify-between text-sm mb-2">
         <span class="text-gray-600">Current Occupancy</span>
@@ -60,7 +57,6 @@
       </div>
     </div>
 
-    <!-- Schedule Preview -->
     <div *ngIf="room.schedule.length > 0" class="mb-4 p-3 bg-gray-50 rounded-lg">
       <p class="text-xs text-gray-500 mb-2 font-semibold flex items-center gap-1">
         <i class="pi pi-calendar"></i>
@@ -72,14 +68,8 @@
       </div>
     </div>
 
-    <!-- Actions -->
-    <div class="flex gap-2">
-      <p-button label="Details" icon="pi pi-eye" [outlined]="true" (onClick)="viewDetails(room)"
-        styleClass="flex-1 p-button-sm">
-      </p-button>
       <p-button icon="pi pi-pencil" [outlined]="true" (onClick)="editRoom(room)" styleClass="p-button-sm"
         [style]="{'width': '40px'}">
       </p-button>
-    </div>
   </div>
 </div>

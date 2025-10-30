@@ -15,3 +15,7 @@ export interface QuestionOptionsModel<T = any> {
   validators?: ValidatorFn[],
   onValueChange?: (value: any, questions?: QuestionBase<T>[]) => void
 }
+
+export interface FormContainer {
+  containers: QuestionBase<any>[]
+}

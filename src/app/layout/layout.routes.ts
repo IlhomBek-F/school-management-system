@@ -6,6 +6,11 @@ export const LAYOUT_ROUTES: Routes = [
     loadComponent: () => import("./layout.component").then(c => c.LayoutComponent),
     children: [
       {
+        path: "",
+        redirectTo: "/dashboard",
+        pathMatch: 'full'
+      },
+      {
         path: "dashboard",
         loadComponent: () => import("../features/dashboard/dashboard.component").then(c => c.DashboardComponent),
       },
@@ -45,11 +50,6 @@ export const LAYOUT_ROUTES: Routes = [
         path: "settings",
         loadComponent: () => import("../features/settings/settings.component").then(c => c.SettingsComponent),
       },
-      {
-        path: "",
-        redirectTo: "/dashboard",
-        pathMatch: 'full'
-      }
     ]
   },
 ]

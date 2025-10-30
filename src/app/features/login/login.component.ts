@@ -4,21 +4,21 @@ import {  Password, PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
+import { ToastService } from '@core/services/toast.service';
 
 @Component({
   selector: 'school-login',
   imports: [FormsModule, ReactiveFormsModule, InputText,Password, PasswordModule, ButtonModule, ToastModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginCompoent {
-  _fb = inject(FormBuilder)
-  _router = inject(Router)
+  private _fb = inject(FormBuilder)
+  private _router = inject(Router)
+  private _toastService = inject(ToastService)
 
   loginForm = this._fb.group({
     username: ['', Validators.required],
@@ -27,6 +27,8 @@ export class LoginCompoent {
   });
 
   login() {
-    this._router.navigate(['/teachers'])
+    this._router.navigate(['/teacherss']).catch(() => {
+      this._toastService.error("couldn't load main page")
+    })
   }
 }
