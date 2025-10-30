@@ -23,6 +23,12 @@
                              [required]="question().required"
                              [placeholder]="question().placeholder"/>
       }
+      @case (QuestionTypeEnum.MultiSelect) {
+        <school-multi-select [options]="question().options"
+                             [formControlName]="question().key"
+                             [required]="question().required"
+                             [placeholder]="question().placeholder"/>
+      }
       @case (QuestionTypeEnum.DatePicker) {
         <school-datepicker [formControlName]="question().key"
                            [required]="question().required"/>

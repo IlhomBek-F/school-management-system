@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { TableModule } from "primeng/table";
@@ -12,17 +12,15 @@ import { TableModule } from "primeng/table";
 })
 export class ClassesTableViewListComponent {
   classesList = input.required<any[]>()
-
-   addClass(): void {
-    console.log('Add class clicked');
-  }
+  editEmitEvent = output<any>()
+  viewDetailEmitEvent = output<any>()
 
   viewDetails(cls: any): void {
-    console.log('View details:', cls);
+    this.viewDetailEmitEvent.emit(cls)
   }
 
-  editClass(cls: any): void {
-    console.log('Edit class:', cls);
+  editClass(classObj: any): void {
+    this.editEmitEvent.emit(classObj)
   }
 
   getStatusSeverity(status: string): string {

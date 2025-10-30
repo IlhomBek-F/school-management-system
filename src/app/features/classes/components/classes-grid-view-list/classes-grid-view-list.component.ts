@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { TagModule } from "primeng/tag";
 import { Button } from "primeng/button";
+import { DialogService } from 'primeng/dynamicdialog';
+import { UpsertClassModalCompoment } from '../upsert-class-modal/upsert-class-modal.compoment';
 
 @Component({
   selector: 'school-classes-grid-view-list',
@@ -12,17 +14,19 @@ import { Button } from "primeng/button";
 })
 export class ClassesGridViewListComponent {
   classList = input.required<any>()
+  editEmitEvent = output<any>()
+  viewDetailEmitEvent = output<any>()
 
    addClass(): void {
     console.log('Add class clicked');
   }
 
   viewDetails(cls: any): void {
-    console.log('View details:', cls);
+    this.viewDetailEmitEvent.emit(cls)
   }
 
-  editClass(cls: any): void {
-    console.log('Edit class:', cls);
+  editClass(classObj: any): void {
+    this.editEmitEvent.emit(classObj)
   }
 
   getStatusSeverity(status: string): string {

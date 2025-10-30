@@ -4,7 +4,7 @@ import { QuestionFieldTypeEnum, QuestionTypeEnum } from "@core/enums/question-ty
 
 export interface QuestionOptionsModel<T = any> {
   value?: T;
-  key?: string;
+  key: string;
   label?: string;
   required?: boolean;
   order?: number;

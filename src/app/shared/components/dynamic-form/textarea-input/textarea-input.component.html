@@ -4,7 +4,7 @@
   }
   <span class="w-full">
     <textarea pInputTextarea rows="3" class="p-inputtext w-full" [placeholder]="placeholder()" [disabled]="disabled"
-      [ngClass]="{'ng-invalid': required() && !value}"
+      [ngClass]="{'ng-invalid ng-dirty': required() && !value}"
       [value]="value" (input)="handleInput($event)"></textarea>
   </span>
 </div>

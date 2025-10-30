@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
-import { PageTitleComponent } from "../../shared/components/page-title/page-title.component";
 import { Button } from "primeng/button";
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -7,22 +6,16 @@ import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { StudentGridCardComponent } from './components/student-grid-card/student-grid-card.component';
-import { SchoolStatsCardComponent } from '../../shared/components/stats-card/stats-card.component';
-import { EmptyListComponent } from "../../shared/components/empty-list/empty-list.component";
-import { StudentListViewComponent } from './components/student-list-view/student-list-view.component';
-import { TextInputComponent } from "../../shared/components/text-input/text-input.component";
-import { SelectInputComponent } from "../../shared/components/select-input/select-input.component";
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DynamicModalComponent } from '../../shared/components/dynamic-form-modal/dynamic-form-modal.component';
-import { LoginCompoent } from '../login/login.component';
-import { FormContainer } from '../../core/models/form-container';
-import { QuestionSelectInput } from '../../core/dynamic-form/question-select-input';
-import { QuestionBase } from '../../core/dynamic-form/question-base';
-import { QuestionTextInput } from '../../core/dynamic-form/question-text-input';
-import { QuestionFieldTypeEnum } from '../../core/enums/question-type.enum';
-import { DynamicFormModalDataModel } from '../../core/models/dynamic-form-modal-data';
+import { DialogService } from 'primeng/dynamicdialog';
 import { UpsertStudentModalComponent } from './components/upsert-student-modal/upsert-student-modal.component';
+import { StudentGridViewListComponent } from './components/student-grid-view-list/student-grid-view-list.component';
+import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
+import { TextInputComponent } from '@shared/components/dynamic-form/text-input/text-input.component';
+import { SchoolStatsCardComponent } from '@shared/components/stats-card/stats-card.component';
+import { SelectInputComponent } from '@shared/components/dynamic-form/select-input/select-input.component';
+import { PageTitleComponent } from '@shared/components/page-title/page-title.component';
+import { StudentTableViewListComponent } from './components/student-table-view-list/student-table-view-list.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 type Student = any
 
@@ -34,9 +27,9 @@ type Student = any
     Button, CommonModule,
     TableModule, TagModule,
     DropdownModule, FormsModule,
-    InputTextModule, StudentGridCardComponent,
+    InputTextModule, StudentGridViewListComponent,
     SchoolStatsCardComponent, EmptyListComponent,
-    StudentListViewComponent, TextInputComponent, SelectInputComponent],
+    StudentTableViewListComponent, TextInputComponent, SelectInputComponent],
     providers: [DialogService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -135,7 +128,9 @@ export class StudentsComponent implements OnInit {
   avgGPA: number = 0;
   activeClasses: number = 12;
 
-  constructor(private _dialogService: DialogService) {}
+  private _dialogService = inject(DialogService)
+  private _router = inject(Router)
+  private _activeRoute = inject(ActivatedRoute)
 
   ngOnInit(): void {
     this.filteredStudents = [...this.students];
@@ -194,7 +189,6 @@ export class StudentsComponent implements OnInit {
   }
 
   viewProfile(student: Student): void {
-    // Implement view profile logic
-    console.log('View profile:', student);
+    this._router.navigate([student.id], {relativeTo: this._activeRoute})
   }
 }

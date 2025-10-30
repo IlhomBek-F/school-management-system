@@ -16,7 +16,7 @@ export class QuestionBase<T> {
   onValueChange?: (value: any, questions?: QuestionBase<T>[]) => void;
 
   constructor(
-    options: QuestionOptionsModel = {},
+    options: QuestionOptionsModel,
   ) {
     this.value = options.value;
     this.key = options.key || '';

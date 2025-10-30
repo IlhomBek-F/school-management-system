@@ -50,9 +50,9 @@
         </div>
 
         <p-button
-          label="Add Teacher"
+          label="Add Class"
           icon="pi pi-plus"
-          (onClick)="addClass()"
+          (onClick)="upsertClass()"
           styleClass="p-button-sm">
         </p-button>
       </div>
@@ -60,9 +60,15 @@
 
     <!-- Grid View -->
      @if (viewMode === 'grid') {
-       <school-classes-grid-view-list [classList]="filteredClasses"/>
+       <school-classes-grid-view-list [classList]="filteredClasses"
+                                      (editEmitEvent)="upsertClass($event)"
+                                      (viewDetailEmitEvent)="viewDetails($event)"
+                                      />
      } @else {
-       <school-classes-table-view-list [classesList]="filteredClasses" />
+       <school-classes-table-view-list [classesList]="filteredClasses"
+                                       (editEmitEvent)="upsertClass($event)"
+                                       (viewDetailEmitEvent)="viewDetails($event)"
+                                       />
      }
 
 

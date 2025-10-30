@@ -1,21 +1,22 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { TableModule } from "primeng/table";
 import { Tag } from "primeng/tag";
 import { Button } from "primeng/button";
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'school-teacher-view-list',
+  selector: 'school-teacher-table-view-list',
   imports: [TableModule, Tag, Button, CommonModule],
-  templateUrl: './teacher-view-list.component.html',
-  styleUrl: './teacher-view-list.component.scss',
+  templateUrl: './teacher-table-view-list.component.html',
+  styleUrl: './teacher-table-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeacherViewListComponent {
+export class TeacherTableViewListComponent {
   teacherList = input.required<any[]>()
+  viewDetailEmitEvent = output<any>()
 
   viewProfile(teacher: any): void {
-    console.log('View profile:', teacher);
+    this.viewDetailEmitEvent.emit(teacher)
   }
 
   getRatingStars(rating: number): string[] {

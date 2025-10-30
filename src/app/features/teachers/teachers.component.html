@@ -31,19 +31,15 @@
           </p-button>
         </div>
 
-        <p-button label="Add Teacher" icon="pi pi-plus" (onClick)="addTeacher()" styleClass="p-button-sm">
+        <p-button label="Add Teacher" icon="pi pi-plus" (onClick)="upsertTeacher()" styleClass="p-button-sm">
         </p-button>
       </div>
     </div>
 
     @if (viewMode === 'grid') {
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      @for (teacher of filteredTeachers; track $index) {
-      <school-teacher-grid-card [teacher]="teacher" />
-      }
-    </div>
+      <school-teacher-grid-view-list [teachers]="filteredTeachers" (viewDetailEmitEvent)="viewProfile($event)"/>
     } @else {
-    <school-teacher-view-list [teacherList]="filteredTeachers" />
+      <school-teacher-table-view-list [teacherList]="filteredTeachers" (viewDetailEmitEvent)="viewProfile($event)"/>
     }
 
     @if (filteredTeachers.length === 0) {

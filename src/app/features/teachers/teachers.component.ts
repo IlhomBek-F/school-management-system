@@ -8,12 +8,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-card.component";
 import { EmptyListComponent } from "@shared/components/empty-list/empty-list.component";
-import { TextInputComponent } from "@shared/components/text-input/text-input.component";
-import { SelectInputComponent } from "@shared/components/select-input/select-input.component";
-import { TeacherViewListComponent } from './components/teacher-view-list/teacher-view-list.component';
-import { TeacherGridCardComponent } from './components/teacher-grid-card/teacher-grid-card.component';
+import { TextInputComponent } from "@shared/components/dynamic-form/text-input/text-input.component";
+import { SelectInputComponent } from "@shared/components/dynamic-form/select-input/select-input.component";
 import { DialogService } from 'primeng/dynamicdialog';
 import { UpsertTeacherModalComponent } from './components/upsert-teacher-modal/upsert-teacher-modal.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TeacherGridViewListComponent } from './components/teacher-grid-view-list/teacher-grid-view-list.component';
+import { TeacherTableViewListComponent } from './components/teacher-table-view-list/teacher-table-view-list.component';
 
 @Component({
   selector: 'school-teachers',
@@ -21,7 +22,7 @@ import { UpsertTeacherModalComponent } from './components/upsert-teacher-modal/u
     ButtonModule, TableModule,
     DropdownModule, CommonModule,
     FormsModule, SchoolStatsCardComponent,
-    EmptyListComponent, TextInputComponent, SelectInputComponent, TeacherViewListComponent, TeacherGridCardComponent],
+    EmptyListComponent, TextInputComponent, SelectInputComponent, TeacherTableViewListComponent, TeacherGridViewListComponent],
   templateUrl: './teachers.component.html',
   styleUrl: './teachers.component.scss',
   providers: [DialogService],
@@ -162,6 +163,8 @@ export class TeachersComponent implements OnInit {
   avgRating: number = 0;
 
   private _dialogService = inject(DialogService)
+  private _router = inject(Router)
+  private _activeRoute = inject(ActivatedRoute)
 
   ngOnInit(): void {
     this.filteredTeachers = [...this.teachers];
@@ -204,7 +207,7 @@ export class TeachersComponent implements OnInit {
     this.viewMode = mode;
   }
 
-  addTeacher(): void {
+  upsertTeacher(teacher?: any): void {
     const dialogRef = this._dialogService.open<any>(UpsertTeacherModalComponent, {
       focusOnShow: false,
       dismissableMask: true,
@@ -212,6 +215,7 @@ export class TeachersComponent implements OnInit {
       header: 'Add new teacher',
       width: '45%',
       data: {
+        teacher,
         footer: {
           onConfirm: (formValue: any) => console.log(formValue),
           onCancel: () => dialogRef.close()
@@ -221,7 +225,7 @@ export class TeachersComponent implements OnInit {
   }
 
   viewProfile(teacher: any): void {
-    console.log('View profile:', teacher);
+    this._router.navigate([teacher.id], {relativeTo: this._activeRoute})
   }
 
   getStatusSeverity(status: string): string {

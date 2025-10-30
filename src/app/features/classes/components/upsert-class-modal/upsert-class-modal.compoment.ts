@@ -12,6 +12,7 @@ import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
 import { QuestionTimePicker } from '@core/dynamic-form/question-time-picker';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { ButtonModule } from 'primeng/button';
+import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 
 @Component({
   selector: 'school-upsert-class-modal',
@@ -31,8 +32,8 @@ export class UpsertClassModalCompoment {
   ngOnInit(): void {
     this._createTabItems()
 
-    if (this._dialogConfig.data.teacher) {
-      this.form.patchValue(this._dialogConfig.data.teacher)
+    if (this._dialogConfig.data.class) {
+      this.form.patchValue(this._dialogConfig.data.class)
     }
   }
 
@@ -56,11 +57,6 @@ export class UpsertClassModalCompoment {
         value: 'schedule_info',
         formContainers: this._getScheduleFormContainer(),
       },
-      {
-        title: 'Capacity Information',
-        value: 'capacity_info',
-        formContainers: []
-      }
     ];
 
     this.form = this._questionControlService.toFormGroup(this.tabItems.flatMap(t => t.formContainers))
@@ -71,12 +67,14 @@ export class UpsertClassModalCompoment {
       {
         containers: [
           new QuestionTextInput({
-            key: 'class_name',
-            label: 'Classname'
+            key: 'name',
+            label: 'Classname',
+            required: true,
           }),
           new QuestionTextInput({
-            key: 'class_code',
-            label: 'Class code'
+            key: 'code',
+            label: 'Class code',
+            required: true,
           })
         ]
       },
@@ -85,12 +83,35 @@ export class UpsertClassModalCompoment {
           new QuestionSelectInput({
             key: 'subject',
             label: 'Subject',
-            options: []
+            required: true,
+            options: [
+              { label: 'Mathematics', value: 'mathematics' },
+              { label: 'Chemistry', value: 'chemistry' },
+              { label: 'Physics', value: 'physics' },
+              { label: 'English', value: 'english' },
+              { label: 'Biology', value: 'biology' },
+              { label: 'French', value: 'french' },
+              { label: 'Spanish', value: 'spanish' },
+              { label: 'Geography', value: 'geography' },
+              { label: 'History', value: 'history' },
+              { label: 'Physical Education', value: 'pe' },
+              { label: 'Computer Science', value: 'cs' },
+              { label: 'Music', value: 'music' },
+              { label: 'Art', value: 'art' },
+            ]
           }),
           new QuestionSelectInput({
             key: 'teacher',
             label: 'Teacher',
-            options: []
+            required: true,
+            options: [
+              { label: 'Dr. Sarah Johnson - Mathematics', value: 'teacher_1' },
+              { label: 'Prof. Michael Chen - Physics', value: 'teacher_2' },
+              { label: 'Ms. Emily Rodriguez - English', value: 'teacher_3' },
+              { label: 'Mr. David Wilson - History', value: 'teacher_4' },
+              { label: 'Dr. Lisa Anderson - Chemistry', value: 'teacher_5' },
+              { label: 'Mr. James Brown - Physical Education', value: 'teacher_6' }
+            ]
           })
         ],
       },
@@ -99,17 +120,35 @@ export class UpsertClassModalCompoment {
           new QuestionSelectInput({
             key: 'grade',
             label: 'Grade',
-            options: []
+            required: true,
+            options: [
+              { label: '9th Grade', value: '9' },
+              { label: '11th Grade', value: '11' },
+              { label: '10th Grade', value: '10' },
+              { label: '12th Grade', value: '12' }
+            ]
           }),
           new QuestionSelectInput({
             key: 'section',
             label: 'Section',
-            options: []
+            required: true,
+            options: [
+                { label: 'Section A', value: 'A' },
+                { label: 'Section B', value: 'B' },
+                { label: 'Section C', value: 'C' },
+                { label: 'Section D', value: 'D' }
+            ]
           }),
           new QuestionSelectInput({
-            key: 'class_type',
+            key: 'type',
             label: 'Class type',
-            options: []
+            required: true,
+            options: [
+                { label: 'Theory', value: 'theory' },
+                { label: 'Practical', value: 'practical' },
+                { label: 'Lab', value: 'lab' },
+                { label: 'Tutorial', value: 'tutorial' }
+            ]
           })
         ]
       },
@@ -117,7 +156,8 @@ export class UpsertClassModalCompoment {
         containers: [
           new QuestionTextArea({
             key: 'description',
-            label: 'Description'
+            label: 'Description',
+            required: true,
           })
         ]
       }
@@ -130,11 +170,13 @@ export class UpsertClassModalCompoment {
         containers: [
           new QuestionDatePicker({
             key: 'start_date',
-            label: 'Start date'
+            label: 'Start date',
+            required: true,
           }),
           new QuestionDatePicker({
             key: 'end_date',
-            label: 'End date'
+            label: 'End date',
+            required: true,
           })
         ]
       },
@@ -142,11 +184,13 @@ export class UpsertClassModalCompoment {
         containers: [
           new QuestionTimePicker({
             key: 'start_time',
-            label: 'Start time'
+            label: 'Start time',
+            required: true,
           }),
           new QuestionTimePicker({
             key: 'end_time',
             label: 'End time',
+            required: true,
           })
         ]
       },
@@ -156,12 +200,47 @@ export class UpsertClassModalCompoment {
             key: 'duration',
             label: 'Duration',
             type: QuestionFieldTypeEnum.Number,
+            required: true,
+          }),
+          new QuestionMultiSelect({
+            key: 'days',
+            label: 'Class Days',
+            required: true,
+            options: [
+              { label: 'Monday', value: 'monday' },
+              { label: 'Tuesday', value: 'tuesday' },
+              { label: 'Wednesday', value: 'wednesday' },
+              { label: 'Thursday', value: 'thursday' },
+              { label: 'Friday', value: 'friday' },
+              { label: 'Saturday', value: 'saturday' }
+            ]
           }),
           new QuestionSelectInput({
             key: 'room',
             label: 'Room',
+            required: true,
             options: []
           })
+        ]
+      },
+      {
+        containers: [
+          new QuestionTextInput({
+            key: 'max_capacity',
+            label: 'Max capacity',
+            required: true,
+            type: QuestionFieldTypeEnum.Number
+          }),
+          new QuestionTextInput({
+            key: 'min_capacity',
+            label: 'Min capacity',
+            type: QuestionFieldTypeEnum.Number
+          }),
+          new QuestionTextInput({
+            key: 'current_enrollment',
+            label: 'Current enrollment',
+            type: QuestionFieldTypeEnum.Number
+          }),
         ]
       }
     ]

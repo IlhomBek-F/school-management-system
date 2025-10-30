@@ -11,15 +11,31 @@ export const LAYOUT_ROUTES: Routes = [
       },
       {
         path: "students",
-        loadChildren: () => import("../features/students/students.routes").then(r => r.STUDENT_ROUTES),
+        loadComponent: () => import("../features/students/students.component").then(c => c.StudentsComponent),
+      },
+      {
+        path: "students/:id",
+        loadComponent: () => import("../features/students/student-view-profile/student-view-profile.component").then(c => c.StudentViewProfileComponent),
       },
       {
         path: "teachers",
-        loadChildren: () => import("../features/teachers/teacher.routes").then(r => r.TEACHER_ROUTES),
+        loadComponent: () => import("../features/teachers/teachers.component").then(c => c.TeachersComponent),
+      },
+      {
+        path: "teachers/:teacher_id",
+        loadComponent: () => import("../features/teachers/teacher-view-detail/teacher-view-detail.component").then(c => c.TeacherViewDetailComponent),
+      },
+      {
+        path: "teachers/:teacher_id/:class_id",
+        loadComponent: () => import("../features/class-view-detail/class-view-detail.component").then(c => c.ClassViewDetailComponent),
       },
       {
         path: "classes",
         loadComponent: () => import("../features/classes/classes.component").then(c => c.ClassesComponent),
+      },
+      {
+        path: "classes/:teacher_id/:class_id",
+        loadComponent: () => import("../features/class-view-detail/class-view-detail.component").then(c => c.ClassViewDetailComponent),
       },
       {
         path: "settings",

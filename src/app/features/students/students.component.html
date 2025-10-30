@@ -55,16 +55,10 @@
     </div>
 
      @if (viewMode === 'grid') {
-       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          @for (student of filteredStudents; track $index) {
-            <school-student-grid-card [student]="student"></school-student-grid-card>
-          }
-       </div>
+        <school-student-grid-view-list [students]="filteredStudents" (viewDetailEmitEvent)="viewProfile($event)"/>
+     }@else {
+        <school-student-table-view-list [studentList]="filteredStudents" (viewDetailEmitEvent)="viewProfile($event)"></school-student-table-view-list>
      }
-
-    @if (viewMode === 'list') {
-      <school-student-list-view [studentList]="filteredStudents"></school-student-list-view>
-    }
 
      @if (filteredStudents.length === 0) {
        <school-empty-list title="No students found"></school-empty-list>

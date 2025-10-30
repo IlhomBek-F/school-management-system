@@ -1,20 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Tag } from "primeng/tag";
 import { Button } from "primeng/button";
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'school-teacher-grid-card',
+  selector: 'school-teacher-grid-view-list',
   imports: [Tag, Button],
-  templateUrl: './teacher-grid-card.component.html',
-  styleUrl: './teacher-grid-card.component.scss',
+  templateUrl: './teacher-grid-view-list.component.html',
+  styleUrl: './teacher-grid-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeacherGridCardComponent {
-  teacher = input.required<any>()
-
-  private _router = inject(Router)
-  private _activateRoute = inject(ActivatedRoute)
+export class TeacherGridViewListComponent {
+  teachers = input.required<any[]>()
+  viewDetailEmitEvent = output<any>()
 
   getRatingStars(rating: number): string[] {
     const stars = [];
@@ -34,7 +31,6 @@ export class TeacherGridCardComponent {
   }
 
   viewProfile(teacher: any): void {
-    this._router.navigate([teacher.id], {relativeTo: this._activateRoute})
-    console.log('View profile:', teacher);
+    this.viewDetailEmitEvent.emit(teacher)
   }
 }
