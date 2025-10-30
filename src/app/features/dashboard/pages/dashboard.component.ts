@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
-import { PageTitleComponent } from "../../shared/components/page-title/page-title.component";
+import { PageTitleComponent } from "../../../shared/components/page-title/page-title.component";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
-import { TopStudentsComponent } from "./components/top-students/top-students.component";
-import { UpcomingEventsComponent } from './components/upcoming-events/upcoming-events.component';
+import { TopStudentsComponent } from "../components/top-students/top-students.component";
+import { UpcomingEventsComponent } from '../components/upcoming-events/upcoming-events.component';
+import { RecentActivityComponent } from "../components/recent-activity/recent-activity.component";
+import { DashboardAttendanceComponent } from "../components/attendance/attendance.component";
+import { DashboardGradeChartComponent } from "../components/grade-chart/grade-chart.component";
 
 interface TopStudent {
   id: number;
@@ -18,7 +21,7 @@ interface TopStudent {
 
 @Component({
   selector: 'school-dashboard',
-  imports: [PageTitleComponent, TagModule, ButtonModule, CommonModule, ChartModule, TopStudentsComponent, UpcomingEventsComponent],
+  imports: [PageTitleComponent, TagModule, ButtonModule, CommonModule, ChartModule, TopStudentsComponent, UpcomingEventsComponent, RecentActivityComponent, DashboardAttendanceComponent, DashboardGradeChartComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -6,8 +6,6 @@
         <div class="flex gap-3">
           <p-button label="Download Report" icon="pi pi-download" [outlined]="true" styleClass="p-button-sm">
           </p-button>
-          <p-button label="Add Event" icon="pi pi-plus" styleClass="p-button-sm">
-          </p-button>
         </div>
       </div>
     </div>
@@ -31,68 +29,16 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-      <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h2 class="text-xl font-bold text-gray-800 mb-1">Weekly Attendance</h2>
-            <p class="text-sm text-gray-600">Student attendance over the week</p>
-          </div>
-          <p-button icon="pi pi-ellipsis-v" [text]="true" [rounded]="true" styleClass="p-button-sm">
-          </p-button>
-        </div>
-        <div class="h-64">
-          <p-chart type="line" [data]="attendanceChartData" [options]="attendanceChartOptions"></p-chart>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h2 class="text-xl font-bold text-gray-800 mb-1">Grade Distribution</h2>
-            <p class="text-sm text-gray-600">Overall grades breakdown</p>
-          </div>
-          <p-button icon="pi pi-ellipsis-v" [text]="true" [rounded]="true" styleClass="p-button-sm">
-          </p-button>
-        </div>
-        <div class="h-64 flex items-center justify-center">
-          <p-chart type="doughnut" [data]="gradeChartData" [options]="gradeChartOptions"></p-chart>
-        </div>
-      </div>
+      <school-dashboard-attendance [attendanceChartData]="attendanceChartData" [attendanceChartOptions]="attendanceChartOptions"/>
+      <school-dashboard-grade-chart [gradeChartData]="gradeChartData" [gradeChartOptions]="gradeChartOptions"/>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h2 class="text-xl font-bold text-gray-800 mb-1">Recent Activities</h2>
-            <p class="text-sm text-gray-600">Latest updates from your school</p>
-          </div>
-          <a class="text-sm text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer">View All</a>
-        </div>
-        <div class="space-y-4">
-          @for (activity of recentActivities; track $index) {
-          <div class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-            <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ' + activity.iconColor">
-              <i [class]="'pi ' + activity.icon"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm text-gray-800">
-                <span class="font-semibold">{{ activity.user }}</span>
-                <span class="text-gray-600"> {{ activity.action }}</span>
-              </p>
-              <p class="text-xs text-gray-500 mt-1">{{ activity.time }}</p>
-            </div>
-          </div>
-          }
-        </div>
-      </div>
-
-      <!-- Upcoming Events -->
+      <school-recent-activity [recentActivities]="recentActivities"/>
       <school-upcoming-events [upcomingEvents]="upcomingEvents" />
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Top Students -->
       <school-top-students [students]="topStudents" />
 
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">

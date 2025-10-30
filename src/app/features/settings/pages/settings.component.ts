@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
-import { PageTitleComponent } from "../../shared/components/page-title/page-title.component";
 import { DropdownModule } from "primeng/dropdown";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
-import { GeneralComponent } from './components/general/general.component';
-import { AcademicComponent } from './components/academic/academic.component';
-import { NotificationComponent } from './components/notification/notification.component';
-import { SecurityComponent } from './components/security/security.component';
-import { AppearanceComponent } from './components/appearance/appearance.component';
+import { GeneralComponent } from '../components/general/general.component';
+import { AcademicComponent } from '../components/academic/academic.component';
+import { NotificationComponent } from '../components/notification/notification.component';
+import { SecurityComponent } from '../components/security/security.component';
+import { AppearanceComponent } from '../components/appearance/appearance.component';
+import { PageTitleComponent } from '@shared/components/page-title/page-title.component';
 
 interface SchoolInfo {
   name: string;

@@ -1,0 +1,13 @@
+<div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-xl font-bold text-gray-800 mb-1">Weekly Attendance</h2>
+            <p class="text-sm text-gray-600">Student attendance over the week</p>
+          </div>
+          <p-button icon="pi pi-ellipsis-v" [text]="true" [rounded]="true" styleClass="p-button-sm">
+          </p-button>
+        </div>
+        <div class="h-64">
+          <p-chart type="line" [data]="attendanceChartData()" [options]="attendanceChartOptions()"></p-chart>
+        </div>
+</div>

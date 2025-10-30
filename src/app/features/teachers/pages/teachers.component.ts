@@ -11,10 +11,10 @@ import { EmptyListComponent } from "@shared/components/empty-list/empty-list.com
 import { TextInputComponent } from "@shared/components/dynamic-form/text-input/text-input.component";
 import { SelectInputComponent } from "@shared/components/dynamic-form/select-input/select-input.component";
 import { DialogService } from 'primeng/dynamicdialog';
-import { UpsertTeacherModalComponent } from './components/upsert-teacher-modal/upsert-teacher-modal.component';
+import { UpsertTeacherModalComponent } from '../components/upsert-teacher-modal/upsert-teacher-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TeacherGridViewListComponent } from './components/teacher-grid-view-list/teacher-grid-view-list.component';
-import { TeacherTableViewListComponent } from './components/teacher-table-view-list/teacher-table-view-list.component';
+import { TeacherGridViewListComponent } from '../components/teacher-grid-view-list/teacher-grid-view-list.component';
+import { TeacherTableViewListComponent } from '../components/teacher-table-view-list/teacher-table-view-list.component';
 
 @Component({
   selector: 'school-teachers',

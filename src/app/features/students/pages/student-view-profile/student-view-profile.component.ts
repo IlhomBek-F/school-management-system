@@ -5,11 +5,11 @@ import { ButtonModule } from "primeng/button";
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
-import { UpsertStudentModalComponent } from '../components/upsert-student-modal/upsert-student-modal.component';
-import { OverviewComponent } from './components/overview/overview.component';
-import { SubjectsComponent } from './components/subjects/subjects.component';
-import { AttendanceComponent } from './components/attendance/attendance.component';
-import { ActivityComponent } from './components/activity/activity.component';
+import { OverviewComponent } from '../../components/overview/overview.component';
+import { SubjectsComponent } from '../../components/subjects/subjects.component';
+import { AttendanceComponent } from '../../components/attendance/attendance.component';
+import { ActivityComponent } from '../../components/activity/activity.component';
+import { UpsertStudentModalComponent } from '../../components/upsert-student-modal/upsert-student-modal.component';
 
 interface Student {
   id: number;

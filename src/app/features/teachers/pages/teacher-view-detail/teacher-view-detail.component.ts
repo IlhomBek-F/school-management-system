@@ -3,13 +3,13 @@ import { TagModule } from "primeng/tag";
 import { ChartModule } from "primeng/chart";
 import { ButtonModule } from "primeng/button";
 import { CommonModule } from '@angular/common';
-import { OverviewComponent } from './components/overview/overview.component';
-import { ClassesComponent } from './components/classes/classes.component';
-import { ScheduleComponent } from './components/schedule/schedule.component';
-import { StudentsComponent } from './components/students/students.component';
-import { ActivityComponent } from './components/activity/activity.component';
 import { DialogService } from 'primeng/dynamicdialog';
-import { UpsertTeacherModalComponent } from '@teachers/components/upsert-teacher-modal/upsert-teacher-modal.component';
+import { OverviewComponent } from '../../components/overview/overview.component';
+import { ClassesComponent } from '../../components/classes/classes.component';
+import { ScheduleComponent } from '../../components/schedule/schedule.component';
+import { StudentsComponent } from '../../components/students/students.component';
+import { ActivityComponent } from '../../components/activity/activity.component';
+import { UpsertTeacherModalComponent } from '../../components/upsert-teacher-modal/upsert-teacher-modal.component';
 
 interface Teacher {
   id: number;

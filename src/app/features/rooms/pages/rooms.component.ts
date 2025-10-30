@@ -1,7 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RoomsGridViewListComponent } from "./components/rooms-grid-view-list.component/rooms-grid-view-list.component";
-import { RoomsTableViewListComponent } from "./components/rooms-table-view-list.component/rooms-table-view-list.component";
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-card.component";
 import { ButtonModule } from "primeng/button";
@@ -15,6 +13,8 @@ import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { QuestionTextArea } from '@core/dynamic-form/question-textarea';
 import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
 import { FormContainer } from '@core/models/question-base';
+import { RoomsGridViewListComponent } from '../components/rooms-grid-view-list.component/rooms-grid-view-list.component';
+import { RoomsTableViewListComponent } from '../components/rooms-table-view-list.component/rooms-table-view-list.component';
 
 interface Room {
   id: number;

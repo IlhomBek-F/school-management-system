@@ -9,8 +9,12 @@
     "paths": {
       "@core/*": ["app/core/*"],
       "@shared/*": ["app/shared/*"],
-      "@students/*": ["app/features/students/*"],
-      "@teachers/*": ["app/features/teachers/*"],
+      "@dashboard/*": ["app/features/dashboard/pages/*"],
+      "@students/*": ["app/features/students/pages/*"],
+      "@teachers/*": ["app/features/teachers/pages/*"],
+      "@classes/*": ["app/features/classes/pages/*"],
+      "@rooms/*": ["app/features/rooms/pages/*"],
+      "@settings/*": ["app/features/settings/pages/*"],
       "@models/*": ["app/models/*"]
     }
   },
