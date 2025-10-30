@@ -1,0 +1,76 @@
+<div class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 p-6">
+  <div class="w-full mx-auto">
+     <school-page-title title="Rooms & Facilities" subTitle="Manage classroom and facility allocations"/>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <school-stats-card title="Total Rooms"
+                        [value]="totalRooms"
+                        rootClassName="border-amber-500"
+                        icon="pi pi-building text-amber-600"
+                        iconWrapperClassName="bg-amber-100"
+     />
+
+     <school-stats-card title="Available"
+                        [value]="availableRooms"
+                        rootClassName="border-green-500"
+                        icon="pi pi-check-circle text-green-600 "
+                        iconWrapperClassName="bg-green-100"
+     />
+
+     <school-stats-card title="Total Capacity"
+                        [value]="totalCapacity"
+                        rootClassName="border-blue-500"
+                        icon="pi pi-users text-blue-600"
+                        iconWrapperClassName="bg-blue-100"
+     />
+
+     <school-stats-card title="Avg. Occupancy"
+                        [value]="avgOccupancy"
+                        rootClassName="border-orange-500"
+                        icon="pi pi-chart-line text-orange-600"
+                        iconWrapperClassName="bg-orange-100"
+     />
+    </div>
+
+     <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+          <school-text-input icon="pi pi-search" placeholder="Search by room name, code, or building..." (onChangeEmit)="onSearchChange($event)"/>
+          <school-select-input [options]="roomTypes" (onChangeEmit)="onTypeChange($event)"/>
+
+        <div class="flex gap-2">
+          <school-select-input [options]="statuses" (onChangeEmit)="onTypeChange($event)"/>
+
+          <p-button
+            label="Grid"
+            [outlined]="viewMode !== 'grid'"
+            (onClick)="setViewMode('grid')"
+            styleClass="p-button-sm">
+          </p-button>
+          <p-button
+            label="List"
+            [outlined]="viewMode !== 'list'"
+            (onClick)="setViewMode('list')"
+            styleClass="p-button-sm">
+          </p-button>
+        </div>
+
+        <p-button
+          label="Add Room"
+          icon="pi pi-plus"
+          (onClick)="addRoom()"
+          styleClass="p-button-sm">
+        </p-button>
+      </div>
+    </div>
+
+    @if (viewMode === 'grid') {
+      <school-rooms-grid-view-list [rooms]="filteredRooms"/>
+    } @else {
+      <school-rooms-table-view-list [rooms]="filteredRooms"/>
+    }
+
+    @if (filteredRooms.length === 0) {
+      <school-empty-list title="No rooms found"/>
+    }
+  </div>
+</div>

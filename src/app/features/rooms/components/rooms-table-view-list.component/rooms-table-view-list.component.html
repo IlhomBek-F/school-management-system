@@ -1,0 +1,74 @@
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <p-table [value]="rooms()" [tableStyle]="{ 'min-width': '80rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Room</th>
+        <th>Type</th>
+        <th>Location</th>
+        <th>Capacity</th>
+        <th>Occupancy</th>
+        <th>Facilities</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-room>
+      <tr class="hover:bg-gray-50">
+        <td>
+          <div class="flex items-center gap-3">
+            <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white ' + room.color">
+              <i [class]="'pi ' + getRoomTypeIcon(room.type)"></i>
+            </div>
+            <div>
+              <div class="font-semibold text-gray-800">{{ room.name }}</div>
+              <div class="text-sm text-gray-500">{{ room.code }}</div>
+            </div>
+          </div>
+        </td>
+        <td class="text-gray-600">{{ room.type }}</td>
+        <td class="text-gray-600">
+          <div>{{ room.building }}</div>
+          <div class="text-sm text-gray-500">Floor {{ room.floor }}</div>
+        </td>
+        <td class="text-gray-600">{{ room.capacity }}</td>
+        <td>
+          <div class="flex items-center gap-2">
+            <span class="font-semibold text-gray-800">{{ room.currentOccupancy }}/{{ room.capacity }}</span>
+            <div class="w-16 bg-gray-200 rounded-full h-1.5">
+              <div
+                [class]="'h-1.5 rounded-full ' +
+                            (getOccupancyPercentage(room.currentOccupancy, room.capacity) === 0 ? 'bg-green-500' :
+                             getOccupancyPercentage(room.currentOccupancy, room.capacity) >= 90 ? 'bg-red-500' :
+                             getOccupancyPercentage(room.currentOccupancy, room.capacity) >= 70 ? 'bg-orange-500' : 'bg-blue-500')"
+                [style.width.%]="getOccupancyPercentage(room.currentOccupancy, room.capacity)">
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="flex flex-wrap gap-1 max-w-xs">
+            <p-tag *ngFor="let facility of room.facilities.slice(0, 2)" [value]="facility" severity="info"
+              styleClass="text-xs">
+            </p-tag>
+            <span *ngIf="room.facilities.length > 2" class="text-xs text-gray-500">+{{ room.facilities.length - 2
+              }}</span>
+          </div>
+        </td>
+        <td>
+          <p-tag [value]="room.status" [severity]="getStatusSeverity(room.status)">
+          </p-tag>
+        </td>
+        <td>
+          <div class="flex gap-2">
+            <p-button icon="pi pi-eye" [outlined]="true" (onClick)="viewDetails(room)" styleClass="p-button-sm"
+              [style]="{'width': '36px', 'height': '36px'}">
+            </p-button>
+            <p-button icon="pi pi-pencil" [outlined]="true" (onClick)="editRoom(room)" styleClass="p-button-sm"
+              [style]="{'width': '36px', 'height': '36px'}">
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -41,6 +41,11 @@ export class SidebarComponent implements OnInit {
     url: '/classes',
   },
   {
+   name: 'Rooms',
+   icon: 'pi pi-home',
+   url: '/rooms'
+  },
+  {
     name: 'Settings',
     icon: 'pi pi-cog',
     url: '/settings',

@@ -38,6 +38,10 @@ export const LAYOUT_ROUTES: Routes = [
         loadComponent: () => import("../features/class-view-detail/class-view-detail.component").then(c => c.ClassViewDetailComponent),
       },
       {
+        path: 'rooms',
+        loadComponent: () => import('../features/rooms/rooms.component').then(c => c.RoomsComponent)
+      },
+      {
         path: "settings",
         loadComponent: () => import("../features/settings/settings.component").then(c => c.SettingsComponent),
       },

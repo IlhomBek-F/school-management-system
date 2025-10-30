@@ -1,0 +1,85 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div *ngFor="let room of rooms()"
+    class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border-t-4 relative overflow-hidden"
+    [style.border-top-color]="room.color.replace('bg-', '#')">
+
+    <!-- Header -->
+    <div class="flex items-start justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center text-white ' + room.color">
+          <i [class]="'pi ' + getRoomTypeIcon(room.type) + ' text-xl'"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-gray-800 text-lg">{{ room.name }}</h3>
+          <p class="text-sm text-gray-600">{{ room.code }}</p>
+        </div>
+      </div>
+      <p-tag [value]="room.status" [severity]="getStatusSeverity(room.status)" [rounded]="true">
+      </p-tag>
+    </div>
+
+    <!-- Room Info -->
+    <div class="space-y-3 mb-4 pb-4 border-b border-gray-100">
+      <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i class="pi pi-tag"></i>
+        <span class="font-medium">{{ room.type }}</span>
+      </div>
+      <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i class="pi pi-building"></i>
+        <span>{{ room.building }} - Floor {{ room.floor }}</span>
+      </div>
+      <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i class="pi pi-users"></i>
+        <span>Capacity: {{ room.capacity }} people</span>
+      </div>
+    </div>
+
+    <!-- Occupancy Bar -->
+    <div class="mb-4">
+      <div class="flex items-center justify-between text-sm mb-2">
+        <span class="text-gray-600">Current Occupancy</span>
+        <span class="font-semibold text-gray-800">{{ room.currentOccupancy }}/{{ room.capacity }}</span>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2">
+        <div
+          [class]="'h-2 rounded-full transition-all ' +
+                      (getOccupancyPercentage(room.currentOccupancy, room.capacity) === 0 ? 'bg-green-500' :
+                       getOccupancyPercentage(room.currentOccupancy, room.capacity) >= 90 ? 'bg-red-500' :
+                       getOccupancyPercentage(room.currentOccupancy, room.capacity) >= 70 ? 'bg-orange-500' : 'bg-blue-500')"
+          [style.width.%]="getOccupancyPercentage(room.currentOccupancy, room.capacity)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Facilities -->
+    <div class="mb-4">
+      <p class="text-xs text-gray-500 mb-2 font-semibold">Facilities</p>
+      <div class="flex flex-wrap gap-1">
+        <p-tag *ngFor="let facility of room.facilities" [value]="facility" severity="info" styleClass="text-xs">
+        </p-tag>
+      </div>
+    </div>
+
+    <!-- Schedule Preview -->
+    <div *ngIf="room.schedule.length > 0" class="mb-4 p-3 bg-gray-50 rounded-lg">
+      <p class="text-xs text-gray-500 mb-2 font-semibold flex items-center gap-1">
+        <i class="pi pi-calendar"></i>
+        Next Schedule
+      </p>
+      <div class="text-sm text-gray-700">
+        <p class="font-medium">{{ room.schedule[0].class }}</p>
+        <p class="text-xs text-gray-600">{{ room.schedule[0].day }} • {{ room.schedule[0].time }}</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-2">
+      <p-button label="Details" icon="pi pi-eye" [outlined]="true" (onClick)="viewDetails(room)"
+        styleClass="flex-1 p-button-sm">
+      </p-button>
+      <p-button icon="pi pi-pencil" [outlined]="true" (onClick)="editRoom(room)" styleClass="p-button-sm"
+        [style]="{'width': '40px'}">
+      </p-button>
+    </div>
+  </div>
+</div>
