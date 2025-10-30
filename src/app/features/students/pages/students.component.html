@@ -4,24 +4,28 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
        <school-stats-card title="Total Students"
                                  [value]="totalStudents"
+                                 [loading]="loading()"
                                  icon="pi pi-users"></school-stats-card>
 
       <school-stats-card title="Avg. Attendance"
                                  rootClassName="border-l-4 border-green-500"
                                  iconWrapperClassName="bg-green-100"
                                  [value]="avgAttendance + '%'"
+                                 [loading]="loading()"
                                  icon="pi pi-calendar text-green-600"></school-stats-card>
 
       <school-stats-card title="Avg. GPA"
                                  rootClassName="border-purple-500"
                                  iconWrapperClassName="bg-purple-100"
                                  [value]="avgGPA"
+                                 [loading]="loading()"
                                  icon="pi pi-star text-purple-600"></school-stats-card>
 
       <school-stats-card title="Active Classes"
                                  rootClassName="border-orange-500"
                                  iconWrapperClassName="bg-orange-100"
                                  [value]="activeClasses"
+                                 [loading]="loading()"
                                  icon="pi pi-book text-orange-600"></school-stats-card>
     </div>
 
@@ -55,7 +59,7 @@
     </div>
 
      @if (viewMode === 'grid') {
-        <school-student-grid-view-list [students]="filteredStudents" (viewDetailEmitEvent)="viewProfile($event)"/>
+        <school-student-grid-view-list [loading]="loading()" [students]="filteredStudents" (viewDetailEmitEvent)="viewProfile($event)"/>
      }@else {
         <school-student-table-view-list [studentList]="filteredStudents" (viewDetailEmitEvent)="viewProfile($event)"></school-student-table-view-list>
      }

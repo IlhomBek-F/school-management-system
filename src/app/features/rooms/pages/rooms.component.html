@@ -5,6 +5,7 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <school-stats-card title="Total Rooms"
                         [value]="totalRooms"
+                        [loading]="loading()"
                         rootClassName="border-amber-500"
                         icon="pi pi-building text-amber-600"
                         iconWrapperClassName="bg-amber-100"
@@ -12,6 +13,7 @@
 
      <school-stats-card title="Available"
                         [value]="availableRooms"
+                        [loading]="loading()"
                         rootClassName="border-green-500"
                         icon="pi pi-check-circle text-green-600 "
                         iconWrapperClassName="bg-green-100"
@@ -19,6 +21,7 @@
 
      <school-stats-card title="Total Capacity"
                         [value]="totalCapacity"
+                        [loading]="loading()"
                         rootClassName="border-blue-500"
                         icon="pi pi-users text-blue-600"
                         iconWrapperClassName="bg-blue-100"
@@ -26,6 +29,7 @@
 
      <school-stats-card title="Avg. Occupancy"
                         [value]="avgOccupancy"
+                        [loading]="loading()"
                         rootClassName="border-orange-500"
                         icon="pi pi-chart-line text-orange-600"
                         iconWrapperClassName="bg-orange-100"
@@ -64,7 +68,7 @@
     </div>
 
     @if (viewMode === 'grid') {
-      <school-rooms-grid-view-list [rooms]="filteredRooms" (editEmitEvent)="upsertRoom($event)"/>
+      <school-rooms-grid-view-list [loading]="loading()" [rooms]="filteredRooms" (editEmitEvent)="upsertRoom($event)"/>
     } @else {
       <school-rooms-table-view-list [rooms]="filteredRooms" (editEmitEvent)="upsertRoom($event)"/>
     }

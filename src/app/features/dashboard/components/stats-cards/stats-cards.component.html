@@ -1,0 +1,31 @@
+@if (loading()) {
+  @for (i of [1,2,3,4]; track i) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-start justify-between mb-4">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <p-skeleton shape="circle" size="3rem"></p-skeleton>
+      </div>
+      <p-skeleton width="2rem" height="0.75rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+    <p-skeleton width="6rem" height="0.9rem" styleClass="mb-2 rounded-md"></p-skeleton>
+    <p-skeleton width="4rem" height="1.5rem" styleClass="rounded-md"></p-skeleton>
+  </div>
+  }
+} @else {
+  @for (stat of statCards(); track $index) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+    <div class="flex items-start justify-between mb-4">
+      <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center ' + stat.bgColor">
+        <i [class]="'pi ' + stat.icon + ' text-white text-xl'"></i>
+      </div>
+      <div
+        [class]="'flex items-center gap-1 text-sm font-semibold ' + (stat.change >= 0 ? 'text-green-600' : 'text-red-600')">
+        <i [class]="'pi ' + (stat.change >= 0 ? 'pi-arrow-up' : 'pi-arrow-down') + ' text-xs'"></i>
+        <span>{{ stat.change }}%</span>
+      </div>
+    </div>
+    <h3 class="text-gray-600 text-sm font-medium mb-1">{{ stat.title }}</h3>
+    <p class="text-3xl font-bold text-gray-800">{{ stat.value }}</p>
+  </div>
+  }
+}

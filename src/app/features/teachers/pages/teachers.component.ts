@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, type OnInit } from '@angular/core';
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
@@ -29,6 +29,8 @@ import { TeacherTableViewListComponent } from '../components/teacher-table-view-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeachersComponent implements OnInit {
+  loading = signal(true)
+
   teachers: any[] = [
     {
       id: 1,
@@ -167,6 +169,7 @@ export class TeachersComponent implements OnInit {
   private _activeRoute = inject(ActivatedRoute)
 
   ngOnInit(): void {
+    setTimeout(() => this.loading.set(false), 3000)
     this.filteredTeachers = [...this.teachers];
     this.calculateStats();
   }

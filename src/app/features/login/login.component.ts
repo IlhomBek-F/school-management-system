@@ -27,7 +27,7 @@ export class LoginCompoent {
   });
 
   login() {
-    this._router.navigate(['/teacherss']).catch(() => {
+    this._router.navigate(['/teachers']).catch(() => {
       this._toastService.error("couldn't load main page")
     })
   }

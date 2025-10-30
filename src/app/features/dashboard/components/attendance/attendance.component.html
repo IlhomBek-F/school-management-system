@@ -1,4 +1,25 @@
-<div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+@if (loading()) {
+  <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p-skeleton width="10rem" height="1.25rem" styleClass="mb-2 rounded-md"></p-skeleton>
+
+      <p-skeleton width="14rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+
+    <p-skeleton shape="circle" size="2rem"></p-skeleton>
+  </div>
+
+  <div class="h-64 flex items-center justify-center">
+    <div class="w-full h-48">
+      <div class="space-y-3">
+        <p-skeleton width="100%" height="8.75rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+    </div>
+  </div>
+</div>
+} @else {
+ <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div class="flex items-center justify-between mb-6">
           <div>
             <h2 class="text-xl font-bold text-gray-800 mb-1">Weekly Attendance</h2>
@@ -11,3 +32,7 @@
           <p-chart type="line" [data]="attendanceChartData()" [options]="attendanceChartOptions()"></p-chart>
         </div>
 </div>
+}
+
+
+

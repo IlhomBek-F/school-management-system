@@ -5,24 +5,28 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <school-stats-card title="Total Classes"
                          [value]="totalClasses"
+                         [loading]="loading()"
                          rootClassName="border-cyan-500"
                          iconWrapperClassName="bg-cyan-100"
                          icon="pi pi-book text-cyan-600"></school-stats-card>
 
       <school-stats-card title="Active Classes"
                          [value]="activeClasses"
+                         [loading]="loading()"
                          rootClassName="border-teal-500"
                          iconWrapperClassName="bg-teal-100"
                          icon="pi pi-check-circle text-teal-600"></school-stats-card>
 
       <school-stats-card title="Total Enrolled"
                          [value]="totalStudents"
+                         [loading]="loading()"
                          rootClassName="border-emerald-500"
                          iconWrapperClassName="bg-emerald-100"
                          icon="pi pi-users text-emerald-600"></school-stats-card>
 
       <school-stats-card title="Avg. Capacity"
                          [value]="avgCapacity + '%'"
+                         [loading]="loading()"
                          rootClassName="border-amber-500"
                          iconWrapperClassName="bg-amber-100"
                          icon="pi pi-chart-line text-amber-600"></school-stats-card>
@@ -62,6 +66,7 @@
      @if (viewMode === 'grid') {
        <school-classes-grid-view-list [classList]="filteredClasses"
                                       (editEmitEvent)="upsertClass($event)"
+                                      [loading]="loading()"
                                       (viewDetailEmitEvent)="viewDetails($event)"
                                       />
      } @else {

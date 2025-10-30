@@ -1,3 +1,18 @@
+@if (loading()) {
+<div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500" [ngClass]="rootClassName()">
+  <div class="flex items-center justify-between">
+    <div class="flex-1">
+      <p-skeleton width="6rem" height="1rem" styleClass="mb-2 rounded-md"></p-skeleton>
+
+      <p-skeleton width="8rem" height="2rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+
+    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+      <p-skeleton shape="circle" size="2rem"></p-skeleton>
+    </div>
+  </div>
+</div>
+} @else {
 <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500" [ngClass]="rootClassName()">
   <div class="flex items-center justify-between">
     <div>
@@ -9,3 +24,4 @@
     </div>
   </div>
 </div>
+}

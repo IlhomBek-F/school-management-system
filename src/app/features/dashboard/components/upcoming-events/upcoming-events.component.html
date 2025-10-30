@@ -1,4 +1,5 @@
-<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+@if (!loading()) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
   <div class="flex items-center justify-between mb-6">
     <div>
       <h2 class="text-xl font-bold text-gray-800 mb-1">Upcoming Events</h2>
@@ -35,3 +36,37 @@
     }
   </div>
 </div>
+} @else {
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p-skeleton width="10rem" height="1.25rem" styleClass="mb-2 rounded-md"></p-skeleton>
+      <p-skeleton width="12rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+    <p-skeleton width="6rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+  </div>
+
+  <div class="space-y-3">
+     @for (i of [1,2,3,4]; track $index) {
+    <div class="flex items-start gap-3 p-4 border border-gray-200 rounded-lg transition-all cursor-pointer">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <p-skeleton shape="circle" size="3rem"></p-skeleton>
+      </div>
+
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-2">
+          <p-skeleton width="8rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+          <p-skeleton width="3rem" height="0.9rem" styleClass="rounded-full"></p-skeleton>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <p-skeleton width="6rem" height="0.75rem" styleClass="rounded-md"></p-skeleton>
+          <p-skeleton width="5rem" height="0.75rem" styleClass="rounded-md"></p-skeleton>
+        </div>
+      </div>
+    </div>
+  }
+  </div>
+</div>
+}
+

@@ -1,4 +1,8 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  <ng-container *ngTemplateOutlet="loading() ? skeleton : realCard" />
+</div>
+
+<ng-template #realCard>
   @for (teacher of teachers(); track $index) {
   <div
     class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border border-gray-100 relative overflow-hidden group">
@@ -72,4 +76,60 @@
     </div>
   </div>
   }
-</div>
+</ng-template>
+
+<ng-template #skeleton>
+  @for (i of [1, 2, 3, 4,5, 6, 7, 8]; track i) {
+    <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border border-gray-100 relative overflow-hidden group">
+      <div class="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20 bg-gray-200"></div>
+
+      <div class="relative">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex flex-col items-center w-full">
+            <p-skeleton shape="circle" size="5rem"></p-skeleton>
+
+            <div class="mt-3 text-center">
+              <p-skeleton width="7rem" height="1rem" styleClass="mb-2 rounded-md"></p-skeleton>
+              <p-skeleton width="5rem" height="0.8rem" styleClass="rounded-md"></p-skeleton>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-center mb-4">
+          <p-skeleton width="5rem" height="1.2rem" styleClass="rounded-full"></p-skeleton>
+        </div>
+
+        <div class="space-y-2 mb-4 pb-4 border-b border-gray-100">
+          <div class="flex items-center gap-2 text-gray-600 text-sm">
+            <p-skeleton width="10rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+          </div>
+          <div class="flex items-center gap-2 text-gray-600 text-sm">
+            <p-skeleton width="8rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          @for (s of [1,2,3]; track s) {
+            <div class="text-center p-2 bg-gray-50 rounded-lg">
+              <p-skeleton width="3rem" height="0.8rem" styleClass="mb-1 rounded-md"></p-skeleton>
+              <p-skeleton width="2rem" height="1rem" styleClass="rounded-md"></p-skeleton>
+            </div>
+          }
+        </div>
+
+        <div class="flex justify-center mb-4">
+          <div class="flex gap-1">
+            @for (s of [1,2,3,4,5]; track s) {
+              <p-skeleton width="1rem" height="1rem" styleClass="rounded-md"></p-skeleton>
+            }
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <p-skeleton width="70%" height="2rem" styleClass="rounded-md"></p-skeleton>
+          <p-skeleton width="40px" height="2rem" styleClass="rounded-md"></p-skeleton>
+        </div>
+      </div>
+    </div>
+  }
+</ng-template>

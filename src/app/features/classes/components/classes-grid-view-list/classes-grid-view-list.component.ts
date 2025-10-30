@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { TagModule } from "primeng/tag";
 import { Button } from "primeng/button";
-import { DialogService } from 'primeng/dynamicdialog';
-import { UpsertClassModalCompoment } from '../upsert-class-modal/upsert-class-modal.compoment';
+import { ClassesGridViewSkeletonComponent } from "../classes-grid-view-skeleton/classes-grid-view-skeleton.component";
 
 @Component({
   selector: 'school-classes-grid-view-list',
-  imports: [TagModule, CommonModule, Button],
+  imports: [TagModule, CommonModule, Button, ClassesGridViewSkeletonComponent],
   templateUrl: './classes-grid-view-list.component.html',
   styleUrl: './classes-grid-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,6 +15,7 @@ export class ClassesGridViewListComponent {
   classList = input.required<any>()
   editEmitEvent = output<any>()
   viewDetailEmitEvent = output<any>()
+  loading = input(false)
 
    addClass(): void {
     console.log('Add class clicked');

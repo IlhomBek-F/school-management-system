@@ -1,13 +1,31 @@
+@if (loading()) {
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h2 class="text-xl font-bold text-gray-800 mb-1">Grade Distribution</h2>
-            <p class="text-sm text-gray-600">Overall grades breakdown</p>
-          </div>
-          <p-button icon="pi pi-ellipsis-v" [text]="true" [rounded]="true" styleClass="p-button-sm">
-          </p-button>
-        </div>
-        <div class="h-64 flex items-center justify-center">
-          <p-chart type="doughnut" [data]="gradeChartData()" [options]="gradeChartOptions()"></p-chart>
-        </div>
-      </div>
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p-skeleton width="9rem" height="1.25rem" styleClass="mb-2 rounded-md"></p-skeleton>
+      <p-skeleton width="12rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+    <p-skeleton shape="circle" size="2rem"></p-skeleton>
+  </div>
+
+  <div class="h-64 flex items-center justify-center">
+    <div class="relative flex items-center justify-center">
+      <p-skeleton shape="circle" size="14rem"></p-skeleton>
+    </div>
+  </div>
+</div>
+} @else {
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-xl font-bold text-gray-800 mb-1">Grade Distribution</h2>
+      <p class="text-sm text-gray-600">Overall grades breakdown</p>
+    </div>
+    <p-button icon="pi pi-ellipsis-v" [text]="true" [rounded]="true" styleClass="p-button-sm">
+    </p-button>
+  </div>
+  <div class="h-64 flex items-center justify-center">
+    <p-chart type="doughnut" [data]="gradeChartData()" [options]="gradeChartOptions()"></p-chart>
+  </div>
+</div>
+}

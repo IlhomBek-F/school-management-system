@@ -1,4 +1,5 @@
-<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+@if (!loading()) {
+ <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
   <div class="flex items-center justify-between mb-6">
     <div>
       <h2 class="text-xl font-bold text-gray-800 mb-1">Recent Activities</h2>
@@ -23,3 +24,27 @@
     }
   </div>
 </div>
+} @else {
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p-skeleton width="9rem" height="1.25rem" styleClass="mb-2 rounded-md"></p-skeleton>
+      <p-skeleton width="14rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+    <p-skeleton width="4rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+  </div>
+
+  <div class="space-y-2">
+     @for (i of [1,2,3,4,5]; track $index) {
+      <div class="flex items-start gap-2 p-3 rounded-lg border border-transparent">
+        <p-skeleton shape="circle" size="2.5rem"></p-skeleton>
+
+        <div class="flex-1">
+          <p-skeleton width="80%" height="0.9rem" styleClass="rounded-md mb-2"></p-skeleton>
+          <p-skeleton width="40%" height="0.7rem" styleClass="rounded-md"></p-skeleton>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+}

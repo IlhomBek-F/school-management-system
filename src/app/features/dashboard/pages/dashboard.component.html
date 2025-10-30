@@ -11,35 +11,21 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-      @for (stat of statCards; track $index) {
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow">
-        <div class="flex items-start justify-between mb-4">
-          <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center ' + stat.bgColor">
-            <i [class]="'pi ' + stat.icon + ' text-white text-xl'"></i>
-          </div>
-          <div [class]="'flex items-center gap-1 text-sm font-semibold ' + getChangeClass(stat.change)">
-            <i [class]="'pi ' + getChangeIcon(stat.change) + ' text-xs'"></i>
-            <span>{{ stat.change }}%</span>
-          </div>
-        </div>
-        <h3 class="text-gray-600 text-sm font-medium mb-1">{{ stat.title }}</h3>
-        <p class="text-3xl font-bold text-gray-800">{{ stat.value }}</p>
-      </div>
-      }
+      <school-dashboard-stats-cards [statCards]="statCards" [loading]="loading()"/>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-      <school-dashboard-attendance [attendanceChartData]="attendanceChartData" [attendanceChartOptions]="attendanceChartOptions"/>
-      <school-dashboard-grade-chart [gradeChartData]="gradeChartData" [gradeChartOptions]="gradeChartOptions"/>
+      <school-dashboard-attendance [loading]="loading()" [attendanceChartData]="attendanceChartData" [attendanceChartOptions]="attendanceChartOptions"/>
+      <school-dashboard-grade-chart [loading]="loading()" [gradeChartData]="gradeChartData" [gradeChartOptions]="gradeChartOptions"/>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-      <school-recent-activity [recentActivities]="recentActivities"/>
-      <school-upcoming-events [upcomingEvents]="upcomingEvents" />
+      <school-recent-activity [loading]="loading()" [recentActivities]="recentActivities"/>
+      <school-upcoming-events [loading]="loading()" [upcomingEvents]="upcomingEvents" />
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <school-top-students [students]="topStudents" />
+      <school-top-students [loading]="loading()" [students]="topStudents" />
 
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div class="mb-6">

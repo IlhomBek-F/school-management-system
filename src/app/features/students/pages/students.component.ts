@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, type OnInit } from '@angular/core';
 import { Button } from "primeng/button";
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -34,6 +34,8 @@ type Student = any
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentsComponent implements OnInit {
+  loading = signal(true)
+
   students: Student[] = [
     {
       id: 1,
@@ -133,6 +135,7 @@ export class StudentsComponent implements OnInit {
   private _activeRoute = inject(ActivatedRoute)
 
   ngOnInit(): void {
+    setTimeout(() => this.loading.set(false), 3000)
     this.filteredStudents = [...this.students];
     this.calculateStats();
   }

@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Tag } from "primeng/tag";
 import { Button } from "primeng/button";
+import { SkeletonModule } from "primeng/skeleton";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'school-teacher-grid-view-list',
-  imports: [Tag, Button],
+  imports: [Tag, Button, SkeletonModule, CommonModule],
   templateUrl: './teacher-grid-view-list.component.html',
   styleUrl: './teacher-grid-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,6 +14,7 @@ import { Button } from "primeng/button";
 export class TeacherGridViewListComponent {
   teachers = input.required<any[]>()
   viewDetailEmitEvent = output<any>()
+  loading = input(false)
 
   getRatingStars(rating: number): string[] {
     const stars = [];

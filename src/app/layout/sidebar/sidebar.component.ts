@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AvatarModule } from "primeng/avatar";
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { QuickStatsComponent } from './components/quick-stats/quick-stats.component';
+import { SidebarFooterComponent } from "./components/footer/footer.component";
 
 export type SidebarItemType = {
   name: string;
@@ -12,14 +14,12 @@ export type SidebarItemType = {
 
 @Component({
   selector: 'school-sidebar',
-  imports: [AvatarModule, RouterModule, CommonModule, ButtonModule],
+  imports: [AvatarModule, RouterModule, CommonModule, ButtonModule, QuickStatsComponent, SidebarFooterComponent],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidebarComponent implements OnInit {
-  private _router = inject(Router)
-
+export class SidebarComponent {
   SIDEBAR_ITEMS: SidebarItemType[] = [{
     name: 'Dashboard',
     icon: 'pi pi-home',
@@ -51,10 +51,4 @@ export class SidebarComponent implements OnInit {
     url: '/settings',
   },
 ];
-
-  ngOnInit(): void { }
-
-  logout() {
-    this._router.navigate(['/login'])
-  }
 }

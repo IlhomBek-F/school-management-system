@@ -1,5 +1,9 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  <div *ngFor="let room of rooms()"
+   @if (loading()) {
+      <school-rooms-grid-view-skeleton />
+   } @else {
+     @for (room of rooms(); track $index) {
+  <div
     class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border-t-4 relative overflow-hidden"
     [style.border-top-color]="room.color.replace('bg-', '#')">
 
@@ -72,4 +76,6 @@
         [style]="{'width': '40px'}">
       </p-button>
   </div>
+}
+}
 </div>

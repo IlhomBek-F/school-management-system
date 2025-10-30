@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, type OnInit } from '@angular/core';
 import { PageTitleComponent } from "../../../shared/components/page-title/page-title.component";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
@@ -9,6 +9,7 @@ import { UpcomingEventsComponent } from '../components/upcoming-events/upcoming-
 import { RecentActivityComponent } from "../components/recent-activity/recent-activity.component";
 import { DashboardAttendanceComponent } from "../components/attendance/attendance.component";
 import { DashboardGradeChartComponent } from "../components/grade-chart/grade-chart.component";
+import { DashboardStatsCardsComponent } from "../components/stats-cards/stats-cards.component";
 
 interface TopStudent {
   id: number;
@@ -21,12 +22,17 @@ interface TopStudent {
 
 @Component({
   selector: 'school-dashboard',
-  imports: [PageTitleComponent, TagModule, ButtonModule, CommonModule, ChartModule, TopStudentsComponent, UpcomingEventsComponent, RecentActivityComponent, DashboardAttendanceComponent, DashboardGradeChartComponent],
+  imports: [PageTitleComponent, TagModule,
+            ButtonModule, CommonModule, ChartModule,
+            TopStudentsComponent, UpcomingEventsComponent,
+            RecentActivityComponent, DashboardAttendanceComponent,
+            DashboardGradeChartComponent, DashboardStatsCardsComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
+  loading = signal(true)
 
    statCards: any[] = [
     {
@@ -179,6 +185,7 @@ export class DashboardComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    setTimeout(() => this.loading.set(false), 3000)
     this.initializeCharts();
   }
 

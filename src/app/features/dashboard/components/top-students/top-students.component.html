@@ -1,3 +1,4 @@
+@if (!loading()) {
 <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
   <div class="flex items-center justify-between mb-6">
     <div>
@@ -32,3 +33,35 @@
     }
   </div>
 </div>
+} @else {
+<div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p-skeleton width="8rem" height="1.25rem" styleClass="mb-2 rounded-md"></p-skeleton>
+      <p-skeleton width="14rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+
+    <p-skeleton width="5rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    @for (i of [1,2,3]; track $index) {
+    <div class="relative bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-5">
+      <div class="absolute top-3 right-3">
+        <p-skeleton shape="circle" size="2rem"></p-skeleton>
+      </div>
+
+      <div class="flex flex-col items-center text-center pt-2">
+        <p-skeleton shape="circle" size="4rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="6rem" height="0.9rem" styleClass="mb-2 rounded-md"></p-skeleton>
+        <p-skeleton width="5rem" height="0.75rem" styleClass="mb-3 rounded-md"></p-skeleton>
+        <div class="flex items-center gap-2 justify-center">
+          <p-skeleton width="2rem" height="0.75rem" styleClass="rounded-md"></p-skeleton>
+          <p-skeleton width="3rem" height="1rem" styleClass="rounded-md"></p-skeleton>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+}

@@ -1,0 +1,50 @@
+  @for (i of [1, 2, 3,4,5,6]; track i) {
+  <div
+    class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border-t-4 border-blue-200 relative overflow-hidden">
+    <div class="flex items-start justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <p-skeleton shape="circle" size="3rem"></p-skeleton>
+
+        <div>
+          <p-skeleton width="7rem" height="1rem" styleClass="mb-2 rounded-md"></p-skeleton>
+          <p-skeleton width="5rem" height="0.8rem" styleClass="rounded-md"></p-skeleton>
+        </div>
+      </div>
+
+      <p-skeleton width="4rem" height="1rem" styleClass="rounded-full"></p-skeleton>
+    </div>
+
+    <div class="mb-4 pb-4 border-b border-gray-100">
+      <p-skeleton width="8rem" height="0.9rem" styleClass="rounded-md mb-1"></p-skeleton>
+      <p-skeleton width="7rem" height="0.9rem" styleClass="rounded-md mb-1"></p-skeleton>
+      <p-skeleton width="6rem" height="0.9rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+
+    <div class="mb-4">
+      <div class="flex items-center justify-between text-sm mb-2">
+        <p-skeleton width="6rem" height="0.8rem" styleClass="rounded-md"></p-skeleton>
+        <p-skeleton width="3rem" height="0.8rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+        <p-skeleton width="100%" height="0.5rem" styleClass="rounded-full"></p-skeleton>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <p-skeleton width="5rem" height="0.8rem" styleClass="mb-2 rounded-md"></p-skeleton>
+      <div class="flex flex-wrap gap-1">
+        @for (f of [1, 2, 3, 4]; track f) {
+        <p-skeleton width="3rem" height="1rem" styleClass="rounded-full"></p-skeleton>
+        }
+      </div>
+    </div>
+
+    <div class="mb-4 p-3 bg-gray-50 rounded-lg">
+      <p-skeleton width="6rem" height="0.8rem" styleClass="mb-2 rounded-md"></p-skeleton>
+      <p-skeleton width="8rem" height="0.9rem" styleClass="mb-1 rounded-md"></p-skeleton>
+      <p-skeleton width="5rem" height="0.8rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+
+    <p-skeleton width="40px" height="2rem" styleClass="rounded-md"></p-skeleton>
+  </div>
+  }

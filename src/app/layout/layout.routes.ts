@@ -12,7 +12,7 @@ export const LAYOUT_ROUTES: Routes = [
       },
       {
         path: "dashboard",
-        loadComponent: () => import("../features/dashboard/pages/dashboard.component").then(c => c.DashboardComponent),
+        loadComponent: () => import("@dashboard/dashboard.component").then(c => c.DashboardComponent),
       },
       {
         path: "students",

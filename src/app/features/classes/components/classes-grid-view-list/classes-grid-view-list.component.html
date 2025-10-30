@@ -1,4 +1,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  @if (loading()) {
+    <school-classes-grid-view-skeleton />
+  } @else {
   @for (class of classList(); track $index) {
   <div
     class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border-t-4 relative overflow-hidden group"
@@ -66,5 +69,6 @@
       </p-button>
     </div>
   </div>
+  }
   }
 </div>

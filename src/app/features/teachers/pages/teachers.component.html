@@ -3,16 +3,16 @@
     <school-page-title title="Teachers" subTitle="Manage faculty members and their information" />
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <school-stats-card title="Total Teachers" [value]="totalTeachers" icon="pi pi-user text-indigo-600"
+      <school-stats-card [loading]="loading()" title="Total Teachers" [value]="totalTeachers" icon="pi pi-user text-indigo-600"
         rootClassName="border-indigo-500" iconWrapperClassName="bg-indigo-100" />
 
-      <school-stats-card title="Avg. Experience" [value]="avgExperience + 'yrs'" icon="pi pi-briefcase text-purple-600"
+      <school-stats-card [loading]="loading()" title="Avg. Experience" [value]="avgExperience + 'yrs'" icon="pi pi-briefcase text-purple-600"
         rootClassName="border-purple-500" iconWrapperClassName="bg-purple-100 " />
 
-      <school-stats-card title="Total Students" [value]="totalStudents" icon="pi pi-users text-pink-600"
+      <school-stats-card [loading]="loading()" title="Total Students" [value]="totalStudents" icon="pi pi-users text-pink-600"
         rootClassName="border-pink-500" iconWrapperClassName="bg-pink-100" />
 
-      <school-stats-card title="Avg. Rating" [value]="avgRating" icon="pi pi-star-fill !text-amber-600"
+      <school-stats-card [loading]="loading()" title="Avg. Rating" [value]="avgRating" icon="pi pi-star-fill !text-amber-600"
         rootClassName="!border-amber-500" iconWrapperClassName="!bg-amber-100" />
     </div>
 
@@ -37,7 +37,7 @@
     </div>
 
     @if (viewMode === 'grid') {
-      <school-teacher-grid-view-list [teachers]="filteredTeachers" (viewDetailEmitEvent)="viewProfile($event)"/>
+      <school-teacher-grid-view-list [loading]="loading()" [teachers]="filteredTeachers" (viewDetailEmitEvent)="viewProfile($event)"/>
     } @else {
       <school-teacher-table-view-list [teacherList]="filteredTeachers" (viewDetailEmitEvent)="viewProfile($event)"/>
     }

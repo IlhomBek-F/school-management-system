@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, type OnInit } from '@angular/core';
 import { PageTitleComponent } from "../../../shared/components/page-title/page-title.component";
 import { DropdownModule } from "primeng/dropdown";
 import { Button } from "primeng/button";
@@ -45,6 +45,8 @@ interface Class {
 })
 
 export class ClassesComponent implements OnInit {
+  loading = signal(true)
+
   classes: Class[] = [
     {
       id: 1,
@@ -222,6 +224,7 @@ export class ClassesComponent implements OnInit {
   private _activeRoute = inject(ActivatedRoute)
 
   ngOnInit(): void {
+    setTimeout(() => this.loading.set(false), 3000)
     this.filteredClasses = [...this.classes];
     this.calculateStats();
   }

@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { ButtonModule } from "primeng/button";
 import { TagModule } from "primeng/tag";
+import { RoomsGridViewSkeletonComponent } from "../rooms-grid-view-skeleton/rooms-grid-view-skeleton.component";
 
 @Component({
   selector: 'school-rooms-grid-view-list',
-  imports: [ButtonModule, TagModule, CommonModule],
+  imports: [ButtonModule, TagModule, CommonModule, RoomsGridViewSkeletonComponent],
   templateUrl: './rooms-grid-view-list.component.html',
   styleUrl: './rooms-grid-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,6 +15,7 @@ export class RoomsGridViewListComponent {
   rooms = input.required<any[]>()
   viewDetailEmitEvent = output<any>()
   editEmitEvent = output<any>()
+  loading = input(false)
 
   viewDetails(room: any) {
    this.viewDetailEmitEvent.emit(room)
