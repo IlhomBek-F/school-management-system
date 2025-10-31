@@ -1,174 +1,31 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6">
   <div class="w-full mx-auto">
     <div class="mb-6">
-      <button
-        pButton
-        icon="pi pi-arrow-left"
-        label="Back to Students"
-        [text]="true"
-        routerLink="/students"
+      <button pButton icon="pi pi-arrow-left" label="Back to Students" [text]="loading()" routerLink="/students"
         styleClass="p-button-secondary mb-4">
       </button>
     </div>
 
-    <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-6">
-      <div class="h-[70px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-[30px]"></div>
-      <div class="px-8 pb-6">
-        <div class="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-16">
-          <div [class]="'w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-4xl shadow-xl border-4 border-white ' + student.color">
-            {{ student.avatar }}
-          </div>
+    <school-student-view-detail-header [student]="student" [loading]="loading()" />
 
-          <div class="flex-1">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
-                <div class="flex items-center gap-3 mb-2">
-                  <h1 class="text-3xl font-bold text-gray-800">
-                    {{ student.first_name }} {{ student.last_name }}
-                  </h1>
-                  <p-tag [value]="student.status"
-                         [severity]="getStatusSeverity(student.status)"></p-tag>
-                </div>
-                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                  <span class="flex items-center gap-2">
-                    <i class="pi pi-id-card"></i>
-                    {{ student.student_id }}
-                  </span>
-                  <span class="flex items-center gap-2">
-                    <i class="pi pi-graduation-cap"></i>
-                    {{ student.grade }} - {{ student.class }}
-                  </span>
-                  <span class="flex items-center gap-2">
-                    <i class="pi pi-envelope"></i>
-                    {{ student.email }}
-                  </span>
-                  <span class="flex items-center gap-2">
-                    <i class="pi pi-phone"></i>
-                    {{ student.phone }}
-                  </span>
-                </div>
-              </div>
-
-              <div class="flex gap-2">
-                <p-button
-                  icon="pi pi-envelope"
-                  [rounded]="true"
-                  [outlined]="true"
-                  severity="secondary"
-                  (onClick)="sendMessage()">
-                </p-button>
-                <p-button
-                  icon="pi pi-download"
-                  [rounded]="true"
-                  [outlined]="true"
-                  severity="secondary"
-                  (onClick)="downloadReport()">
-                </p-button>
-                <p-button
-                  icon="pi pi-pencil"
-                  label="Edit"
-                  (onClick)="editStudent()">
-                </p-button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-          <ng-container *ngTemplateOutlet="statusCard;
-                        context: {
-                        data: {
-                          label: 'GPA',
-                          value: student.gpa,
-                          icon: 'pi pi-chart-line',
-                          rootClassName: 'from-blue-50 to-indigo-50',
-                          iconWrapperClassName: 'bg-blue-500'
-                        }}" />
-
-          <ng-container *ngTemplateOutlet="statusCard;
-                        context: {
-                          data: {
-                            label: 'Attendance',
-                            value: student.attendance + '%',
-                            icon: 'pi pi-calendar',
-                            rootClassName: 'from-green-50 to-emerald-50',
-                            iconWrapperClassName: 'bg-green-500'
-                        }}" />
-
-          <ng-container *ngTemplateOutlet="statusCard;
-                        context: {
-                          data: {
-                            label: 'Subjects',
-                            value: subjects.length,
-                            icon: 'pi pi-book',
-                            rootClassName: 'from-purple-50 to-pink-50',
-                            iconWrapperClassName: 'bg-purple-500'
-                        }}" />
-
-          <ng-container *ngTemplateOutlet="statusCard;
-                        context: {
-                          data: {
-                            label: 'Year',
-                            value: '4th Year',
-                            icon: 'pi pi-calendar',
-                            rootClassName: 'from-orange-50 to-amber-50',
-                            iconWrapperClassName: 'bg-orange-500'
-                        }}" />
-        </div>
-      </div>
-    </div>
-
-    <!-- Tabs Navigation -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 mb-6">
-      <div class="flex flex-wrap gap-2">
-        @for (tab of tabItems; track $index) {
-           <button (click)="setActiveTab(tab.value)"
-                   [class.bg-gradient-to-r]="activeTab === tab.value"
-                   [class.from-indigo-500]="activeTab === tab.value"
-                   [class.to-purple-500]="activeTab === tab.value"
-                   [class.text-white]="activeTab === tab.value"
-                   [class.shadow-md]="activeTab === tab.value"
-                   class="px-6 py-3 rounded-lg cursor-pointer font-medium text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2">
-                  <i [class]="tab.icon"></i>
-                  <span>{{tab.title}}</span>
-           </button>
-        }
-      </div>
-    </div>
+      <p-tabView [(activeIndex)]="activeIndex">
+        <p-tabPanel header="Overview" leftIcon="pi pi-home" class="bg-transparent">
+            <school-overview [student]="student" [loading]="loading()" [performanceChartData]="performanceChartData"
+              [performanceChartOptions]="performanceChartOptions" />
+        </p-tabPanel>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 space-y-6">
-          @switch (activeTab) {
-            @case ('overview') {
-              <school-overview [student]="student"
-                               [performanceChartData]="performanceChartData"
-                               [performanceChartOptions]="performanceChartOptions"/>
-            }
-            @case ('subjects') {
-              <school-subjects [subjects]="subjects"/>
-            }
-            @case ('attendance') {
-              <school-attendance [recentAttendance]="recentAttendance"
-                                 [attendanceChartData]="attendanceChartData"
-                                 [attendanceChartOptions]="attendanceChartOptions"/>
-            }
-            @case ('activity') {
-              <school-activity [activityLogs]="activityLogs"/>
-            }
-          }
-      </div>
-    </div>
+        <p-tabPanel header="Subjects" leftIcon="pi pi-book" [disabled]="loading()">
+          <school-subjects [subjects]="subjects" />
+        </p-tabPanel>
 
-<ng-template #statusCard let-data="data">
-  <div [class]="'bg-gradient-to-br rounded-lg p-4 border border-blue-100 ' + data.rootClassName" >
-            <div class="flex items-center gap-3">
-              <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center ' + data.iconWrapperClassName">
-                <i [class]="data.icon + ' text-white'"></i>
-              </div>
-              <div>
-                <p class="text-xs text-gray-600 mb-1">{{data.label}}</p>
-                <p class="text-2xl font-bold text-gray-800">{{ data.value }}</p>
-              </div>
-            </div>
-  </div>
-</ng-template>
+        <p-tabPanel header="Attendance" leftIcon="pi pi-calendar" [disabled]="loading()">
+            <school-attendance [recentAttendance]="recentAttendance" [attendanceChartData]="attendanceChartData"
+              [attendanceChartOptions]="attendanceChartOptions" />
+        </p-tabPanel>
+
+        <p-tabPanel header="Activity" leftIcon="pi pi-history" [disabled]="loading()">
+          <school-activity [activityLogs]="activityLogs" />
+        </p-tabPanel>
+      </p-tabView>
+    </div>

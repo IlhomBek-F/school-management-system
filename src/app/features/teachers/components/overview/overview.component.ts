@@ -6,6 +6,11 @@ import { ChartModule } from "primeng/chart";
   selector: 'school-overview',
   imports: [TagModule, ChartModule],
   templateUrl: './overview.component.html',
+  styles: `
+     :host {
+    display: block
+     }
+   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent {

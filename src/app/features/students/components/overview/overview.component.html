@@ -1,4 +1,7 @@
-<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+@if (loading()) {
+<ng-container *ngTemplateOutlet="skeleton"></ng-container>
+} @else {
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-3">
   <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
     <i class="pi pi-user text-indigo-600"></i>
     Personal Information
@@ -28,7 +31,7 @@
   </div>
 </div>
 
-<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-3">
   <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
     <i class="pi pi-map-marker text-indigo-600"></i>
     Contact Information
@@ -45,7 +48,7 @@
   </div>
 </div>
 
-<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-3">
   <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
     <i class="pi pi-graduation-cap text-indigo-600"></i>
     Academic Information
@@ -77,3 +80,73 @@
     <p-chart type="radar" [data]="performanceChartData()" [options]="performanceChartOptions()"></p-chart>
   </div>
 </div>
+}
+
+<ng-template #skeleton>
+  <div class="space-y-4">
+    <!-- Personal Information Skeleton -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center gap-2 mb-4">
+        <p-skeleton width="1.5rem" height="1.5rem" shape="circle"></p-skeleton>
+        <p-skeleton width="10rem" height="1.5rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @for (i of [1, 2, 3]; track i) {
+        <div class="flex items-start gap-3">
+          <p-skeleton shape="circle" width="1.25rem" height="1.25rem" styleClass="mt-1"></p-skeleton>
+          <div class="flex flex-col gap-1">
+            <p-skeleton width="5rem" height="0.75rem"></p-skeleton>
+            <p-skeleton width="8rem" height="1rem"></p-skeleton>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Contact Information Skeleton -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center gap-2 mb-4">
+        <p-skeleton width="1.5rem" height="1.5rem" shape="circle"></p-skeleton>
+        <p-skeleton width="12rem" height="1.5rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+      <div class="flex items-start gap-3">
+        <p-skeleton shape="circle" width="1.25rem" height="1.25rem" styleClass="mt-1"></p-skeleton>
+        <div class="flex flex-col gap-1">
+          <p-skeleton width="6rem" height="0.75rem"></p-skeleton>
+          <p-skeleton width="10rem" height="1rem"></p-skeleton>
+          <p-skeleton width="8rem" height="0.75rem"></p-skeleton>
+        </div>
+      </div>
+    </div>
+
+    <!-- Academic Information Skeleton -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center gap-2 mb-4">
+        <p-skeleton width="1.5rem" height="1.5rem" shape="circle"></p-skeleton>
+        <p-skeleton width="13rem" height="1.5rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @for (i of [1, 2]; track i) {
+        <div class="flex items-start gap-3">
+          <p-skeleton shape="circle" width="1.25rem" height="1.25rem" styleClass="mt-1"></p-skeleton>
+          <div class="flex flex-col gap-1">
+            <p-skeleton width="7rem" height="0.75rem"></p-skeleton>
+            <p-skeleton width="9rem" height="1rem"></p-skeleton>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Subject Performance Chart Skeleton -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center gap-2 mb-4">
+        <p-skeleton width="1.5rem" height="1.5rem" shape="circle"></p-skeleton>
+        <p-skeleton width="11rem" height="1.5rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+      <div class="h-80 flex items-center justify-center">
+        <p-skeleton width="16rem" height="16rem" borderRadius="50%"></p-skeleton>
+      </div>
+    </div>
+  </div>
+</ng-template>

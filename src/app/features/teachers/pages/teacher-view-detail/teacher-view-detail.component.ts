@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { TagModule } from "primeng/tag";
 import { ChartModule } from "primeng/chart";
 import { ButtonModule } from "primeng/button";
@@ -10,6 +10,8 @@ import { ScheduleComponent } from '../../components/schedule/schedule.component'
 import { StudentsComponent } from '../../components/students/students.component';
 import { ActivityComponent } from '../../components/activity/activity.component';
 import { UpsertTeacherModalComponent } from '../../components/upsert-teacher-modal/upsert-teacher-modal.component';
+import { TabViewModule } from "primeng/tabview";
+import { TeacherViewDetailHeaderComponent } from "../../components/teacher-view-detail-header/teacher-view-detail-header.component";
 
 interface Teacher {
   id: number;
@@ -82,13 +84,14 @@ interface ActivityLog {
 
 @Component({
   selector: 'school-teacher-view-detail',
-  imports: [TagModule, ChartModule, ButtonModule, CommonModule, OverviewComponent, ClassesComponent, ScheduleComponent, StudentsComponent, ActivityComponent],
+  imports: [TagModule, ChartModule, ButtonModule, CommonModule, OverviewComponent, ClassesComponent, ScheduleComponent, StudentsComponent, ActivityComponent, TabViewModule, TeacherViewDetailHeaderComponent],
   templateUrl: './teacher-view-detail.component.html',
   styleUrl: './teacher-view-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeacherViewDetailComponent {
-  activeTab: string = 'overview';
+  activeIndex = 0;
+  loading = signal(true)
 
   tabItems = [
     {
@@ -333,6 +336,7 @@ export class TeacherViewDetailComponent {
   private _dialogService = inject(DialogService)
 
   ngOnInit(): void {
+    setTimeout(() => this.loading.set(false), 3000)
     this.initializeCharts();
   }
 
@@ -395,55 +399,5 @@ export class TeacherViewDetailComponent {
         }
       }
     };
-  }
-
-  setActiveTab(tab: string): void {
-    this.activeTab = tab;
-  }
-
-  getStatusSeverity(status: string): string {
-    return status === 'Active' ? 'success' : 'warning';
-  }
-
-  getRatingStars(rating: number): string[] {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push('full');
-    }
-    if (hasHalfStar) {
-      stars.push('half');
-    }
-    while (stars.length < 5) {
-      stars.push('empty');
-    }
-    return stars;
-  }
-
-  editTeacher(): void {
-    const dialogRef = this._dialogService.open<any>(UpsertTeacherModalComponent, {
-      focusOnShow: false,
-      dismissableMask: true,
-      modal: true,
-      header: 'Edit teacher info',
-      width: '45%',
-      data: {
-        teacher: this.teacher,
-        footer: {
-          onConfirm: (formValue: any) => console.log(formValue),
-          onCancel: () => dialogRef.close()
-        }
-      }
-    })
-  }
-
-  downloadReport(): void {
-    console.log('Download report');
-  }
-
-  sendMessage(): void {
-    console.log('Send message');
   }
 }

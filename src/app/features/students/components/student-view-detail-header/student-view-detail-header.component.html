@@ -1,0 +1,85 @@
+<div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-6">
+  <div class="h-[70px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-[30px]"></div>
+  <div class="px-8 pb-6">
+    @if (loading()) {
+        <ng-container *ngTemplateOutlet="skeleton"></ng-container>
+    } @else {
+    <div class="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-16">
+      <div
+        [class]="'w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-4xl shadow-xl border-4 border-white ' + student().color">
+        {{ student().avatar }}
+      </div>
+
+      <div class="flex-1">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-3 mb-2">
+              <h1 class="text-3xl font-bold text-gray-800">
+                {{ student().first_name }} {{ student().last_name }}
+              </h1>
+              <p-tag [value]="student().status"
+                [severity]="student().status === 'Active' ? 'success' : 'warning'"></p-tag>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+              <span class="flex items-center gap-2">
+                <i class="pi pi-id-card"></i>
+                {{ student().student_id }}
+              </span>
+              <span class="flex items-center gap-2">
+                <i class="pi pi-graduation-cap"></i>
+                {{ student().grade }} - {{ student().class }}
+              </span>
+              <span class="flex items-center gap-2">
+                <i class="pi pi-envelope"></i>
+                {{ student().email }}
+              </span>
+              <span class="flex items-center gap-2">
+                <i class="pi pi-phone"></i>
+                {{ student().phone }}
+              </span>
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <p-button icon="pi pi-envelope" [rounded]="true" [outlined]="true" severity="secondary"
+              (onClick)="sendMessage()">
+            </p-button>
+            <p-button icon="pi pi-download" [rounded]="true" [outlined]="true" severity="secondary"
+              (onClick)="downloadReport()">
+            </p-button>
+            <p-button icon="pi pi-pencil" label="Edit" (onClick)="editStudent()">
+            </p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+    <school-student-view-detail-status-cards [student]="student()" [loading]="loading()" />
+  </div>
+</div>
+
+<ng-template #skeleton>
+  <div class="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-20">
+    <p-skeleton shape="square" width="8rem" height="8rem" styleClass="shadow-xl border-4 border-white"></p-skeleton>
+
+    <div class="flex-1 space-y-3 w-full">
+      <div class="flex flex-wrap items-center gap-3">
+        <p-skeleton width="12rem" height="1.75rem" styleClass="rounded-md"></p-skeleton>
+        <p-skeleton width="4rem" height="1.25rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <p-skeleton width="6rem" height="1rem" styleClass="rounded-md"></p-skeleton>
+        <p-skeleton width="8rem" height="1rem" styleClass="rounded-md"></p-skeleton>
+        <p-skeleton width="10rem" height="1rem" styleClass="rounded-md"></p-skeleton>
+        <p-skeleton width="7rem" height="1rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+
+    </div>
+    <div class="flex gap-2 mt-2">
+      <p-skeleton shape="circle" width="2.5rem" height="2.5rem"></p-skeleton>
+      <p-skeleton shape="circle" width="2.5rem" height="2.5rem"></p-skeleton>
+      <p-skeleton width="5rem" height="2.5rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+  </div>
+</ng-template>

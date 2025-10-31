@@ -1,0 +1,56 @@
+<div class="grid md:grid-cols-3 gap-4 mt-6">
+  @if (loading()) {
+    <ng-container *ngTemplateOutlet="skeleton"></ng-container>
+  } @else {
+ <div class="bg-gradient-to-br rounded-lg p-4 border border-blue-100 from-blue-50 to-indigo-50">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500">
+        <i class="pi pi-briefcase text-white"></i>
+      </div>
+      <div>
+        <p class="text-xs text-gray-600 mb-1">Experience</p>
+        <p class="text-2xl font-bold text-gray-800">{{ teacher().experience }}</p>
+      </div>
+    </div>
+  </div>
+
+<div class="bg-gradient-to-br rounded-lg p-4 border border-blue-100 from-purple-50 to-pink-50">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-purple-500">
+        <i class="pi pi-book text-white"></i>
+      </div>
+      <div>
+        <p class="text-xs text-gray-600 mb-1">Classes</p>
+        <p class="text-2xl font-bold text-gray-800">{{ teacher().total_classes }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-gradient-to-br rounded-lg p-4 border border-blue-100 from-green-50 to-emerald-50">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-green-500">
+        <i class="pi pi-users text-white"></i>
+      </div>
+      <div>
+        <p class="text-xs text-gray-600 mb-1">Students</p>
+        <p class="text-2xl font-bold text-gray-800">{{ teacher().total_students }}</p>
+      </div>
+    </div>
+</div>
+  }
+</div>
+
+<ng-template #skeleton>
+  @for (i of [1,2,3]; track $index) {
+  <div class="bg-gradient-to-br rounded-lg p-4 border border-blue-100 from-blue-50 to-indigo-50">
+    <div class="flex items-center gap-3">
+      <p-skeleton shape="circle" size="2.5rem"></p-skeleton>
+
+      <div>
+        <p-skeleton width="2rem" height="0.75rem" styleClass="mb-2 rounded-md"></p-skeleton>
+        <p-skeleton width="3rem" height="1.5rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+    </div>
+  </div>
+  }
+</ng-template>

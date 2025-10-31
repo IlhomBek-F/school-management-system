@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { TagModule } from "primeng/tag";
 import { ChartModule } from "primeng/chart";
 import { ButtonModule } from "primeng/button";
@@ -10,6 +10,8 @@ import { SubjectsComponent } from '../../components/subjects/subjects.component'
 import { AttendanceComponent } from '../../components/attendance/attendance.component';
 import { ActivityComponent } from '../../components/activity/activity.component';
 import { UpsertStudentModalComponent } from '../../components/upsert-student-modal/upsert-student-modal.component';
+import { StudentViewDetailHeaderComponent } from "../../components/student-view-detail-header/student-view-detail-header.component";
+import { TabViewModule } from "primeng/tabview";
 
 interface Student {
   id: number;
@@ -62,14 +64,15 @@ interface ActivityLog {
 
 @Component({
   selector: 'school-student-view-profile',
-  imports: [TagModule, ChartModule, ButtonModule, CommonModule, RouterLink, OverviewComponent, SubjectsComponent, AttendanceComponent, ActivityComponent],
+  imports: [TagModule, ChartModule, ButtonModule, CommonModule, RouterLink, OverviewComponent, SubjectsComponent, AttendanceComponent, ActivityComponent, StudentViewDetailHeaderComponent, TabViewModule],
   templateUrl: './student-view-profile.component.html',
   styleUrl: './student-view-profile.component.scss',
   providers: [DialogService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentViewProfileComponent {
-  activeTab: string = 'overview';
+  activeIndex: number = 0;
+  loading = signal(true)
 
   tabItems = [
     {
@@ -93,8 +96,6 @@ export class StudentViewProfileComponent {
       icon: 'pi pi-history'
     },
   ];
-
-  private _dialogService = inject(DialogService)
 
   student: Student = {
     id: 1,
@@ -223,6 +224,7 @@ export class StudentViewProfileComponent {
   attendanceChartOptions: any;
 
   ngOnInit(): void {
+    setTimeout(() => this.loading.set(false), 4000)
     this.initializeCharts();
   }
 
@@ -293,14 +295,6 @@ export class StudentViewProfileComponent {
     };
   }
 
-  setActiveTab(tab: string): void {
-    this.activeTab = tab;
-  }
-
-  getStatusSeverity(status: string): string {
-    return status === 'Active' ? 'success' : 'warning';
-  }
-
   getAttendanceStatusColor(status: string): string {
     switch (status) {
       case 'Present': return 'text-green-600 bg-green-50';
@@ -308,32 +302,5 @@ export class StudentViewProfileComponent {
       case 'Late': return 'text-orange-600 bg-orange-50';
       default: return 'text-gray-600 bg-gray-50';
     }
-  }
-
-  editStudent(): void {
-        const dialogRef = this._dialogService.open<any>(UpsertStudentModalComponent, {
-           focusOnShow: false,
-           dismissableMask: true,
-           modal: true,
-           header: 'Edit student info',
-           width: '45%',
-           data: {
-             student: this.student,
-             footer: {
-               onConfirm: (formValue: any) => console.log(formValue),
-               onCancel: () => dialogRef.close()
-             }
-           }
-         })
-        // Implement add student logic
-        console.log('Add student clicked');
-  }
-
-  downloadReport(): void {
-    console.log('Download report');
-  }
-
-  sendMessage(): void {
-    console.log('Send message');
   }
 }

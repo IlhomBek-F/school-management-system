@@ -6,151 +6,32 @@
       </button>
     </div>
 
-    <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-6">
-      <div class="h-[70px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-[30px]"></div>
-      <div class="px-8 pb-6">
-        <div class="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-16">
-          <div
-            [class]="'w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-4xl shadow-xl border-4 border-white ' + teacher.color">
-            {{ teacher.avatar }}
-          </div>
+    <school-teacher-view-detail-header [teacher]="teacher" [loading]="loading()"/>
 
-          <div class="flex-1">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
-                <div class="flex items-center gap-3 mb-2">
-                  <h1 class="text-3xl font-bold text-gray-800">
-                    {{ teacher.first_name }} {{ teacher.last_name }}
-                  </h1>
-                  <p-tag [value]="teacher.status" [severity]="getStatusSeverity(teacher.status)">
-                  </p-tag>
-                </div>
-                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-2">
-                  <span class="flex items-center gap-2">
-                    <i class="pi pi-id-card"></i>
-                    {{ teacher.teacher_id }}
-                  </span>
-                  <span class="flex items-center gap-2">
-                    <i class="pi pi-briefcase"></i>
-                    {{ teacher.department }}
-                  </span>
-                  <span class="flex items-center gap-2">
-                    <i class="pi pi-envelope"></i>
-                    {{ teacher.email }}
-                  </span>
-                  <span class="flex items-center gap-2">
-                    <i class="pi pi-phone"></i>
-                    {{ teacher.phone }}
-                  </span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-sm text-gray-600">Rating:</span>
-                  <div class="flex gap-1">
-                    <i *ngFor="let star of getRatingStars(teacher.rating)" [class]="star === 'full' ? 'pi pi-star-fill text-amber-400' :
-                                star === 'half' ? 'pi pi-star-half-fill text-amber-400' :
-                                'pi pi-star text-gray-300'">
-                    </i>
-                  </div>
-                  <span class="text-sm font-semibold text-gray-800">{{ teacher.rating }}</span>
-                </div>
-              </div>
-
-              <div class="flex gap-2">
-                <p-button icon="pi pi-envelope" [rounded]="true" [outlined]="true" severity="secondary"
-                  (onClick)="sendMessage()">
-                </p-button>
-                <p-button icon="pi pi-download" [rounded]="true" [outlined]="true" severity="secondary"
-                  (onClick)="downloadReport()">
-                </p-button>
-                <p-button icon="pi pi-pencil" label="Edit" (onClick)="editTeacher()">
-                </p-button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-          <ng-container *ngTemplateOutlet="statusCard;
-                        context: {
-                        data: {
-                          label: 'Experience',
-                          value: teacher.experience,
-                          icon: 'pi pi-briefcase',
-                          rootClassName: 'from-blue-50 to-indigo-50',
-                          iconWrapperClassName: 'bg-blue-500'
-                        }}" />
-
-          <ng-container *ngTemplateOutlet="statusCard;
-                        context: {
-                          data: {
-                            label: 'Classes',
-                            value: teacher.total_classes,
-                            icon: 'pi pi-book',
-                            rootClassName: 'from-purple-50 to-pink-50',
-                            iconWrapperClassName: 'bg-purple-500'
-                        }}" />
-
-          <ng-container *ngTemplateOutlet="statusCard;
-                        context: {
-                          data: {
-                            label: 'Students',
-                            value: teacher.total_students,
-                            icon: 'pi pi-users',
-                            rootClassName: 'from-green-50 to-emerald-50',
-                            iconWrapperClassName: 'bg-green-500'
-                        }}" />
-
-          <ng-container *ngTemplateOutlet="statusCard;
-                        context: {
-                          data: {
-                            label: 'Year',
-                            value: '4th Year',
-                            icon: 'pi pi-graduation-cap',
-                            rootClassName: 'from-orange-50 to-amber-50',
-                            iconWrapperClassName: 'bg-orange-500'
-                        }}" />
-        </div>
-      </div>
-    </div>
-
-    <!-- Tabs Navigation -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 mb-6">
-      <div class="flex flex-wrap gap-2">
-        @for (tab of tabItems; track $index) {
-        <button (click)="setActiveTab(tab.value)" [class.bg-gradient-to-r]="activeTab === tab.value"
-          [class.from-indigo-500]="activeTab === tab.value" [class.to-purple-500]="activeTab === tab.value"
-          [class.text-white]="activeTab === tab.value" [class.shadow-md]="activeTab === tab.value"
-          class="px-6 py-3 rounded-lg cursor-pointer font-medium text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2">
-          <i [class]="tab.icon"></i>
-          <span>{{tab.title}}</span>
-        </button>
-        }
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 space-y-6">
-        @switch (activeTab) {
-        @case ('overview') {
-        <school-overview [teacher]="teacher" [performanceChartData]="performanceChartData"
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <p-tabView [(activeIndex)]="activeIndex">
+        <p-tabPanel header="Overview" leftIcon="pi pi-home" >
+             <school-overview [teacher]="teacher" [performanceChartData]="performanceChartData"
           [performanceChartOptions]="performanceChartOptions" />
-        }
-        @case ('classes') {
-        <school-classes [classes]="classes" />
-        }
-        @case ('schedule') {
-        <school-schedule [weekSchedule]="weekSchedule" />
-        }
-        @case ('students') {
-        <school-students [topStudents]="topStudents" [studentProgressChartData]="studentProgressChartData"
+        </p-tabPanel>
+
+        <p-tabPanel header="Classes" leftIcon="pi pi-book" [disabled]="loading()">
+          <school-classes [classes]="classes" />
+        </p-tabPanel>
+
+        <p-tabPanel header="Schedule" leftIcon="pi pi-calendar" [disabled]="loading()">
+           <school-schedule [weekSchedule]="weekSchedule" />
+        </p-tabPanel>
+
+        <p-tabPanel header="Students" leftIcon="pi pi-history" [disabled]="loading()">
+          <school-students [topStudents]="topStudents" [studentProgressChartData]="studentProgressChartData"
           [studentProgressChartOptions]="studentProgressChartOptions" />
-        }
-        @case ('activity') {
-        <school-activity [activityLogs]="activityLogs" />
-        }
-        }
-      </div>
+        </p-tabPanel>
+
+        <p-tabPanel header="Activity" leftIcon="pi pi-history" [disabled]="loading()">
+          <school-activity [activityLogs]="activityLogs" />
+        </p-tabPanel>
+      </p-tabView>
 
       <!-- Sidebar -->
       <div class="space-y-6">
@@ -281,17 +162,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #statusCard let-data="data">
-  <div [class]="'bg-gradient-to-br rounded-lg p-4 border border-blue-100 ' + data.rootClassName">
-    <div class="flex items-center gap-3">
-      <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center ' + data.iconWrapperClassName">
-        <i [class]="data.icon + ' text-white'"></i>
-      </div>
-      <div>
-        <p class="text-xs text-gray-600 mb-1">{{data.label}}</p>
-        <p class="text-2xl font-bold text-gray-800">{{ data.value }}</p>
-      </div>
-    </div>
-  </div>
-</ng-template>

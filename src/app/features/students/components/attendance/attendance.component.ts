@@ -6,6 +6,9 @@ import { ChartModule } from "primeng/chart";
   selector: 'school-attendance',
   imports: [TagModule, ChartModule],
   templateUrl: './attendance.component.html',
+  styles: `:host {
+    display: contents
+  }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttendanceComponent {
