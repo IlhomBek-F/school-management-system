@@ -4,14 +4,16 @@ import { ChartModule } from "primeng/chart";
 import { ButtonModule } from "primeng/button";
 import { CommonModule } from '@angular/common';
 import { DialogService } from 'primeng/dynamicdialog';
-import { OverviewComponent } from '../../components/overview/overview.component';
-import { ClassesComponent } from '../../components/classes/classes.component';
-import { ScheduleComponent } from '../../components/schedule/schedule.component';
-import { StudentsComponent } from '../../components/students/students.component';
-import { ActivityComponent } from '../../components/activity/activity.component';
-import { UpsertTeacherModalComponent } from '../../components/upsert-teacher-modal/upsert-teacher-modal.component';
 import { TabViewModule } from "primeng/tabview";
-import { TeacherViewDetailHeaderComponent } from "../../components/teacher-view-detail-header/teacher-view-detail-header.component";
+import { OverviewComponent } from '../../components/tabs/overview/overview.component';
+import { ClassesComponent } from '../../components/tabs/classes/classes.component';
+import { ScheduleComponent } from '../../components/tabs/schedule/schedule.component';
+import { StudentsComponent } from '../../components/tabs/students/students.component';
+import { ActivityComponent } from '../../components/tabs/activity/activity.component';
+import { TeacherViewDetailHeaderComponent } from '../../components/view-detail/teacher-view-detail-header/teacher-view-detail-header.component';
+import { QuickActionsComponent } from "../../components/view-detail/quick-actions/quick-actions.component";
+import { EmploymentComponent } from "../../components/view-detail/employment/employment.component";
+import { SubjectsComponent } from "../../components/view-detail/subjects/subjects.component";
 
 interface Teacher {
   id: number;
@@ -84,7 +86,10 @@ interface ActivityLog {
 
 @Component({
   selector: 'school-teacher-view-detail',
-  imports: [TagModule, ChartModule, ButtonModule, CommonModule, OverviewComponent, ClassesComponent, ScheduleComponent, StudentsComponent, ActivityComponent, TabViewModule, TeacherViewDetailHeaderComponent],
+  imports: [TagModule, ChartModule, ButtonModule, CommonModule,
+    OverviewComponent, ClassesComponent, ScheduleComponent,
+    StudentsComponent, ActivityComponent, TabViewModule, TeacherViewDetailHeaderComponent, QuickActionsComponent,
+    EmploymentComponent, SubjectsComponent],
   templateUrl: './teacher-view-detail.component.html',
   styleUrl: './teacher-view-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,0 +1,32 @@
+<div class="flex justify-end mb-4">
+  <p-button label="Create Assignment" icon="pi pi-plus" (onClick)="onCreateAssignment()"></p-button>
+</div>
+<p-table [value]="assignments()" styleClass="text-sm">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Assignment Title</th>
+      <th pSortableColumn="dueDate">Due Date <p-sortIcon field="dueDate"></p-sortIcon></th>
+      <th>Status</th>
+      <th>Submissions</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-assignment>
+    <tr>
+      <td>{{ assignment.title }}</td>
+      <td>{{ assignment.dueDate }}</td>
+      <td>
+        <p-badge [value]="assignment.status" [severity]="getStatusSeverity(assignment.status)"></p-badge>
+      </td>
+      <td>{{ assignment.submissions }}</td>
+      <td>
+        <div class="flex gap-2">
+          <p-button icon="pi pi-pencil" styleClass="p-button-text p-button-sm" pTooltip="Edit"
+            (onClick)="onEditAssignment(assignment)"></p-button>
+          <p-button icon="pi pi-eye" styleClass="p-button-text p-button-sm" pTooltip="View Details"
+            (onClick)="onViewAssignment(assignment)"></p-button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

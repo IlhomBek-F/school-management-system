@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { DialogService } from 'primeng/dynamicdialog';
-import { UpsertTeacherModalComponent } from '../upsert-teacher-modal/upsert-teacher-modal.component';
+import { UpsertTeacherModalComponent } from '../../upsert-teacher-modal/upsert-teacher-modal.component';
 
 @Component({
   selector: 'school-teacher-view-detail-header',

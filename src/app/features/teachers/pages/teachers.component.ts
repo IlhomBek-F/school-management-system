@@ -13,8 +13,8 @@ import { SelectInputComponent } from "@shared/components/dynamic-form/select-inp
 import { DialogService } from 'primeng/dynamicdialog';
 import { UpsertTeacherModalComponent } from '../components/upsert-teacher-modal/upsert-teacher-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TeacherGridViewListComponent } from '../components/teacher-grid-view-list/teacher-grid-view-list.component';
-import { TeacherTableViewListComponent } from '../components/teacher-table-view-list/teacher-table-view-list.component';
+import { TeacherTableViewListComponent } from '../components/view-list/teacher-table-view-list/teacher-table-view-list.component';
+import { TeacherGridViewListComponent } from '../components/view-list/teacher-grid-view-list/teacher-grid-view-list.component';
 
 @Component({
   selector: 'school-teachers',

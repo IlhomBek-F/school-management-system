@@ -1,0 +1,83 @@
+<div class="space-y-4">
+  @if (loading()) {
+  <ng-container *ngTemplateOutlet="skeleton"></ng-container>
+  } @else {
+  <div>
+    <h3 class="text-lg font-semibold text-gray-800 mb-2">Course Description</h3>
+    <p class="text-gray-600 leading-relaxed">{{ classData().description }}</p>
+  </div>
+  <p-divider></p-divider>
+  <div>
+    <h3 class="text-lg font-semibold text-gray-800 mb-3">Topics Covered</h3>
+    <div class="flex flex-wrap gap-2">
+      @for (tag of classData().tags; track $index) {
+      <p-chip [label]="tag" styleClass="bg-gray-100"></p-chip>
+      }
+    </div>
+  </div>
+  <p-divider></p-divider>
+  <div>
+    <h3 class="text-lg font-semibold text-gray-800 mb-3">Course Schedule</h3>
+    <p-table [value]="schedule()" styleClass="text-sm">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 15%">Week</th>
+          <th>Topic</th>
+          <th style="width: 20%">Date</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{ item.week }}</td>
+          <td>{{ item.topic }}</td>
+          <td>{{ item.date }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  }
+</div>
+
+<ng-template #skeleton>
+  <div class="space-y-4">
+    <div>
+      <p-skeleton width="10rem" height="1.25rem" styleClass="mb-2 rounded-md"></p-skeleton>
+      <div class="flex flex-col gap-1">
+        <p-skeleton width="100%" height="0.75rem" styleClass="rounded-md"></p-skeleton>
+        <p-skeleton width="95%" height="0.75rem" styleClass="rounded-md"></p-skeleton>
+        <p-skeleton width="80%" height="0.75rem" styleClass="rounded-md"></p-skeleton>
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <div>
+      <p-skeleton width="9rem" height="1.25rem" styleClass="mb-3 rounded-md"></p-skeleton>
+      <div class="flex flex-wrap gap-2">
+        @for (item of [1,2,3,4,5]; track $index) {
+        <p-skeleton width="5rem" height="1.5rem" styleClass="rounded-full"></p-skeleton>
+        }
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <div>
+      <p-skeleton width="10rem" height="1.25rem" styleClass="mb-3 rounded-md"></p-skeleton>
+      <div class="border border-gray-200 rounded-lg overflow-hidden">
+        <div class="grid grid-cols-3 bg-gray-50 p-2">
+          <p-skeleton width="4rem" height="1rem"></p-skeleton>
+          <p-skeleton width="6rem" height="1rem"></p-skeleton>
+          <p-skeleton width="5rem" height="1rem"></p-skeleton>
+        </div>
+        @for (i of [1,2,3,4]; track $index) {
+        <div *ngFor="let i of [1,2,3,4]" class="grid grid-cols-3 gap-2 p-2 border-t border-gray-100">
+          <p-skeleton width="3rem" height="1rem"></p-skeleton>
+          <p-skeleton width="8rem" height="1rem"></p-skeleton>
+          <p-skeleton width="6rem" height="1rem"></p-skeleton>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</ng-template>

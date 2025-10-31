@@ -1,0 +1,42 @@
+@if (loading()) {
+ <ng-container *ngTemplateOutlet="skeleton"></ng-container>
+} @else {
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+    <i class="pi pi-book text-indigo-600"></i>
+    Subjects
+  </h2>
+  <div class="space-y-2">
+    @for (subject of teacher().subjects; track $index) {
+    <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-200">
+      <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+        <i class="pi pi-book text-indigo-600"></i>
+      </div>
+      <span class="font-medium text-gray-800">{{ subject }}</span>
+    </div>
+    }
+  </div>
+</div>
+}
+
+<ng-template #skeleton>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <div class="flex items-center gap-2 mb-4">
+    <p-skeleton width="1.5rem" height="1.5rem" shape="circle"></p-skeleton>
+    <p-skeleton width="6rem" height="1.5rem" styleClass="rounded-md"></p-skeleton>
+  </div>
+
+  <div class="space-y-2">
+    @for (i of [1,2,3]; track $index) {
+    <div
+
+      class="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-200"
+    >
+      <p-skeleton width="2rem" height="2rem" shape="circle"></p-skeleton>
+      <p-skeleton width="10rem" height="1rem" styleClass="rounded-md"></p-skeleton>
+    </div>
+  }
+  </div>
+</div>
+
+</ng-template>

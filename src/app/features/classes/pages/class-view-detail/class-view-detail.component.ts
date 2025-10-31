@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -13,6 +13,12 @@ import { DividerModule } from 'primeng/divider';
 import { BadgeModule } from 'primeng/badge';
 import { TooltipModule } from 'primeng/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { QuickStatsComponent } from "../../components/view-detail/quick-stats/quick-stats.component";
+import { OverviewComponent } from "../../components/tabs/overview/overview.component";
+import { AssignmentsComponent } from "../../components/tabs/assignments/assignments.component";
+import { ResourcesComponent } from "../../components/tabs/resources/resources.component";
+import { StudentsComponent } from '../../components/tabs/students/students.component';
+import { ClassViewDetailHeaderComponent } from "../../components/view-detail/header/header.component";
 
 interface Student {
   id: number;
@@ -56,7 +62,7 @@ interface Announcement {
     RouterLink,
     BadgeModule,
     DividerModule,
-    TooltipModule],
+    TooltipModule, QuickStatsComponent, OverviewComponent, StudentsComponent, AssignmentsComponent, ResourcesComponent, ClassViewDetailHeaderComponent],
   templateUrl: './class-view-detail.component.html',
   styleUrl: './class-view-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -280,12 +286,14 @@ export class ClassViewDetailComponent {
     { week: 6, topic: "Backend Development with Node.js", date: "Oct 9" }
   ];
 enrollmentPercentage!: number;
+loading = signal(true)
 
 private _activeRoute = inject(ActivatedRoute)
 private _router = inject(Router)
 
   ngOnInit() {
     this.activeTab = 'students';
+    setTimeout(() => this.loading.set(false), 3000)
     this.enrollmentPercentage = (this.classData.enrolled / this.classData.capacity) * 100;
   }
 
@@ -317,24 +325,9 @@ private _router = inject(Router)
     }
   }
 
-   getStatusSeverity(status: string): any {
-    const statusMap: { [key: string]: string } = {
-      'Completed': 'success',
-      'In Progress': 'warning',
-      'Upcoming': 'info'
-    };
-    return statusMap[status] || 'info';
-  }
 
-  getGradeColor(grade: string): string {
-    const gradeColors: { [key: string]: string } = {
-      'A': 'text-green-600',
-      'A-': 'text-green-500',
-      'B+': 'text-blue-600',
-      'B': 'text-blue-500'
-    };
-    return gradeColors[grade] || 'text-gray-600';
-  }
+
+
 
   onEditClass(): void {
     console.log('Edit class clicked');
@@ -344,27 +337,5 @@ private _router = inject(Router)
     console.log('Enroll student clicked');
   }
 
-  onViewProfile(student: Student): void {
-    console.log('View profile:', student);
-  }
 
-  onSendMessage(student: Student): void {
-    console.log('Send message to:', student);
-  }
-
-  onCreateAssignment(): void {
-    console.log('Create assignment clicked');
-  }
-
-  onEditAssignment(assignment: Assignment): void {
-    console.log('Edit assignment:', assignment);
-  }
-
-  onViewAssignment(assignment: Assignment): void {
-    console.log('View assignment:', assignment);
-  }
-
-  onDownloadResource(resource: any): void {
-    console.log('Download resource:', resource);
-  }
 }

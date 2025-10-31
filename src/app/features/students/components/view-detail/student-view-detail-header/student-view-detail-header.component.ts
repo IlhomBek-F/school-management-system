@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { DialogService } from 'primeng/dynamicdialog';
-import { UpsertStudentModalComponent } from '../upsert-student-modal/upsert-student-modal.component';
+import { UpsertStudentModalComponent } from '../../upsert-student-modal/upsert-student-modal.component';
 import { StudentViewDetailStatusCardsComponent } from "../student-view-detail-status-cards/student-view-detail-status-cards.component";
 import { SkeletonModule } from "primeng/skeleton";
 import { CommonModule } from '@angular/common';

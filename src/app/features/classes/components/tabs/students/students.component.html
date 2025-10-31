@@ -1,0 +1,34 @@
+<p-table [value]="students()" [paginator]="true" [rows]="10" styleClass="text-sm">
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+      <th>Email</th>
+      <th pSortableColumn="grade">Grade <p-sortIcon field="grade"></p-sortIcon></th>
+      <th pSortableColumn="attendance">Attendance <p-sortIcon field="attendance"></p-sortIcon></th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-student>
+    <tr>
+      <td>{{ student.name }}</td>
+      <td>{{ student.email }}</td>
+      <td>
+        <span [class]="'font-semibold ' + getGradeColor(student.grade)">{{ student.grade }}</span>
+      </td>
+      <td>
+        <div class="flex items-center gap-2">
+          <span>{{ student.attendance }}%</span>
+          <p-progressBar [value]="student.attendance" [showValue]="false" styleClass="w-20 h-2"></p-progressBar>
+        </div>
+      </td>
+      <td>
+        <div class="flex gap-2">
+          <p-button icon="pi pi-eye" styleClass="p-button-text p-button-sm" pTooltip="View Profile"
+            (onClick)="onViewProfile(student)"></p-button>
+          <p-button icon="pi pi-envelope" styleClass="p-button-text p-button-sm" pTooltip="Send Message"
+            (onClick)="onSendMessage(student)"></p-button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

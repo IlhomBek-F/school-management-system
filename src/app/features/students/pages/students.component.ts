@@ -12,9 +12,9 @@ import { TextInputComponent } from '@shared/components/dynamic-form/text-input/t
 import { SchoolStatsCardComponent } from '@shared/components/stats-card/stats-card.component';
 import { SelectInputComponent } from '@shared/components/dynamic-form/select-input/select-input.component';
 import { PageTitleComponent } from '@shared/components/page-title/page-title.component';
-import { StudentTableViewListComponent } from '../components/student-table-view-list/student-table-view-list.component';
+import { StudentTableViewListComponent } from '../components/view-list/student-table-view-list/student-table-view-list.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StudentGridViewListComponent } from '../components/student-grid-view-list/student-grid-view-list.component';
+import { StudentGridViewListComponent } from '../components/view-list/student-grid-view-list/student-grid-view-list.component';
 import { UpsertStudentModalComponent } from '../components/upsert-student-modal/upsert-student-modal.component';
 
 type Student = any
