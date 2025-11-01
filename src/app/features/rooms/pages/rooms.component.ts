@@ -15,6 +15,9 @@ import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
 import { FormContainer } from '@core/models/question-base';
 import { RoomsGridViewListComponent } from '../components/rooms-grid-view-list/rooms-grid-view-list.component';
 import { RoomsTableViewListComponent } from '../components/rooms-table-view-list/rooms-table-view-list.component';
+import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
+import { ToastService } from '@core/services/toast.service';
+import { ConfirmationService } from 'primeng/api';
 
 interface Room {
   id: number;
@@ -218,6 +221,8 @@ export class RoomsComponent {
   totalCapacity: number = 0;
   avgOccupancy: number = 0;
   private _dialogService = inject(DialogService)
+  private _confirmService = inject(DeleteConfirmDialogService)
+  private _messageService = inject(ToastService)
 
    ngOnInit(): void {
     setTimeout(() => {
@@ -265,6 +270,18 @@ export class RoomsComponent {
          }
        }
     })
+  }
+
+  deleteRoom(classObj: any) {
+          this._confirmService.confirm((ref: ConfirmationService) => {
+            this._confirmService.loading$.next(true)
+            setTimeout(() => {
+              this._confirmService.loading$.next(false);
+              this.filteredRooms = this.filteredRooms.filter(({id}) => classObj.id !== id)
+              this._messageService.success("Room deleted successfully")
+              ref.close()
+            }, 3000)
+          })
   }
 
    onSearchChange(searchTerm: string): void {

@@ -41,9 +41,14 @@
       </div>
     </div>
 
-    <p-button label="View Profile" [outlined]="true" (onClick)="viewProfile(student)"
-      styleClass="w-full mt-4 p-button-sm">
-    </p-button>
+    <div class="grid grid-cols-2 gap-2">
+      <p-button label="View Profile" [outlined]="true" (onClick)="viewProfile(student)"
+        styleClass="w-full mt-4 p-button-sm">
+      </p-button>
+       <p-button [outlined]="true" label="delete" (onClick)="deleteStudent(student)" severity="danger"
+        styleClass="w-full mt-4 p-button-sm">
+      </p-button>
+    </div>
   </div>
   }
 </ng-template>

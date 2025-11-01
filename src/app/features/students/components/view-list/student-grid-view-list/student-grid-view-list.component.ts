@@ -14,9 +14,14 @@ import { SkeletonModule } from "primeng/skeleton";
 export class StudentGridViewListComponent {
   students = input.required<any[]>();
   viewDetailEmitEvent = output<any>()
+  deleteEventEmit = output<any>()
   loading = input(false);
 
-   viewProfile(student: any): void {
+  viewProfile(student: any): void {
      this.viewDetailEmitEvent.emit(student)
+  }
+
+  deleteStudent(student: any): void {
+     this.deleteEventEmit.emit(student)
   }
 }

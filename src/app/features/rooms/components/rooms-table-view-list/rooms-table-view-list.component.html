@@ -58,9 +58,12 @@
           <p-tag [value]="room.status" [severity]="getStatusSeverity(room.status)">
           </p-tag>
         </td>
-        <td>
+        <td class="space-x-2">
             <p-button icon="pi pi-pencil" [outlined]="true" (onClick)="editRoom(room)" styleClass="p-button-sm"
               [style]="{'width': '36px', 'height': '36px'}">
+            </p-button>
+            <p-button icon="pi pi-trash" [outlined]="true" severity="danger" (onClick)="deleteRoom(room)" styleClass="p-button-sm"
+              [style]="{'width': '40px'}">
             </p-button>
         </td>
       </tr>

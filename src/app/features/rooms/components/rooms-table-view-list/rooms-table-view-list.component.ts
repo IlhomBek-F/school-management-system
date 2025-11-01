@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 export class RoomsTableViewListComponent {
   rooms = input.required<any[]>()
   viewDetailEmitEvent = output<any>()
+  deleteEmitEvent = output<any>()
   editEmitEvent = output<any>()
 
   viewDetails(room: any) {
@@ -22,6 +23,10 @@ export class RoomsTableViewListComponent {
 
   editRoom(room: any) {
     this.editEmitEvent.emit(room)
+  }
+
+  deleteRoom(room: any): void {
+    this.deleteEmitEvent.emit(room)
   }
 
   getStatusSeverity(status: string): string {

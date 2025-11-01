@@ -68,9 +68,9 @@
     </div>
 
     @if (viewMode === 'grid') {
-      <school-rooms-grid-view-list [loading]="loading()" [rooms]="filteredRooms" (editEmitEvent)="upsertRoom($event)"/>
+      <school-rooms-grid-view-list [loading]="loading()" [rooms]="filteredRooms" (editEmitEvent)="upsertRoom($event)" (deleteEmitEvent)="deleteRoom($event)"/>
     } @else {
-      <school-rooms-table-view-list [rooms]="filteredRooms" (editEmitEvent)="upsertRoom($event)"/>
+      <school-rooms-table-view-list [rooms]="filteredRooms" (editEmitEvent)="upsertRoom($event)" (deleteEmitEvent)="deleteRoom($event)"/>
     }
 
     @if (filteredRooms.length === 0) {

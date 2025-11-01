@@ -14,6 +14,7 @@ import { RoomsGridViewSkeletonComponent } from "../rooms-grid-view-skeleton/room
 export class RoomsGridViewListComponent {
   rooms = input.required<any[]>()
   viewDetailEmitEvent = output<any>()
+  deleteEmitEvent = output<any>()
   editEmitEvent = output<any>()
   loading = input(false)
 
@@ -23,6 +24,10 @@ export class RoomsGridViewListComponent {
 
   editRoom(room: any) {
     this.editEmitEvent.emit(room)
+  }
+
+  deleteRoom(room: any) {
+    this.deleteEmitEvent.emit(room)
   }
 
   getStatusSeverity(status: string): string {

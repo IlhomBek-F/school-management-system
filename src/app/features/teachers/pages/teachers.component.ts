@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal, type OnInit } from '@angular/core';
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
@@ -15,6 +15,9 @@ import { UpsertTeacherModalComponent } from '../components/upsert-teacher-modal/
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeacherTableViewListComponent } from '../components/view-list/teacher-table-view-list/teacher-table-view-list.component';
 import { TeacherGridViewListComponent } from '../components/view-list/teacher-grid-view-list/teacher-grid-view-list.component';
+import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastService } from '@core/services/toast.service';
 
 @Component({
   selector: 'school-teachers',
@@ -167,6 +170,9 @@ export class TeachersComponent implements OnInit {
   private _dialogService = inject(DialogService)
   private _router = inject(Router)
   private _activeRoute = inject(ActivatedRoute)
+  private _confirmService = inject(DeleteConfirmDialogService);
+  private _cdr = inject(ChangeDetectorRef);
+  private _messageService = inject(ToastService)
 
   ngOnInit(): void {
     setTimeout(() => this.loading.set(false), 3000)
@@ -235,5 +241,23 @@ export class TeachersComponent implements OnInit {
     return status === 'Active' ? 'success' : 'warning';
   }
 
+  deleteTeacher(teacher: any) {
+    this._confirmService.confirm((ref: ConfirmationService) => {
+      this._confirmService.loading$.next(true)
+      setTimeout(() => {
+        this._confirmService.loading$.next(false);
+        this.filteredTeachers = this.filteredTeachers.filter(({id}) => teacher.id !== id)
+        this._messageService.success("Teacher deleted successfully")
+        this._cdr.markForCheck()
+        ref.close()
+      }, 3000)
+    })
+  }
 
+   acceptDeleteRecord(ref: ConfirmationService): void {
+      setTimeout(() => {
+        this._confirmService.loading$.next(false);
+        ref.close()
+      }, 3000)
+  }
 }

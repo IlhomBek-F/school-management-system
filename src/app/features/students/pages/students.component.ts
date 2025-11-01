@@ -16,6 +16,9 @@ import { StudentTableViewListComponent } from '../components/view-list/student-t
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentGridViewListComponent } from '../components/view-list/student-grid-view-list/student-grid-view-list.component';
 import { UpsertStudentModalComponent } from '../components/upsert-student-modal/upsert-student-modal.component';
+import { ConfirmationService } from 'primeng/api';
+import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
+import { ToastService } from '@core/services/toast.service';
 
 type Student = any
 
@@ -133,6 +136,8 @@ export class StudentsComponent implements OnInit {
   private _dialogService = inject(DialogService)
   private _router = inject(Router)
   private _activeRoute = inject(ActivatedRoute)
+  private _confirmService = inject(DeleteConfirmDialogService)
+  private _messageService = inject(ToastService)
 
   ngOnInit(): void {
     setTimeout(() => this.loading.set(false), 3000)
@@ -193,5 +198,24 @@ export class StudentsComponent implements OnInit {
 
   viewProfile(student: Student): void {
     this._router.navigate([student.id], {relativeTo: this._activeRoute})
+  }
+
+  deleteStudent(student: any) {
+      this._confirmService.confirm((ref: ConfirmationService) => {
+        this._confirmService.loading$.next(true)
+        setTimeout(() => {
+          this._confirmService.loading$.next(false);
+          this.filteredStudents = this.filteredStudents.filter(({id}) => student.id !== id)
+          this._messageService.success("Teacher deleted successfully")
+          ref.close()
+        }, 3000)
+      })
+    }
+
+  acceptDeleteRecord(ref: ConfirmationService): void {
+        setTimeout(() => {
+          this._confirmService.loading$.next(false);
+          ref.close()
+        }, 3000)
   }
 }

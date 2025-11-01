@@ -15,6 +15,7 @@ export class ClassesGridViewListComponent {
   classList = input.required<any>()
   editEmitEvent = output<any>()
   viewDetailEmitEvent = output<any>()
+  deleteEmitEvent = output<any>()
   loading = input(false)
 
    addClass(): void {
@@ -27,6 +28,10 @@ export class ClassesGridViewListComponent {
 
   editClass(classObj: any): void {
     this.editEmitEvent.emit(classObj)
+  }
+
+  deleteClass(classObj: any): void {
+    this.deleteEmitEvent.emit(classObj)
   }
 
   getStatusSeverity(status: string): string {

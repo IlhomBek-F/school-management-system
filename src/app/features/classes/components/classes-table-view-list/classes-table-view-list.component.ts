@@ -14,6 +14,7 @@ export class ClassesTableViewListComponent {
   classesList = input.required<any[]>()
   editEmitEvent = output<any>()
   viewDetailEmitEvent = output<any>()
+  deleteEmitEvent = output<any>()
 
   viewDetails(cls: any): void {
     this.viewDetailEmitEvent.emit(cls)
@@ -21,6 +22,10 @@ export class ClassesTableViewListComponent {
 
   editClass(classObj: any): void {
     this.editEmitEvent.emit(classObj)
+  }
+
+  deleteClass(classObj: any): void {
+    this.deleteEmitEvent.emit(classObj)
   }
 
   getStatusSeverity(status: string): string {

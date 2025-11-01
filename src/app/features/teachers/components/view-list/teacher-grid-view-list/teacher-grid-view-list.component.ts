@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { Tag } from "primeng/tag";
 import { Button } from "primeng/button";
 import { SkeletonModule } from "primeng/skeleton";
 import { CommonModule } from '@angular/common';
+import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
+import { of, timeout } from 'rxjs';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'school-teacher-grid-view-list',
@@ -12,9 +15,10 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeacherGridViewListComponent {
+  loading = input(false)
   teachers = input.required<any[]>()
   viewDetailEmitEvent = output<any>()
-  loading = input(false)
+  deleteEmitEvent = output<any>()
 
   getRatingStars(rating: number): string[] {
     const stars = [];
@@ -35,5 +39,9 @@ export class TeacherGridViewListComponent {
 
   viewProfile(teacher: any): void {
     this.viewDetailEmitEvent.emit(teacher)
+  }
+
+  deleteRecord(teacher: any) {
+    this.deleteEmitEvent.emit(teacher)
   }
 }

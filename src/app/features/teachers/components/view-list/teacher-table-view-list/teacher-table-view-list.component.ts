@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 export class TeacherTableViewListComponent {
   teacherList = input.required<any[]>()
   viewDetailEmitEvent = output<any>()
+  deleteEmitEvent = output<any>()
 
   viewProfile(teacher: any): void {
     this.viewDetailEmitEvent.emit(teacher)
@@ -34,5 +35,9 @@ export class TeacherTableViewListComponent {
       stars.push('empty');
     }
     return stars;
+  }
+
+  deleteRecord(teacher: any) {
+    this.deleteEmitEvent.emit(teacher)
   }
 }

@@ -37,9 +37,14 @@
     </div>
 
     @if (viewMode === 'grid') {
-      <school-teacher-grid-view-list [loading]="loading()" [teachers]="filteredTeachers" (viewDetailEmitEvent)="viewProfile($event)"/>
+      <school-teacher-grid-view-list [loading]="loading()"
+                                     [teachers]="filteredTeachers"
+                                     (deleteEmitEvent)="deleteTeacher($event)"
+                                     (viewDetailEmitEvent)="viewProfile($event)"/>
     } @else {
-      <school-teacher-table-view-list [teacherList]="filteredTeachers" (viewDetailEmitEvent)="viewProfile($event)"/>
+      <school-teacher-table-view-list [teacherList]="filteredTeachers"
+                                      (deleteEmitEvent)="deleteTeacher($event)"
+                                      (viewDetailEmitEvent)="viewProfile($event)"/>
     }
 
     @if (filteredTeachers.length === 0) {

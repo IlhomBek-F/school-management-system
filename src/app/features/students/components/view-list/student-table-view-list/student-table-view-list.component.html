@@ -35,11 +35,18 @@
             <td>
               <span class="font-semibold text-green-600">{{ student.attendance }}%</span>
             </td>
-            <td>
+            <td class="space-x-2">
               <p-button
                 label="View"
                 [outlined]="true"
                 (onClick)="viewProfile(student)"
+                styleClass="p-button-sm">
+              </p-button>
+              <p-button
+                [outlined]="true"
+                (onClick)="deleteStudent(student)"
+                severity="danger"
+                icon="pi pi-trash"
                 styleClass="p-button-sm">
               </p-button>
             </td>

@@ -14,6 +14,9 @@ import { ClassesTableViewListComponent } from '../components/classes-table-view-
 import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
 import { TextInputComponent } from '@shared/components/dynamic-form/text-input/text-input.component';
 import { ClassesGridViewListComponent } from '../components/classes-grid-view-list/classes-grid-view-list.component';
+import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
+import { ToastService } from '@core/services/toast.service';
+import { ConfirmationService } from 'primeng/api';
 
 interface Class {
   id: number;
@@ -222,6 +225,8 @@ export class ClassesComponent implements OnInit {
   private _dialogService = inject(DialogService)
   private _router = inject(Router)
   private _activeRoute = inject(ActivatedRoute)
+  private _confirmService = inject(DeleteConfirmDialogService)
+  private _messageService = inject(ToastService)
 
   ngOnInit(): void {
     setTimeout(() => this.loading.set(false), 3000)
@@ -290,6 +295,18 @@ export class ClassesComponent implements OnInit {
   viewDetails(cls: Class): void {
    this._router.navigate([`2/${cls.id}`], {relativeTo: this._activeRoute})
   }
+
+  deleteClass(classObj: any) {
+        this._confirmService.confirm((ref: ConfirmationService) => {
+          this._confirmService.loading$.next(true)
+          setTimeout(() => {
+            this._confirmService.loading$.next(false);
+            this.filteredClasses = this.filteredClasses.filter(({id}) => classObj.id !== id)
+            this._messageService.success("Class deleted successfully")
+            ref.close()
+          }, 3000)
+        })
+      }
 
   getStatusSeverity(status: string): string {
     switch(status) {

@@ -67,11 +67,13 @@
        <school-classes-grid-view-list [classList]="filteredClasses"
                                       (editEmitEvent)="upsertClass($event)"
                                       [loading]="loading()"
+                                      (deleteEmitEvent)="deleteClass($event)"
                                       (viewDetailEmitEvent)="viewDetails($event)"
                                       />
      } @else {
        <school-classes-table-view-list [classesList]="filteredClasses"
                                        (editEmitEvent)="upsertClass($event)"
+                                       (deleteEmitEvent)="deleteClass($event)"
                                        (viewDetailEmitEvent)="viewDetails($event)"
                                        />
      }

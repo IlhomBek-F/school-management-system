@@ -4,7 +4,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { DialogService } from 'primeng/dynamicdialog';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { PRIMENG_PROVIDER } from '../../primeng.config';
 import { ToastService } from '@core/services/toast.service';
 
@@ -12,7 +12,8 @@ import { ToastService } from '@core/services/toast.service';
 const PUBLIC_SERVICES = [
     DialogService,
     MessageService,
-    ToastService
+    ToastService,
+    ConfirmationService
 ]
 
 export const appConfig: ApplicationConfig = {

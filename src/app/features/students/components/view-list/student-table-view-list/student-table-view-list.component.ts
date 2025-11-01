@@ -12,8 +12,13 @@ import { ButtonModule } from "primeng/button";
 export class StudentTableViewListComponent {
   studentList = input.required<any>()
   viewDetailEmitEvent = output<any>()
+  deleteEventEmit = output<any>()
 
   viewProfile(student: any): void {
     this.viewDetailEmitEvent.emit(student)
+  }
+
+  deleteStudent(student: any) {
+    this.deleteEventEmit.emit(student)
   }
 }

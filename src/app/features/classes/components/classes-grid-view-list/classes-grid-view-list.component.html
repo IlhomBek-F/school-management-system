@@ -67,6 +67,14 @@
       <p-button icon="pi pi-pencil" [outlined]="true" (onClick)="editClass(class)" styleClass="p-button-sm"
         [style]="{'width': '40px'}">
       </p-button>
+      <p-button
+                  icon="pi pi-trash"
+                  [outlined]="true"
+                  (onClick)="deleteClass(class)"
+                  styleClass="p-button-sm"
+                  severity="danger"
+                  [style]="{'width': '36px', 'height': '36px'}">
+                </p-button>
     </div>
   </div>
   }
