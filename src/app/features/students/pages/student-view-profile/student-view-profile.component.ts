@@ -9,9 +9,9 @@ import { OverviewComponent } from '../../components/tabs/overview/overview.compo
 import { SubjectsComponent } from '../../components/tabs/subjects/subjects.component';
 import { AttendanceComponent } from '../../components/tabs/attendance/attendance.component';
 import { ActivityComponent } from '../../components/tabs/activity/activity.component';
-import { UpsertStudentModalComponent } from '../../components/upsert-student-modal/upsert-student-modal.component';
 import { StudentViewDetailHeaderComponent } from "../../components/view-detail/student-view-detail-header/student-view-detail-header.component";
 import { TabViewModule } from "primeng/tabview";
+import { BreadcrumbComponent } from "@shared/components/breadcrumb/breadcrumb.component";
 
 interface Student {
   id: number;
@@ -64,7 +64,7 @@ interface ActivityLog {
 
 @Component({
   selector: 'school-student-view-profile',
-  imports: [TagModule, ChartModule, ButtonModule, CommonModule, RouterLink, OverviewComponent, SubjectsComponent, AttendanceComponent, ActivityComponent, StudentViewDetailHeaderComponent, TabViewModule],
+  imports: [TagModule, ChartModule, ButtonModule, CommonModule, OverviewComponent, SubjectsComponent, AttendanceComponent, ActivityComponent, StudentViewDetailHeaderComponent, TabViewModule, BreadcrumbComponent],
   templateUrl: './student-view-profile.component.html',
   styleUrl: './student-view-profile.component.scss',
   providers: [DialogService],

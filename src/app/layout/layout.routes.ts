@@ -19,7 +19,7 @@ export const LAYOUT_ROUTES: Routes = [
         loadComponent: () => import("@students/students.component").then(c => c.StudentsComponent),
       },
       {
-        path: "students/:id",
+        path: "students/:student_id",
         loadComponent: () => import("@students/student-view-profile/student-view-profile.component").then(c => c.StudentViewProfileComponent),
       },
       {
@@ -39,7 +39,7 @@ export const LAYOUT_ROUTES: Routes = [
         loadComponent: () => import("@classes/classes.component").then(c => c.ClassesComponent),
       },
       {
-        path: "classes/:teacher_id/:class_id",
+        path: "classes/:class_id",
         loadComponent: () => import("@classes/class-view-detail/class-view-detail.component").then(c => c.ClassViewDetailComponent),
       },
       {

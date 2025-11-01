@@ -293,7 +293,7 @@ export class ClassesComponent implements OnInit {
   }
 
   viewDetails(cls: Class): void {
-   this._router.navigate([`2/${cls.id}`], {relativeTo: this._activeRoute})
+   this._router.navigate([cls.id], {relativeTo: this._activeRoute})
   }
 
   deleteClass(classObj: any) {
