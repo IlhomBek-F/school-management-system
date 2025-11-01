@@ -14,6 +14,7 @@ import { TeacherViewDetailHeaderComponent } from '../../components/view-detail/t
 import { QuickActionsComponent } from "../../components/view-detail/quick-actions/quick-actions.component";
 import { EmploymentComponent } from "../../components/view-detail/employment/employment.component";
 import { SubjectsComponent } from "../../components/view-detail/subjects/subjects.component";
+import { TabsModule } from "primeng/tabs";
 
 interface Teacher {
   id: number;
@@ -89,7 +90,7 @@ interface ActivityLog {
   imports: [TagModule, ChartModule, ButtonModule, CommonModule,
     OverviewComponent, ClassesComponent, ScheduleComponent,
     StudentsComponent, ActivityComponent, TabViewModule, TeacherViewDetailHeaderComponent, QuickActionsComponent,
-    EmploymentComponent, SubjectsComponent],
+    EmploymentComponent, SubjectsComponent, TabsModule],
   templateUrl: './teacher-view-detail.component.html',
   styleUrl: './teacher-view-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

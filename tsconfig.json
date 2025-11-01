@@ -25,6 +25,7 @@
       "@students/*": ["app/features/students/pages/*"],
       "@teachers/*": ["app/features/teachers/pages/*"],
       "@classes/*": ["app/features/classes/pages/*"],
+      "@components/*": ["app/features/classes/components/*"],
       "@rooms/*": ["app/features/rooms/pages/*"],
       "@settings/*": ["app/features/settings/pages/*"],
       "@models/*": ["app/models/*"]

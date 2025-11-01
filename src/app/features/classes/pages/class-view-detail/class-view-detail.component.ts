@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -12,13 +12,12 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { DividerModule } from 'primeng/divider';
 import { BadgeModule } from 'primeng/badge';
 import { TooltipModule } from 'primeng/tooltip';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { QuickStatsComponent } from "../../components/view-detail/quick-stats/quick-stats.component";
-import { OverviewComponent } from "../../components/tabs/overview/overview.component";
-import { AssignmentsComponent } from "../../components/tabs/assignments/assignments.component";
-import { ResourcesComponent } from "../../components/tabs/resources/resources.component";
-import { StudentsComponent } from '../../components/tabs/students/students.component';
-import { ClassViewDetailHeaderComponent } from "../../components/view-detail/header/header.component";
+import { ActivatedRoute, Router } from '@angular/router';
+import { OverviewComponent } from '@components/tabs/overview/overview.component';
+import { StudentsComponent } from '@components/tabs/students/students.component';
+import { AssignmentsComponent } from '@components/tabs/assignments/assignments.component';
+import { ResourcesComponent } from '@components/tabs/resources/resources.component';
+import { ClassViewDetailHeaderComponent } from '@components/view-detail/header/header.component';
 
 interface Student {
   id: number;
@@ -59,10 +58,9 @@ interface Announcement {
     AvatarGroupModule,
     ChipModule,
     ProgressBarModule,
-    RouterLink,
     BadgeModule,
     DividerModule,
-    TooltipModule, QuickStatsComponent, OverviewComponent, StudentsComponent, AssignmentsComponent, ResourcesComponent, ClassViewDetailHeaderComponent],
+    TooltipModule, OverviewComponent, StudentsComponent, AssignmentsComponent, ResourcesComponent, ClassViewDetailHeaderComponent],
   templateUrl: './class-view-detail.component.html',
   styleUrl: './class-view-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

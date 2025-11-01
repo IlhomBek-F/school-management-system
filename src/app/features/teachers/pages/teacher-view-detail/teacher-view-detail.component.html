@@ -3,7 +3,7 @@
     <school-teacher-view-detail-header [teacher]="teacher" [loading]="loading()"/>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <p-tabView [(activeIndex)]="activeIndex">
+      <p-tab [(value)]="activeIndex">
         <p-tabPanel header="Overview" leftIcon="pi pi-home" >
              <school-overview [teacher]="teacher" [performanceChartData]="performanceChartData" [loading]="loading()"
           [performanceChartOptions]="performanceChartOptions" />
@@ -25,7 +25,7 @@
         <p-tabPanel header="Activity" leftIcon="pi pi-history" [disabled]="loading()">
           <school-activity [activityLogs]="activityLogs" />
         </p-tabPanel>
-      </p-tabView>
+      </p-tab>
 
       <!-- Sidebar -->
       <div class="space-y-6">
