@@ -5,7 +5,7 @@ import { environment } from "@environments/enviroment.dev";
 
 @Injectable({
   providedIn: 'root'
-});
+})
 export class BaseService {
   private _http = inject(HttpClient);
   protected baseUrl = environment.apiUrl;

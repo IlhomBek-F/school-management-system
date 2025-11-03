@@ -339,8 +339,6 @@ export class TeacherViewDetailComponent {
   studentProgressChartData: any;
   studentProgressChartOptions: any;
 
-  private _dialogService = inject(DialogService)
-
   ngOnInit(): void {
     setTimeout(() => this.loading.set(false), 3000)
     this.initializeCharts();

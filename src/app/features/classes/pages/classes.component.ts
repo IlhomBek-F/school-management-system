@@ -21,6 +21,7 @@ import { Class } from '../models';
 import { DropdownOption } from '@core/models/base';
 import { ClassStatus } from '../enums';
 import { StatusSeverityEnum } from '@core/enums/status-severity.enum';
+import { ViewModeEnum } from '@core/enums/view-mode.enum';
 
 @Component({
   selector: 'school-classes.component',
@@ -34,6 +35,7 @@ import { StatusSeverityEnum } from '@core/enums/status-severity.enum';
 
 export class ClassesComponent implements OnInit {
   loading = signal(true)
+  VIEW_MODE = ViewModeEnum;
 
   classes: Class[] = [
     {
@@ -186,7 +188,7 @@ export class ClassesComponent implements OnInit {
   searchTerm: string = '';
   selectedGrade: string = 'all';
   selectedStatus: string = 'all';
-  viewMode: string = 'grid';
+  viewMode: string = ViewModeEnum.GRID;
 
   grades: DropdownOption[] = [
     { label: 'All Grades', value: 'all' },
@@ -295,8 +297,8 @@ export class ClassesComponent implements OnInit {
 
   getStatusSeverity(status: string): string {
     switch(status) {
-      case 'Active': return StatusSeverityEnum.SUCCESS;
-      case 'Cancelled': return StatusSeverityEnum.DANGER;
+      case ClassStatus.ACTIVE: return StatusSeverityEnum.SUCCESS;
+      case ClassStatus.CANCELLED: return StatusSeverityEnum.DANGER;
       default: return StatusSeverityEnum.INFO;
     }
   }
@@ -306,8 +308,8 @@ export class ClassesComponent implements OnInit {
   }
 
   getCapacitySeverity(percentage: number): string {
-    if (percentage >= 90) return 'danger';
-    if (percentage >= 70) return 'warning';
-    return 'success';
+    if (percentage >= 90) return StatusSeverityEnum.DANGER;
+    if (percentage >= 70) return StatusSeverityEnum.WARNING;
+    return StatusSeverityEnum.SUCCESS;
   }
 }

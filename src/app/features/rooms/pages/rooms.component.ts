@@ -18,25 +18,10 @@ import { RoomsTableViewListComponent } from '../components/rooms-table-view-list
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { ToastService } from '@core/services/toast.service';
 import { ConfirmationService } from 'primeng/api';
-
-interface Room {
-  id: number;
-  name: string;
-  code: string;
-  type: string;
-  building: string;
-  floor: number;
-  capacity: number;
-  currentOccupancy: number;
-  facilities: string[];
-  status: string;
-  schedule: {
-    day: string;
-    time: string;
-    class: string;
-  }[];
-  color: string;
-}
+import { Room } from '../models';
+import { DropdownOption } from '@core/models/base';
+import { RoomStatus } from '../enums';
+import { ViewModeEnum } from '@core/enums/view-mode.enum';
 
 @Component({
   selector: 'school-rooms',
@@ -57,6 +42,7 @@ interface Room {
 })
 export class RoomsComponent {
   loading = signal(true)
+  VIEW_MODE = ViewModeEnum;
 
     rooms: Room[] = [
     {
@@ -196,9 +182,9 @@ export class RoomsComponent {
   searchTerm: string = '';
   selectedType: string = 'all';
   selectedStatus: string = 'all';
-  viewMode: string = 'grid';
+  viewMode: string = ViewModeEnum.LIST;
 
-  roomTypes: any[] = [
+  roomTypes: DropdownOption[] = [
     { label: 'All Types', value: 'all' },
     { label: 'Classroom', value: 'Classroom' },
     { label: 'Laboratory', value: 'Laboratory' },
@@ -209,11 +195,11 @@ export class RoomsComponent {
     { label: 'Studio', value: 'Studio' }
   ];
 
-  statuses: any[] = [
+  statuses: DropdownOption[] = [
     { label: 'All Status', value: 'all' },
-    { label: 'Available', value: 'Available' },
-    { label: 'Occupied', value: 'Occupied' },
-    { label: 'Maintenance', value: 'Maintenance' }
+    { label: 'Available', value: RoomStatus.AVAILABLE },
+    { label: 'Occupied', value: RoomStatus.OCCUPIED },
+    { label: 'Maintenance', value: RoomStatus.MAINTENANCE }
   ];
 
   totalRooms: number = 0;
@@ -234,7 +220,7 @@ export class RoomsComponent {
 
   calculateStats(): void {
     this.totalRooms = this.rooms.length;
-    this.availableRooms = this.rooms.filter(r => r.status === 'Available').length;
+    this.availableRooms = this.rooms.filter(r => r.status === RoomStatus.AVAILABLE).length;
     this.totalCapacity = this.rooms.reduce((sum, r) => sum + r.capacity, 0);
     const totalOccupancy = this.rooms.reduce((sum, r) => sum + r.currentOccupancy, 0);
     this.avgOccupancy = Math.round((totalOccupancy / this.totalCapacity) * 100);

@@ -9,15 +9,7 @@ import { NotificationComponent } from '../components/notification/notification.c
 import { SecurityComponent } from '../components/security/security.component';
 import { AppearanceComponent } from '../components/appearance/appearance.component';
 import { PageTitleComponent } from '@shared/components/page-title/page-title.component';
-
-interface SchoolInfo {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  website: string;
-  logo: string;
-}
+import { SchoolInfo } from '../models';
 
 @Component({
   selector: 'school-settings',

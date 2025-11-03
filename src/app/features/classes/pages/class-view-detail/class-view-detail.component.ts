@@ -18,6 +18,7 @@ import { StudentsComponent } from '@components/tabs/students/students.component'
 import { AssignmentsComponent } from '@components/tabs/assignments/assignments.component';
 import { ResourcesComponent } from '@components/tabs/resources/resources.component';
 import { ClassViewDetailHeaderComponent } from '@components/view-detail/header/header.component';
+import { ClassPerfomanceStatus, ClassStatus } from '../../enums';
 
 interface Student {
   id: number;
@@ -307,24 +308,21 @@ private _router = inject(Router)
 
   getPerformanceClass(performance: string): string {
     switch (performance) {
-      case 'Excellent': return 'bg-green-100 text-green-700';
-      case 'Good': return 'bg-blue-100 text-blue-700';
-      case 'Average': return 'bg-orange-100 text-orange-700';
+      case ClassPerfomanceStatus.EXCELLENT: return 'bg-green-100 text-green-700';
+      case ClassPerfomanceStatus.GOOD: return 'bg-blue-100 text-blue-700';
+      case ClassPerfomanceStatus.AVERAGE: return 'bg-orange-100 text-orange-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   }
 
   getStatusClass(status: string): string {
     switch (status) {
-      case 'Active': return 'bg-blue-100 text-blue-700';
-      case 'Completed': return 'bg-green-100 text-green-700';
-      case 'Overdue': return 'bg-red-100 text-red-700';
+      case ClassStatus.ACTIVE: return 'bg-blue-100 text-blue-700';
+      case ClassStatus.COMPLETED: return 'bg-green-100 text-green-700';
+      case ClassStatus.OVERDUE: return 'bg-red-100 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   }
-
-
-
 
 
   onEditClass(): void {

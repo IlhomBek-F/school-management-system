@@ -3,6 +3,7 @@ import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { CommonModule } from '@angular/common';
+import { Room } from '../../models';
 
 @Component({
   selector: 'school-rooms-table-view-list',
@@ -12,20 +13,20 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoomsTableViewListComponent {
-  rooms = input.required<any[]>()
-  viewDetailEmitEvent = output<any>()
-  deleteEmitEvent = output<any>()
-  editEmitEvent = output<any>()
+  rooms = input.required<Room[]>()
+  viewDetailEmitEvent = output<Room>()
+  deleteEmitEvent = output<Room>()
+  editEmitEvent = output<Room>()
 
-  viewDetails(room: any) {
+  viewDetails(room: Room) {
    this.viewDetailEmitEvent.emit(room)
   }
 
-  editRoom(room: any) {
+  editRoom(room: Room) {
     this.editEmitEvent.emit(room)
   }
 
-  deleteRoom(room: any): void {
+  deleteRoom(room: Room): void {
     this.deleteEmitEvent.emit(room)
   }
 

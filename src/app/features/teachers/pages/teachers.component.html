@@ -23,10 +23,10 @@
         <school-select-input [options]="departments" (onChangeEmit)="onDepartmentChange($event)" />
 
         <div class="flex gap-2">
-          <p-button label="Grid" [outlined]="viewMode !== 'grid'" (onClick)="setViewMode('grid')"
+          <p-button label="Grid" [outlined]="viewMode !== VIEW_MODE.GRID" (onClick)="setViewMode(VIEW_MODE.GRID)"
             styleClass="p-button-sm">
           </p-button>
-          <p-button label="List" [outlined]="viewMode !== 'list'" (onClick)="setViewMode('list')"
+          <p-button label="List" [outlined]="viewMode !== VIEW_MODE.LIST" (onClick)="setViewMode(VIEW_MODE.LIST)"
             styleClass="p-button-sm">
           </p-button>
         </div>
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    @if (viewMode === 'grid') {
+    @if (viewMode === VIEW_MODE.GRID) {
       <school-teacher-grid-view-list [loading]="loading()"
                                      [teachers]="filteredTeachers"
                                      (deleteEmitEvent)="deleteTeacher($event)"

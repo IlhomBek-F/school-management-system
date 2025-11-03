@@ -18,6 +18,8 @@ import { TeacherGridViewListComponent } from '../components/view-list/teacher-gr
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastService } from '@core/services/toast.service';
+import { DropdownOption } from '@core/models/base';
+import { ViewModeEnum } from '@core/enums/view-mode.enum';
 
 @Component({
   selector: 'school-teachers',
@@ -33,6 +35,7 @@ import { ToastService } from '@core/services/toast.service';
 })
 export class TeachersComponent implements OnInit {
   loading = signal(true)
+  VIEW_MODE = ViewModeEnum;
 
   teachers: any[] = [
     {
@@ -152,9 +155,9 @@ export class TeachersComponent implements OnInit {
   filteredTeachers: any[] = [];
   searchTerm: string = '';
   selectedDepartment: string = 'all';
-  viewMode: string = 'grid';
+  viewMode: string = ViewModeEnum.GRID;
 
-  departments: any[] = [
+  departments: DropdownOption[] = [
     { label: 'All Departments', value: 'all' },
     { label: 'Science & Math', value: 'Science & Math' },
     { label: 'Languages', value: 'Languages' },

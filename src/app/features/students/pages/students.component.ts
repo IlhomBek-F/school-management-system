@@ -19,6 +19,7 @@ import { UpsertStudentModalComponent } from '../components/upsert-student-modal/
 import { ConfirmationService } from 'primeng/api';
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { ToastService } from '@core/services/toast.service';
+import { ViewModeEnum } from '@core/enums/view-mode.enum';
 
 type Student = any
 
@@ -38,6 +39,7 @@ type Student = any
 })
 export class StudentsComponent implements OnInit {
   loading = signal(true)
+  VIEW_MODE = ViewModeEnum;
 
   students: Student[] = [
     {
@@ -118,7 +120,7 @@ export class StudentsComponent implements OnInit {
   filteredStudents: Student[] = [];
   searchTerm: string = '';
   selectedGrade: string = 'all';
-  viewMode: string = 'grid';
+  viewMode: string = ViewModeEnum.GRID;
 
   grades: any[] = [
     { label: 'All Grades', value: 'all' },
