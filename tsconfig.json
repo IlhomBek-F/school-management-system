@@ -28,6 +28,7 @@
       "@components/*": ["app/features/classes/components/*"],
       "@rooms/*": ["app/features/rooms/pages/*"],
       "@settings/*": ["app/features/settings/pages/*"],
+      "@environments/*": ["app/environments/*"],
       "@models/*": ["app/models/*"]
     }
   },

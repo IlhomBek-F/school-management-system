@@ -17,25 +17,10 @@ import { ClassesGridViewListComponent } from '@components/classes-grid-view-list
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { ToastService } from '@core/services/toast.service';
 import { ConfirmationService } from 'primeng/api';
-
-interface Class {
-  id: number;
-  name: string;
-  code: string;
-  subject: string;
-  teacher: string;
-  grade: string;
-  schedule: string;
-  room: string;
-  students: number;
-  capacity: number;
-  duration: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-  color: string;
-  description: string
-}
+import { Class } from '../models';
+import { DropdownOption } from '@core/models/base';
+import { ClassStatus } from '../enums';
+import { StatusSeverityEnum } from '@core/enums/status-severity.enum';
 
 @Component({
   selector: 'school-classes.component',
@@ -203,7 +188,7 @@ export class ClassesComponent implements OnInit {
   selectedStatus: string = 'all';
   viewMode: string = 'grid';
 
-  grades: any[] = [
+  grades: DropdownOption[] = [
     { label: 'All Grades', value: 'all' },
     { label: '9th Grade', value: '9th Grade' },
     { label: '10th Grade', value: '10th Grade' },
@@ -211,10 +196,10 @@ export class ClassesComponent implements OnInit {
     { label: '12th Grade', value: '12th Grade' }
   ];
 
-  statuses: any[] = [
+  statuses: DropdownOption[] = [
     { label: 'All Status', value: 'all' },
-    { label: 'Active', value: 'Active' },
-    { label: 'Cancelled', value: 'Cancelled' }
+    { label: 'Active', value: ClassStatus.ACTIVE },
+    { label: 'Cancelled', value: ClassStatus.CANCELLED }
   ];
 
   totalClasses: number = 0;
@@ -236,7 +221,7 @@ export class ClassesComponent implements OnInit {
 
   calculateStats(): void {
     this.totalClasses = this.classes.length;
-    this.activeClasses = this.classes.filter(c => c.status === 'Active').length;
+    this.activeClasses = this.classes.filter(c => c.status === ClassStatus.ACTIVE).length;
     this.totalStudents = this.classes.reduce((sum, c) => sum + c.students, 0);
     this.avgCapacity = Math.round(
       (this.classes.reduce((sum, c) => sum + (c.students / c.capacity * 100), 0) / this.classes.length)
@@ -310,9 +295,9 @@ export class ClassesComponent implements OnInit {
 
   getStatusSeverity(status: string): string {
     switch(status) {
-      case 'Active': return 'success';
-      case 'Cancelled': return 'danger';
-      default: return 'info';
+      case 'Active': return StatusSeverityEnum.SUCCESS;
+      case 'Cancelled': return StatusSeverityEnum.DANGER;
+      default: return StatusSeverityEnum.INFO;
     }
   }
 

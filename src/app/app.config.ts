@@ -7,9 +7,11 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PRIMENG_PROVIDER } from '../../primeng.config';
 import { ToastService } from '@core/services/toast.service';
+import { BaseService } from '@core/services/base.service';
 
 
 const PUBLIC_SERVICES = [
+    BaseService,
     DialogService,
     MessageService,
     ToastService,
