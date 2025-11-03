@@ -65,9 +65,10 @@ export class BreadcrumbComponent {
       const spl = childSnapshot?.routeConfig?.path?.split('/') as string[]
 
       spl.forEach((url, index) => {
-        if(ROUTE_BREADCRUMB[url]) {
+        const breadcrumb = ROUTE_BREADCRUMB[url]
+        if(breadcrumb) {
           currUrl += `/${routeURL?.[index]}`
-          breadcrumbs.push({label: ROUTE_BREADCRUMB[url].label, routerLink: currUrl, icon: ROUTE_BREADCRUMB[url].icon})
+          breadcrumbs.push({label: breadcrumb.label, routerLink: currUrl, icon: breadcrumb.icon})
         }
       })
     }

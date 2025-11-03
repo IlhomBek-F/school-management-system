@@ -10,10 +10,10 @@ export class DeleteConfirmDialogService {
 
   private _confirmService = inject(ConfirmationService);
   private _ref!: ConfirmationService;
-  private _fc$!: (ref: ConfirmationService) => void;
+  private _fc!: (ref: ConfirmationService) => void;
 
   confirm(onAccept: (ref: ConfirmationService) => void) {
-       this._fc$ = onAccept;
+       this._fc = onAccept;
        this._ref = this._confirmService.confirm({
             message: 'Do you want to delete this record?',
             header: 'Danger Zone',
@@ -33,7 +33,7 @@ export class DeleteConfirmDialogService {
     }
 
   accept() {
-    this._fc$(this._ref)
+    this._fc(this._ref)
   }
 
   close() {
