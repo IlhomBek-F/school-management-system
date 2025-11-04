@@ -1,19 +1,19 @@
 package usecase
 
 import (
-	"school/bootstrap"
 	"school/domain"
+	"school/internal/service"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 type userUsecase struct {
 	userRespository domain.UserRepository
-	app             bootstrap.Application
+	tokenService    service.TokenService
 }
 
-func NewUserUsecase(userRepo domain.UserRepository, app bootstrap.Application) domain.UserUsecase {
-	return userUsecase{userRespository: userRepo, app: app}
+func NewUserUsecase(userRepo domain.UserRepository, tokenService service.TokenService) domain.UserUsecase {
+	return userUsecase{userRespository: userRepo, tokenService: tokenService}
 }
 
 func (u userUsecase) Login(payload domain.LoginRequest) (string, string, error) {
@@ -27,5 +27,8 @@ func (u userUsecase) Login(payload domain.LoginRequest) (string, string, error) 
 		return "", "", domain.ErrInvalidCredential
 	}
 
-	return "", "", nil
+	accessToken := u.tokenService.GenerateToken(user)
+	refreshToken := u.tokenService.GenerateRefreshToken(user)
+
+	return accessToken, refreshToken, nil
 }
