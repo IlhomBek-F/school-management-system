@@ -8,10 +8,9 @@ type Application struct {
 }
 
 func App() Application {
-	app := Application{
-		Env: NewEnv(),
-	}
+	app := Application{}
 
+	app.Env = NewEnv()
 	db, err := app.Env.NewDatabase()
 
 	if err != nil {

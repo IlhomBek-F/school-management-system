@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"school/bootstrap"
+	"school/internal/route"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,5 +14,9 @@ func main() {
 	env := app.Env
 
 	router := gin.Default()
-	router.Run(fmt.Sprintf("%s", env.PORT))
+
+	router.Use(cors.Default())
+	route.SetupRoutes(app, router)
+
+	router.Run(env.SERVER_ADDRESS)
 }

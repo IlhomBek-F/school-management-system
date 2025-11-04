@@ -54,8 +54,8 @@ func (env Env) GetDbAddr() string {
 	username := env.DB_USERNAME
 	schema := env.DB_SCHEMA
 
-	address := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable search_path=%s",
+	address := fmt.Sprintf("host=%s user=%s password=%d dbname=%s port=%s sslmode=disable search_path=%s",
 		host, username, password, database, DbPort, schema)
-
+	fmt.Println(address)
 	return address
 }

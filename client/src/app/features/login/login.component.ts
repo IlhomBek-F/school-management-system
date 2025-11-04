@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import { ToastService } from '@core/services/toast.service';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'school-login',
@@ -19,6 +20,7 @@ export class LoginCompoent {
   private _fb = inject(FormBuilder)
   private _router = inject(Router)
   private _toastService = inject(ToastService)
+  private _loginService = inject(LoginService)
 
   loginForm = this._fb.group({
     username: ['', Validators.required],
@@ -27,6 +29,13 @@ export class LoginCompoent {
   });
 
   login() {
+    this._loginService.login().subscribe({
+      next: () => {
+        this._toastService.success('login successful')
+      }, error: () => {
+        this._toastService.error('login failed')
+      }
+    })
     this._router.navigate(['/teachers']).catch(() => {
       this._toastService.error("couldn't load main page")
     })
