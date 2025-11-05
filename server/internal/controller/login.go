@@ -31,7 +31,7 @@ func (lc LoginController) Login(c *gin.Context) {
 	err := c.ShouldBind(&payload)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, domain.ErrorResponse{Status: http.StatusBadRequest, Error: err.Error()})
+		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrBadRequest])
 		return
 	}
 

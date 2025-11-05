@@ -9,7 +9,6 @@ export interface ResData<T> {
   status: number,
   message: string,
   data: T,
-
 }
 
 export interface ResDataWithMeta<T> extends ResData<T>{

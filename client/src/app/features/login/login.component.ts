@@ -1,4 +1,4 @@
-import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
 import {  Password, PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
@@ -23,20 +23,19 @@ export class LoginCompoent {
   private _loginService = inject(LoginService)
 
   loginForm = this._fb.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
-    remember: [false]
+    username: new FormControl("", {nonNullable: true, validators: [Validators.required, Validators.minLength(3)]}),
+    password: new FormControl("", {nonNullable: true, validators: [Validators.required, Validators.minLength(3)]}),
   });
 
   login() {
-    this._loginService.login().subscribe({
+    this._loginService.login(this.loginForm.getRawValue()).subscribe({
       next: () => {
         this._toastService.success('login successful')
         this._router.navigate(['/teachers']).catch(() => {
         this._toastService.error("couldn't load main page")
        })
-      }, error: () => {
-        this._toastService.error('login failed')
+      }, error: (err) => {
+        this._toastService.error(err.error?.message || 'login failed')
       }
     })
 

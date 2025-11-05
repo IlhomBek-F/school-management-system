@@ -18,11 +18,19 @@ func (r userRepository) Create(user domain.User) error {
 	return nil
 }
 func (r userRepository) GetByID(id int) (domain.User, error) {
-	return domain.User{}, nil
+	var user domain.User
+	result := r.db.Where("id = ?", id).First(&user)
+
+	return user, result.Error
 }
+
 func (r userRepository) GetByUsername(username string) (domain.User, error) {
-	return domain.User{}, nil
+	var user domain.User
+	result := r.db.Where("username = ?", username).First(&user)
+
+	return user, result.Error
 }
+
 func (r userRepository) Update(user domain.User) error {
 	return nil
 }

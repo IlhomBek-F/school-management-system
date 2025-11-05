@@ -23,7 +23,7 @@ func (u userUsecase) Login(payload domain.LoginRequest) (string, string, error) 
 		return "", "", domain.ErrUserNotFound
 	}
 
-	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password)) != nil {
+	if bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(payload.Password)) != nil {
 		return "", "", domain.ErrInvalidCredential
 	}
 
