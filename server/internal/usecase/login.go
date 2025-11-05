@@ -2,17 +2,22 @@ package usecase
 
 import (
 	"school/domain"
+	"school/internal/repository"
 	"school/internal/service"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
+type UserUsecase interface {
+	Login(payload domain.LoginRequest) (string, string, error)
+}
+
 type userUsecase struct {
-	userRespository domain.UserRepository
+	userRespository repository.UserRepository
 	tokenService    service.TokenService
 }
 
-func NewUserUsecase(userRepo domain.UserRepository, tokenService service.TokenService) domain.UserUsecase {
+func NewUserUsecase(userRepo repository.UserRepository, tokenService service.TokenService) UserUsecase {
 	return userUsecase{userRespository: userRepo, tokenService: tokenService}
 }
 

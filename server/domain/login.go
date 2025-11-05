@@ -9,7 +9,3 @@ type LoginResponse struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }
-
-type UserUsecase interface {
-	Login(payload LoginRequest) (string, string, error)
-}

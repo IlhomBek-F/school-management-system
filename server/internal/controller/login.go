@@ -4,12 +4,13 @@ import (
 	"net/http"
 	"school/bootstrap"
 	"school/domain"
+	"school/internal/usecase"
 
 	"github.com/gin-gonic/gin"
 )
 
 type LoginController struct {
-	LoginUsecase domain.UserUsecase
+	LoginUsecase usecase.UserUsecase
 	Env          bootstrap.Env
 }
 

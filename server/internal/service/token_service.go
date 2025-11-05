@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"school/bootstrap"
 	"school/domain"
 	"strconv"
@@ -65,4 +66,37 @@ func (s tokenService) CreateNewClaims(userId, roleId int, exp time.Duration, iss
 			Audience:  jwt.ClaimStrings{iss},
 		},
 	}
+}
+
+func ValidateToken(token, tokenSecret string) (bool, error) {
+	_, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+
+		return []byte(tokenSecret), nil
+	})
+
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func ParseToken(tokenStr, secretKey string) (*CustomClaims, error) {
+	token, err := jwt.ParseWithClaims(tokenStr, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(secretKey), nil
+	})
+
+	if err != nil {
+		return nil, domain.ErrParseToken
+	}
+
+	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
+		return claims, nil
+	}
+
+	return nil, domain.ErrParseToken
 }

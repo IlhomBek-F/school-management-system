@@ -8,11 +8,3 @@ type User struct {
 	DateOfBirth  string `json:"date_of_birth"`
 	PasswordHash string `json:"-"`
 }
-
-type UserRepository interface {
-	Create(user User) error
-	GetByID(id int) (User, error)
-	GetByUsername(username string) (User, error)
-	Update(user User) error
-	Delete(id int) error
-}
