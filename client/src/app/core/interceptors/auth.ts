@@ -9,7 +9,9 @@ const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
 export function authInteceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
 
-
+  if (req.url.includes('/login')) {
+    return next(req)
+  }
 
   const authService = inject(AuthService);
   const router = inject(Router)
