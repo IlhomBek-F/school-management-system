@@ -8,27 +8,12 @@
       <p class="text-blue-100 mt-2 text-sm">School Management System</p>
     </div>
 
-    <div class="p-8 space-y-6" [formGroup]="loginForm">
-      <div class="flex flex-col">
-        <label for="username" class="mb-1 font-medium text-gray-700 dark:text-gray-200">Username</label>
-        <input pInputText id="username" placeholder="Enter your username" formControlName="username"
-          class="w-full p-2 border rounded border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-blue-400" />
-        @if (loginForm.get('username')?.touched && loginForm.get('username')?.invalid) {
-        <small class="text-red-500">Username is required</small>
-        }
-      </div>
+    <div class="p-8 space-y-4" [formGroup]="formGroup">
+      <school-text-input formControlName="username" label="Username" [required]="true"/>
+      <school-password-input formControlName="password" label="Password" [required]="true"/>
 
-      <div class="flex flex-col">
-        <label for="password" class="mb-1 font-medium text-gray-700 dark:text-gray-200">Password</label>
-        <p-password id="password" [feedback]="false" placeholder="Enter your password" showClear="true" formControlName="password"
-          class="w-full dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700 focus:ring-2 focus:ring-blue-400" />
-        @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
-        <small class="text-red-500">Password is required</small>
-        }
-      </div>
-
-      <button pButton type="submit" label="Login" (click)="login()"
-        class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold py-2 rounded-lg"></button>
+      <button pButton label="Login" (click)="login()" [disabled]="formGroup.invalid" [loading]="loading()"
+        class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold mt-8 py-2 rounded-lg"></button>
     </div>
 
     <div class="p-6 bg-blue-50 dark:bg-gray-900 text-center">

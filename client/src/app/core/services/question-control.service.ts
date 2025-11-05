@@ -7,12 +7,12 @@ import { FormContainer } from '@core/models/question-base';
 @Injectable()
 export class QuestionControlService {
 
-  toFormGroup(containers: FormContainer[]) {
+  toFormGroup(containers: FormContainer[]): FormGroup {
     const questions = this._getQuestionsFromContainer(containers);
 
     const group: Record<string, AbstractControl> = {};
     questions.forEach((question) => {
-      const control = new FormControl(question.value || null)
+      const control = new FormControl(question.value || null, {nonNullable: question.nonNullable})
 
       if(question.required) {
         control.addValidators(Validators.required)

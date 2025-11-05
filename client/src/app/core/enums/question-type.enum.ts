@@ -9,5 +9,6 @@ export enum QuestionTypeEnum {
 
 export enum QuestionFieldTypeEnum {
   Number = 'number',
-  Email = 'email'
+  Email = 'email',
+  Password = 'password'
 }

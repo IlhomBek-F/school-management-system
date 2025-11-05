@@ -13,6 +13,7 @@ export interface QuestionOptionsModel<T = any> {
   placeholder?: string;
   options?: { value: string; label: string }[];
   validators?: ValidatorFn[],
+  nonNullable?: boolean
   onValueChange?: (value: any, questions?: QuestionBase<T>[]) => void
 }
 

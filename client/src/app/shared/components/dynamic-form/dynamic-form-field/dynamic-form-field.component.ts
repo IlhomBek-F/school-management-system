@@ -13,8 +13,10 @@ import { QuestionTextArea } from '@core/dynamic-form/question-textarea';
 import { TextareaInputComponent } from '@shared/components/dynamic-form/textarea-input/textarea-input.component';
 import { MultiSelectComponent } from '@shared/components/dynamic-form/multi-select/multi-select.component';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
+import { PasswordInputComponent } from '../password-input/password-input.component';
+import { QuestionPasswordInput } from '@core/dynamic-form/question-password-input';
 
-type QuestionBaseType = QuestionTimePicker | QuestionSelectInput | QuestionTextInput | QuestionDatePicker | QuestionTextArea
+type QuestionBaseType = QuestionTimePicker | QuestionSelectInput | QuestionTextInput | QuestionDatePicker | QuestionTextArea | QuestionPasswordInput
 
 @Component({
   selector: 'school-dynamic-form-field',
@@ -26,7 +28,8 @@ type QuestionBaseType = QuestionTimePicker | QuestionSelectInput | QuestionTextI
     TimePickerComponent,
     SelectInputComponent,
     TextareaInputComponent,
-    MultiSelectComponent
+    MultiSelectComponent,
+    PasswordInputComponent
   ],
   templateUrl: './dynamic-form-field.component.html',
   styleUrl: './dynamic-form-field.component.scss',

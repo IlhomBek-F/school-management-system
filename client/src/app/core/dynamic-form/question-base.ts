@@ -13,6 +13,7 @@ export class QuestionBase<T> {
   options: {value: string; label: string}[];
   validators: ValidatorFn[];
   placeholder: string;
+  nonNullable: boolean;
   onValueChange?: (value: any, questions?: QuestionBase<T>[]) => void;
 
   constructor(
@@ -26,6 +27,7 @@ export class QuestionBase<T> {
     this.controlType = (options.controlType || '') as QuestionTypeEnum;
     this.type = (options.type || '') as QuestionFieldTypeEnum;
     this.options = options.options || [];
+    this.nonNullable = options.nonNullable || true;
     this.validators = options.validators || [];
     this.placeholder = options.placeholder || ''
     this.onValueChange = options.onValueChange

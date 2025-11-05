@@ -1,43 +1,54 @@
-import { FormsModule, ReactiveFormsModule, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { InputText } from 'primeng/inputtext';
-import {  Password, PasswordModule } from 'primeng/password';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import { ToastService } from '@core/services/toast.service';
 import { LoginService } from './services/login.service';
+import { AuthService } from '@core/services/auth.service';
+import { DynamicFormComponent } from "@shared/components/dynamic-form/dynamic-form.component";
+import { QuestionControlService } from '@core/services/question-control.service';
+import { TextInputComponent } from "@shared/components/dynamic-form/text-input/text-input.component";
+import { PasswordInputComponent } from "@shared/components/dynamic-form/password-input/password-input.component";
 
 @Component({
   selector: 'school-login',
-  imports: [FormsModule, ReactiveFormsModule, InputText,Password, PasswordModule, ButtonModule, ToastModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, PasswordModule, ButtonModule, ToastModule, CommonModule, DynamicFormComponent, TextInputComponent, PasswordInputComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
+  providers: [QuestionControlService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginCompoent {
-  private _fb = inject(FormBuilder)
+  loading = signal(false)
+  formGroup = new FormGroup({
+    username: new FormControl("", {nonNullable: true, validators: [Validators.required, Validators.minLength(3)]}),
+    password: new FormControl("", {nonNullable: true, validators: [Validators.required, Validators.minLength(3)]})
+  })
+
   private _router = inject(Router)
   private _toastService = inject(ToastService)
   private _loginService = inject(LoginService)
-
-  loginForm = this._fb.group({
-    username: new FormControl("", {nonNullable: true, validators: [Validators.required, Validators.minLength(3)]}),
-    password: new FormControl("", {nonNullable: true, validators: [Validators.required, Validators.minLength(3)]}),
-  });
+  private _authService = inject(AuthService)
 
   login() {
-    this._loginService.login(this.loginForm.getRawValue()).subscribe({
-      next: () => {
+    this.loading.set(true)
+    this._loginService.login(this.formGroup.getRawValue())
+      .subscribe({
+      next: (res) => {
+        this.loading.set(false)
         this._toastService.success('login successful')
+        this._authService.saveAccessToken(res.data.access_token)
+        this._authService.saveRefreshToken(res.data.refresh_token)
         this._router.navigate(['/teachers']).catch(() => {
-        this._toastService.error("couldn't load main page")
+         this._toastService.error("couldn't load main page")
        })
       }, error: (err) => {
+        this.loading.set(false)
         this._toastService.error(err.error?.message || 'login failed')
       }
     })
-
   }
 }
