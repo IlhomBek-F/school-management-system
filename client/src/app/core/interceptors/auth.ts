@@ -50,6 +50,7 @@ function handle401Error(req: HttpRequest<unknown>, next: HttpHandlerFn, authServ
     isRefreshing = true;
     refreshTokenSubject.next(null)
     const refreshToken = authService.getRefreshToken()
+
     if (!refreshToken) {
       authService.clearTokens()
       router.navigate(['/login'])
