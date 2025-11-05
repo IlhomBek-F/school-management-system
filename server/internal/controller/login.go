@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"errors"
 	"net/http"
 	"school/bootstrap"
 	"school/domain"
@@ -14,6 +13,18 @@ type LoginController struct {
 	Env          bootstrap.Env
 }
 
+// Login in godoc
+//
+//	@Summary		Login in to account
+//	@Description	Login in to account
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			payload	body		domain.LoginRequest	true "User credentials"
+//	@Success		201		{object}	domain.LoginResponse		"Logged in"
+//	@Failure		400		{object}	error
+//	@Failure		500		{object}	error
+//	@Router			/auth/login [post]
 func (lc LoginController) Login(c *gin.Context) {
 	var payload domain.LoginRequest
 
@@ -27,17 +38,8 @@ func (lc LoginController) Login(c *gin.Context) {
 	accessToken, refreshToken, err := lc.LoginUsecase.Login(payload)
 
 	if err != nil {
-		switch {
-		case errors.Is(err, domain.ErrUserNotFound):
-			c.JSON(http.StatusNotFound, domain.ErrorResponse{Status: http.StatusNotFound, Error: err.Error()})
-			return
-		case errors.Is(err, domain.ErrInvalidCredential):
-			c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Status: http.StatusUnauthorized, Error: err.Error()})
-			return
-		default:
-			c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Status: http.StatusInternalServerError, Error: domain.ErrInternalServer.Error()})
-			return
-		}
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponseMap[err])
+		return
 	}
 
 	successRes := domain.SuccessResponseWithData[domain.LoginResponse]{

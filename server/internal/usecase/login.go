@@ -27,8 +27,16 @@ func (u userUsecase) Login(payload domain.LoginRequest) (string, string, error) 
 		return "", "", domain.ErrInvalidCredential
 	}
 
-	accessToken := u.tokenService.GenerateToken(user)
-	refreshToken := u.tokenService.GenerateRefreshToken(user)
+	accessToken, accessTokenErr := u.tokenService.GenerateToken(user)
+	refreshToken, refreshTokenErr := u.tokenService.GenerateRefreshToken(user)
+
+	if accessTokenErr != nil {
+		return "", "", domain.ErrGenerateAccessToken
+	}
+
+	if refreshTokenErr != nil {
+		return "", "", domain.ErrGeneratRefreshToken
+	}
 
 	return accessToken, refreshToken, nil
 }

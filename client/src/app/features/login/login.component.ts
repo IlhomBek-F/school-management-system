@@ -32,12 +32,13 @@ export class LoginCompoent {
     this._loginService.login().subscribe({
       next: () => {
         this._toastService.success('login successful')
+        this._router.navigate(['/teachers']).catch(() => {
+        this._toastService.error("couldn't load main page")
+       })
       }, error: () => {
         this._toastService.error('login failed')
       }
     })
-    this._router.navigate(['/teachers']).catch(() => {
-      this._toastService.error("couldn't load main page")
-    })
+
   }
 }
