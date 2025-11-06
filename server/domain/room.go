@@ -16,5 +16,5 @@ type Room struct {
 
 type RoomCreatePayload = Room
 type RoomUpdatePayload = Room
-type RoomCreateRes = SuccessResponseWithData[Room]
+type RoomSuccessRes = SuccessResponseWithData[Room]
 type RoomListRes = SuccessResponseWithMeta[[]Room]

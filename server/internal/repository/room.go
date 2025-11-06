@@ -11,6 +11,7 @@ type RoomRepository interface {
 	GetByID(id int) (domain.Room, error)
 	Update(payload domain.RoomUpdatePayload) (domain.Room, error)
 	Delete(id int) error
+	GetList() ([]domain.Room, error)
 }
 
 type roomRepository struct {
@@ -21,6 +22,13 @@ func NewRoomRepository(db *gorm.DB) RoomRepository {
 	return roomRepository{db: db}
 }
 
+func (r roomRepository) GetList() ([]domain.Room, error) {
+	var rooms []domain.Room
+	result := r.db.Find(&rooms)
+
+	return rooms, result.Error
+}
+
 func (r roomRepository) Create(payload domain.RoomCreatePayload) (domain.Room, error) {
 	result := r.db.Create(&payload)
 
@@ -28,10 +36,10 @@ func (r roomRepository) Create(payload domain.RoomCreatePayload) (domain.Room, e
 }
 
 func (r roomRepository) GetByID(id int) (domain.Room, error) {
-	var Room domain.Room
-	result := r.db.Where("id = ?", id).First(&Room)
+	var room domain.Room
+	result := r.db.Where("id = ?", id).First(&room)
 
-	return Room, result.Error
+	return room, result.Error
 }
 
 func (r roomRepository) Update(payload domain.RoomUpdatePayload) (domain.Room, error) {
