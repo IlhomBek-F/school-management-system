@@ -1,11 +1,11 @@
 package domain
 
-type Facicility struct {
+type Facility struct {
 	Base
 	Name string `json:"name" binding:"required"`
 }
 
-type FacilityCreatePayload = Facicility
-type FacilityUpdatePayload = Facicility
-type FacilityCreateRes = SuccessResponseWithData[Facicility]
-type FacilityListRes = SuccessResponseWithData[[]Facicility]
+type FacilityCreatePayload = Facility
+type FacilityUpdatePayload = Facility
+type FacilityCreateRes = SuccessResponseWithData[Facility]
+type FacilityListRes = SuccessResponseWithData[[]Facility]

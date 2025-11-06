@@ -14,5 +14,9 @@ func NewStudentRouter(app bootstrap.Application, routerGroup *gin.RouterGroup) {
 	studentUsecase := usecase.NewStudentUsecase(studentRepository)
 	studentController := controller.StudentController{StudentUsecase: studentUsecase}
 
+	routerGroup.POST("/student/create", studentController.GetStudentById)
+	routerGroup.GET("/student/list", studentController.GetStudentById)
 	routerGroup.GET("/student/:student_id", studentController.GetStudentById)
+	routerGroup.DELETE("/student/:student_id", studentController.GetStudentById)
+	routerGroup.PUT("/student/:student_id", studentController.GetStudentById)
 }

@@ -7,9 +7,9 @@ import (
 )
 
 type FacilityRepository interface {
-	Create(payload domain.FacilityCreatePayload) (domain.Facicility, error)
-	GetByID(id int) (domain.Facicility, error)
-	Update(payload domain.FacilityUpdatePayload) (domain.Facicility, error)
+	Create(payload domain.FacilityCreatePayload) (domain.Facility, error)
+	GetByID(id int) (domain.Facility, error)
+	Update(payload domain.FacilityUpdatePayload) (domain.Facility, error)
 	Delete(id int) error
 }
 
@@ -21,24 +21,24 @@ func NewfacilityRepository(db *gorm.DB) FacilityRepository {
 	return facilityRepository{db: db}
 }
 
-func (r facilityRepository) Create(payload domain.FacilityCreatePayload) (domain.Facicility, error) {
+func (r facilityRepository) Create(payload domain.FacilityCreatePayload) (domain.Facility, error) {
 	result := r.db.Create(&payload)
 
 	return payload, result.Error
 }
 
-func (r facilityRepository) GetByID(id int) (domain.Facicility, error) {
-	var facility domain.Facicility
+func (r facilityRepository) GetByID(id int) (domain.Facility, error) {
+	var facility domain.Facility
 	result := r.db.Where("id = ?", id).First(&facility)
 
 	return facility, result.Error
 }
 
-func (r facilityRepository) Update(payload domain.FacilityUpdatePayload) (domain.Facicility, error) {
+func (r facilityRepository) Update(payload domain.FacilityUpdatePayload) (domain.Facility, error) {
 	result := r.db.Updates(&payload)
 	return payload, result.Error
 }
 
 func (r facilityRepository) Delete(id int) error {
-	return r.db.Delete(domain.Facicility{}, id).Error
+	return r.db.Delete(domain.Facility{}, id).Error
 }

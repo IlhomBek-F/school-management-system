@@ -11,6 +11,7 @@ type TeacherRepository interface {
 	Update(payload domain.TeacherUpdatePayload) (domain.Teacher, error)
 	Delete(id int) error
 	GetById(id int) (domain.Teacher, error)
+	GetList() ([]domain.Teacher, error)
 }
 
 type teacherRepository struct {
@@ -19,6 +20,13 @@ type teacherRepository struct {
 
 func NewTeacherRepository(db *gorm.DB) TeacherRepository {
 	return teacherRepository{Db: db}
+}
+
+func (r teacherRepository) GetList() ([]domain.Teacher, error) {
+	var teachers []domain.Teacher
+	result := r.Db.Find(&teachers)
+
+	return teachers, result.Error
 }
 
 func (r teacherRepository) Create(payload domain.TeacherCreatePayload) (domain.Teacher, error) {

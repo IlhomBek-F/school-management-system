@@ -37,6 +37,5 @@ type EmploymentDetail struct {
 
 type TeacherCreatePayload = Teacher
 type TeacherUpdatePayload = Teacher
-type TeacherCreateRes = SuccessResponseWithData[Teacher]
+type TeacherSuccessRes = SuccessResponseWithData[Teacher]
 type TeacherListRes = SuccessResponseWithMeta[[]Teacher]
-type TeacherUpdateRes = TeacherCreateRes

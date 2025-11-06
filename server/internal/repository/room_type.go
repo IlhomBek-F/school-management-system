@@ -28,10 +28,10 @@ func (r roomTypeRepository) Create(payload domain.RoomTypeCreatePayload) (domain
 }
 
 func (r roomTypeRepository) GetByID(id int) (domain.RoomType, error) {
-	var Room domain.RoomType
-	result := r.db.Where("id = ?", id).First(&Room)
+	var roomType domain.RoomType
+	result := r.db.Where("id = ?", id).First(&roomType)
 
-	return Room, result.Error
+	return roomType, result.Error
 }
 
 func (r roomTypeRepository) Update(payload domain.RoomTypeUpdatePayload) (domain.RoomType, error) {
@@ -40,5 +40,5 @@ func (r roomTypeRepository) Update(payload domain.RoomTypeUpdatePayload) (domain
 }
 
 func (r roomTypeRepository) Delete(id int) error {
-	return r.db.Delete(domain.Facicility{}, id).Error
+	return r.db.Delete(domain.RoomType{}, id).Error
 }
