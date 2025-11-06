@@ -27,6 +27,19 @@ definitions:
       refresh_token:
         type: string
     type: object
+  domain.CreateSubjectPayload:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
   domain.EmploymentDetail:
     properties:
       conrtact_end_date:
@@ -216,6 +229,41 @@ definitions:
     - academic_info
     - personal_info
     type: object
+  domain.Subject:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  domain.SubjectListRes:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Subject'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/domain.Meta'
+      status:
+        type: integer
+    type: object
+  domain.SubjectSuccessRes:
+    properties:
+      data:
+        $ref: '#/definitions/domain.Subject'
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
   domain.SuccessRes:
     properties:
       message:
@@ -301,6 +349,19 @@ definitions:
     - employment_detail
     - personal_info
     - professional_info
+    type: object
+  domain.UpdateSubjectPayload:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
     type: object
 host: localhost:8080
 info:
@@ -479,6 +540,146 @@ paths:
       summary: Update student
       tags:
       - Student
+  /subject/{subject_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete subject
+      parameters:
+      - description: subject_id
+        in: path
+        name: subject_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: subject
+          schema:
+            $ref: '#/definitions/domain.SuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Delete subject
+      tags:
+      - Subject
+    get:
+      consumes:
+      - application/json
+      description: Get subject by id
+      parameters:
+      - description: subject_id
+        in: path
+        name: subject_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: subject
+          schema:
+            $ref: '#/definitions/domain.SubjectSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get subject by id
+      tags:
+      - Subject
+  /subject/create:
+    post:
+      consumes:
+      - application/json
+      description: Create subject
+      parameters:
+      - description: subject
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateSubjectPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created new subject
+          schema:
+            $ref: '#/definitions/domain.SubjectSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Create subject
+      tags:
+      - Subject
+  /subject/list:
+    get:
+      consumes:
+      - application/json
+      description: Get subject list
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: subject
+          schema:
+            $ref: '#/definitions/domain.SubjectListRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get subject list
+      tags:
+      - Subject
+  /subject/update:
+    put:
+      consumes:
+      - application/json
+      description: Update subject
+      parameters:
+      - description: subject
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateSubjectPayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Updated subject
+          schema:
+            $ref: '#/definitions/domain.SubjectSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Update subject
+      tags:
+      - Subject
   /teacher/{teacher_id}:
     delete:
       consumes:

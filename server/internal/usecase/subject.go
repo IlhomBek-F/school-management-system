@@ -10,6 +10,7 @@ type SubjectUsecase interface {
 	Update(payload domain.UpdateSubjectPayload) (domain.Subject, error)
 	Delete(id int) error
 	GetById(id int) (domain.Subject, error)
+	GetList() ([]domain.Subject, error)
 }
 
 type subjectUsecase struct {
@@ -30,6 +31,12 @@ func (s subjectUsecase) Update(payload domain.UpdateSubjectPayload) (domain.Subj
 	subject, err := s.subjectRepo.Update(payload)
 
 	return subject, err
+}
+
+func (s subjectUsecase) GetList() ([]domain.Subject, error) {
+	subjects, err := s.subjectRepo.GetList()
+
+	return subjects, err
 }
 
 func (s subjectUsecase) GetById(id int) (domain.Subject, error) {

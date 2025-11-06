@@ -11,6 +11,7 @@ type SubjectRepository interface {
 	GetByID(id int) (domain.Subject, error)
 	Update(payload domain.UpdateSubjectPayload) (domain.Subject, error)
 	Delete(id int) error
+	GetList() ([]domain.Subject, error)
 }
 
 type subjectRepository struct {
@@ -25,6 +26,13 @@ func (r subjectRepository) Create(payload domain.CreateSubjectPayload) (domain.S
 	result := r.db.Create(&payload)
 
 	return payload, result.Error
+}
+
+func (r subjectRepository) GetList() ([]domain.Subject, error) {
+	var subjects []domain.Subject
+	result := r.db.Find(&subjects)
+
+	return subjects, result.Error
 }
 
 func (r subjectRepository) GetByID(id int) (domain.Subject, error) {

@@ -8,5 +8,5 @@ type Subject struct {
 
 type UpdateSubjectPayload = Subject
 type CreateSubjectPayload = Subject
-type SubjectCreateRes = SuccessResponseWithData[Subject]
+type SubjectSuccessRes = SuccessResponseWithData[Subject]
 type SubjectListRes = SuccessResponseWithMeta[[]Subject]

@@ -18,4 +18,5 @@ func SetupRoutes(app bootstrap.Application, gin *gin.Engine) {
 	NewLoginRoute(app, publicRouter)
 	NewStudentRouter(app, privateRouter)
 	NewTeacherRouter(app, privateRouter)
+	NewSubjectRouter(app, privateRouter)
 }
