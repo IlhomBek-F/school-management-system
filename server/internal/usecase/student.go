@@ -18,7 +18,7 @@ func NewStudentUsecase(studentRepo repository.StudentRepository) StudentUsecase 
 }
 
 func (s studentUsecase) GetStudentById(id int) (domain.Student, error) {
-	student, err := s.studentRespository.GetStudentById(id)
+	student, err := s.studentRespository.GetById(id)
 
 	return student, err
 }

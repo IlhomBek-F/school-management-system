@@ -43,10 +43,10 @@ func (lc LoginController) Login(c *gin.Context) {
 		return
 	}
 
-	successRes := domain.SuccessResponseWithData[domain.LoginResponse]{
+	successRes := domain.LoginRes{
 		Status:  http.StatusOK,
 		Message: "Success",
-		Data: domain.LoginResponse{
+		Data: domain.AuthToken{
 			AccessToken:  accessToken,
 			RefreshToken: refreshToken,
 		},

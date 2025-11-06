@@ -5,7 +5,9 @@ type LoginRequest struct {
 	Password string `json:"password" bionding:"required"`
 }
 
-type LoginResponse struct {
+type AuthToken struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }
+
+type LoginRes = SuccessResponseWithData[AuthToken]

@@ -8,14 +8,15 @@ import { Router } from '@angular/router';
 import { ToastService } from '@core/services/toast.service';
 import { LoginService } from './services/login.service';
 import { AuthService } from '@core/services/auth.service';
-import { DynamicFormComponent } from "@shared/components/dynamic-form/dynamic-form.component";
 import { QuestionControlService } from '@core/services/question-control.service';
 import { TextInputComponent } from "@shared/components/dynamic-form/text-input/text-input.component";
 import { PasswordInputComponent } from "@shared/components/dynamic-form/password-input/password-input.component";
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'school-login',
-  imports: [FormsModule, ReactiveFormsModule, PasswordModule, ButtonModule, ToastModule, CommonModule, DynamicFormComponent, TextInputComponent, PasswordInputComponent],
+  imports: [FormsModule, ReactiveFormsModule, PasswordModule, ButtonModule, ToastModule, CommonModule, TextInputComponent, PasswordInputComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   providers: [QuestionControlService],
@@ -36,6 +37,9 @@ export class LoginCompoent {
   login() {
     this.loading.set(true)
     this._loginService.login(this.formGroup.getRawValue())
+      .pipe(
+        untilDestroyed(this)
+      )
       .subscribe({
       next: (res) => {
         this.loading.set(false)

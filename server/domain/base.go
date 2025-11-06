@@ -16,3 +16,14 @@ type SuccessResponseWithData[T any] struct {
 	Message string `json:"message"`
 	Data    T      `json:"data"`
 }
+
+type SuccessResponseWithMeta[T any] struct {
+	SuccessResponseWithData[T]
+	Meta Meta `json:"meta"`
+}
+
+type Meta struct {
+	Total       int `json:"total"`
+	PerPage     int `json:"per_page"`
+	CurrentPage int `json:"current_page"`
+}
