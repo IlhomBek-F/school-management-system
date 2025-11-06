@@ -22,7 +22,7 @@ type LoginController struct {
 //	@Accept			json
 //	@Produce		json
 //	@Param			payload	body		domain.LoginRequest	true "User credentials"
-//	@Success		201		{object}	domain.LoginResponse		"Logged in"
+//	@Success		201		{object}	domain.LoginRes		"Logged in"
 //	@Failure		400		{object}	error
 //	@Failure		500		{object}	error
 //	@Router			/auth/login [post]

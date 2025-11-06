@@ -56,7 +56,7 @@ func (t TeacherController) GetTeacherList(c *gin.Context) {
 //	@Security       JWT
 //	@Produce		json
 //	@Param			payload	body		domain.TeacherCreatePayload	true "teacher"
-//	@Success		201		{object}	domain.TeacherCreateRes		"Created new teacher"
+//	@Success		201		{object}	domain.TeacherSuccessRes		"Created new teacher"
 //	@Failure		400		{object}	error
 //	@Failure		500		{object}	error
 //	@Router			/teacher/create [post]
@@ -95,7 +95,7 @@ func (t TeacherController) CreateTeacher(c *gin.Context) {
 //	@Security       JWT
 //	@Produce		json
 //	@Param			payload	body		domain.TeacherUpdatePayload	true "teacher"
-//	@Success		201		{object}	domain.TeacherUpdateRes		"Updated teacher"
+//	@Success		201		{object}	domain.TeacherSuccessRes		"Updated teacher"
 //	@Failure		400		{object}	error
 //	@Failure		500		{object}	error
 //	@Router			/teacher/update [put]

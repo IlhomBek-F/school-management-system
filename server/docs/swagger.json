@@ -44,7 +44,225 @@
                     "201": {
                         "description": "Logged in",
                         "schema": {
-                            "$ref": "#/definitions/domain.LoginResponse"
+                            "$ref": "#/definitions/domain.LoginRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/teacher/create": {
+            "post": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Create teacher",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teacher"
+                ],
+                "summary": "Create teacher",
+                "parameters": [
+                    {
+                        "description": "teacher",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.TeacherCreatePayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created new teacher",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TeacherSuccessRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/teacher/list": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get teacher list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teacher"
+                ],
+                "summary": "Get teacher list teacher",
+                "responses": {
+                    "201": {
+                        "description": "teacher",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TeacherListRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/teacher/update": {
+            "put": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Update teacher",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teacher"
+                ],
+                "summary": "Update teacher",
+                "parameters": [
+                    {
+                        "description": "teacher",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.TeacherUpdatePayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Updated teacher",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TeacherSuccessRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/teacher/{teacher_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get teacher by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teacher"
+                ],
+                "summary": "Get teacher by id teacher",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "teacher_id",
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "teacher",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TeacherSuccessRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Delete teacher",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teacher"
+                ],
+                "summary": "Delete teacher",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "teacher_id",
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "teacher",
+                        "schema": {
+                            "$ref": "#/definitions/domain.SuccessRes"
                         }
                     },
                     "400": {
@@ -60,6 +278,34 @@
         }
     },
     "definitions": {
+        "domain.AuthToken": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.EmploymentDetail": {
+            "type": "object",
+            "properties": {
+                "conrtact_end_date": {
+                    "type": "string"
+                },
+                "employment_type": {
+                    "type": "string"
+                },
+                "joing_date": {
+                    "type": "string"
+                },
+                "salary": {
+                    "type": "integer"
+                }
+            }
+        },
         "domain.LoginRequest": {
             "type": "object",
             "required": [
@@ -74,13 +320,232 @@
                 }
             }
         },
-        "domain.LoginResponse": {
+        "domain.LoginRes": {
             "type": "object",
             "properties": {
-                "access_token": {
+                "data": {
+                    "$ref": "#/definitions/domain.AuthToken"
+                },
+                "message": {
                     "type": "string"
                 },
-                "refresh_token": {
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Meta": {
+            "type": "object",
+            "properties": {
+                "current_page": {
+                    "type": "integer"
+                },
+                "per_page": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.PersonalInformation": {
+            "type": "object",
+            "required": [
+                "city",
+                "date_of_birth",
+                "first_name",
+                "gender",
+                "last_name",
+                "phone",
+                "street_address"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "date_of_birth": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "street_address": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ProfessionalInformation": {
+            "type": "object",
+            "required": [
+                "department_id",
+                "qualification",
+                "subject_ids",
+                "teacher_id"
+            ],
+            "properties": {
+                "department_id": {
+                    "type": "integer"
+                },
+                "experience": {
+                    "type": "integer"
+                },
+                "graduation_year": {
+                    "type": "integer"
+                },
+                "qualification": {
+                    "type": "string"
+                },
+                "subject_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "teacher_id": {
+                    "type": "string"
+                },
+                "uni_or_ins_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.SuccessRes": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Teacher": {
+            "type": "object",
+            "required": [
+                "employment_detail",
+                "personal_info",
+                "professional_info"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "employment_detail": {
+                    "$ref": "#/definitions/domain.EmploymentDetail"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "personal_info": {
+                    "$ref": "#/definitions/domain.PersonalInformation"
+                },
+                "professional_info": {
+                    "$ref": "#/definitions/domain.ProfessionalInformation"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.TeacherCreatePayload": {
+            "type": "object",
+            "required": [
+                "employment_detail",
+                "personal_info",
+                "professional_info"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "employment_detail": {
+                    "$ref": "#/definitions/domain.EmploymentDetail"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "personal_info": {
+                    "$ref": "#/definitions/domain.PersonalInformation"
+                },
+                "professional_info": {
+                    "$ref": "#/definitions/domain.ProfessionalInformation"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.TeacherListRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Teacher"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.TeacherSuccessRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.Teacher"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.TeacherUpdatePayload": {
+            "type": "object",
+            "required": [
+                "employment_detail",
+                "personal_info",
+                "professional_info"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "employment_detail": {
+                    "$ref": "#/definitions/domain.EmploymentDetail"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "personal_info": {
+                    "$ref": "#/definitions/domain.PersonalInformation"
+                },
+                "professional_info": {
+                    "$ref": "#/definitions/domain.ProfessionalInformation"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }

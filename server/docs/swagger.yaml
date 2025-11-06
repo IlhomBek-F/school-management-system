@@ -1,5 +1,23 @@
 basePath: /api/v1/
 definitions:
+  domain.AuthToken:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  domain.EmploymentDetail:
+    properties:
+      conrtact_end_date:
+        type: string
+      employment_type:
+        type: string
+      joing_date:
+        type: string
+      salary:
+        type: integer
+    type: object
   domain.LoginRequest:
     properties:
       password:
@@ -9,12 +27,160 @@ definitions:
     required:
     - username
     type: object
-  domain.LoginResponse:
+  domain.LoginRes:
     properties:
-      access_token:
+      data:
+        $ref: '#/definitions/domain.AuthToken'
+      message:
         type: string
-      refresh_token:
+      status:
+        type: integer
+    type: object
+  domain.Meta:
+    properties:
+      current_page:
+        type: integer
+      per_page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  domain.PersonalInformation:
+    properties:
+      city:
         type: string
+      date_of_birth:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+      street_address:
+        type: string
+    required:
+    - city
+    - date_of_birth
+    - first_name
+    - gender
+    - last_name
+    - phone
+    - street_address
+    type: object
+  domain.ProfessionalInformation:
+    properties:
+      department_id:
+        type: integer
+      experience:
+        type: integer
+      graduation_year:
+        type: integer
+      qualification:
+        type: string
+      subject_ids:
+        items:
+          type: integer
+        type: array
+      teacher_id:
+        type: string
+      uni_or_ins_name:
+        type: string
+    required:
+    - department_id
+    - qualification
+    - subject_ids
+    - teacher_id
+    type: object
+  domain.SuccessRes:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  domain.Teacher:
+    properties:
+      created_at:
+        type: string
+      employment_detail:
+        $ref: '#/definitions/domain.EmploymentDetail'
+      id:
+        type: integer
+      personal_info:
+        $ref: '#/definitions/domain.PersonalInformation'
+      professional_info:
+        $ref: '#/definitions/domain.ProfessionalInformation'
+      updated_at:
+        type: string
+    required:
+    - employment_detail
+    - personal_info
+    - professional_info
+    type: object
+  domain.TeacherCreatePayload:
+    properties:
+      created_at:
+        type: string
+      employment_detail:
+        $ref: '#/definitions/domain.EmploymentDetail'
+      id:
+        type: integer
+      personal_info:
+        $ref: '#/definitions/domain.PersonalInformation'
+      professional_info:
+        $ref: '#/definitions/domain.ProfessionalInformation'
+      updated_at:
+        type: string
+    required:
+    - employment_detail
+    - personal_info
+    - professional_info
+    type: object
+  domain.TeacherListRes:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Teacher'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/domain.Meta'
+      status:
+        type: integer
+    type: object
+  domain.TeacherSuccessRes:
+    properties:
+      data:
+        $ref: '#/definitions/domain.Teacher'
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  domain.TeacherUpdatePayload:
+    properties:
+      created_at:
+        type: string
+      employment_detail:
+        $ref: '#/definitions/domain.EmploymentDetail'
+      id:
+        type: integer
+      personal_info:
+        $ref: '#/definitions/domain.PersonalInformation'
+      professional_info:
+        $ref: '#/definitions/domain.ProfessionalInformation'
+      updated_at:
+        type: string
+    required:
+    - employment_detail
+    - personal_info
+    - professional_info
     type: object
 host: localhost:8080
 info:
@@ -43,7 +209,7 @@ paths:
         "201":
           description: Logged in
           schema:
-            $ref: '#/definitions/domain.LoginResponse'
+            $ref: '#/definitions/domain.LoginRes'
         "400":
           description: Bad Request
           schema: {}
@@ -53,6 +219,146 @@ paths:
       summary: Login in to account
       tags:
       - Authentication
+  /teacher/{teacher_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete teacher
+      parameters:
+      - description: teacher_id
+        in: path
+        name: teacher_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: teacher
+          schema:
+            $ref: '#/definitions/domain.SuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Delete teacher
+      tags:
+      - Teacher
+    get:
+      consumes:
+      - application/json
+      description: Get teacher by id
+      parameters:
+      - description: teacher_id
+        in: path
+        name: teacher_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: teacher
+          schema:
+            $ref: '#/definitions/domain.TeacherSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get teacher by id teacher
+      tags:
+      - Teacher
+  /teacher/create:
+    post:
+      consumes:
+      - application/json
+      description: Create teacher
+      parameters:
+      - description: teacher
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TeacherCreatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created new teacher
+          schema:
+            $ref: '#/definitions/domain.TeacherSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Create teacher
+      tags:
+      - Teacher
+  /teacher/list:
+    get:
+      consumes:
+      - application/json
+      description: Get teacher list
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: teacher
+          schema:
+            $ref: '#/definitions/domain.TeacherListRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get teacher list teacher
+      tags:
+      - Teacher
+  /teacher/update:
+    put:
+      consumes:
+      - application/json
+      description: Update teacher
+      parameters:
+      - description: teacher
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TeacherUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Updated teacher
+          schema:
+            $ref: '#/definitions/domain.TeacherSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Update teacher
+      tags:
+      - Teacher
 schemes:
 - http
 - https
