@@ -159,6 +159,197 @@ definitions:
     - subject_ids
     - teacher_id
     type: object
+  domain.Room:
+    properties:
+      area:
+        type: integer
+      building_id:
+        type: string
+      capacity:
+        type: integer
+      code:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      floor_id:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      number:
+        type: integer
+      room_type_id:
+        type: integer
+      status:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - building_id
+    - code
+    - floor_id
+    - name
+    - room_type_id
+    - status
+    type: object
+  domain.RoomCreatePayload:
+    properties:
+      area:
+        type: integer
+      building_id:
+        type: string
+      capacity:
+        type: integer
+      code:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      floor_id:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      number:
+        type: integer
+      room_type_id:
+        type: integer
+      status:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - building_id
+    - code
+    - floor_id
+    - name
+    - room_type_id
+    - status
+    type: object
+  domain.RoomListRes:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Room'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/domain.Meta'
+      status:
+        type: integer
+    type: object
+  domain.RoomSuccessRes:
+    properties:
+      data:
+        $ref: '#/definitions/domain.Room'
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  domain.RoomType:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - name
+    type: object
+  domain.RoomTypeCreatePayload:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - name
+    type: object
+  domain.RoomTypeListRes:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.RoomType'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/domain.Meta'
+      status:
+        type: integer
+    type: object
+  domain.RoomTypeSuccessRes:
+    properties:
+      data:
+        $ref: '#/definitions/domain.RoomType'
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  domain.RoomTypeUpdatePayload:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - name
+    type: object
+  domain.RoomUpdatePayload:
+    properties:
+      area:
+        type: integer
+      building_id:
+        type: string
+      capacity:
+        type: integer
+      code:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      floor_id:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      number:
+        type: integer
+      room_type_id:
+        type: integer
+      status:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - building_id
+    - code
+    - floor_id
+    - name
+    - room_type_id
+    - status
+    type: object
   domain.Student:
     properties:
       academic_info:
@@ -400,6 +591,286 @@ paths:
       summary: Login in to account
       tags:
       - Authentication
+  /room/{room_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete room
+      parameters:
+      - description: room_id
+        in: path
+        name: room_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Room
+          schema:
+            $ref: '#/definitions/domain.SuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Delete room
+      tags:
+      - Room
+    get:
+      consumes:
+      - application/json
+      description: Get room by id
+      parameters:
+      - description: room_id
+        in: path
+        name: room_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: room
+          schema:
+            $ref: '#/definitions/domain.RoomSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get room by id
+      tags:
+      - Room
+  /room/create:
+    post:
+      consumes:
+      - application/json
+      description: Create room
+      parameters:
+      - description: room
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.RoomCreatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created new room
+          schema:
+            $ref: '#/definitions/domain.RoomSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Create room
+      tags:
+      - Room
+  /room/list:
+    get:
+      consumes:
+      - application/json
+      description: Get room list
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: rooms
+          schema:
+            $ref: '#/definitions/domain.RoomListRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get room list
+      tags:
+      - Room
+  /room/update:
+    put:
+      consumes:
+      - application/json
+      description: Update room
+      parameters:
+      - description: room
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.RoomUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Updated room
+          schema:
+            $ref: '#/definitions/domain.RoomSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Update room
+      tags:
+      - Room
+  /room_type/{room_type_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete roomType
+      parameters:
+      - description: room_type_id
+        in: path
+        name: room_type_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: RoomType
+          schema:
+            $ref: '#/definitions/domain.SuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Delete roomType
+      tags:
+      - RoomType
+    get:
+      consumes:
+      - application/json
+      description: Get roomType by id
+      parameters:
+      - description: room_type_id
+        in: path
+        name: room_type_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: roomType
+          schema:
+            $ref: '#/definitions/domain.RoomTypeSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get roomType by id
+      tags:
+      - RoomType
+  /room_type/create:
+    post:
+      consumes:
+      - application/json
+      description: Create roomType
+      parameters:
+      - description: roomType
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.RoomTypeCreatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created new roomType
+          schema:
+            $ref: '#/definitions/domain.RoomTypeSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Create roomType
+      tags:
+      - RoomType
+  /room_type/list:
+    get:
+      consumes:
+      - application/json
+      description: Get roomType list
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: room_types
+          schema:
+            $ref: '#/definitions/domain.RoomTypeListRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get roomType list
+      tags:
+      - RoomType
+  /room_type/update:
+    put:
+      consumes:
+      - application/json
+      description: Update roomType
+      parameters:
+      - description: roomType
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.RoomTypeUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Updated roomType
+          schema:
+            $ref: '#/definitions/domain.RoomTypeSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Update roomType
+      tags:
+      - RoomType
   /student/{student_id}:
     delete:
       consumes:

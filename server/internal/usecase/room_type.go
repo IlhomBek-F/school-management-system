@@ -10,6 +10,7 @@ type RoomTypeUsecase interface {
 	Update(payload domain.RoomTypeUpdatePayload) (domain.RoomType, error)
 	Delete(id int) error
 	GetById(id int) (domain.RoomType, error)
+	GetList() ([]domain.RoomType, error)
 }
 
 type roomTypeUsecase struct {
@@ -30,6 +31,12 @@ func (r roomTypeUsecase) Update(payload domain.RoomTypeUpdatePayload) (domain.Ro
 	roomType, err := r.roomTypeRepo.Update(payload)
 
 	return roomType, err
+}
+
+func (r roomTypeUsecase) GetList() ([]domain.RoomType, error) {
+	roomTypes, err := r.roomTypeRepo.GetList()
+
+	return roomTypes, err
 }
 
 func (r roomTypeUsecase) GetById(id int) (domain.RoomType, error) {

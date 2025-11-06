@@ -11,6 +11,7 @@ type RoomTypeRepository interface {
 	GetByID(id int) (domain.RoomType, error)
 	Update(payload domain.RoomTypeUpdatePayload) (domain.RoomType, error)
 	Delete(id int) error
+	GetList() ([]domain.RoomType, error)
 }
 
 type roomTypeRepository struct {
@@ -32,6 +33,13 @@ func (r roomTypeRepository) GetByID(id int) (domain.RoomType, error) {
 	result := r.db.Where("id = ?", id).First(&roomType)
 
 	return roomType, result.Error
+}
+
+func (r roomTypeRepository) GetList() ([]domain.RoomType, error) {
+	var roomTypes []domain.RoomType
+	result := r.db.Find((&roomTypes))
+
+	return roomTypes, result.Error
 }
 
 func (r roomTypeRepository) Update(payload domain.RoomTypeUpdatePayload) (domain.RoomType, error) {
