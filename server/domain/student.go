@@ -29,6 +29,5 @@ type AcademicInfo struct {
 
 type StudentCreatePayload = Student
 type StudentUpdatePayload = Student
-type StudentCreateRes = SuccessResponseWithData[Student]
+type StudentSuccessRes = SuccessResponseWithData[Student]
 type StudentListRes = SuccessResponseWithMeta[[]Student]
-type StudentUpdateRes = StudentCreateRes

@@ -7,6 +7,7 @@ import (
 
 var (
 	ErrUserNotFound        = errors.New("user not found")
+	ErrTeacherNotFound     = errors.New("teacher not found")
 	ErrInvalidCredential   = errors.New("invalid credentials")
 	ErrInternalServer      = errors.New("internal server error")
 	ErrGenerateAccessToken = errors.New("failed to generate an access token")
@@ -28,4 +29,5 @@ var ErrorResponseMap = map[error]ErrorResponse{
 	ErrAuthorizationHeader: {Status: http.StatusUnauthorized, Message: ErrAuthorizationHeader.Error()},
 	ErrTokenMissing:        {Status: http.StatusUnauthorized, Message: ErrTokenMissing.Error()},
 	ErrTokenInvalid:        {Status: http.StatusUnauthorized, Message: ErrTokenInvalid.Error()},
+	ErrTeacherNotFound:     {Status: http.StatusNotFound, Message: ErrTeacherNotFound.Error()},
 }

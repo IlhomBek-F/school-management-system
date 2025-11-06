@@ -186,7 +186,7 @@ func (t TeacherController) DeleteTeacher(c *gin.Context) {
 	err := t.TeacherUsecase.Delete(teacherId)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrInternalServer])
+		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[err])
 		return
 	}
 

@@ -9,8 +9,9 @@ import (
 type StudentRepository interface {
 	Create(payload domain.StudentCreatePayload) (domain.Student, error)
 	Update(payload domain.StudentUpdatePayload) (domain.Student, error)
-	Delete(id int) error
 	GetById(id int) (domain.Student, error)
+	GetList() ([]domain.Student, error)
+	Delete(id int) error
 }
 
 type studentRepository struct {
@@ -37,6 +38,13 @@ func (r studentRepository) Delete(id int) error {
 	result := r.Db.Delete(domain.Student{}, id)
 
 	return result.Error
+}
+
+func (r studentRepository) GetList() ([]domain.Student, error) {
+	var students []domain.Student
+	result := r.Db.Find(&students)
+
+	return students, result.Error
 }
 
 func (r studentRepository) GetById(id int) (domain.Student, error) {

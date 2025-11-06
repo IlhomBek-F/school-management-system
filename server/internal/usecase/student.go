@@ -10,6 +10,7 @@ type StudentUsecase interface {
 	Update(payload domain.StudentUpdatePayload) (domain.Student, error)
 	Delete(id int) error
 	GetById(id int) (domain.Student, error)
+	GetList() ([]domain.Student, error)
 }
 
 type studentUsecase struct {
@@ -24,6 +25,12 @@ func (s studentUsecase) Create(payload domain.StudentCreatePayload) (domain.Stud
 	student, err := s.studentRespository.Create(payload)
 
 	return student, err
+}
+
+func (s studentUsecase) GetList() ([]domain.Student, error) {
+	students, err := s.studentRespository.GetList()
+
+	return students, err
 }
 
 func (s studentUsecase) Update(payload domain.StudentUpdatePayload) (domain.Student, error) {

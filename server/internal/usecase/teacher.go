@@ -1,8 +1,11 @@
 package usecase
 
 import (
+	"errors"
 	"school/domain"
 	"school/internal/repository"
+
+	"gorm.io/gorm"
 )
 
 type TeacherUsecase interface {
@@ -46,7 +49,15 @@ func (t teacherUsecase) GetById(id int) (domain.Teacher, error) {
 }
 
 func (t teacherUsecase) Delete(id int) error {
-	err := t.teacherRepo.Delete(id)
+	_, err := t.GetById(id)
 
-	return err
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return domain.ErrTeacherNotFound
+		}
+
+		return domain.ErrInternalServer
+	}
+
+	return t.teacherRepo.Delete(id)
 }

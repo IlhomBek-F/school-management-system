@@ -60,6 +60,224 @@ const docTemplate = `{
                 }
             }
         },
+        "/student/create": {
+            "post": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Create student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student"
+                ],
+                "summary": "Create student",
+                "parameters": [
+                    {
+                        "description": "student",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.StudentCreatePayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created new student",
+                        "schema": {
+                            "$ref": "#/definitions/domain.StudentSuccessRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/student/list": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get student list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student"
+                ],
+                "summary": "Get student list student",
+                "responses": {
+                    "201": {
+                        "description": "student",
+                        "schema": {
+                            "$ref": "#/definitions/domain.StudentListRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/student/update": {
+            "put": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Update student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student"
+                ],
+                "summary": "Update student",
+                "parameters": [
+                    {
+                        "description": "student",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.StudentUpdatePayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Updated student",
+                        "schema": {
+                            "$ref": "#/definitions/domain.StudentSuccessRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/student/{student_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get student by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student"
+                ],
+                "summary": "Get student by id student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "student_id",
+                        "name": "student_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "student",
+                        "schema": {
+                            "$ref": "#/definitions/domain.StudentSuccessRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Delete student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student"
+                ],
+                "summary": "Delete student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "student_id",
+                        "name": "student_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "student",
+                        "schema": {
+                            "$ref": "#/definitions/domain.SuccessRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/teacher/create": {
             "post": {
                 "security": [
@@ -280,6 +498,35 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "domain.AcademicInfo": {
+            "type": "object",
+            "required": [
+                "admission_date",
+                "class_section",
+                "emergency_contact",
+                "grade"
+            ],
+            "properties": {
+                "admission_date": {
+                    "type": "string"
+                },
+                "class_section": {
+                    "type": "string"
+                },
+                "emergency_contact": {
+                    "type": "string"
+                },
+                "grade": {
+                    "type": "string"
+                },
+                "prev_school": {
+                    "type": "string"
+                },
+                "student_id": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.AuthToken": {
             "type": "object",
             "properties": {
@@ -347,6 +594,48 @@ const docTemplate = `{
                 },
                 "total": {
                     "type": "integer"
+                }
+            }
+        },
+        "domain.PersonalInfo": {
+            "type": "object",
+            "required": [
+                "blood_group",
+                "city",
+                "date_of_birth",
+                "first_name",
+                "ggnder",
+                "last_name",
+                "phone",
+                "street_address"
+            ],
+            "properties": {
+                "blood_group": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "date_of_birth": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "ggnder": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "street_address": {
+                    "type": "string"
                 }
             }
         },
@@ -419,6 +708,112 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "uni_or_ins_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Student": {
+            "type": "object",
+            "required": [
+                "academic_info",
+                "personal_info"
+            ],
+            "properties": {
+                "academic_info": {
+                    "$ref": "#/definitions/domain.AcademicInfo"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "personal_info": {
+                    "$ref": "#/definitions/domain.PersonalInfo"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.StudentCreatePayload": {
+            "type": "object",
+            "required": [
+                "academic_info",
+                "personal_info"
+            ],
+            "properties": {
+                "academic_info": {
+                    "$ref": "#/definitions/domain.AcademicInfo"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "personal_info": {
+                    "$ref": "#/definitions/domain.PersonalInfo"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.StudentListRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Student"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.StudentSuccessRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.Student"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.StudentUpdatePayload": {
+            "type": "object",
+            "required": [
+                "academic_info",
+                "personal_info"
+            ],
+            "properties": {
+                "academic_info": {
+                    "$ref": "#/definitions/domain.AcademicInfo"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "personal_info": {
+                    "$ref": "#/definitions/domain.PersonalInfo"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }

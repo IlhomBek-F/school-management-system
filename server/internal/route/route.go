@@ -16,5 +16,6 @@ func SetupRoutes(app bootstrap.Application, gin *gin.Engine) {
 	gin.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	NewLoginRoute(app, publicRouter)
+	NewStudentRouter(app, privateRouter)
 	NewTeacherRouter(app, privateRouter)
 }
