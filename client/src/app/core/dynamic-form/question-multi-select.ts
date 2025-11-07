@@ -20,7 +20,7 @@ export class QuestionMultiSelect extends QuestionBase {
       super(options)
       this.loading = options.loading || false;
       this.optionLabel = options.optionLabel || 'label'
-      this.optionValue = options.value || 'value'
+      this.optionValue = options.optionValue || 'value'
       this.options = options.options
     }
 }

@@ -5,7 +5,10 @@ type Facility struct {
 	Name string `json:"name" binding:"required"`
 }
 
-type FacilityCreatePayload = Facility
+type FacilityCreatePayload struct {
+	Name string `json:"name" binding:"required"`
+}
+
 type FacilityUpdatePayload = Facility
 type FacilitySuccessRes = SuccessResponseWithData[Facility]
 type FacilityListRes = SuccessResponseWithMeta[[]Facility]

@@ -24,7 +24,7 @@
          }
       }
       @case (QuestionTypeEnum.SelectInput) {
-        <school-select-input [options]="question().options"
+        <school-select-input [options]="$any(question()).options"
                              [formControlName]="question().key"
                              [required]="question().required"
                              [optionLabel]="$any(question()).optionLabel"
@@ -34,8 +34,10 @@
                              />
       }
       @case (QuestionTypeEnum.MultiSelect) {
-        <school-multi-select [options]="question().options"
+        <school-multi-select [options]="$any(question()).options"
                              [formControlName]="question().key"
+                             [optionLabel]="$any(question()).optionLabel"
+                             [optionValue]="$any(question()).optionValue"
                              [required]="question().required"
                              [placeholder]="question().placeholder"/>
       }

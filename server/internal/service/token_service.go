@@ -29,7 +29,7 @@ func NewTokenService(env *bootstrap.Env) TokenService {
 }
 
 func (s tokenService) GenerateToken(user domain.User) (string, error) {
-	accessTokenClaims := s.CreateNewClaims(user.ID, 1, time.Duration(s.env.ACCESS_TOKEN_EXPIRY_HOUR)*time.Minute, "school")
+	accessTokenClaims := s.CreateNewClaims(user.ID, 1, time.Duration(s.env.ACCESS_TOKEN_EXPIRY_HOUR)*time.Hour, "school")
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
 
 	tokenStr, err := token.SignedString([]byte(s.env.ACCESS_TOKEN_SECRET))
@@ -42,7 +42,7 @@ func (s tokenService) GenerateToken(user domain.User) (string, error) {
 }
 
 func (s tokenService) GenerateRefreshToken(user domain.User) (string, error) {
-	refreshTokenClaims := s.CreateNewClaims(user.ID, 1, time.Duration(s.env.REFRESH_TOKEN_EXPIRY_HOUR)*time.Minute, "school")
+	refreshTokenClaims := s.CreateNewClaims(user.ID, 1, time.Duration(s.env.REFRESH_TOKEN_EXPIRY_HOUR)*time.Hour, "school")
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshTokenClaims)
 	tokenStr, err := token.SignedString([]byte(s.env.REFRESH_TOKEN_SECRET))
 

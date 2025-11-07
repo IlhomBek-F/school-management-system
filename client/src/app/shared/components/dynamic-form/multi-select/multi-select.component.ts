@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
 
 const VALUE_ACCESSOR_PROVIDER = {
@@ -11,7 +11,7 @@ const VALUE_ACCESSOR_PROVIDER = {
 
 @Component({
   selector: 'school-multi-select',
-  imports: [MultiSelectModule, CommonModule],
+  imports: [MultiSelectModule, CommonModule, FormsModule],
   templateUrl: './multi-select.component.html',
   styleUrl: './multi-select.component.scss',
   providers: [VALUE_ACCESSOR_PROVIDER],
@@ -34,6 +34,7 @@ export class MultiSelectComponent implements ControlValueAccessor{
   onTouched = () => {};
 
   writeValue(value: any): void {
+    console.log(this.optionValue())
     this.value = value;
   }
 

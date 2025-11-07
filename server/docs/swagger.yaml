@@ -70,13 +70,7 @@ definitions:
     type: object
   domain.BuildingCreatePayload:
     properties:
-      created_at:
-        type: string
-      id:
-        type: integer
       name:
-        type: string
-      updated_at:
         type: string
     required:
     - name
@@ -212,13 +206,7 @@ definitions:
     type: object
   domain.FacilityCreatePayload:
     properties:
-      created_at:
-        type: string
-      id:
-        type: integer
       name:
-        type: string
-      updated_at:
         type: string
     required:
     - name
@@ -475,13 +463,7 @@ definitions:
     type: object
   domain.RoomTypeCreatePayload:
     properties:
-      created_at:
-        type: string
-      id:
-        type: integer
       name:
-        type: string
-      updated_at:
         type: string
     required:
     - name

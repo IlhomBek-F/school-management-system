@@ -26,6 +26,8 @@ import { RoomsService } from '../services/rooms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Room } from '../models';
 import { Building } from '@core/models/building';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Facility } from '@core/models/facility';
 
 @UntilDestroy()
 @Component({
@@ -39,6 +41,7 @@ import { Building } from '@core/models/building';
     ButtonModule,
     TextInputComponent,
     SelectInputComponent,
+    ReactiveFormsModule,
     EmptyListComponent,
   ],
   templateUrl: './rooms.component.html',
@@ -51,10 +54,16 @@ export class RoomsComponent {
   loading = signal(true)
   loadingRoomTypes = signal(false)
   loadingBuildings = signal(false)
-  roomTypeOptions: DropdownOption[] = [{ label: 'All Types', value: 'all' }]
-  buildingOptions: Building[] = []
 
-    rooms: Room[] = [
+  roomTypeOptions: DropdownOption[] = [{ label: 'All Types', value: 'all' }];
+  
+  filterFormGroup = new FormGroup({
+    search: new FormControl(),
+    room_type_id: new FormControl('all'),
+    status: new FormControl('all')
+  })
+
+  rooms: Room[] = [
     {
       id: 1,
       name: 'Room 101',
@@ -104,20 +113,15 @@ export class RoomsComponent {
       deleted_at: null
     },
   ];
-
-  filteredRooms: Room[] = [];
-  searchTerm: string = '';
-  selectedType: string = 'all';
-  selectedStatus: string = 'all';
+  
   viewMode: string = ViewModeEnum.LIST;
-
   statuses: DropdownOption[] = [
     { label: 'All Status', value: 'all' },
     { label: 'Available', value: RoomStatus.AVAILABLE },
     { label: 'Occupied', value: RoomStatus.OCCUPIED },
     { label: 'Maintenance', value: RoomStatus.MAINTENANCE }
   ];
-
+  
   totalRooms: number = 0;
   availableRooms: number = 0;
   totalCapacity: number = 0;
@@ -126,12 +130,15 @@ export class RoomsComponent {
   private _confirmService = inject(DeleteConfirmDialogService)
   private _messageService = inject(ToastService)
   private _roomsService = inject(RoomsService)
+  private _buildingOptions: Building[] = [];
+  private _facilities: Facility[] = []
 
    ngOnInit(): void {
-    this.filteredRooms = [...this.rooms];
     this.calculateStats();
     this._getRoomTypes();
-    this._getBuildingOptions()
+    this._getBuildingOptions();
+    this._getFacilityOptions();
+    this._handleFilterRoom();
   }
 
   calculateStats(): void {
@@ -140,20 +147,6 @@ export class RoomsComponent {
     this.totalCapacity = this.rooms.reduce((sum, r) => sum + r.capacity, 0);
     const totalOccupancy = this.rooms.reduce((sum, r) => sum + r.currentOccupancy, 0);
     this.avgOccupancy = Math.round((totalOccupancy / this.totalCapacity) * 100);
-  }
-
-  filterRooms(): void {
-    this.filteredRooms = this.rooms.filter(room => {
-      const matchesSearch =
-        room.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        room.code.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        room.building.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesType =
-        this.selectedType === 'all' || room.room_type === this.selectedType;
-      const matchesStatus =
-        this.selectedStatus === 'all' || room.status === this.selectedStatus;
-      return matchesSearch && matchesType && matchesStatus;
-    });
   }
 
    upsertRoom(room?: Room): void {
@@ -179,30 +172,21 @@ export class RoomsComponent {
             this._confirmService.loading$.next(true)
             setTimeout(() => {
               this._confirmService.loading$.next(false);
-              this.filteredRooms = this.filteredRooms.filter(({id}) => room.id !== id)
               this._messageService.success("Room deleted successfully")
               ref.close()
             }, 3000)
           })
   }
 
-   onSearchChange(searchTerm: string): void {
-    this.searchTerm = searchTerm;
-    this.filterRooms();
-  }
-
-  onTypeChange(value: string): void {
-    this.selectedType = value;
-    this.filterRooms();
-  }
-
-  onStatusChange(status: string): void {
-    this.selectedStatus = status;
-    this.filterRooms();
-  }
-
   setViewMode(mode: string): void {
     this.viewMode = mode;
+  }
+
+  private _handleFilterRoom() {
+    this.filterFormGroup.valueChanges
+    .pipe(
+      untilDestroyed(this)
+    ).subscribe(console.log)
   }
 
   private _getRoomTypes() {
@@ -221,16 +205,28 @@ export class RoomsComponent {
   }
 
   private _getBuildingOptions() {
-     this.loadingBuildings.set(true)
+    this.loadingBuildings.set(true)
     this._roomsService.getBuildings()
     .pipe(untilDestroyed(this))
      .subscribe({
        next: (res) => {
           this.loadingBuildings.set(false)
-          this.buildingOptions = res.data;
+          this._buildingOptions = res.data;
        }, error: (err) => {
            this._messageService.error(err.message || "Failed getting buildings")
            this.loadingBuildings.set(false)
+       }
+     })
+  }
+
+  private _getFacilityOptions() {
+    this._roomsService.getFacilities()
+    .pipe(untilDestroyed(this))
+     .subscribe({
+       next: (res) => {
+          this._facilities = res.data;
+       }, error: (err) => {
+           this._messageService.error(err.message || "Failed getting facilities")
        }
      })
   }
@@ -262,6 +258,7 @@ export class RoomsComponent {
             key: 'room_type_id',
             label: 'Room type',
             required: true,
+            value: 'all',
             options: this.roomTypeOptions
           }),
           new QuestionSelectInput({
@@ -270,7 +267,7 @@ export class RoomsComponent {
             required: true,
             optionLabel: "name",
             optionValue: "id",
-            options: this.buildingOptions
+            options: this._buildingOptions
           }),
 
         ]
@@ -282,15 +279,17 @@ export class RoomsComponent {
             label: 'Floor',
             required: true,
             options: [
-
+              {label: '1', value: 1},
+              {label: '2', value: 2},
+              {label: '3', value: 3}
             ]
           }),
             new QuestionMultiSelect({
             key: 'facility_ids',
             label: 'Facility',
-            options: [
-
-            ]
+            optionLabel: "name",
+            optionValue: "id",
+            options: this._facilities
           })
         ]
       },

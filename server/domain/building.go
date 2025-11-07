@@ -5,7 +5,9 @@ type Building struct {
 	Name string `json:"name" binding:"required"`
 }
 
-type BuildingCreatePayload = Building
+type BuildingCreatePayload struct {
+	Name string `json:"name" binding:"required"`
+}
 type BuildingUpdatePayload = Building
 type BuildingSuccessRes = SuccessResponseWithData[Building]
 type BuildingListRes = SuccessResponseWithMeta[[]Building]

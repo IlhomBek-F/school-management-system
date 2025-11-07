@@ -36,12 +36,12 @@ export class QuestionControlService {
                   }
              })
     })
-
+    console.log(group)
     return new FormGroup(group);
   }
 
   private _getQuestionsFromContainer(containers: FormContainer[]) {
-    return containers.reduce((prev: QuestionBase<any>[], curr: FormContainer) => {
+    return containers.reduce((prev: QuestionBase[], curr: FormContainer) => {
       prev.push(...curr.containers)
       return prev
     }, [])

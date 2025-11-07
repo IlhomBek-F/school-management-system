@@ -23,9 +23,12 @@ func NewFacilityRepository(db *gorm.DB) FacilityRepository {
 }
 
 func (r facilityRepository) Create(payload domain.FacilityCreatePayload) (domain.Facility, error) {
-	result := r.db.Create(&payload)
+	facility := domain.Facility{}
+	facility.Name = payload.Name
 
-	return payload, result.Error
+	result := r.db.Create(&facility)
+
+	return facility, result.Error
 }
 
 func (r facilityRepository) GetList() ([]domain.Facility, error) {

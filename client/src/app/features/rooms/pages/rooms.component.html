@@ -37,12 +37,12 @@
     </div>
 
      <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-      <div class="flex flex-col md:flex-row gap-4">
-          <school-text-input icon="pi pi-search" placeholder="Search by room name, code, or building..." (onChangeEmit)="onSearchChange($event)"/>
-          <school-select-input [options]="roomTypeOptions" (onChangeEmit)="onTypeChange($event)" [loading]="loadingRoomTypes()"/>
+      <div class="flex flex-col md:flex-row gap-4" [formGroup]="filterFormGroup">
+          <school-text-input icon="pi pi-search" formControlName="search" placeholder="Search by room name, code, or building..."/>
+          <school-select-input formControlName="room_type_id" [options]="roomTypeOptions" [loading]="loadingRoomTypes()"/>
 
         <div class="flex gap-2">
-          <school-select-input [options]="statuses" (onChangeEmit)="onTypeChange($event)"/>
+          <school-select-input formControlName="status" [options]="statuses"/>
 
           <p-button
             label="Grid"
@@ -68,12 +68,12 @@
     </div>
 
     @if (viewMode === VIEW_MODE.GRID) {
-      <school-rooms-grid-view-list [loading]="loading()" [rooms]="filteredRooms" (editEmitEvent)="upsertRoom($event)" (deleteEmitEvent)="deleteRoom($event)"/>
+      <school-rooms-grid-view-list [loading]="loading()" [rooms]="rooms" (editEmitEvent)="upsertRoom($event)" (deleteEmitEvent)="deleteRoom($event)"/>
     } @else {
-      <school-rooms-table-view-list [rooms]="filteredRooms" (editEmitEvent)="upsertRoom($event)" (deleteEmitEvent)="deleteRoom($event)"/>
+      <school-rooms-table-view-list [rooms]="rooms" (editEmitEvent)="upsertRoom($event)" (deleteEmitEvent)="deleteRoom($event)"/>
     }
 
-    @if (filteredRooms.length === 0) {
+    @if (rooms.length === 0) {
       <school-empty-list title="No rooms found"/>
     }
   </div>
