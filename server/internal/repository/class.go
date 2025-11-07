@@ -11,13 +11,14 @@ type ClassRepository interface {
 	Update(payload domain.ClassUpdatePayload) (domain.Class, error)
 	Delete(id int) error
 	GetById(id int) (domain.Class, error)
+	GetList() ([]domain.Class, error)
 }
 
 type classRepository struct {
 	Db *gorm.DB
 }
 
-func NewclassRepository(db *gorm.DB) ClassRepository {
+func NewClassRepository(db *gorm.DB) ClassRepository {
 	return classRepository{Db: db}
 }
 
@@ -25,6 +26,12 @@ func (r classRepository) Create(payload domain.ClassCreatePayload) (domain.Class
 	result := r.Db.Create(&payload)
 
 	return payload, result.Error
+}
+
+func (r classRepository) GetList() ([]domain.Class, error) {
+	var classes []domain.Class
+	result := r.Db.Find(&classes)
+	return classes, result.Error
 }
 
 func (r classRepository) Update(payload domain.ClassUpdatePayload) (domain.Class, error) {

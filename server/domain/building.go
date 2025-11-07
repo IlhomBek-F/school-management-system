@@ -7,5 +7,5 @@ type Building struct {
 
 type BuildingCreatePayload = Building
 type BuildingUpdatePayload = Building
-type BuildingCreateRes = SuccessResponseWithData[Building]
-type BUildingListRes = SuccessResponseWithMeta[[]Building]
+type BuildingSuccessRes = SuccessResponseWithData[Building]
+type BuildingListRes = SuccessResponseWithMeta[[]Building]

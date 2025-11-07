@@ -11,6 +11,7 @@ type BuildingRepository interface {
 	GetByID(id int) (domain.Building, error)
 	Update(payload domain.BuildingUpdatePayload) (domain.Building, error)
 	Delete(id int) error
+	GetList() ([]domain.Building, error)
 }
 
 type buildingRepository struct {
@@ -25,6 +26,12 @@ func (r buildingRepository) Create(payload domain.BuildingCreatePayload) (domain
 	result := r.db.Create(&payload)
 
 	return payload, result.Error
+}
+
+func (r buildingRepository) GetList() ([]domain.Building, error) {
+	var buildings []domain.Building
+	result := r.db.Find(&buildings)
+	return buildings, result.Error
 }
 
 func (r buildingRepository) GetByID(id int) (domain.Building, error) {

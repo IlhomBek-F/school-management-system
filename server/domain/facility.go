@@ -7,5 +7,5 @@ type Facility struct {
 
 type FacilityCreatePayload = Facility
 type FacilityUpdatePayload = Facility
-type FacilityCreateRes = SuccessResponseWithData[Facility]
-type FacilityListRes = SuccessResponseWithData[[]Facility]
+type FacilitySuccessRes = SuccessResponseWithData[Facility]
+type FacilityListRes = SuccessResponseWithMeta[[]Facility]

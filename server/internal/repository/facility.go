@@ -11,13 +11,14 @@ type FacilityRepository interface {
 	GetByID(id int) (domain.Facility, error)
 	Update(payload domain.FacilityUpdatePayload) (domain.Facility, error)
 	Delete(id int) error
+	GetList() ([]domain.Facility, error)
 }
 
 type facilityRepository struct {
 	db *gorm.DB
 }
 
-func NewfacilityRepository(db *gorm.DB) FacilityRepository {
+func NewFacilityRepository(db *gorm.DB) FacilityRepository {
 	return facilityRepository{db: db}
 }
 
@@ -25,6 +26,13 @@ func (r facilityRepository) Create(payload domain.FacilityCreatePayload) (domain
 	result := r.db.Create(&payload)
 
 	return payload, result.Error
+}
+
+func (r facilityRepository) GetList() ([]domain.Facility, error) {
+	var facilities []domain.Facility
+	result := r.db.Find(&facilities)
+
+	return facilities, result.Error
 }
 
 func (r facilityRepository) GetByID(id int) (domain.Facility, error) {

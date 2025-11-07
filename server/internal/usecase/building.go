@@ -10,6 +10,7 @@ type BuildingUsecase interface {
 	Update(payload domain.BuildingUpdatePayload) (domain.Building, error)
 	Delete(id int) error
 	GetById(id int) (domain.Building, error)
+	GetList() ([]domain.Building, error)
 }
 
 type buildingUsecase struct {
@@ -30,6 +31,12 @@ func (b buildingUsecase) Update(payload domain.BuildingUpdatePayload) (domain.Bu
 	building, err := b.buildingRepo.Update(payload)
 
 	return building, err
+}
+
+func (b buildingUsecase) GetList() ([]domain.Building, error) {
+	buildings, err := b.buildingRepo.GetList()
+
+	return buildings, err
 }
 
 func (b buildingUsecase) GetById(id int) (domain.Building, error) {

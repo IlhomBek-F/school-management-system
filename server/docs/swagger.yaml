@@ -27,6 +27,152 @@ definitions:
       refresh_token:
         type: string
     type: object
+  domain.BasicInformation:
+    properties:
+      class_type_id:
+        type: integer
+      code:
+        type: string
+      description:
+        type: string
+      grade_id:
+        type: integer
+      name:
+        type: string
+      section_id:
+        type: integer
+      subject_id:
+        type: integer
+      teacher_id:
+        type: integer
+    required:
+    - class_type_id
+    - code
+    - description
+    - grade_id
+    - name
+    - section_id
+    - subject_id
+    - teacher_id
+    type: object
+  domain.Building:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - name
+    type: object
+  domain.BuildingCreatePayload:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - name
+    type: object
+  domain.BuildingSuccessRes:
+    properties:
+      data:
+        $ref: '#/definitions/domain.Building'
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  domain.BuildingUpdatePayload:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - name
+    type: object
+  domain.Class:
+    properties:
+      basic_info:
+        $ref: '#/definitions/domain.BasicInformation'
+      created_at:
+        type: string
+      id:
+        type: integer
+      schedule_info:
+        $ref: '#/definitions/domain.ScheduleInformation'
+      updated_at:
+        type: string
+    required:
+    - basic_info
+    - schedule_info
+    type: object
+  domain.ClassCreatePayload:
+    properties:
+      basic_info:
+        $ref: '#/definitions/domain.BasicInformation'
+      created_at:
+        type: string
+      id:
+        type: integer
+      schedule_info:
+        $ref: '#/definitions/domain.ScheduleInformation'
+      updated_at:
+        type: string
+    required:
+    - basic_info
+    - schedule_info
+    type: object
+  domain.ClassListRes:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Class'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/domain.Meta'
+      status:
+        type: integer
+    type: object
+  domain.ClassSuccessRes:
+    properties:
+      data:
+        $ref: '#/definitions/domain.Class'
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  domain.ClassUpdatePayload:
+    properties:
+      basic_info:
+        $ref: '#/definitions/domain.BasicInformation'
+      created_at:
+        type: string
+      id:
+        type: integer
+      schedule_info:
+        $ref: '#/definitions/domain.ScheduleInformation'
+      updated_at:
+        type: string
+    required:
+    - basic_info
+    - schedule_info
+    type: object
   domain.CreateSubjectPayload:
     properties:
       created_at:
@@ -50,6 +196,67 @@ definitions:
         type: string
       salary:
         type: integer
+    type: object
+  domain.Facility:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - name
+    type: object
+  domain.FacilityCreatePayload:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - name
+    type: object
+  domain.FacilityListRes:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Facility'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/domain.Meta'
+      status:
+        type: integer
+    type: object
+  domain.FacilitySuccessRes:
+    properties:
+      data:
+        $ref: '#/definitions/domain.Facility'
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  domain.FacilityUpdatePayload:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - name
     type: object
   domain.LoginRequest:
     properties:
@@ -350,6 +557,40 @@ definitions:
     - room_type_id
     - status
     type: object
+  domain.ScheduleInformation:
+    properties:
+      class_days_ids:
+        items:
+          type: integer
+        type: array
+      current_enrollment:
+        type: integer
+      duration:
+        type: integer
+      end_date:
+        type: string
+      end_time:
+        type: string
+      max_capacity:
+        type: integer
+      min_capacity:
+        type: integer
+      room_id:
+        type: integer
+      start_date:
+        type: string
+      start_time:
+        type: string
+    required:
+    - class_days_ids
+    - duration
+    - end_date
+    - end_time
+    - max_capacity
+    - room_id
+    - start_date
+    - start_time
+    type: object
   domain.Student:
     properties:
       academic_info:
@@ -591,6 +832,426 @@ paths:
       summary: Login in to account
       tags:
       - Authentication
+  /building/{building_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete building
+      parameters:
+      - description: building_id
+        in: path
+        name: building_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: building
+          schema:
+            $ref: '#/definitions/domain.SuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Delete building
+      tags:
+      - Building
+    get:
+      consumes:
+      - application/json
+      description: Get building by id
+      parameters:
+      - description: building_id
+        in: path
+        name: building_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: building
+          schema:
+            $ref: '#/definitions/domain.BuildingSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get building by id
+      tags:
+      - Building
+  /building/create:
+    post:
+      consumes:
+      - application/json
+      description: Create building
+      parameters:
+      - description: building
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.BuildingCreatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created new building
+          schema:
+            $ref: '#/definitions/domain.BuildingSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Create building
+      tags:
+      - Building
+  /building/list:
+    get:
+      consumes:
+      - application/json
+      description: Get building list
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: building
+          schema:
+            $ref: '#/definitions/domain.BuildingSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get building list
+      tags:
+      - Building
+  /building/update:
+    put:
+      consumes:
+      - application/json
+      description: Update building
+      parameters:
+      - description: building
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.BuildingUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Updated bulding
+          schema:
+            $ref: '#/definitions/domain.BuildingSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Update building
+      tags:
+      - Building
+  /class/{class_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete class
+      parameters:
+      - description: class_id
+        in: path
+        name: class_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: class
+          schema:
+            $ref: '#/definitions/domain.SuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Delete class
+      tags:
+      - Class
+    get:
+      consumes:
+      - application/json
+      description: Get class by id
+      parameters:
+      - description: class_id
+        in: path
+        name: class_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: class
+          schema:
+            $ref: '#/definitions/domain.ClassSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get class by id
+      tags:
+      - Class
+  /class/create:
+    post:
+      consumes:
+      - application/json
+      description: Create class
+      parameters:
+      - description: class
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ClassCreatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created new class
+          schema:
+            $ref: '#/definitions/domain.ClassSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Create class
+      tags:
+      - Class
+  /class/list:
+    get:
+      consumes:
+      - application/json
+      description: Get class list
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: class
+          schema:
+            $ref: '#/definitions/domain.ClassListRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get class list
+      tags:
+      - Class
+  /class/update:
+    put:
+      consumes:
+      - application/json
+      description: Update class
+      parameters:
+      - description: class
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ClassUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Updated class
+          schema:
+            $ref: '#/definitions/domain.ClassSuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Update class
+      tags:
+      - Class
+  /facility/{facility_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete facility
+      parameters:
+      - description: facility_id
+        in: path
+        name: facility_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: facility
+          schema:
+            $ref: '#/definitions/domain.SuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Delete facility
+      tags:
+      - Facility
+    get:
+      consumes:
+      - application/json
+      description: Get facility by id
+      parameters:
+      - description: facility_id
+        in: path
+        name: facility_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: facility
+          schema:
+            $ref: '#/definitions/domain.FacilitySuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get facility by id
+      tags:
+      - Facility
+  /facility/create:
+    post:
+      consumes:
+      - application/json
+      description: Create facility
+      parameters:
+      - description: facility
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.FacilityCreatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created new facility
+          schema:
+            $ref: '#/definitions/domain.FacilitySuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Create facility
+      tags:
+      - Facility
+  /facility/list:
+    get:
+      consumes:
+      - application/json
+      description: Get facility list
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: facility
+          schema:
+            $ref: '#/definitions/domain.FacilityListRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get facility list
+      tags:
+      - Facility
+  /facility/update:
+    put:
+      consumes:
+      - application/json
+      description: Update facility
+      parameters:
+      - description: facility
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.FacilityUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Updated facility
+          schema:
+            $ref: '#/definitions/domain.FacilitySuccessRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Update facility
+      tags:
+      - Facility
   /room/{room_id}:
     delete:
       consumes:

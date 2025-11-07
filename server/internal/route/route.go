@@ -21,4 +21,7 @@ func SetupRoutes(app bootstrap.Application, gin *gin.Engine) {
 	NewSubjectRouter(app, privateRouter)
 	NewRoomRouter(app, privateRouter)
 	NewRoomTypeRouter(app, privateRouter)
+	NewBuildingRoute(app, privateRouter)
+	NewFacilityRoute(app, privateRouter)
+	NewClassRoute(app, privateRouter)
 }

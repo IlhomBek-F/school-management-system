@@ -32,5 +32,5 @@ type ScheduleInformation struct {
 
 type ClassCreatePayload = Class
 type ClassUpdatePayload = Class
-type ClassCreateRes = SuccessResponseWithData[Class]
-type ClassListRes = SuccessResponseWithData[[]Class]
+type ClassSuccessRes = SuccessResponseWithData[Class]
+type ClassListRes = SuccessResponseWithMeta[[]Class]
