@@ -5,7 +5,10 @@ type RoomType struct {
 	Name string `json:"name" binding:"required"`
 }
 
-type RoomTypeCreatePayload = RoomType
+type RoomTypeCreatePayload struct {
+	Name string `json:"name" binding:"required"`
+}
+
 type RoomTypeUpdatePayload = RoomType
 type RoomTypeSuccessRes = SuccessResponseWithData[RoomType]
 type RoomTypeListRes = SuccessResponseWithMeta[[]RoomType]

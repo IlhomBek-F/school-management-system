@@ -23,9 +23,12 @@ func NewRoomTypeRepository(db *gorm.DB) RoomTypeRepository {
 }
 
 func (r roomTypeRepository) Create(payload domain.RoomTypeCreatePayload) (domain.RoomType, error) {
-	result := r.db.Create(&payload)
+	roomType := domain.RoomType{}
+	roomType.Name = payload.Name
 
-	return payload, result.Error
+	result := r.db.Create(&roomType)
+
+	return roomType, result.Error
 }
 
 func (r roomTypeRepository) GetByID(id int) (domain.RoomType, error) {

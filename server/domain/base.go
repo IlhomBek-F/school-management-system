@@ -1,9 +1,11 @@
 package domain
 
+import "time"
+
 type Base struct {
-	ID         int    `json:"id"`
-	Created_at string `json:"created_at"`
-	Updated_at string `json:"updated_at"`
+	ID         int       `json:"id"`
+	Created_at time.Time `json:"created_at"`
+	Updated_at time.Time `json:"updated_at"`
 }
 
 type ErrorResponse struct {

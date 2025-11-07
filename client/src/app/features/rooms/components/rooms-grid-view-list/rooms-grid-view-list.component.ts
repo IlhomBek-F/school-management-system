@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { ButtonModule } from "primeng/button";
 import { TagModule } from "primeng/tag";
 import { RoomsGridViewSkeletonComponent } from "../rooms-grid-view-skeleton/rooms-grid-view-skeleton.component";
+import { Room } from '../../models';
 
 @Component({
   selector: 'school-rooms-grid-view-list',
@@ -12,10 +13,10 @@ import { RoomsGridViewSkeletonComponent } from "../rooms-grid-view-skeleton/room
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoomsGridViewListComponent {
-  rooms = input.required<any[]>()
-  viewDetailEmitEvent = output<any>()
-  deleteEmitEvent = output<any>()
-  editEmitEvent = output<any>()
+  rooms = input.required<Room[]>()
+  viewDetailEmitEvent = output<Room>()
+  deleteEmitEvent = output<Room>()
+  editEmitEvent = output<Room>()
   loading = input(false)
 
   viewDetails(room: any) {

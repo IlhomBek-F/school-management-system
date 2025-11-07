@@ -27,7 +27,11 @@
         <school-select-input [options]="question().options"
                              [formControlName]="question().key"
                              [required]="question().required"
-                             [placeholder]="question().placeholder"/>
+                             [optionLabel]="$any(question()).optionLabel"
+                             [optionValue]="$any(question()).optionValue"
+                             [placeholder]="question().placeholder"
+                             [loading]="$any(question()).loading"
+                             />
       }
       @case (QuestionTypeEnum.MultiSelect) {
         <school-multi-select [options]="question().options"

@@ -10,7 +10,7 @@
     <div class="flex items-start justify-between mb-4">
       <div class="flex items-center gap-3">
         <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center text-white ' + room.color">
-          <i [class]="'pi ' + getRoomTypeIcon(room.type) + ' text-xl'"></i>
+          <i [class]="'pi ' + getRoomTypeIcon(room.room_type) + ' text-xl'"></i>
         </div>
         <div>
           <h3 class="font-bold text-gray-800 text-lg">{{ room.name }}</h3>
@@ -24,7 +24,7 @@
     <div class="space-y-3 mb-4 pb-4 border-b border-gray-100">
       <div class="flex items-center gap-2 text-sm text-gray-600">
         <i class="pi pi-tag"></i>
-        <span class="font-medium">{{ room.type }}</span>
+        <span class="font-medium">{{ room.room_type }}</span>
       </div>
       <div class="flex items-center gap-2 text-sm text-gray-600">
         <i class="pi pi-building"></i>
@@ -56,19 +56,9 @@
     <div class="mb-4">
       <p class="text-xs text-gray-500 mb-2 font-semibold">Facilities</p>
       <div class="flex flex-wrap gap-1">
-        <p-tag *ngFor="let facility of room.facilities" [value]="facility" severity="info" styleClass="text-xs">
-        </p-tag>
-      </div>
-    </div>
-
-    <div *ngIf="room.schedule.length > 0" class="mb-4 p-3 bg-gray-50 rounded-lg">
-      <p class="text-xs text-gray-500 mb-2 font-semibold flex items-center gap-1">
-        <i class="pi pi-calendar"></i>
-        Next Schedule
-      </p>
-      <div class="text-sm text-gray-700">
-        <p class="font-medium">{{ room.schedule[0].class }}</p>
-        <p class="text-xs text-gray-600">{{ room.schedule[0].day }} • {{ room.schedule[0].time }}</p>
+         @for (facility of room.facilities; track $index) {
+           <p-tag [value]="facility" severity="info" styleClass="text-xs"></p-tag>
+        }
       </div>
     </div>
 

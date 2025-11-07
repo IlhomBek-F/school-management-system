@@ -18,11 +18,16 @@ import { RoomsTableViewListComponent } from '../components/rooms-table-view-list
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { ToastService } from '@core/services/toast.service';
 import { ConfirmationService } from 'primeng/api';
-import { Room } from '../models';
 import { DropdownOption } from '@core/models/base';
 import { RoomStatus } from '../enums';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
+import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
+import { RoomsService } from '../services/rooms.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Room } from '../models';
+import { Building } from '@core/models/building';
 
+@UntilDestroy()
 @Component({
   selector: 'school-rooms',
   imports: [
@@ -38,144 +43,66 @@ import { ViewModeEnum } from '@core/enums/view-mode.enum';
   ],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.scss',
+  providers: [RoomsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoomsComponent {
+  readonly VIEW_MODE = ViewModeEnum;
   loading = signal(true)
-  VIEW_MODE = ViewModeEnum;
+  loadingRoomTypes = signal(false)
+  loadingBuildings = signal(false)
+  roomTypeOptions: DropdownOption[] = [{ label: 'All Types', value: 'all' }]
+  buildingOptions: Building[] = []
 
     rooms: Room[] = [
     {
       id: 1,
       name: 'Room 101',
       code: 'RM-101',
-      type: 'Classroom',
+      room_type: 'Classroom',
       building: 'Main Building',
       floor: 1,
       capacity: 30,
       currentOccupancy: 28,
       facilities: ['Projector', 'Whiteboard', 'AC'],
-      status: 'Occupied',
-      schedule: [
-        { day: 'Monday', time: '9:00 AM', class: 'Mathematics' },
-        { day: 'Wednesday', time: '11:00 AM', class: 'Physics' }
-      ],
-      color: 'bg-blue-500'
+      status: RoomStatus.OCCUPIED,
+      color: 'bg-blue-500',
+      created_at: "",
+      updated_at: "",
+      deleted_at: null
     },
     {
       id: 2,
       name: 'Lab 1',
       code: 'LAB-01',
-      type: 'Laboratory',
+      room_type: 'Laboratory',
       building: 'Science Block',
       floor: 2,
       capacity: 25,
       currentOccupancy: 0,
       facilities: ['Lab Equipment', 'Safety Gear', 'Computers'],
-      status: 'Available',
-      schedule: [
-        { day: 'Tuesday', time: '10:30 AM', class: 'Chemistry Lab' },
-        { day: 'Thursday', time: '2:00 PM', class: 'Biology Lab' }
-      ],
-      color: 'bg-green-500'
+      status: RoomStatus.AVAILABLE,
+      color: 'bg-green-500',
+      created_at: "",
+      updated_at: "",
+      deleted_at: null
     },
     {
       id: 3,
       name: 'Room 201',
       code: 'RM-201',
-      type: 'Classroom',
+      room_type: 'Classroom',
       building: 'Main Building',
       floor: 2,
       capacity: 35,
       currentOccupancy: 32,
       facilities: ['Smart Board', 'Sound System', 'AC'],
-      status: 'Occupied',
-      schedule: [
-        { day: 'Monday', time: '9:00 AM', class: 'Advanced Math' },
-        { day: 'Friday', time: '1:00 PM', class: 'Statistics' }
-      ],
-      color: 'bg-purple-500'
+      status: RoomStatus.OCCUPIED,
+      color: 'bg-purple-500',
+      created_at: "",
+      updated_at: "",
+      deleted_at: null
     },
-    {
-      id: 4,
-      name: 'Computer Lab',
-      code: 'COMP-01',
-      type: 'Computer Lab',
-      building: 'Technology Center',
-      floor: 1,
-      capacity: 40,
-      currentOccupancy: 0,
-      facilities: ['40 Computers', 'Projector', 'AC', 'WiFi'],
-      status: 'Available',
-      schedule: [
-        { day: 'Tuesday', time: '8:00 AM', class: 'Computer Science' },
-        { day: 'Thursday', time: '10:00 AM', class: 'Programming' }
-      ],
-      color: 'bg-indigo-500'
-    },
-    {
-      id: 5,
-      name: 'Auditorium',
-      code: 'AUD-01',
-      type: 'Auditorium',
-      building: 'Main Building',
-      floor: 1,
-      capacity: 200,
-      currentOccupancy: 0,
-      facilities: ['Stage', 'Sound System', 'Lighting', 'AC', 'Projector'],
-      status: 'Available',
-      schedule: [
-        { day: 'Friday', time: '3:00 PM', class: 'Assembly' }
-      ],
-      color: 'bg-pink-500'
-    },
-    {
-      id: 6,
-      name: 'Library Hall',
-      code: 'LIB-01',
-      type: 'Library',
-      building: 'Library Block',
-      floor: 1,
-      capacity: 60,
-      currentOccupancy: 15,
-      facilities: ['Books', 'Study Tables', 'WiFi', 'AC'],
-      status: 'Occupied',
-      schedule: [],
-      color: 'bg-orange-500'
-    },
-    {
-      id: 7,
-      name: 'Gymnasium',
-      code: 'GYM-01',
-      type: 'Sports',
-      building: 'Sports Complex',
-      floor: 1,
-      capacity: 100,
-      currentOccupancy: 45,
-      facilities: ['Basketball Court', 'Equipment', 'Lockers'],
-      status: 'Occupied',
-      schedule: [
-        { day: 'Daily', time: '3:30 PM', class: 'Physical Education' }
-      ],
-      color: 'bg-teal-500'
-    },
-    {
-      id: 8,
-      name: 'Art Studio',
-      code: 'ART-01',
-      type: 'Studio',
-      building: 'Arts Building',
-      floor: 2,
-      capacity: 20,
-      currentOccupancy: 0,
-      facilities: ['Easels', 'Art Supplies', 'Natural Light'],
-      status: 'Available',
-      schedule: [
-        { day: 'Monday', time: '2:00 PM', class: 'Art Class' },
-        { day: 'Wednesday', time: '2:00 PM', class: 'Art Class' }
-      ],
-      color: 'bg-rose-500'
-    }
   ];
 
   filteredRooms: Room[] = [];
@@ -183,17 +110,6 @@ export class RoomsComponent {
   selectedType: string = 'all';
   selectedStatus: string = 'all';
   viewMode: string = ViewModeEnum.LIST;
-
-  roomTypes: DropdownOption[] = [
-    { label: 'All Types', value: 'all' },
-    { label: 'Classroom', value: 'Classroom' },
-    { label: 'Laboratory', value: 'Laboratory' },
-    { label: 'Computer Lab', value: 'Computer Lab' },
-    { label: 'Auditorium', value: 'Auditorium' },
-    { label: 'Library', value: 'Library' },
-    { label: 'Sports', value: 'Sports' },
-    { label: 'Studio', value: 'Studio' }
-  ];
 
   statuses: DropdownOption[] = [
     { label: 'All Status', value: 'all' },
@@ -209,13 +125,13 @@ export class RoomsComponent {
   private _dialogService = inject(DialogService)
   private _confirmService = inject(DeleteConfirmDialogService)
   private _messageService = inject(ToastService)
+  private _roomsService = inject(RoomsService)
 
    ngOnInit(): void {
-    setTimeout(() => {
-      this.loading.set(false)
-    }, 2000)
     this.filteredRooms = [...this.rooms];
     this.calculateStats();
+    this._getRoomTypes();
+    this._getBuildingOptions()
   }
 
   calculateStats(): void {
@@ -233,14 +149,14 @@ export class RoomsComponent {
         room.code.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         room.building.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesType =
-        this.selectedType === 'all' || room.type === this.selectedType;
+        this.selectedType === 'all' || room.room_type === this.selectedType;
       const matchesStatus =
         this.selectedStatus === 'all' || room.status === this.selectedStatus;
       return matchesSearch && matchesType && matchesStatus;
     });
   }
 
-   upsertRoom(room?: any): void {
+   upsertRoom(room?: Room): void {
     const dialogRef = this._dialogService.open(DynamicFormModalComponent, {
       focusOnShow: false,
        dismissableMask: true,
@@ -258,12 +174,12 @@ export class RoomsComponent {
     })
   }
 
-  deleteRoom(classObj: any) {
+  deleteRoom(room: Room) {
           this._confirmService.confirm((ref: ConfirmationService) => {
             this._confirmService.loading$.next(true)
             setTimeout(() => {
               this._confirmService.loading$.next(false);
-              this.filteredRooms = this.filteredRooms.filter(({id}) => classObj.id !== id)
+              this.filteredRooms = this.filteredRooms.filter(({id}) => room.id !== id)
               this._messageService.success("Room deleted successfully")
               ref.close()
             }, 3000)
@@ -287,6 +203,36 @@ export class RoomsComponent {
 
   setViewMode(mode: string): void {
     this.viewMode = mode;
+  }
+
+  private _getRoomTypes() {
+    this.loadingRoomTypes.set(true)
+    this._roomsService.getRoomTypes()
+    .pipe(untilDestroyed(this))
+     .subscribe({
+       next: (res) => {
+          this.loadingRoomTypes.set(false)
+          this.roomTypeOptions.push(...res.data.map(({name, id}) => ({label: name, value: id}))) 
+       }, error: (err) => {
+           this._messageService.error(err.message || "Failed getting room types")
+           this.loadingRoomTypes.set(false)
+       }
+     })
+  }
+
+  private _getBuildingOptions() {
+     this.loadingBuildings.set(true)
+    this._roomsService.getBuildings()
+    .pipe(untilDestroyed(this))
+     .subscribe({
+       next: (res) => {
+          this.loadingBuildings.set(false)
+          this.buildingOptions = res.data;
+       }, error: (err) => {
+           this._messageService.error(err.message || "Failed getting buildings")
+           this.loadingBuildings.set(false)
+       }
+     })
   }
 
   private _getRoomFormContainer(): FormContainer[] {
@@ -313,25 +259,35 @@ export class RoomsComponent {
       {
         containers: [
           new QuestionSelectInput({
-            key: 'type',
+            key: 'room_type_id',
             label: 'Room type',
             required: true,
-            options: [
-
-            ]
+            options: this.roomTypeOptions
           }),
           new QuestionSelectInput({
-            key: 'building',
+            key: 'building_id',
             label: 'Building',
             required: true,
-            options: [
-
-            ]
+            optionLabel: "name",
+            optionValue: "id",
+            options: this.buildingOptions
           }),
-          new QuestionSelectInput({
+
+        ]
+      },
+      {
+        containers: [
+            new QuestionSelectInput({
             key: 'floor',
             label: 'Floor',
             required: true,
+            options: [
+
+            ]
+          }),
+            new QuestionMultiSelect({
+            key: 'facility_ids',
+            label: 'Facility',
             options: [
 
             ]
@@ -344,9 +300,7 @@ export class RoomsComponent {
             key: 'status',
             label: 'Status',
             required: true,
-            options: [
-
-            ]
+            options: this.statuses
           }),
           new QuestionTextInput({
             key: 'capacity',

@@ -39,7 +39,7 @@
      <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
       <div class="flex flex-col md:flex-row gap-4">
           <school-text-input icon="pi pi-search" placeholder="Search by room name, code, or building..." (onChangeEmit)="onSearchChange($event)"/>
-          <school-select-input [options]="roomTypes" (onChangeEmit)="onTypeChange($event)"/>
+          <school-select-input [options]="roomTypeOptions" (onChangeEmit)="onTypeChange($event)" [loading]="loadingRoomTypes()"/>
 
         <div class="flex gap-2">
           <school-select-input [options]="statuses" (onChangeEmit)="onTypeChange($event)"/>

@@ -29,7 +29,13 @@ func main() {
 
 	router := gin.Default()
 
-	router.Use(cors.Default())
+	router.Use(cors.New(cors.Config{
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
+		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowCredentials: true,
+		AllowAllOrigins:  true,
+		MaxAge:           30,
+	}))
 	route.SetupRoutes(app, router)
 
 	router.Run(env.SERVER_ADDRESS)
