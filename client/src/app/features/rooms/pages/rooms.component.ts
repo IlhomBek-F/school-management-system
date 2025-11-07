@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-card.component";
 import { ButtonModule } from "primeng/button";
@@ -24,10 +24,11 @@ import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { RoomsService } from '../services/rooms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Room } from '../models';
+import { CreateRoomPayload, Room, RoomSuccessRes } from '../models';
 import { Building } from '@core/models/building';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Facility } from '@core/models/facility';
+import { finalize } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -53,10 +54,9 @@ export class RoomsComponent {
   readonly VIEW_MODE = ViewModeEnum;
   loading = signal(true)
   loadingRoomTypes = signal(false)
-  loadingBuildings = signal(false)
 
   roomTypeOptions: DropdownOption[] = [{ label: 'All Types', value: 'all' }];
-  
+
   filterFormGroup = new FormGroup({
     search: new FormControl(),
     room_type_id: new FormControl('all'),
@@ -113,7 +113,7 @@ export class RoomsComponent {
       deleted_at: null
     },
   ];
-  
+
   viewMode: string = ViewModeEnum.LIST;
   statuses: DropdownOption[] = [
     { label: 'All Status', value: 'all' },
@@ -121,7 +121,7 @@ export class RoomsComponent {
     { label: 'Occupied', value: RoomStatus.OCCUPIED },
     { label: 'Maintenance', value: RoomStatus.MAINTENANCE }
   ];
-  
+
   totalRooms: number = 0;
   availableRooms: number = 0;
   totalCapacity: number = 0;
@@ -133,7 +133,7 @@ export class RoomsComponent {
   private _buildingOptions: Building[] = [];
   private _facilities: Facility[] = []
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.calculateStats();
     this._getRoomTypes();
     this._getBuildingOptions();
@@ -149,86 +149,101 @@ export class RoomsComponent {
     this.avgOccupancy = Math.round((totalOccupancy / this.totalCapacity) * 100);
   }
 
-   upsertRoom(room?: Room): void {
+  upsertRoom(room?: Room): void {
+    const loading = signal(false);
     const dialogRef = this._dialogService.open(DynamicFormModalComponent, {
       focusOnShow: false,
-       dismissableMask: true,
-       modal: true,
-       header: 'Add new room',
-       width: '45%',
-       data: {
-         payload: room,
-         formContainers: this._getRoomFormContainer(),
-         footer: {
-           onConfirm: (formValue: any) => console.log(formValue),
-           onCancel: () => dialogRef.close()
-         }
-       }
+      dismissableMask: true,
+      modal: true,
+      header: 'Add new room',
+      width: '45%',
+      data: {
+        payload: room,
+        loading: loading,
+        formContainers: this._getRoomFormContainer(),
+        footer: {
+          onConfirm: (formValue: CreateRoomPayload) => this._createRoom(formValue, loading),
+          onCancel: () => dialogRef.close()
+        }
+      }
     })
   }
 
   deleteRoom(room: Room) {
-          this._confirmService.confirm((ref: ConfirmationService) => {
-            this._confirmService.loading$.next(true)
-            setTimeout(() => {
-              this._confirmService.loading$.next(false);
-              this._messageService.success("Room deleted successfully")
-              ref.close()
-            }, 3000)
-          })
+    this._confirmService.confirm((ref: ConfirmationService) => {
+      this._confirmService.loading$.next(true)
+      setTimeout(() => {
+        this._confirmService.loading$.next(false);
+        this._messageService.success("Room deleted successfully")
+        ref.close()
+      }, 3000)
+    })
   }
 
   setViewMode(mode: string): void {
     this.viewMode = mode;
   }
 
+  private _createRoom(formValue: CreateRoomPayload, loading: WritableSignal<boolean>) {
+    loading.set(true)
+    this._roomsService.create<RoomSuccessRes, CreateRoomPayload>(formValue)
+      .pipe(
+        finalize(() => loading.set(false)),
+        untilDestroyed(this)
+      )
+      .subscribe({
+        next: (res) => {
+          this._messageService.success("Created new room")
+        }, error: (err) => {
+          this._messageService.error(err.message || "Failed creating new room. Please try again")
+        }
+      })
+  }
+
   private _handleFilterRoom() {
     this.filterFormGroup.valueChanges
-    .pipe(
-      untilDestroyed(this)
-    ).subscribe(console.log)
+      .pipe(
+        untilDestroyed(this)
+      ).subscribe(console.log)
   }
 
   private _getRoomTypes() {
     this.loadingRoomTypes.set(true)
     this._roomsService.getRoomTypes()
-    .pipe(untilDestroyed(this))
-     .subscribe({
-       next: (res) => {
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res) => {
           this.loadingRoomTypes.set(false)
-          this.roomTypeOptions.push(...res.data.map(({name, id}) => ({label: name, value: id}))) 
-       }, error: (err) => {
-           this._messageService.error(err.message || "Failed getting room types")
-           this.loadingRoomTypes.set(false)
-       }
-     })
+          this.roomTypeOptions.push(...res.data.map(({ name, id }) => ({ label: name, value: id })))
+        }, error: (err) => {
+          this._messageService.error(err.message || "Failed getting room types")
+          this.loadingRoomTypes.set(false)
+        }
+      })
   }
 
   private _getBuildingOptions() {
-    this.loadingBuildings.set(true)
     this._roomsService.getBuildings()
-    .pipe(untilDestroyed(this))
-     .subscribe({
-       next: (res) => {
-          this.loadingBuildings.set(false)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res) => {
           this._buildingOptions = res.data;
-       }, error: (err) => {
-           this._messageService.error(err.message || "Failed getting buildings")
-           this.loadingBuildings.set(false)
-       }
-     })
+        }, error: (err) => {
+          this._messageService.error(err.message || "Failed getting buildings")
+        }
+      })
   }
 
   private _getFacilityOptions() {
     this._roomsService.getFacilities()
-    .pipe(untilDestroyed(this))
-     .subscribe({
-       next: (res) => {
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res) => {
           this._facilities = res.data;
-       }, error: (err) => {
-           this._messageService.error(err.message || "Failed getting facilities")
-       }
-     })
+        }, error: (err) => {
+          this._messageService.error(err.message || "Failed getting facilities")
+        }
+      })
   }
 
   private _getRoomFormContainer(): FormContainer[] {
@@ -274,17 +289,17 @@ export class RoomsComponent {
       },
       {
         containers: [
-            new QuestionSelectInput({
+          new QuestionSelectInput({
             key: 'floor',
             label: 'Floor',
             required: true,
             options: [
-              {label: '1', value: 1},
-              {label: '2', value: 2},
-              {label: '3', value: 3}
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+              { label: '3', value: 3 }
             ]
           }),
-            new QuestionMultiSelect({
+          new QuestionMultiSelect({
             key: 'facility_ids',
             label: 'Facility',
             optionLabel: "name",

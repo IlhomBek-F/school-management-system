@@ -40,7 +40,7 @@ export function authInteceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): 
         return handle401Error(req, next, authService, router);
       }
 
-      return throwError(() => new Error("Unauthorized"));
+      return throwError(() => new Error(error.error.message));
     })
   )
 }

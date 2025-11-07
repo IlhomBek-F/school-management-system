@@ -5,6 +5,7 @@ import {
   inject,
   OnInit,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
 import { QuestionControlService } from '@core/services/question-control.service';
@@ -24,6 +25,7 @@ import { FormContainer } from '@core/models/question-base';
 export class DynamicFormModalComponent implements OnInit{
   formContainer = signal<FormContainer[]>([])
   form = computed(() => this._questionControlService.toFormGroup(this.formContainer()));
+  loading!: WritableSignal<boolean>
 
   private _questionControlService = inject(QuestionControlService);
   private _dialogConfig = inject(DynamicDialogConfig<DynamicFormModalDataModel>);
@@ -31,7 +33,8 @@ export class DynamicFormModalComponent implements OnInit{
   ngOnInit(): void {
     this.formContainer.set(this._dialogConfig.data.formContainers);
     const payload = this._dialogConfig.data.payload;
-
+    this.loading = this._dialogConfig.data.loading;
+    
     if(payload) {
       this.form().patchValue(payload)
     }

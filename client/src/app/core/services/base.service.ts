@@ -8,7 +8,8 @@ import { environment } from "@environments/enviroment.dev";
 })
 export class BaseService {
   protected http = inject(HttpClient);
-  protected baseUrl = environment.apiUrl;
+  protected apiUrl = environment.apiUrl;
+  protected baseUrl!: string;
 
   retrieve<T>(): Observable<T> {
     return this.http.get<T>(this.baseUrl)
@@ -23,11 +24,11 @@ export class BaseService {
   }
 
   create<ResT, CreateT>(data: CreateT): Observable<ResT> {
-    return this.http.post<ResT>(this.baseUrl, data)
+    return this.http.post<ResT>(`${this.baseUrl}/create`, data)
   }
 
   update<ResT, UpdateT>(id: number, data: UpdateT): Observable<ResT> {
-    return this.http.put<ResT>(`${this.baseUrl}/${id}`, data)
+    return this.http.put<ResT>(`${this.baseUrl}/update`, data)
   }
 
   delete(id: number): Observable<any> {

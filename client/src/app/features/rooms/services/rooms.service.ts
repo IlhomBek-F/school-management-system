@@ -7,17 +7,17 @@ import { Observable } from "rxjs";
 
 @Injectable()
 export class RoomsService extends BaseService {
-  private _url = `${this.baseUrl}/rooms`
+  override baseUrl = `${this.apiUrl}/room`
 
   getRoomTypes(): Observable<RoomTypesSuccessWithMeta> {
-    return this.http.get<RoomTypesSuccessWithMeta>(`${this.baseUrl}/room_type/list`)
+    return this.http.get<RoomTypesSuccessWithMeta>(`${this.apiUrl}/room_type/list`)
   }
 
   getBuildings(): Observable<BuildingSuccessWithMeta> {
-    return this.http.get<BuildingSuccessWithMeta>(`${this.baseUrl}/building/list`)
+    return this.http.get<BuildingSuccessWithMeta>(`${this.apiUrl}/building/list`)
   }
 
   getFacilities(): Observable<FacilitySuccessWithMeta> {
-    return this.http.get<FacilitySuccessWithMeta>(`${this.baseUrl}/facility/list`)
+    return this.http.get<FacilitySuccessWithMeta>(`${this.apiUrl}/facility/list`)
   }
 }

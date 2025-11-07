@@ -1,4 +1,4 @@
-import { Base } from "@core/models/base";
+import { Base, ResData } from "@core/models/base";
 import { RoomStatus } from "../enums";
 
 export interface CreateRoomPayload {
@@ -19,3 +19,5 @@ export type Room = Base & Omit<CreateRoomPayload, "building_id" | "facility_ids"
   building: string;
   facilities: string[]
 }
+
+export type RoomSuccessRes = ResData<Room>
