@@ -12,6 +12,7 @@ type RoomRepository interface {
 	Update(payload domain.RoomUpdatePayload) (domain.Room, error)
 	Delete(id int) error
 	GetList() ([]domain.Room, error)
+	CreateRoomFacility(facilityIds []int, roomId int) error
 }
 
 type roomRepository struct {
@@ -24,15 +25,19 @@ func NewRoomRepository(db *gorm.DB) RoomRepository {
 
 func (r roomRepository) GetList() ([]domain.Room, error) {
 	var rooms []domain.Room
-	result := r.db.Find(&rooms)
+	result := r.db.Preload("Building").Preload("RoomType").Preload("Facilities").Find(&rooms)
 
 	return rooms, result.Error
 }
 
 func (r roomRepository) Create(payload domain.RoomCreatePayload) (domain.Room, error) {
-	result := r.db.Create(&payload)
+	room := domain.Room{
+		RoomFields: payload,
+	}
 
-	return payload, result.Error
+	result := r.db.Create(&room)
+
+	return room, result.Error
 }
 
 func (r roomRepository) GetByID(id int) (domain.Room, error) {
@@ -49,4 +54,14 @@ func (r roomRepository) Update(payload domain.RoomUpdatePayload) (domain.Room, e
 
 func (r roomRepository) Delete(id int) error {
 	return r.db.Delete(domain.Room{}, id).Error
+}
+
+func (r roomRepository) CreateRoomFacility(facilityIds []int, roomId int) error {
+	roomFacilities := []domain.RoomFacility{}
+
+	for _, id := range facilityIds {
+		roomFacilities = append(roomFacilities, domain.RoomFacility{FacilityId: id, RoomId: roomId})
+	}
+
+	return r.db.Create(&roomFacilities).Error
 }

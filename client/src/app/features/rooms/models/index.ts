@@ -1,23 +1,29 @@
-import { Base, ResData } from "@core/models/base";
+import { Base, ResData, ResDataWithMeta } from "@core/models/base";
 import { RoomStatus } from "../enums";
+import { Facility } from "@core/models/facility";
+import { Building } from "@core/models/building";
+import { RoomType } from "@core/models/room-types";
 
 export interface CreateRoomPayload {
   name: string;
   code: string;
   room_type_id: number;
   building_id: number;
-  floor: number;
+  floor_id: number;
   capacity: number;
-  currentOccupancy: number;
-  facility_ids: number[];
+  facilities: Facility[];
   status: RoomStatus;
-  color: string;
+  description?: string;
+  area?: number;
 }
 
-export type Room = Base & Omit<CreateRoomPayload, "building_id" | "facility_ids" | "room_type_id"> & {
-  room_type: string;
-  building: string;
-  facilities: string[]
+export type Room = Base & Omit<CreateRoomPayload, "building_id" | "facilities" | "room_type_id"> & {
+  room_type: RoomType;
+  building: Building;
+  facilities: Facility[];
+  color: string;
+  currentOccupancy: number;
 }
 
 export type RoomSuccessRes = ResData<Room>
+export type RoomListSuccessRes = ResDataWithMeta<Room[]>

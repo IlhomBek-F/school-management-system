@@ -22,11 +22,12 @@ export class SelectInputComponent implements ControlValueAccessor {
    options = input.required<any[]>();
    optionLabel = input('label');
    optionValue = input('value');
+   normalizeValue = input<Function>()
    placeholder = input('');
    loading = input(false)
    onChangeEmit = output<any>()
    required = input()
-   
+
   value: any;
   disabled = false;
 
@@ -35,7 +36,6 @@ export class SelectInputComponent implements ControlValueAccessor {
   onTouched = () => {};
 
   writeValue(value: any): void {
-    console.log(this.options(), this.optionValue())
     this.value = value;
   }
 
@@ -53,8 +53,17 @@ export class SelectInputComponent implements ControlValueAccessor {
 
   handleChange(event: any) {
     this.value = event.value;
-    this.onChange(this.value);
-    this.onChangeEmit.emit(this.value)
+    const _normalizeValueFc = this.normalizeValue()
+
+    if(_normalizeValueFc instanceof Function) {
+      const normalizedValue = _normalizeValueFc(this.value)
+      this.onChange(normalizedValue);
+      this.onChangeEmit.emit(normalizedValue)
+    } else {
+      this.onChange(this.value)
+      this.onChangeEmit.emit(this.value)
+    }
+
     this.onTouched();
   }
 }

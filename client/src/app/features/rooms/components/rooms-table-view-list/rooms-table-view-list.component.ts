@@ -4,10 +4,12 @@ import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { CommonModule } from '@angular/common';
 import { Room } from '../../models';
+import { RoomTypeIconPipe } from '../../pipes/room-type-icon-pipe';
+import { StatusSeverityPipe } from '../../pipes/status-severity-pipe';
 
 @Component({
   selector: 'school-rooms-table-view-list',
-  imports: [TableModule, TagModule, ButtonModule, CommonModule],
+  imports: [TableModule, TagModule, ButtonModule, CommonModule, RoomTypeIconPipe, StatusSeverityPipe],
   templateUrl: './rooms-table-view-list.component.html',
   styleUrl: './rooms-table-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,18 +50,5 @@ export class RoomsTableViewListComponent {
     if (percentage >= 90) return 'danger';
     if (percentage >= 70) return 'warning';
     return 'info';
-  }
-
-  getRoomTypeIcon(type: string): string {
-    switch(type) {
-      case 'Classroom': return 'pi-book';
-      case 'Laboratory': return 'pi-flask';
-      case 'Computer Lab': return 'pi-desktop';
-      case 'Auditorium': return 'pi-users';
-      case 'Library': return 'pi-bookmark';
-      case 'Sports': return 'pi-star';
-      case 'Studio': return 'pi-palette';
-      default: return 'pi-building';
-    }
   }
 }

@@ -5,30 +5,30 @@
      @for (room of rooms(); track $index) {
   <div
     class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border-t-4 relative overflow-hidden"
-    [style.border-top-color]="room.color.replace('bg-', '#')">
+    [style.border-top-color]="room.color?.replace('bg-', '#')">
 
     <div class="flex items-start justify-between mb-4">
       <div class="flex items-center gap-3">
-        <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center text-white ' + room.color">
-          <i [class]="'pi ' + getRoomTypeIcon(room.room_type) + ' text-xl'"></i>
+        <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center text-white ' + ['bg-blue-500', 'bg-green-500', 'bg-purple-500'][(rooms().length - 1 - $index) % 3]">
+          <i [class]="'pi ' + (room.room_type.name | schoolRoomTypeIcon) + ' text-xl'"></i>
         </div>
         <div>
           <h3 class="font-bold text-gray-800 text-lg">{{ room.name }}</h3>
           <p class="text-sm text-gray-600">{{ room.code }}</p>
         </div>
       </div>
-      <p-tag [value]="room.status" [severity]="getStatusSeverity(room.status)" [rounded]="true">
+      <p-tag [value]="room.status" [severity]="(room.status | schoolStatusSeverity)" [rounded]="true">
       </p-tag>
     </div>
 
     <div class="space-y-3 mb-4 pb-4 border-b border-gray-100">
       <div class="flex items-center gap-2 text-sm text-gray-600">
         <i class="pi pi-tag"></i>
-        <span class="font-medium">{{ room.room_type }}</span>
+        <span class="font-medium">{{ room.room_type.name }}</span>
       </div>
       <div class="flex items-center gap-2 text-sm text-gray-600">
         <i class="pi pi-building"></i>
-        <span>{{ room.building }} - Floor {{ room.floor }}</span>
+        <span>{{ room.building.name }} - Floor {{ room.floor_id }}</span>
       </div>
       <div class="flex items-center gap-2 text-sm text-gray-600">
         <i class="pi pi-users"></i>
@@ -57,7 +57,7 @@
       <p class="text-xs text-gray-500 mb-2 font-semibold">Facilities</p>
       <div class="flex flex-wrap gap-1">
          @for (facility of room.facilities; track $index) {
-           <p-tag [value]="facility" severity="info" styleClass="text-xs"></p-tag>
+           <p-tag [value]="facility.name" severity="info" styleClass="text-xs"></p-tag>
         }
       </div>
     </div>

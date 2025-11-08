@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, input, output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { InputNumberModule } from "primeng/inputnumber";
+import { InputNumberInputEvent, InputNumberModule } from "primeng/inputnumber";
 
 const VALUE_ACCESSOR_PROVIDER = {
   provide: NG_VALUE_ACCESSOR,
@@ -24,9 +24,9 @@ export class TextInputNumberComponent {
   max = input()
   required = input()
 
-  onChangeEmit = output<number>()
+  onChangeEmit = output<any>()
 
-  value!: number;
+  value!: any;
   disabled = false;
 
   onChange = (value: any) => {};
@@ -48,7 +48,7 @@ export class TextInputNumberComponent {
     this.disabled = isDisabled;
   }
 
-  handleInput(value: any): void {
+  handleInput({value}: InputNumberInputEvent): void {
     this.value = value;
     this.onChange(value);
     this.onChangeEmit.emit(value)

@@ -8,7 +8,7 @@ import { ResData } from "@core/models/base";
   providedIn: "root"
 })
 export class LoginService extends BaseService {
-  private url = `${this.baseUrl}/auth/login`;
+  private url = `${this.apiUrl}/auth/login`;
 
   login(payload: LoginRequest): Observable<ResData<LoginResponse>> {
     return this.http.post<ResData<LoginResponse>>(this.url, payload)

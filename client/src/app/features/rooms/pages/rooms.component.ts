@@ -6,7 +6,7 @@ import { ButtonModule } from "primeng/button";
 import { TextInputComponent } from "@shared/components/dynamic-form/text-input/text-input.component";
 import { SelectInputComponent } from "@shared/components/dynamic-form/select-input/select-input.component";
 import { EmptyListComponent } from "@shared/components/empty-list/empty-list.component";
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DynamicFormModalComponent } from '@shared/components/dynamic-form-modal/dynamic-form-modal.component';
 import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
@@ -24,7 +24,7 @@ import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { RoomsService } from '../services/rooms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { CreateRoomPayload, Room, RoomSuccessRes } from '../models';
+import { CreateRoomPayload, Room, RoomListSuccessRes, RoomSuccessRes } from '../models';
 import { Building } from '@core/models/building';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Facility } from '@core/models/facility';
@@ -52,7 +52,7 @@ import { finalize } from 'rxjs';
 })
 export class RoomsComponent {
   readonly VIEW_MODE = ViewModeEnum;
-  loading = signal(true)
+  loading = signal(false)
   loadingRoomTypes = signal(false)
 
   roomTypeOptions: DropdownOption[] = [{ label: 'All Types', value: 'all' }];
@@ -64,57 +64,57 @@ export class RoomsComponent {
   })
 
   rooms: Room[] = [
-    {
-      id: 1,
-      name: 'Room 101',
-      code: 'RM-101',
-      room_type: 'Classroom',
-      building: 'Main Building',
-      floor: 1,
-      capacity: 30,
-      currentOccupancy: 28,
-      facilities: ['Projector', 'Whiteboard', 'AC'],
-      status: RoomStatus.OCCUPIED,
-      color: 'bg-blue-500',
-      created_at: "",
-      updated_at: "",
-      deleted_at: null
-    },
-    {
-      id: 2,
-      name: 'Lab 1',
-      code: 'LAB-01',
-      room_type: 'Laboratory',
-      building: 'Science Block',
-      floor: 2,
-      capacity: 25,
-      currentOccupancy: 0,
-      facilities: ['Lab Equipment', 'Safety Gear', 'Computers'],
-      status: RoomStatus.AVAILABLE,
-      color: 'bg-green-500',
-      created_at: "",
-      updated_at: "",
-      deleted_at: null
-    },
-    {
-      id: 3,
-      name: 'Room 201',
-      code: 'RM-201',
-      room_type: 'Classroom',
-      building: 'Main Building',
-      floor: 2,
-      capacity: 35,
-      currentOccupancy: 32,
-      facilities: ['Smart Board', 'Sound System', 'AC'],
-      status: RoomStatus.OCCUPIED,
-      color: 'bg-purple-500',
-      created_at: "",
-      updated_at: "",
-      deleted_at: null
-    },
+    // {
+    //   id: 1,
+    //   name: 'Room 101',
+    //   code: 'RM-101',
+    //   room_type: 'Classroom',
+    //   building: 'Main Building',
+    //   floor_id: 1,
+    //   capacity: 30,
+    //   currentOccupancy: 28,
+    //   facilities: ['Projector', 'Whiteboard', 'AC'],
+    //   status: RoomStatus.OCCUPIED,
+    //   color: 'bg-blue-500',
+    //   created_at: "",
+    //   updated_at: "",
+    //   deleted_at: null
+    // },
+    // {
+    //   id: 2,
+    //   name: 'Lab 1',
+    //   code: 'LAB-01',
+    //   room_type: 'Laboratory',
+    //   building: 'Science Block',
+    //   floor_id: 2,
+    //   capacity: 25,
+    //   currentOccupancy: 0,
+    //   facilities: ['Lab Equipment', 'Safety Gear', 'Computers'],
+    //   status: RoomStatus.AVAILABLE,
+    //   color: 'bg-green-500',
+    //   created_at: "",
+    //   updated_at: "",
+    //   deleted_at: null
+    // },
+    // {
+    //   id: 3,
+    //   name: 'Room 201',
+    //   code: 'RM-201',
+    //   room_type: 'Classroom',
+    //   building: 'Main Building',
+    //   floor_id: 2,
+    //   capacity: 35,
+    //   currentOccupancy: 32,
+    //   facilities: ['Smart Board', 'Sound System', 'AC'],
+    //   status: RoomStatus.OCCUPIED,
+    //   color: 'bg-purple-500',
+    //   created_at: "",
+    //   updated_at: "",
+    //   deleted_at: null
+    // },
   ];
 
-  viewMode: string = ViewModeEnum.LIST;
+  viewMode: string = ViewModeEnum.GRID;
   statuses: DropdownOption[] = [
     { label: 'All Status', value: 'all' },
     { label: 'Available', value: RoomStatus.AVAILABLE },
@@ -135,6 +135,7 @@ export class RoomsComponent {
 
   ngOnInit(): void {
     this.calculateStats();
+    this._getRoomList()
     this._getRoomTypes();
     this._getBuildingOptions();
     this._getFacilityOptions();
@@ -162,7 +163,7 @@ export class RoomsComponent {
         loading: loading,
         formContainers: this._getRoomFormContainer(),
         footer: {
-          onConfirm: (formValue: CreateRoomPayload) => this._createRoom(formValue, loading),
+          onConfirm: (formValue: CreateRoomPayload) => this._createRoom(formValue, loading, dialogRef),
           onCancel: () => dialogRef.close()
         }
       }
@@ -184,7 +185,22 @@ export class RoomsComponent {
     this.viewMode = mode;
   }
 
-  private _createRoom(formValue: CreateRoomPayload, loading: WritableSignal<boolean>) {
+  private _getRoomList() {
+    this.loading.set(true)
+    this._roomsService.retrieveAll<RoomListSuccessRes>()
+      .pipe(
+        finalize(() => this.loading.set(false)),
+        untilDestroyed(this)
+      ).subscribe({
+        next: (res) => {
+           this.rooms = res.data
+        }, error: (err) => {
+           this._messageService.error(err.message || "Failed getting room list")
+        }
+      })
+  }
+
+  private _createRoom(formValue: CreateRoomPayload, loading: WritableSignal<boolean>, dialogref: DynamicDialogRef) {
     loading.set(true)
     this._roomsService.create<RoomSuccessRes, CreateRoomPayload>(formValue)
       .pipe(
@@ -193,7 +209,8 @@ export class RoomsComponent {
       )
       .subscribe({
         next: (res) => {
-          this._messageService.success("Created new room")
+          this._messageService.success("Created new room");
+          dialogref.close()
         }, error: (err) => {
           this._messageService.error(err.message || "Failed creating new room. Please try again")
         }
@@ -290,7 +307,7 @@ export class RoomsComponent {
       {
         containers: [
           new QuestionSelectInput({
-            key: 'floor',
+            key: 'floor_id',
             label: 'Floor',
             required: true,
             options: [
@@ -300,10 +317,13 @@ export class RoomsComponent {
             ]
           }),
           new QuestionMultiSelect({
-            key: 'facility_ids',
+            key: 'facilities',
             label: 'Facility',
             optionLabel: "name",
-            optionValue: "id",
+            optionValue: 'id',
+            normalizeValue: (facility_ids: number[]) => {
+              return this._facilities.filter(({ id }) => facility_ids.includes(id))
+            },
             options: this._facilities
           })
         ]

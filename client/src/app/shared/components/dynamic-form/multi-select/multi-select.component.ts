@@ -22,6 +22,7 @@ export class MultiSelectComponent implements ControlValueAccessor{
   options = input.required<any[]>();
   optionLabel = input('label');
   optionValue = input('value');
+  normalizeValue = input<Function>()
   placeholder = input('');
   onChangeEmit = output<any>()
   required = input()
@@ -34,7 +35,6 @@ export class MultiSelectComponent implements ControlValueAccessor{
   onTouched = () => {};
 
   writeValue(value: any): void {
-    console.log(this.optionValue())
     this.value = value;
   }
 
@@ -52,8 +52,17 @@ export class MultiSelectComponent implements ControlValueAccessor{
 
   handleChange(event: any) {
     this.value = event.value;
-    this.onChange(this.value);
-    this.onChangeEmit.emit(this.value)
+    const _normalizeValueFc = this.normalizeValue()
+
+    if(_normalizeValueFc instanceof Function) {
+      const normalizedValue = _normalizeValueFc(this.value)
+      this.onChange(normalizedValue);
+      this.onChangeEmit.emit(normalizedValue)
+    } else {
+      this.onChange(this.value)
+      this.onChangeEmit.emit(this.value)
+    }
+
     this.onTouched();
   }
 }

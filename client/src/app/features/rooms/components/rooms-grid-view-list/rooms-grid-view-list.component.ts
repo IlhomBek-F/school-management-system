@@ -4,15 +4,19 @@ import { ButtonModule } from "primeng/button";
 import { TagModule } from "primeng/tag";
 import { RoomsGridViewSkeletonComponent } from "../rooms-grid-view-skeleton/rooms-grid-view-skeleton.component";
 import { Room } from '../../models';
+import { RoomTypeIconPipe } from '../../pipes/room-type-icon-pipe';
+import { RoomStatus } from '../../enums';
+import { StatusSeverityPipe } from '../../pipes/status-severity-pipe';
 
 @Component({
   selector: 'school-rooms-grid-view-list',
-  imports: [ButtonModule, TagModule, CommonModule, RoomsGridViewSkeletonComponent],
+  imports: [ButtonModule, TagModule, CommonModule, RoomsGridViewSkeletonComponent, RoomTypeIconPipe, StatusSeverityPipe],
   templateUrl: './rooms-grid-view-list.component.html',
   styleUrl: './rooms-grid-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoomsGridViewListComponent {
+  readonly STATUS = RoomStatus;
   rooms = input.required<Room[]>()
   viewDetailEmitEvent = output<Room>()
   deleteEmitEvent = output<Room>()
@@ -31,15 +35,6 @@ export class RoomsGridViewListComponent {
     this.deleteEmitEvent.emit(room)
   }
 
-  getStatusSeverity(status: string): string {
-    switch(status) {
-      case 'Available': return 'success';
-      case 'Occupied': return 'warning';
-      case 'Maintenance': return 'danger';
-      default: return 'info';
-    }
-  }
-
   getOccupancyPercentage(current: number, capacity: number): number {
     return Math.round((current / capacity) * 100);
   }
@@ -49,18 +44,5 @@ export class RoomsGridViewListComponent {
     if (percentage >= 90) return 'danger';
     if (percentage >= 70) return 'warning';
     return 'info';
-  }
-
-  getRoomTypeIcon(type: string): string {
-    switch(type) {
-      case 'Classroom': return 'pi-book';
-      case 'Laboratory': return 'pi-flask';
-      case 'Computer Lab': return 'pi-desktop';
-      case 'Auditorium': return 'pi-users';
-      case 'Library': return 'pi-bookmark';
-      case 'Sports': return 'pi-star';
-      case 'Studio': return 'pi-palette';
-      default: return 'pi-building';
-    }
   }
 }

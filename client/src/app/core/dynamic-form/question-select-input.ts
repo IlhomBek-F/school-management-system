@@ -6,7 +6,8 @@ export interface SelectInputOptions extends QuestionOptionsModel{
   loading?: boolean;
   optionLabel?: string;
   optionValue?: string;
-  options?: any
+  options?: any,
+  normalizeValue?: (value: any) => any
 }
 
 export class QuestionSelectInput extends QuestionBase {
@@ -15,6 +16,7 @@ export class QuestionSelectInput extends QuestionBase {
   optionLabel: string;
   optionValue: string;
   options: any[];
+  normalizeValue?: <T = any>(value: any) => T
 
   constructor(options: SelectInputOptions) {
     super(options)
@@ -22,5 +24,6 @@ export class QuestionSelectInput extends QuestionBase {
     this.optionLabel = options.optionLabel || 'label'
     this.optionValue = options.optionValue || 'value'
     this.options = options.options
+    this.normalizeValue = options.normalizeValue
   }
 }

@@ -12,12 +12,12 @@
         <th>Actions</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-room>
+    <ng-template pTemplate="body" let-room let-rowIndex>
       <tr class="hover:bg-gray-50">
         <td>
           <div class="flex items-center gap-3">
-            <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white ' + room.color">
-              <i [class]="'pi ' + getRoomTypeIcon(room.type)"></i>
+            <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white ' + ['bg-blue-500', 'bg-green-500', 'bg-purple-500'][(rooms().length - 1 - rowIndex) % 3]">
+              <i [class]="'pi ' + (room.room_type.name | schoolRoomTypeIcon)"></i>
             </div>
             <div>
               <div class="font-semibold text-gray-800">{{ room.name }}</div>
@@ -25,10 +25,10 @@
             </div>
           </div>
         </td>
-        <td class="text-gray-600">{{ room.type }}</td>
+        <td class="text-gray-600">{{ room.room_type.name }}</td>
         <td class="text-gray-600">
-          <div>{{ room.building }}</div>
-          <div class="text-sm text-gray-500">Floor {{ room.floor }}</div>
+          <div>{{ room.building.name }}</div>
+          <div class="text-sm text-gray-500">Floor {{ room.floor_id }}</div>
         </td>
         <td class="text-gray-600">{{ room.capacity }}</td>
         <td>
@@ -47,7 +47,7 @@
         </td>
         <td>
           <div class="flex flex-wrap gap-1 max-w-xs">
-            <p-tag *ngFor="let facility of room.facilities.slice(0, 2)" [value]="facility" severity="info"
+            <p-tag *ngFor="let facility of room.facilities.slice(0, 2)" [value]="facility.name" severity="info"
               styleClass="text-xs">
             </p-tag>
             <span *ngIf="room.facilities.length > 2" class="text-xs text-gray-500">+{{ room.facilities.length - 2
@@ -55,7 +55,7 @@
           </div>
         </td>
         <td>
-          <p-tag [value]="room.status" [severity]="getStatusSeverity(room.status)">
+          <p-tag [value]="room.status" [severity]="room.status | schoolStatusSeverity">
           </p-tag>
         </td>
         <td class="space-x-2">

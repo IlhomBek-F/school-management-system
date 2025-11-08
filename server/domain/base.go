@@ -4,8 +4,8 @@ import "time"
 
 type Base struct {
 	ID         int       `json:"id"`
-	Created_at time.Time `json:"created_at"`
-	Updated_at time.Time `json:"updated_at"`
+	Created_at time.Time `json:"created_at" gorm:"autoCreateTime"`
+	Updated_at time.Time `json:"updated_at" gorm:"autoUpdateTime"`
 }
 
 type ErrorResponse struct {

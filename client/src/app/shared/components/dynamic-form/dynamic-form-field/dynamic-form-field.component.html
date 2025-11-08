@@ -30,6 +30,7 @@
                              [optionLabel]="$any(question()).optionLabel"
                              [optionValue]="$any(question()).optionValue"
                              [placeholder]="question().placeholder"
+                             [normalizeValue]="$any(question()).normalizeValue"
                              [loading]="$any(question()).loading"
                              />
       }
@@ -38,6 +39,7 @@
                              [formControlName]="question().key"
                              [optionLabel]="$any(question()).optionLabel"
                              [optionValue]="$any(question()).optionValue"
+                             [normalizeValue]="$any(question()).normalizeValue"
                              [required]="question().required"
                              [placeholder]="question().placeholder"/>
       }
