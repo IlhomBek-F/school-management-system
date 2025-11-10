@@ -354,12 +354,30 @@ definitions:
     - subject_ids
     - teacher_id
     type: object
+  domain.QuickStats:
+    properties:
+      classes:
+        type: integer
+      students:
+        type: integer
+    type: object
+  domain.QuickStatsResSuccess:
+    properties:
+      data:
+        $ref: '#/definitions/domain.QuickStats'
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
   domain.Room:
     properties:
       area:
         type: integer
+      building:
+        $ref: '#/definitions/domain.Building'
       building_id:
-        type: string
+        type: integer
       capacity:
         type: integer
       code:
@@ -368,6 +386,10 @@ definitions:
         type: string
       description:
         type: string
+      facilities:
+        items:
+          $ref: '#/definitions/domain.Facility'
+        type: array
       floor_id:
         type: integer
       id:
@@ -376,6 +398,8 @@ definitions:
         type: string
       number:
         type: integer
+      room_type:
+        $ref: '#/definitions/domain.RoomType'
       room_type_id:
         type: integer
       status:
@@ -385,6 +409,7 @@ definitions:
     required:
     - building_id
     - code
+    - facilities
     - floor_id
     - name
     - room_type_id
@@ -395,18 +420,18 @@ definitions:
       area:
         type: integer
       building_id:
-        type: string
+        type: integer
       capacity:
         type: integer
       code:
         type: string
-      created_at:
-        type: string
       description:
         type: string
+      facilities:
+        items:
+          $ref: '#/definitions/domain.Facility'
+        type: array
       floor_id:
-        type: integer
-      id:
         type: integer
       name:
         type: string
@@ -416,11 +441,10 @@ definitions:
         type: integer
       status:
         type: string
-      updated_at:
-        type: string
     required:
     - building_id
     - code
+    - facilities
     - floor_id
     - name
     - room_type_id
@@ -436,6 +460,26 @@ definitions:
         type: string
       meta:
         $ref: '#/definitions/domain.Meta'
+      status:
+        type: integer
+    type: object
+  domain.RoomStats:
+    properties:
+      available_rooms:
+        type: integer
+      avg_occupancy:
+        type: integer
+      total_capacity:
+        type: integer
+      total_rooms:
+        type: integer
+    type: object
+  domain.RoomStatsResSuccess:
+    properties:
+      data:
+        $ref: '#/definitions/domain.RoomStats'
+      message:
+        type: string
       status:
         type: integer
     type: object
@@ -507,8 +551,10 @@ definitions:
     properties:
       area:
         type: integer
+      building:
+        $ref: '#/definitions/domain.Building'
       building_id:
-        type: string
+        type: integer
       capacity:
         type: integer
       code:
@@ -517,6 +563,10 @@ definitions:
         type: string
       description:
         type: string
+      facilities:
+        items:
+          $ref: '#/definitions/domain.Facility'
+        type: array
       floor_id:
         type: integer
       id:
@@ -525,6 +575,8 @@ definitions:
         type: string
       number:
         type: integer
+      room_type:
+        $ref: '#/definitions/domain.RoomType'
       room_type_id:
         type: integer
       status:
@@ -534,6 +586,7 @@ definitions:
     required:
     - building_id
     - code
+    - facilities
     - floor_id
     - name
     - room_type_id
@@ -1514,6 +1567,52 @@ paths:
       summary: Update roomType
       tags:
       - RoomType
+  /stats/quick:
+    get:
+      consumes:
+      - application/json
+      description: Get quick stats
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: quick stats
+          schema:
+            $ref: '#/definitions/domain.QuickStatsResSuccess'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get quick stats
+      tags:
+      - Stats
+  /stats/room:
+    get:
+      consumes:
+      - application/json
+      description: Get room stats
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: room stats
+          schema:
+            $ref: '#/definitions/domain.RoomStatsResSuccess'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get room stats
+      tags:
+      - Stats
   /student/{student_id}:
     delete:
       consumes:

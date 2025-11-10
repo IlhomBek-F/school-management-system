@@ -1150,6 +1150,78 @@ const docTemplate = `{
                 }
             }
         },
+        "/stats/quick": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get quick stats",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get quick stats",
+                "responses": {
+                    "201": {
+                        "description": "quick stats",
+                        "schema": {
+                            "$ref": "#/definitions/domain.QuickStatsResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/stats/room": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get room stats",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get room stats",
+                "responses": {
+                    "201": {
+                        "description": "room stats",
+                        "schema": {
+                            "$ref": "#/definitions/domain.RoomStatsResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/student/create": {
             "post": {
                 "security": [
@@ -2335,11 +2407,37 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.QuickStats": {
+            "type": "object",
+            "properties": {
+                "classes": {
+                    "type": "integer"
+                },
+                "students": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.QuickStatsResSuccess": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.QuickStats"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
         "domain.Room": {
             "type": "object",
             "required": [
                 "building_id",
                 "code",
+                "facilities",
                 "floor_id",
                 "name",
                 "room_type_id",
@@ -2349,8 +2447,11 @@ const docTemplate = `{
                 "area": {
                     "type": "integer"
                 },
+                "building": {
+                    "$ref": "#/definitions/domain.Building"
+                },
                 "building_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "capacity": {
                     "type": "integer"
@@ -2364,6 +2465,12 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "facilities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Facility"
+                    }
+                },
                 "floor_id": {
                     "type": "integer"
                 },
@@ -2375,6 +2482,9 @@ const docTemplate = `{
                 },
                 "number": {
                     "type": "integer"
+                },
+                "room_type": {
+                    "$ref": "#/definitions/domain.RoomType"
                 },
                 "room_type_id": {
                     "type": "integer"
@@ -2392,6 +2502,7 @@ const docTemplate = `{
             "required": [
                 "building_id",
                 "code",
+                "facilities",
                 "floor_id",
                 "name",
                 "room_type_id",
@@ -2402,7 +2513,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "building_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "capacity": {
                     "type": "integer"
@@ -2410,16 +2521,16 @@ const docTemplate = `{
                 "code": {
                     "type": "string"
                 },
-                "created_at": {
-                    "type": "string"
-                },
                 "description": {
                     "type": "string"
                 },
-                "floor_id": {
-                    "type": "integer"
+                "facilities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Facility"
+                    }
                 },
-                "id": {
+                "floor_id": {
                     "type": "integer"
                 },
                 "name": {
@@ -2432,9 +2543,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2453,6 +2561,37 @@ const docTemplate = `{
                 },
                 "meta": {
                     "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.RoomStats": {
+            "type": "object",
+            "properties": {
+                "available_rooms": {
+                    "type": "integer"
+                },
+                "avg_occupancy": {
+                    "type": "integer"
+                },
+                "total_capacity": {
+                    "type": "integer"
+                },
+                "total_rooms": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.RoomStatsResSuccess": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.RoomStats"
+                },
+                "message": {
+                    "type": "string"
                 },
                 "status": {
                     "type": "integer"
@@ -2563,6 +2702,7 @@ const docTemplate = `{
             "required": [
                 "building_id",
                 "code",
+                "facilities",
                 "floor_id",
                 "name",
                 "room_type_id",
@@ -2572,8 +2712,11 @@ const docTemplate = `{
                 "area": {
                     "type": "integer"
                 },
+                "building": {
+                    "$ref": "#/definitions/domain.Building"
+                },
                 "building_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "capacity": {
                     "type": "integer"
@@ -2587,6 +2730,12 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "facilities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Facility"
+                    }
+                },
                 "floor_id": {
                     "type": "integer"
                 },
@@ -2598,6 +2747,9 @@ const docTemplate = `{
                 },
                 "number": {
                     "type": "integer"
+                },
+                "room_type": {
+                    "$ref": "#/definitions/domain.RoomType"
                 },
                 "room_type_id": {
                     "type": "integer"
