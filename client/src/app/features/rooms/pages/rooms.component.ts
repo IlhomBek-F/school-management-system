@@ -141,10 +141,6 @@ export class RoomsComponent {
     this._confirmService.confirm(deleteConfirm)
   }
 
-  private _calculateStats(): void {
-
-  }
-
   private _getRoomList() {
     this.loading.set(true)
     this._roomsService.retrieveAll<RoomListSuccessRes>()

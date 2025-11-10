@@ -23,4 +23,5 @@ func SetupRoutes(app bootstrap.Application, gin *gin.Engine) {
 	NewBuildingRoute(app, privateRouter)
 	NewFacilityRoute(app, privateRouter)
 	NewClassRoute(app, privateRouter)
+	NewStatsRoute(app, privateRouter)
 }
