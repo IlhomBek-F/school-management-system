@@ -16,7 +16,7 @@ func NewRoomRouter(app bootstrap.Application, routerGroup *gin.RouterGroup) {
 
 	routerGroup.POST("/room/create", roomController.CreateRoom)
 	routerGroup.GET("/room/list", roomController.GetRoomList)
-	routerGroup.GET("/room/:student_id", roomController.GetRoomById)
-	routerGroup.DELETE("/room/:student_id", roomController.DeleteRoom)
-	routerGroup.PUT("/room/:student_id", roomController.UpdateRoom)
+	routerGroup.GET("/room/:room_id", roomController.GetRoomById)
+	routerGroup.DELETE("/room/:room_id", roomController.DeleteRoom)
+	routerGroup.PUT("/room/:room_id", roomController.UpdateRoom)
 }

@@ -1,0 +1,14 @@
+<div class="flex flex-col gap-1">
+  @if(label()) {
+  <label class="text-sm font-medium text-gray-700">{{ label() }}</label>
+  }
+    <p-inputNumber [min]="min()"
+                   [max]="max()"
+                   [ngModel]="value"
+                   [fluid]="true"
+                   [placeholder]="placeholder()"
+                   (onInput)="handleInput($event)"
+                   [showButtons]="true"
+                   class="p-inputnumber w-full" [ngClass]="{'ng-invalid ng-dirty': required() && !value}">
+    </p-inputNumber>
+</div>

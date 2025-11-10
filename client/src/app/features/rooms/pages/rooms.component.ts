@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, WritableSignal } from '@angular/core';
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-card.component";
 import { ButtonModule } from "primeng/button";
@@ -24,11 +24,12 @@ import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { RoomsService } from '../services/rooms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { CreateRoomPayload, Room, RoomListSuccessRes, RoomSuccessRes } from '../models';
+import { CreateRoomPayload, Room, RoomDropdownOptionsSuccess, RoomListSuccessRes, RoomSuccessRes } from '../models';
 import { Building } from '@core/models/building';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Facility } from '@core/models/facility';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
+import { makeDropdownOption } from 'app/utils/helper';
 
 @UntilDestroy()
 @Component({
@@ -52,10 +53,10 @@ import { finalize } from 'rxjs';
 })
 export class RoomsComponent {
   readonly VIEW_MODE = ViewModeEnum;
+  viewMode: WritableSignal<ViewModeEnum> = signal(ViewModeEnum.GRID);
   loading = signal(false)
-  loadingRoomTypes = signal(false)
-
-  roomTypeOptions: DropdownOption[] = [{ label: 'All Types', value: 'all' }];
+  loadingOptions = signal(false)
+  roomTypeOptions: WritableSignal<DropdownOption[]> = signal([{ label: 'All Types', value: 'all' }]);
 
   filterFormGroup = new FormGroup({
     search: new FormControl(),
@@ -63,58 +64,7 @@ export class RoomsComponent {
     status: new FormControl('all')
   })
 
-  rooms: Room[] = [
-    // {
-    //   id: 1,
-    //   name: 'Room 101',
-    //   code: 'RM-101',
-    //   room_type: 'Classroom',
-    //   building: 'Main Building',
-    //   floor_id: 1,
-    //   capacity: 30,
-    //   currentOccupancy: 28,
-    //   facilities: ['Projector', 'Whiteboard', 'AC'],
-    //   status: RoomStatus.OCCUPIED,
-    //   color: 'bg-blue-500',
-    //   created_at: "",
-    //   updated_at: "",
-    //   deleted_at: null
-    // },
-    // {
-    //   id: 2,
-    //   name: 'Lab 1',
-    //   code: 'LAB-01',
-    //   room_type: 'Laboratory',
-    //   building: 'Science Block',
-    //   floor_id: 2,
-    //   capacity: 25,
-    //   currentOccupancy: 0,
-    //   facilities: ['Lab Equipment', 'Safety Gear', 'Computers'],
-    //   status: RoomStatus.AVAILABLE,
-    //   color: 'bg-green-500',
-    //   created_at: "",
-    //   updated_at: "",
-    //   deleted_at: null
-    // },
-    // {
-    //   id: 3,
-    //   name: 'Room 201',
-    //   code: 'RM-201',
-    //   room_type: 'Classroom',
-    //   building: 'Main Building',
-    //   floor_id: 2,
-    //   capacity: 35,
-    //   currentOccupancy: 32,
-    //   facilities: ['Smart Board', 'Sound System', 'AC'],
-    //   status: RoomStatus.OCCUPIED,
-    //   color: 'bg-purple-500',
-    //   created_at: "",
-    //   updated_at: "",
-    //   deleted_at: null
-    // },
-  ];
-
-  viewMode: string = ViewModeEnum.GRID;
+  rooms: WritableSignal<Room[]> = signal([]);
   statuses: DropdownOption[] = [
     { label: 'All Status', value: 'all' },
     { label: 'Available', value: RoomStatus.AVAILABLE },
@@ -122,32 +72,26 @@ export class RoomsComponent {
     { label: 'Maintenance', value: RoomStatus.MAINTENANCE }
   ];
 
-  totalRooms: number = 0;
-  availableRooms: number = 0;
-  totalCapacity: number = 0;
-  avgOccupancy: number = 0;
+  roomStats = computed(() => {
+    const totalRooms = this.rooms().length;
+    const availableRooms = this.rooms().filter(r => r.status === RoomStatus.AVAILABLE).length;
+    const totalCapacity = this.rooms().reduce((sum, r) => sum + r.capacity, 0);
+    const totalOccupancy = this.rooms().reduce((sum, r) => sum + 10, 0);
+    const avgOccupancy = Math.round((totalOccupancy / totalCapacity) * 100);
+    return {totalRooms, availableRooms, totalCapacity, totalOccupancy, avgOccupancy}
+  })
+
   private _dialogService = inject(DialogService)
   private _confirmService = inject(DeleteConfirmDialogService)
   private _messageService = inject(ToastService)
   private _roomsService = inject(RoomsService)
-  private _buildingOptions: Building[] = [];
-  private _facilities: Facility[] = []
+  private _buildingOptions: WritableSignal<Building[]> = signal([]);
+  private _facilities: WritableSignal<Facility[]> = signal([]);
 
   ngOnInit(): void {
-    this.calculateStats();
     this._getRoomList()
-    this._getRoomTypes();
-    this._getBuildingOptions();
-    this._getFacilityOptions();
+    this._getRoomDropdownOptions();
     this._handleFilterRoom();
-  }
-
-  calculateStats(): void {
-    this.totalRooms = this.rooms.length;
-    this.availableRooms = this.rooms.filter(r => r.status === RoomStatus.AVAILABLE).length;
-    this.totalCapacity = this.rooms.reduce((sum, r) => sum + r.capacity, 0);
-    const totalOccupancy = this.rooms.reduce((sum, r) => sum + r.currentOccupancy, 0);
-    this.avgOccupancy = Math.round((totalOccupancy / this.totalCapacity) * 100);
   }
 
   upsertRoom(room?: Room): void {
@@ -156,14 +100,20 @@ export class RoomsComponent {
       focusOnShow: false,
       dismissableMask: true,
       modal: true,
-      header: 'Add new room',
+      header: room ? 'Update room' : 'Add new room',
       width: '45%',
       data: {
-        payload: room,
+        payload: {...room, facilities: room?.facilities.map(({id}) => id)},
         loading: loading,
         formContainers: this._getRoomFormContainer(),
         footer: {
-          onConfirm: (formValue: CreateRoomPayload) => this._createRoom(formValue, loading, dialogRef),
+          onConfirm: (formValue: CreateRoomPayload) => {
+            if(room) {
+              this._updateRoom(formValue, loading, dialogRef)
+            } else {
+              this._createRoom(formValue, loading, dialogRef)
+            }
+          },
           onCancel: () => dialogRef.close()
         }
       }
@@ -171,18 +121,28 @@ export class RoomsComponent {
   }
 
   deleteRoom(room: Room) {
-    this._confirmService.confirm((ref: ConfirmationService) => {
+    const deleteConfirm = (ref: ConfirmationService) => {
       this._confirmService.loading$.next(true)
-      setTimeout(() => {
-        this._confirmService.loading$.next(false);
-        this._messageService.success("Room deleted successfully")
-        ref.close()
-      }, 3000)
-    })
+      this._roomsService.delete(room.id)
+       .pipe(
+         finalize(() => this._confirmService.loading$.next(false)),
+         untilDestroyed(this)
+       ).subscribe({
+        next: () => {
+          this._messageService.success("Room deleted successfully");
+          ref.close();
+          this._getRoomList()
+        }, error: (err) => {
+          this._messageService.error(err.message || "Failed deleting room")
+        }
+      })
+    }
+
+    this._confirmService.confirm(deleteConfirm)
   }
 
-  setViewMode(mode: string): void {
-    this.viewMode = mode;
+  private _calculateStats(): void {
+
   }
 
   private _getRoomList() {
@@ -193,7 +153,7 @@ export class RoomsComponent {
         untilDestroyed(this)
       ).subscribe({
         next: (res) => {
-           this.rooms = res.data
+           this.rooms.set(res.data);
         }, error: (err) => {
            this._messageService.error(err.message || "Failed getting room list")
         }
@@ -210,11 +170,16 @@ export class RoomsComponent {
       .subscribe({
         next: (res) => {
           this._messageService.success("Created new room");
+          this._getRoomList()
           dialogref.close()
         }, error: (err) => {
           this._messageService.error(err.message || "Failed creating new room. Please try again")
         }
       })
+  }
+
+  private _updateRoom(formValue: CreateRoomPayload, loading: WritableSignal<boolean>, dialogref: DynamicDialogRef) {
+    console.log(formValue)
   }
 
   private _handleFilterRoom() {
@@ -224,43 +189,24 @@ export class RoomsComponent {
       ).subscribe(console.log)
   }
 
-  private _getRoomTypes() {
-    this.loadingRoomTypes.set(true)
-    this._roomsService.getRoomTypes()
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res) => {
-          this.loadingRoomTypes.set(false)
-          this.roomTypeOptions.push(...res.data.map(({ name, id }) => ({ label: name, value: id })))
-        }, error: (err) => {
-          this._messageService.error(err.message || "Failed getting room types")
-          this.loadingRoomTypes.set(false)
-        }
-      })
-  }
-
-  private _getBuildingOptions() {
-    this._roomsService.getBuildings()
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res) => {
-          this._buildingOptions = res.data;
-        }, error: (err) => {
-          this._messageService.error(err.message || "Failed getting buildings")
-        }
-      })
-  }
-
-  private _getFacilityOptions() {
-    this._roomsService.getFacilities()
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res) => {
-          this._facilities = res.data;
-        }, error: (err) => {
-          this._messageService.error(err.message || "Failed getting facilities")
-        }
-      })
+  private _getRoomDropdownOptions() {
+    this.loadingOptions.set(true)
+    forkJoin([
+      this._roomsService.getBuildings(),
+      this._roomsService.getFacilities(),
+      this._roomsService.getRoomTypes()
+    ]).pipe(
+      finalize(() => this.loadingOptions.set(false)),
+      untilDestroyed(this)
+    ).subscribe({
+      next: ([buildingRes, facilityRes, roomTypeRes]: RoomDropdownOptionsSuccess) => {
+        this._buildingOptions.set(buildingRes.data)
+        this._facilities.set(facilityRes.data)
+        this.roomTypeOptions.update((prev) => [...prev, ...roomTypeRes.data.map(({name, id}) => makeDropdownOption(name, id))])
+      }, error: (err) => {
+        this._messageService.error(err.message || "Failed getting room dropdown options")
+      }
+    })
   }
 
   private _getRoomFormContainer(): FormContainer[] {
@@ -291,7 +237,7 @@ export class RoomsComponent {
             label: 'Room type',
             required: true,
             value: 'all',
-            options: this.roomTypeOptions
+            options: this.roomTypeOptions()
           }),
           new QuestionSelectInput({
             key: 'building_id',
@@ -299,7 +245,7 @@ export class RoomsComponent {
             required: true,
             optionLabel: "name",
             optionValue: "id",
-            options: this._buildingOptions
+            options: this._buildingOptions()
           }),
 
         ]
@@ -322,9 +268,9 @@ export class RoomsComponent {
             optionLabel: "name",
             optionValue: 'id',
             normalizeValue: (facility_ids: number[]) => {
-              return this._facilities.filter(({ id }) => facility_ids.includes(id))
+              return this._facilities().filter(({ id }) => facility_ids.includes(id))
             },
-            options: this._facilities
+            options: this._facilities()
           })
         ]
       },

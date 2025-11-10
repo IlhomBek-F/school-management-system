@@ -4,7 +4,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <school-stats-card title="Total Rooms"
-                        [value]="totalRooms"
+                        [value]="roomStats().totalRooms"
                         [loading]="loading()"
                         rootClassName="border-amber-500"
                         icon="pi pi-building text-amber-600"
@@ -12,7 +12,7 @@
      />
 
      <school-stats-card title="Available"
-                        [value]="availableRooms"
+                        [value]="roomStats().availableRooms"
                         [loading]="loading()"
                         rootClassName="border-green-500"
                         icon="pi pi-check-circle text-green-600 "
@@ -20,7 +20,7 @@
      />
 
      <school-stats-card title="Total Capacity"
-                        [value]="totalCapacity"
+                        [value]="roomStats().totalCapacity"
                         [loading]="loading()"
                         rootClassName="border-blue-500"
                         icon="pi pi-users text-blue-600"
@@ -28,7 +28,7 @@
      />
 
      <school-stats-card title="Avg. Occupancy"
-                        [value]="avgOccupancy"
+                        [value]="roomStats().avgOccupancy"
                         [loading]="loading()"
                         rootClassName="border-orange-500"
                         icon="pi pi-chart-line text-orange-600"
@@ -39,21 +39,22 @@
      <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
       <div class="flex flex-col md:flex-row gap-4" [formGroup]="filterFormGroup">
           <school-text-input icon="pi pi-search" formControlName="search" placeholder="Search by room name, code, or building..."/>
-          <school-select-input formControlName="room_type_id" [options]="roomTypeOptions" [loading]="loadingRoomTypes()"/>
+          <school-select-input formControlName="room_type_id" [options]="roomTypeOptions()" [loading]="loadingOptions()"/>
 
         <div class="flex gap-2">
           <school-select-input formControlName="status" [options]="statuses"/>
 
           <p-button
             label="Grid"
-            [outlined]="viewMode !== VIEW_MODE.GRID"
-            (onClick)="setViewMode(VIEW_MODE.GRID)"
+            [outlined]="viewMode() !== VIEW_MODE.GRID"
+            (onClick)="viewMode.set(VIEW_MODE.GRID)"
             styleClass="p-button-sm">
           </p-button>
           <p-button
             label="List"
-            [outlined]="viewMode !== VIEW_MODE.LIST"
-            (onClick)="setViewMode(VIEW_MODE.LIST)"
+            [disabled]="loading()"
+            [outlined]="viewMode() !== VIEW_MODE.LIST"
+            (onClick)="viewMode.set(VIEW_MODE.LIST)"
             styleClass="p-button-sm">
           </p-button>
         </div>
@@ -61,19 +62,25 @@
         <p-button
           label="Add Room"
           icon="pi pi-plus"
+          [disabled]="loading()"
           (onClick)="upsertRoom()"
           styleClass="p-button-sm">
         </p-button>
       </div>
     </div>
 
-    @if (viewMode === VIEW_MODE.GRID) {
-      <school-rooms-grid-view-list [loading]="loading()" [rooms]="rooms" (editEmitEvent)="upsertRoom($event)" (deleteEmitEvent)="deleteRoom($event)"/>
+    @if (viewMode() === VIEW_MODE.GRID) {
+      <school-rooms-grid-view-list [loading]="loading()"
+                                   [rooms]="rooms()"
+                                   (editEmitEvent)="upsertRoom($event)"
+                                   (deleteEmitEvent)="deleteRoom($event)"/>
     } @else {
-      <school-rooms-table-view-list [rooms]="rooms" (editEmitEvent)="upsertRoom($event)" (deleteEmitEvent)="deleteRoom($event)"/>
+      <school-rooms-table-view-list [rooms]="rooms()"
+                                    (editEmitEvent)="upsertRoom($event)"
+                                    (deleteEmitEvent)="deleteRoom($event)"/>
     }
 
-    @if (rooms.length === 0) {
+    @if (rooms().length === 0) {
       <school-empty-list title="No rooms found"/>
     }
   </div>

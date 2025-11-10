@@ -6,7 +6,7 @@
     @switch (question().controlType) {
       @case (QuestionTypeEnum.TextInput) {
          @if (question().type === QuestionFieldTypeEnum.Number) {
-          <school-text-input-number [formControlName]="question().key"
+          <school-number-input [formControlName]="question().key"
                                   [id]="question().key"
                                   [required]="question().required"
                                   [placeholder]="question().placeholder"/>

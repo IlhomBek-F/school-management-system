@@ -5,9 +5,12 @@ export interface Base {
   deleted_at: string | null
 }
 
-export interface ResData<T> {
+export interface ResSuccess {
   status: number,
   message: string,
+}
+
+export interface ResData<T> extends ResSuccess  {
   data: T,
 }
 
@@ -23,3 +26,5 @@ export interface DropdownOption {
   label: string,
   value: any
 }
+
+

@@ -195,5 +195,5 @@ func (s RoomController) DeleteRoom(c *gin.Context) {
 		Message: "success",
 	}
 
-	c.JSON(http.StatusBadRequest, successRes)
+	c.JSON(http.StatusOK, successRes)
 }

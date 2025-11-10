@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "@environments/enviroment.dev";
+import { ResSuccess } from "@core/models/base";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class BaseService {
     return this.http.put<ResT>(`${this.baseUrl}/update`, data)
   }
 
-  delete(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`)
+  delete<ResT = ResSuccess>(id: number): Observable<ResT> {
+    return this.http.delete<ResT>(`${this.baseUrl}/${id}`)
   }
 }
