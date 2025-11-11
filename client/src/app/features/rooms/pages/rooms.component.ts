@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-card.component";
 import { ButtonModule } from "primeng/button";
@@ -24,7 +24,7 @@ import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { RoomsService } from '../services/rooms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { CreateRoomPayload, Room, RoomDropdownOptionsSuccess, RoomListSuccessRes, RoomSuccessRes } from '../models';
+import { Room, RoomDropdownOptionsSuccess, RoomListSuccessRes, RoomSuccessRes, UpsertRoomPayload } from '../models';
 import { Building } from '@core/models/building';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Facility } from '@core/models/facility';
@@ -103,11 +103,13 @@ export class RoomsComponent {
       data: {
         payload: {...room, facilities: room?.facilities.map(({id}) => id)},
         loading: loading,
-        formContainers: this._getRoomFormContainer(),
+        formContainers: this._getRoomFormContainer(room),
         footer: {
-          onConfirm: (formValue: CreateRoomPayload) => {
+          onConfirm: (formValue: UpsertRoomPayload) => {
+            loading.set(true)
+
             if(room) {
-              this._updateRoom(formValue, loading, dialogRef)
+              this._updateRoom({...formValue, id: room.id}, loading, dialogRef)
             } else {
               this._createRoom(formValue, loading, dialogRef)
             }
@@ -167,9 +169,8 @@ export class RoomsComponent {
       })
   }
 
-  private _createRoom(formValue: CreateRoomPayload, loading: WritableSignal<boolean>, dialogref: DynamicDialogRef) {
-    loading.set(true)
-    this._roomsService.create<RoomSuccessRes, CreateRoomPayload>(formValue)
+  private _createRoom(formValue: UpsertRoomPayload, loading: WritableSignal<boolean>, dialogref: DynamicDialogRef) {
+    this._roomsService.create<RoomSuccessRes, UpsertRoomPayload>(formValue)
       .pipe(
         finalize(() => loading.set(false)),
         untilDestroyed(this)
@@ -185,8 +186,19 @@ export class RoomsComponent {
       })
   }
 
-  private _updateRoom(formValue: CreateRoomPayload, loading: WritableSignal<boolean>, dialogref: DynamicDialogRef) {
-    console.log(formValue)
+  private _updateRoom(formValue: UpsertRoomPayload, loading: WritableSignal<boolean>, dialogref: DynamicDialogRef) {
+    this._roomsService.update<RoomSuccessRes, UpsertRoomPayload>(formValue)
+     .pipe(
+      untilDestroyed(this)
+     ).subscribe({next: () => {
+       this._messageService.success("Room updated successfully")
+       loading.set(false);
+       dialogref.close()
+       this._getRoomList();
+     }, error: (err) => {
+       this._messageService.error("Failed updating room")
+     }})
+    console.log(formValue )
   }
 
   private _handleFilterRoom() {
@@ -216,23 +228,26 @@ export class RoomsComponent {
     })
   }
 
-  private _getRoomFormContainer(): FormContainer[] {
+  private _getRoomFormContainer(room?: Room): FormContainer[] {
     return [
       {
         containers: [
           new QuestionTextInput({
             key: 'name',
             label: 'Room Name',
+            value: room?.name,
             required: true,
           }),
           new QuestionTextInput({
             key: 'code',
             label: 'Room code',
+            value: room?.code,
             required: true,
           }),
           new QuestionTextInput({
             key: 'number',
             label: 'Room number',
+            value: room?.number,
             type: QuestionFieldTypeEnum.Number
           })
         ]
@@ -243,13 +258,14 @@ export class RoomsComponent {
             key: 'room_type_id',
             label: 'Room type',
             required: true,
-            value: 'all',
+            value: room?.room_type.id,
             options: this.roomTypeOptions()
           }),
           new QuestionSelectInput({
             key: 'building_id',
             label: 'Building',
             required: true,
+            value: room?.building.id,
             optionLabel: "name",
             optionValue: "id",
             options: this._buildingOptions()
@@ -263,6 +279,7 @@ export class RoomsComponent {
             key: 'floor_id',
             label: 'Floor',
             required: true,
+            value: room?.floor_id,
             options: [
               { label: '1', value: 1 },
               { label: '2', value: 2 },
@@ -274,6 +291,7 @@ export class RoomsComponent {
             label: 'Facility',
             optionLabel: "name",
             optionValue: 'id',
+            value: room?.facilities,
             normalizeValue: (facility_ids: number[]) => {
               return this._facilities().filter(({ id }) => facility_ids.includes(id))
             },
@@ -287,16 +305,19 @@ export class RoomsComponent {
             key: 'status',
             label: 'Status',
             required: true,
+            value: room?.status,
             options: this.statuses
           }),
           new QuestionTextInput({
             key: 'capacity',
             label: 'Room capacity',
+            value: room?.capacity,
             type: QuestionFieldTypeEnum.Number
           }),
           new QuestionTextInput({
             key: 'area',
             label: 'Room area',
+            value: room?.area,
             type: QuestionFieldTypeEnum.Number
           })
         ]
@@ -305,7 +326,8 @@ export class RoomsComponent {
         containers: [
           new QuestionTextArea({
             key: 'description',
-            label: 'Description'
+            label: 'Description',
+            value: room?.description
           })
         ]
       }

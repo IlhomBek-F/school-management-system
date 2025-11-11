@@ -48,8 +48,14 @@ func (r roomRepository) GetByID(id int) (domain.Room, error) {
 }
 
 func (r roomRepository) Update(payload domain.RoomUpdatePayload) (domain.Room, error) {
-	result := r.db.Updates(&payload)
-	return payload, result.Error
+	result := r.db.Model(domain.Room{}).Where("id = ?", payload.ID).Updates(&payload)
+
+	if result.Error != nil {
+		return domain.Room{}, result.Error
+	}
+
+	room, err := r.GetByID(payload.ID)
+	return room, err
 }
 
 func (r roomRepository) Delete(id int) error {

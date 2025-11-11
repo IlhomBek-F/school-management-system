@@ -34,10 +34,6 @@ export class DynamicFormModalComponent implements OnInit{
     this.formContainer.set(this._dialogConfig.data.formContainers);
     const payload = this._dialogConfig.data.payload;
     this.loading = this._dialogConfig.data.loading;
-    
-    if(payload) {
-      this.form().patchValue(payload)
-    }
   }
 
   confirm() {

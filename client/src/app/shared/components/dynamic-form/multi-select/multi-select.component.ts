@@ -35,7 +35,7 @@ export class MultiSelectComponent implements ControlValueAccessor{
   onTouched = () => {};
 
   writeValue(value: any): void {
-    this.value = value;
+    this.value = value.map((opt: any) => opt[this.optionValue()])
   }
 
   registerOnChange(fn: any): void {

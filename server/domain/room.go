@@ -27,7 +27,11 @@ type RoomFacility struct {
 	FacilityId int `json:"facility_id"`
 }
 
+type RoomUpdatePayload struct {
+	Base
+	RoomFields
+}
+
 type RoomCreatePayload = RoomFields
-type RoomUpdatePayload = Room
 type RoomSuccessRes = SuccessResponseWithData[Room]
 type RoomListRes = SuccessResponseWithMeta[[]Room]
