@@ -13,7 +13,7 @@
           </div>
           <span class="text-sm text-gray-700 dark:text-gray-300">Students</span>
         </div>
-        <span class="text-sm font-bold text-gray-800 dark:text-white">1,248</span>
+        <span class="text-sm font-bold text-gray-800 dark:text-white">{{stats().students | number}}</span>
       </div>
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
@@ -22,7 +22,7 @@
           </div>
           <span class="text-sm text-gray-700 dark:text-gray-300">Classes</span>
         </div>
-        <span class="text-sm font-bold text-gray-800 dark:text-white">48</span>
+        <span class="text-sm font-bold text-gray-800 dark:text-white">{{stats().classes | number}}</span>
       </div>
     </div>
   </div>

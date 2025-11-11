@@ -4,32 +4,32 @@
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <school-stats-card title="Total Rooms"
-                        [value]="roomStats().totalRooms"
-                        [loading]="loading()"
+                        [value]="roomStats().total_rooms"
+                        [loading]="loadingRoomStats()"
                         rootClassName="border-amber-500"
                         icon="pi pi-building text-amber-600"
                         iconWrapperClassName="bg-amber-100"
      />
 
      <school-stats-card title="Available"
-                        [value]="roomStats().availableRooms"
-                        [loading]="loading()"
+                        [value]="roomStats().available_rooms"
+                        [loading]="loadingRoomStats()"
                         rootClassName="border-green-500"
                         icon="pi pi-check-circle text-green-600 "
                         iconWrapperClassName="bg-green-100"
      />
 
      <school-stats-card title="Total Capacity"
-                        [value]="roomStats().totalCapacity"
-                        [loading]="loading()"
+                        [value]="roomStats().total_capacity"
+                        [loading]="loadingRoomStats()"
                         rootClassName="border-blue-500"
                         icon="pi pi-users text-blue-600"
                         iconWrapperClassName="bg-blue-100"
      />
 
      <school-stats-card title="Avg. Occupancy"
-                        [value]="roomStats().avgOccupancy"
-                        [loading]="loading()"
+                        [value]="roomStats().avg_occupancy"
+                        [loading]="loadingRoomStats()"
                         rootClassName="border-orange-500"
                         icon="pi pi-chart-line text-orange-600"
                         iconWrapperClassName="bg-orange-100"

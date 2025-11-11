@@ -25,14 +25,7 @@ export type Room = Base & Omit<CreateRoomPayload, "building_id" | "facilities" |
   currentOccupancy: number;
 }
 
-export interface RoomStats {
-  totalRooms: number;
-  availableRooms: number;
-  totalCapacity: number;
-  averageOccupancy: number
-}
 
 export type RoomSuccessRes = ResData<Room>
-export type RoomStatsSuccessRes = ResData<RoomStats>
 export type RoomListSuccessRes = ResDataWithMeta<Room[]>
 export type RoomDropdownOptionsSuccess = [BuildingSuccessWithMeta, FacilitySuccessWithMeta, RoomTypesSuccessWithMeta]

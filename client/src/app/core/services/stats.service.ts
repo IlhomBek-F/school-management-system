@@ -1,0 +1,17 @@
+import { Injectable } from "@angular/core";
+import { BaseService } from "./base.service";
+import { Observable } from "rxjs";
+import { QuickStatsSuccessRes, RoomStatsSuccessRes } from "@core/models/stats";
+
+@Injectable({providedIn: "root"})
+export class StatsService extends BaseService {
+ override baseUrl = `${this.apiUrl}/stats`
+
+ getQuickStats(): Observable<QuickStatsSuccessRes> {
+  return this.http.get<QuickStatsSuccessRes>(`${this.baseUrl}/quick`)
+ }
+
+ getRoomStats(): Observable<RoomStatsSuccessRes> {
+  return this.http.get<RoomStatsSuccessRes>(`${this.baseUrl}/room`)
+ }
+}

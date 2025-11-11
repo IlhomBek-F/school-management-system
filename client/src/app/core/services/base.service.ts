@@ -28,7 +28,7 @@ export class BaseService {
     return this.http.post<ResT>(`${this.baseUrl}/create`, data)
   }
 
-  update<ResT, UpdateT>(id: number, data: UpdateT): Observable<ResT> {
+  update<ResT, UpdateT>(data: UpdateT): Observable<ResT> {
     return this.http.put<ResT>(`${this.baseUrl}/update`, data)
   }
 

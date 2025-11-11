@@ -30,6 +30,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Facility } from '@core/models/facility';
 import { finalize, forkJoin } from 'rxjs';
 import { makeDropdownOption } from 'app/utils/helper';
+import { RoomStats, RoomStatsSuccessRes } from '@core/models/stats';
+import { StatsService } from '@core/services/stats.service';
 
 @UntilDestroy()
 @Component({
@@ -56,6 +58,7 @@ export class RoomsComponent {
   viewMode: WritableSignal<ViewModeEnum> = signal(ViewModeEnum.GRID);
   loading = signal(false)
   loadingOptions = signal(false)
+  loadingRoomStats = signal(false)
   roomTypeOptions: WritableSignal<DropdownOption[]> = signal([{ label: 'All Types', value: 'all' }]);
 
   filterFormGroup = new FormGroup({
@@ -72,24 +75,19 @@ export class RoomsComponent {
     { label: 'Maintenance', value: RoomStatus.MAINTENANCE }
   ];
 
-  roomStats = computed(() => {
-    const totalRooms = this.rooms().length;
-    const availableRooms = this.rooms().filter(r => r.status === RoomStatus.AVAILABLE).length;
-    const totalCapacity = this.rooms().reduce((sum, r) => sum + r.capacity, 0);
-    const totalOccupancy = this.rooms().reduce((sum, r) => sum + 10, 0);
-    const avgOccupancy = Math.round((totalOccupancy / totalCapacity) * 100);
-    return {totalRooms, availableRooms, totalCapacity, totalOccupancy, avgOccupancy}
-  })
+  roomStats = signal<RoomStats>({total_rooms: 0, total_capacity: 0, available_rooms: 0, avg_occupancy: 0})
 
   private _dialogService = inject(DialogService)
   private _confirmService = inject(DeleteConfirmDialogService)
   private _messageService = inject(ToastService)
   private _roomsService = inject(RoomsService)
+  private _statsService = inject(StatsService);
   private _buildingOptions: WritableSignal<Building[]> = signal([]);
   private _facilities: WritableSignal<Facility[]> = signal([]);
 
   ngOnInit(): void {
-    this._getRoomList()
+    this._getRoomList();
+    this._getRoomStats();
     this._getRoomDropdownOptions();
     this._handleFilterRoom();
   }
@@ -139,6 +137,19 @@ export class RoomsComponent {
     }
 
     this._confirmService.confirm(deleteConfirm)
+  }
+
+  private _getRoomStats() {
+    this.loadingRoomStats.set(true)
+    this._statsService.getRoomStats()
+    .pipe(
+      finalize(() => this.loadingRoomStats.set(false)),
+      untilDestroyed(this)
+    ).subscribe({next: (res: RoomStatsSuccessRes) => {
+       this.roomStats.set(res.data)
+    }, error: (err) => {
+       this._messageService.error(err.message || "Failed getting room stats")
+    }})
   }
 
   private _getRoomList() {
