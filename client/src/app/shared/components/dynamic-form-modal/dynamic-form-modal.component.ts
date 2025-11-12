@@ -32,11 +32,11 @@ export class DynamicFormModalComponent implements OnInit{
 
   ngOnInit(): void {
     this.formContainer.set(this._dialogConfig.data.formContainers);
-    const payload = this._dialogConfig.data.payload;
     this.loading = this._dialogConfig.data.loading;
   }
 
   confirm() {
+    console.log(this.form())
     this._dialogConfig.data.footer.onConfirm(this.form().getRawValue())
   }
 

@@ -42,20 +42,31 @@ func (r roomRepository) Create(payload domain.RoomCreatePayload) (domain.Room, e
 
 func (r roomRepository) GetByID(id int) (domain.Room, error) {
 	var room domain.Room
-	result := r.db.Where("id = ?", id).First(&room)
+	result := r.db.Preload("Facilities").Preload("Building").Preload("RoomType").Where("id = ?", id).First(&room)
 
 	return room, result.Error
 }
 
 func (r roomRepository) Update(payload domain.RoomUpdatePayload) (domain.Room, error) {
-	result := r.db.Model(domain.Room{}).Where("id = ?", payload.ID).Updates(&payload)
+	room, err := r.GetByID(payload.ID)
+
+	if err != nil {
+		return domain.Room{}, err
+	}
+
+	result := r.db.Model(&room).Select("*").Updates(&payload)
 
 	if result.Error != nil {
 		return domain.Room{}, result.Error
 	}
 
-	room, err := r.GetByID(payload.ID)
-	return room, err
+	err = r.db.Model(&room).Association("Facilities").Replace(payload.Facilities)
+
+	if err != nil {
+		return domain.Room{}, err
+	}
+
+	return r.GetByID(payload.ID)
 }
 
 func (r roomRepository) Delete(id int) error {

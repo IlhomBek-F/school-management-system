@@ -101,7 +101,6 @@ export class RoomsComponent {
       header: room ? 'Update room' : 'Add new room',
       width: '45%',
       data: {
-        payload: {...room, facilities: room?.facilities.map(({id}) => id)},
         loading: loading,
         formContainers: this._getRoomFormContainer(room),
         footer: {
@@ -189,16 +188,15 @@ export class RoomsComponent {
   private _updateRoom(formValue: UpsertRoomPayload, loading: WritableSignal<boolean>, dialogref: DynamicDialogRef) {
     this._roomsService.update<RoomSuccessRes, UpsertRoomPayload>(formValue)
      .pipe(
+      finalize(() => loading.set(false)),
       untilDestroyed(this)
      ).subscribe({next: () => {
        this._messageService.success("Room updated successfully")
-       loading.set(false);
        dialogref.close()
        this._getRoomList();
      }, error: (err) => {
        this._messageService.error("Failed updating room")
      }})
-    console.log(formValue )
   }
 
   private _handleFilterRoom() {
