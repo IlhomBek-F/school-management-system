@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"school/bootstrap"
 	"school/domain"
 
 	"gorm.io/gorm"
@@ -25,7 +26,11 @@ func NewRoomRepository(db *gorm.DB) RoomRepository {
 
 func (r roomRepository) GetList() ([]domain.Room, error) {
 	var rooms []domain.Room
-	result := r.db.Preload("Building").Preload("RoomType").Preload("Facilities").Find(&rooms)
+	result := r.db.Scopes(bootstrap.QueryScope(&domain.Query{
+		PerPage:   100,
+		Page:      1,
+		QueryTerm: "name LIKE '%Ro%'",
+	})).Preload("Building").Preload("RoomType").Preload("Facilities").Find(&rooms)
 
 	return rooms, result.Error
 }

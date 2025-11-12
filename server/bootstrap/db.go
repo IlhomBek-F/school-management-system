@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"context"
 	"fmt"
+	"school/domain"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -44,6 +45,25 @@ func WithTransaction(ctx context.Context, db *gorm.DB, fn func(tx *gorm.DB) erro
 	return db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		return fn(tx)
 	})
+}
+
+func QueryScope(query *domain.Query) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+
+		if query.Page <= 0 {
+			query.Page = 1
+		}
+
+		switch {
+		case query.PerPage > 100:
+			query.PerPage = 100
+		case query.PerPage <= 0:
+			query.PerPage = 10
+		}
+
+		offset := (query.Page - 1) * query.PerPage
+		return db.Offset(offset).Limit(query.PerPage).Where(query.QueryTerm)
+	}
 }
 
 func (env Env) GetDbAddr() string {

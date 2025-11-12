@@ -36,3 +36,9 @@ type SuccessRes struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
 }
+
+type Query struct {
+	PerPage   int    `json:"per_page"`
+	Page      int    `json:"page"`
+	QueryTerm string `json:"query_term"`
+}
