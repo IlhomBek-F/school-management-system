@@ -12,7 +12,7 @@ type RoomRepository interface {
 	GetByID(id int) (domain.Room, error)
 	Update(payload domain.RoomUpdatePayload) (domain.Room, error)
 	Delete(id int) error
-	GetList() ([]domain.Room, error)
+	GetList(query domain.RoomQuery) ([]domain.Room, error)
 	CreateRoomFacility(facilityIds []int, roomId int) error
 }
 
@@ -24,13 +24,30 @@ func NewRoomRepository(db *gorm.DB) RoomRepository {
 	return roomRepository{db: db}
 }
 
-func (r roomRepository) GetList() ([]domain.Room, error) {
+func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, error) {
 	var rooms []domain.Room
-	result := r.db.Scopes(bootstrap.QueryScope(&domain.Query{
-		PerPage:   100,
-		Page:      1,
-		QueryTerm: "name LIKE '%Ro%'",
-	})).Preload("Building").Preload("RoomType").Preload("Facilities").Find(&rooms)
+
+	paginator := domain.Paginator{PerPage: query.PerPage, Page: query.Page}
+
+	db := r.db.Model(&rooms)
+
+	if query.Status != "" {
+		db = db.Where("status = ?", query.Status)
+	}
+
+	if query.RoomTypeId != 0 {
+		db = db.Where("room_type_id = ?", query.RoomTypeId)
+	}
+
+	if query.QueryTerm != "" {
+		db = db.Where("name ILIKE ?", "%"+query.QueryTerm+"%")
+	}
+
+	result := db.Scopes(bootstrap.QueryScope(&paginator)).
+		Preload("Building").
+		Preload("RoomType").
+		Preload("Facilities").
+		Find(&rooms)
 
 	return rooms, result.Error
 }

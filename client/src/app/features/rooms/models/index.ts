@@ -1,4 +1,4 @@
-import { Base, ResData, ResDataWithMeta } from "@core/models/base";
+import { Base, Paginator, ResData, ResDataWithMeta } from "@core/models/base";
 import { RoomStatus } from "../enums";
 import { Facility, FacilitySuccessWithMeta } from "@core/models/facility";
 import { Building, BuildingSuccessWithMeta } from "@core/models/building";
@@ -24,6 +24,12 @@ export type Room = Base & Omit<UpsertRoomPayload, "building_id" | "facilities" |
   facilities: Facility[];
   color: string;
   currentOccupancy: number;
+}
+
+export interface RoomQuery extends Paginator {
+  status: string;
+  room_type_id: number;
+  search: string
 }
 
 export type RoomSuccessRes = ResData<Room>

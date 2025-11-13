@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, signal, WritableSignal } from '@angular/core';
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-card.component";
 import { ButtonModule } from "primeng/button";
@@ -24,14 +24,15 @@ import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { RoomsService } from '../services/rooms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Room, RoomDropdownOptionsSuccess, RoomListSuccessRes, RoomSuccessRes, UpsertRoomPayload } from '../models';
+import { Room, RoomDropdownOptionsSuccess, RoomListSuccessRes, RoomQuery, RoomSuccessRes, UpsertRoomPayload } from '../models';
 import { Building } from '@core/models/building';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Facility } from '@core/models/facility';
-import { finalize, forkJoin } from 'rxjs';
+import { debounceTime, finalize, forkJoin } from 'rxjs';
 import { makeDropdownOption } from 'app/utils/helper';
 import { RoomStats, RoomStatsSuccessRes } from '@core/models/stats';
 import { StatsService } from '@core/services/stats.service';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 @UntilDestroy()
 @Component({
@@ -43,6 +44,7 @@ import { StatsService } from '@core/services/stats.service';
     PageTitleComponent,
     SchoolStatsCardComponent,
     ButtonModule,
+    PaginatorModule,
     TextInputComponent,
     SelectInputComponent,
     ReactiveFormsModule,
@@ -59,17 +61,19 @@ export class RoomsComponent {
   loading = signal(false)
   loadingOptions = signal(false)
   loadingRoomStats = signal(false)
-  roomTypeOptions: WritableSignal<DropdownOption[]> = signal([{ label: 'All Types', value: 'all' }]);
+  roomTypeOptions: WritableSignal<DropdownOption[]> = signal([{ label: 'All Types', value: 0 }]);
 
   filterFormGroup = new FormGroup({
-    search: new FormControl(),
-    room_type_id: new FormControl('all'),
-    status: new FormControl('all')
+    search: new FormControl("", {nonNullable: true}),
+    room_type_id: new FormControl(0, {nonNullable: true}),
+    status: new FormControl('', {nonNullable: true}),
+    page: new FormControl(1, {nonNullable: true}),
+    per_page: new FormControl(10, {nonNullable: true})
   })
 
   rooms: WritableSignal<Room[]> = signal([]);
   statuses: DropdownOption[] = [
-    { label: 'All Status', value: 'all' },
+    { label: 'All Status', value: '' },
     { label: 'Available', value: RoomStatus.AVAILABLE },
     { label: 'Occupied', value: RoomStatus.OCCUPIED },
     { label: 'Maintenance', value: RoomStatus.MAINTENANCE }
@@ -140,6 +144,10 @@ export class RoomsComponent {
     this._confirmService.confirm(deleteConfirm)
   }
 
+  onPageChange({page = 0}: PaginatorState) {
+    this.filterFormGroup.get("page")?.patchValue(page + 1)
+  }
+
   private _getRoomStats() {
     this.loadingRoomStats.set(true)
     this._statsService.getRoomStats()
@@ -154,8 +162,10 @@ export class RoomsComponent {
   }
 
   private _getRoomList() {
+    const query: RoomQuery = this.filterFormGroup.getRawValue()
+
     this.loading.set(true)
-    this._roomsService.retrieveAll<RoomListSuccessRes>()
+    this._roomsService.retrieveAll<RoomListSuccessRes>(query)
       .pipe(
         finalize(() => this.loading.set(false)),
         untilDestroyed(this)
@@ -202,8 +212,11 @@ export class RoomsComponent {
   private _handleFilterRoom() {
     this.filterFormGroup.valueChanges
       .pipe(
+        debounceTime(300),
         untilDestroyed(this)
-      ).subscribe(console.log)
+      ).subscribe(() => {
+        this._getRoomList()
+      })
   }
 
   private _getRoomDropdownOptions() {

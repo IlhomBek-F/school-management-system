@@ -37,8 +37,7 @@ type SuccessRes struct {
 	Message string `json:"message"`
 }
 
-type Query struct {
-	PerPage   int    `json:"per_page"`
-	Page      int    `json:"page"`
-	QueryTerm string `json:"query_term"`
+type Paginator struct {
+	PerPage int `form:"per_page"`
+	Page    int `form:"page"`
 }

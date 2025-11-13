@@ -10,7 +10,7 @@ type RoomUsecase interface {
 	Update(payload domain.RoomUpdatePayload) (domain.Room, error)
 	Delete(id int) error
 	GetById(id int) (domain.Room, error)
-	GetList() ([]domain.Room, error)
+	GetList(query domain.RoomQuery) ([]domain.Room, error)
 }
 
 type roomUsecase struct {
@@ -21,8 +21,8 @@ func NewRoomUsecase(roomRepo repository.RoomRepository) RoomUsecase {
 	return roomUsecase{roomRepo: roomRepo}
 }
 
-func (r roomUsecase) GetList() ([]domain.Room, error) {
-	rooms, err := r.roomRepo.GetList()
+func (r roomUsecase) GetList(query domain.RoomQuery) ([]domain.Room, error) {
+	rooms, err := r.roomRepo.GetList(query)
 
 	return rooms, err
 }

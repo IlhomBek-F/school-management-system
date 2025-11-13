@@ -32,6 +32,13 @@ type RoomUpdatePayload struct {
 	RoomFields
 }
 
+type RoomQuery struct {
+	Paginator
+	Status     string `form:"status"`
+	RoomTypeId int    `form:"room_type_id"`
+	QueryTerm  string `form:"search"`
+}
+
 type RoomCreatePayload = RoomFields
 type RoomSuccessRes = SuccessResponseWithData[Room]
 type RoomListRes = SuccessResponseWithMeta[[]Room]

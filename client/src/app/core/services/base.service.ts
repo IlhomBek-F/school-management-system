@@ -16,8 +16,8 @@ export class BaseService {
     return this.http.get<T>(this.baseUrl)
   }
 
-  retrieveAll<T>(): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}/list`)
+  retrieveAll<T>(query: any): Observable<T> {
+    return this.http.get<T>(`${this.baseUrl}/list`, {params: query})
   }
 
   retrieveById<T>(id: number): Observable<T> {

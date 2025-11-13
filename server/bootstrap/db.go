@@ -47,7 +47,7 @@ func WithTransaction(ctx context.Context, db *gorm.DB, fn func(tx *gorm.DB) erro
 	})
 }
 
-func QueryScope(query *domain.Query) func(db *gorm.DB) *gorm.DB {
+func QueryScope(query *domain.Paginator) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 
 		if query.Page <= 0 {
@@ -62,7 +62,7 @@ func QueryScope(query *domain.Query) func(db *gorm.DB) *gorm.DB {
 		}
 
 		offset := (query.Page - 1) * query.PerPage
-		return db.Offset(offset).Limit(query.PerPage).Where(query.QueryTerm)
+		return db.Offset(offset).Limit(query.PerPage)
 	}
 }
 

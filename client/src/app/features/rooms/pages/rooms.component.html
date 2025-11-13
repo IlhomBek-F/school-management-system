@@ -83,5 +83,12 @@
     @if (rooms().length === 0) {
       <school-empty-list title="No rooms found"/>
     }
+
+    <div class="mt-2">
+      <p-paginator (onPageChange)="onPageChange($event)"
+                 [first]="0" [rows]="10"
+                 [totalRecords]="120"
+                />
+    </div>
   </div>
 </div>

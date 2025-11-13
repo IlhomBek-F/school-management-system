@@ -26,7 +26,16 @@ type RoomController struct {
 //	@Failure		500		{object}	error
 //	@Router			/room/list [get]
 func (s RoomController) GetRoomList(c *gin.Context) {
-	rooms, err := s.RoomUsecase.GetList()
+	var queryRoom domain.RoomQuery
+
+	err := c.ShouldBindQuery(&queryRoom)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrBadRequest])
+		return
+	}
+
+	rooms, err := s.RoomUsecase.GetList(queryRoom)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrInternalServer])
