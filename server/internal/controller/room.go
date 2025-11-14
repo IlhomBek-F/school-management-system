@@ -35,7 +35,7 @@ func (s RoomController) GetRoomList(c *gin.Context) {
 		return
 	}
 
-	rooms, err := s.RoomUsecase.GetList(queryRoom)
+	rooms, meta, err := s.RoomUsecase.GetList(queryRoom)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrInternalServer])
@@ -46,11 +46,7 @@ func (s RoomController) GetRoomList(c *gin.Context) {
 		Status:  http.StatusOK,
 		Message: "success",
 		Data:    rooms,
-		Meta: domain.Meta{
-			Total:       0,
-			PerPage:     10,
-			CurrentPage: 1,
-		},
+		Meta:    meta,
 	}
 
 	c.JSON(http.StatusCreated, successRes)

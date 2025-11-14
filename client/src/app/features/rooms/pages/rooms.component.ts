@@ -18,7 +18,7 @@ import { RoomsTableViewListComponent } from '../components/rooms-table-view-list
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { ToastService } from '@core/services/toast.service';
 import { ConfirmationService } from 'primeng/api';
-import { DropdownOption } from '@core/models/base';
+import { DropdownOption, Meta } from '@core/models/base';
 import { RoomStatus } from '../enums';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
@@ -72,6 +72,13 @@ export class RoomsComponent {
   })
 
   rooms: WritableSignal<Room[]> = signal([]);
+
+  roomsMeta: WritableSignal<Meta> = signal({
+    total: 0,
+    per_page: this.filterFormGroup.get('per_page')?.value || 10,
+    current_page: this.filterFormGroup.get('page')?.value || 1
+  })
+
   statuses: DropdownOption[] = [
     { label: 'All Status', value: '' },
     { label: 'Available', value: RoomStatus.AVAILABLE },
@@ -172,6 +179,7 @@ export class RoomsComponent {
       ).subscribe({
         next: (res) => {
            this.rooms.set(res.data);
+           this.roomsMeta.set(res.meta)
         }, error: (err) => {
            this._messageService.error(err.message || "Failed getting room list")
         }

@@ -14,12 +14,14 @@ export interface ResData<T> extends ResSuccess  {
   data: T,
 }
 
-export interface ResDataWithMeta<T> extends ResData<T>{
-  meta: {
+export interface Meta {
     total: number;
     per_page: number;
     current_page: number
-  }
+}
+
+export interface ResDataWithMeta<T> extends ResData<T>{
+  meta: Meta
 }
 
 export interface DropdownOption {

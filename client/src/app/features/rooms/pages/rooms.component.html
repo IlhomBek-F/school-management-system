@@ -80,15 +80,17 @@
                                     (deleteEmitEvent)="deleteRoom($event)"/>
     }
 
-    @if (rooms().length === 0) {
+    @if (roomsMeta().total === 0) {
       <school-empty-list title="No rooms found"/>
     }
 
-    <div class="mt-2">
+    @if (roomsMeta().total > roomsMeta().per_page) {
+      <div class="mt-2">
       <p-paginator (onPageChange)="onPageChange($event)"
-                 [first]="0" [rows]="10"
-                 [totalRecords]="120"
+                 [first]="0" [rows]="roomsMeta().per_page"
+                 [totalRecords]="roomsMeta().total"
                 />
-    </div>
+     </div>
+    }
   </div>
 </div>

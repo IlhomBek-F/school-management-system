@@ -12,7 +12,7 @@ type RoomRepository interface {
 	GetByID(id int) (domain.Room, error)
 	Update(payload domain.RoomUpdatePayload) (domain.Room, error)
 	Delete(id int) error
-	GetList(query domain.RoomQuery) ([]domain.Room, error)
+	GetList(query domain.RoomQuery) ([]domain.Room, domain.Meta, error)
 	CreateRoomFacility(facilityIds []int, roomId int) error
 }
 
@@ -24,7 +24,7 @@ func NewRoomRepository(db *gorm.DB) RoomRepository {
 	return roomRepository{db: db}
 }
 
-func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, error) {
+func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, domain.Meta, error) {
 	var rooms []domain.Room
 
 	paginator := domain.Paginator{PerPage: query.PerPage, Page: query.Page}
@@ -49,7 +49,13 @@ func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, error) {
 		Preload("Facilities").
 		Find(&rooms)
 
-	return rooms, result.Error
+	meta := domain.Meta{
+		PerPage:     paginator.PerPage,
+		Total:       int(result.RowsAffected),
+		CurrentPage: query.Page,
+	}
+
+	return rooms, meta, result.Error
 }
 
 func (r roomRepository) Create(payload domain.RoomCreatePayload) (domain.Room, error) {
