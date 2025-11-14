@@ -3,48 +3,48 @@
     <school-page-title title="Students" subTitle="Manage and view all student information"/>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
        <school-stats-card title="Total Students"
-                                 [value]="totalStudents"
+                                 [value]="0"
                                  [loading]="loading()"
                                  icon="pi pi-users"></school-stats-card>
 
       <school-stats-card title="Avg. Attendance"
                                  rootClassName="border-l-4 border-green-500"
                                  iconWrapperClassName="bg-green-100"
-                                 [value]="avgAttendance + '%'"
+                                 [value]="0 + '%'"
                                  [loading]="loading()"
                                  icon="pi pi-calendar text-green-600"></school-stats-card>
 
       <school-stats-card title="Avg. GPA"
                                  rootClassName="border-purple-500"
                                  iconWrapperClassName="bg-purple-100"
-                                 [value]="avgGPA"
+                                 [value]="0"
                                  [loading]="loading()"
                                  icon="pi pi-star text-purple-600"></school-stats-card>
 
       <school-stats-card title="Active Classes"
                                  rootClassName="border-orange-500"
                                  iconWrapperClassName="bg-orange-100"
-                                 [value]="activeClasses"
+                                 [value]="0"
                                  [loading]="loading()"
                                  icon="pi pi-book text-orange-600"></school-stats-card>
     </div>
 
     <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-      <div class="flex flex-col md:flex-row gap-4">
-          <school-text-input icon="pi pi-search" placeholder="Search students by name or class..." (onChangeEmit)="onSearchChange($event)"/>
-          <school-select-input [options]="grades" (onChangeEmit)="onGradeChange($event)"/>
+      <div class="flex flex-col md:flex-row gap-4" [formGroup]="filterFormGroup">
+          <school-text-input icon="pi pi-search" formControlName="search" placeholder="Search students by name or class..." />
+          <school-select-input [options]="grades" formControlName="grade_id"/>
 
         <div class="flex gap-2">
           <p-button
             label="Grid"
-            [outlined]="viewMode !== VIEW_MODE.GRID"
-            (onClick)="setViewMode(VIEW_MODE.GRID)"
+            [outlined]="viewMode() !== VIEW_MODE.GRID"
+            (onClick)="viewMode.set(VIEW_MODE.GRID)"
             styleClass="p-button-sm">
           </p-button>
           <p-button
             label="List"
-            [outlined]="viewMode !== VIEW_MODE.LIST"
-            (onClick)="setViewMode(VIEW_MODE.LIST)"
+            [outlined]="viewMode() !== VIEW_MODE.LIST"
+            (onClick)="viewMode.set(VIEW_MODE.LIST)"
             styleClass="p-button-sm">
           </p-button>
         </div>
@@ -58,18 +58,18 @@
       </div>
     </div>
 
-     @if (viewMode === VIEW_MODE.GRID) {
+     @if (viewMode() === VIEW_MODE.GRID) {
         <school-student-grid-view-list [loading]="loading()"
-                                       [students]="filteredStudents"
+                                       [students]="students()"
                                        (deleteEventEmit)="deleteStudent($event)"
                                        (viewDetailEmitEvent)="viewProfile($event)"/>
      }@else {
-        <school-student-table-view-list [studentList]="filteredStudents"
+        <school-student-table-view-list [studentList]="students()"
                                         (deleteEventEmit)="deleteStudent($event)"
                                         (viewDetailEmitEvent)="viewProfile($event)"></school-student-table-view-list>
      }
 
-     @if (filteredStudents.length === 0) {
+     @if (studentsMeta().total === 0) {
        <school-empty-list title="No students found"></school-empty-list>
      }
   </div>

@@ -12,6 +12,8 @@ import { ActivityComponent } from '../../components/tabs/activity/activity.compo
 import { StudentViewDetailHeaderComponent } from "../../components/view-detail/student-view-detail-header/student-view-detail-header.component";
 import { TabViewModule } from "primeng/tabview";
 import { BreadcrumbComponent } from "@shared/components/breadcrumb/breadcrumb.component";
+import { finalize } from 'rxjs';
+import { untilDestroyed } from '@ngneat/until-destroy';
 
 interface Student {
   id: number;

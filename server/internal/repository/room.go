@@ -12,7 +12,7 @@ type RoomRepository interface {
 	GetByID(id int) (domain.Room, error)
 	Update(payload domain.RoomUpdatePayload) (domain.Room, error)
 	Delete(id int) error
-	GetList(query domain.RoomQuery) ([]domain.Room, domain.Meta, error)
+	GetList(query domain.RoomQuery) ([]domain.Room, int, error)
 	CreateRoomFacility(facilityIds []int, roomId int) error
 }
 
@@ -24,9 +24,9 @@ func NewRoomRepository(db *gorm.DB) RoomRepository {
 	return roomRepository{db: db}
 }
 
-func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, domain.Meta, error) {
+func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, int, error) {
 	var rooms []domain.Room
-
+	var total int64
 	paginator := domain.Paginator{PerPage: query.PerPage, Page: query.Page}
 
 	db := r.db.Model(&rooms)
@@ -43,7 +43,6 @@ func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, domain.M
 		db = db.Where("name ILIKE ?", "%"+query.QueryTerm+"%")
 	}
 
-	var total int64
 	resultCount := db.Count(&total)
 
 	result := db.Scopes(bootstrap.QueryScope(&paginator)).
@@ -53,16 +52,10 @@ func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, domain.M
 		Find(&rooms)
 
 	if resultCount.Error != nil {
-		return []domain.Room{}, domain.Meta{}, resultCount.Error
+		return []domain.Room{}, 0, resultCount.Error
 	}
 
-	meta := domain.Meta{
-		PerPage:     paginator.PerPage,
-		Total:       int(total),
-		CurrentPage: query.Page,
-	}
-
-	return rooms, meta, result.Error
+	return rooms, int(total), result.Error
 }
 
 func (r roomRepository) Create(payload domain.RoomCreatePayload) (domain.Room, error) {

@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnInit,
+  WritableSignal,
 } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
 import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
@@ -27,16 +28,15 @@ import { FormContainer } from '@core/models/question-base';
 export class UpsertStudentModalComponent implements OnInit {
   form!: FormGroup;
   tabItems!: { title: string, value: string, formContainers: FormContainer[] }[];
+  loading!: WritableSignal<boolean>
 
   private _dialogConfig = inject(DynamicDialogConfig);
   private _questionControlService = inject(QuestionControlService);
 
   ngOnInit(): void {
     this._createTabItems();
+    this.loading = this._dialogConfig.data.loading
 
-    if (this._dialogConfig.data.student) {
-      this.form.patchValue(this._dialogConfig.data.student)
-    }
   }
 
   confirm() {

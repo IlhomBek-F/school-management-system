@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS students (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    student_id VARCHAR(50) UNIQUE NOT NULL,
+    date_of_birth VARCHAR(10) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    blood_group_id INT NOT NULL,
+    email VARCHAR(30),
+    phone_number VARCHAR(20) NOT NULL,
+    street_address VARCHAR(50) NOT NULL,
+    city VARCHAR(30) NOT NULL,
+    grade_id INT NOT NULL,
+    class_section_id INT NOT NULL,
+    admission_date VARCHAR(10) NOT NULL,
+    prev_school VARCHAR(50),
+    emergency_contact VARCHAR(20) NOT NULL
+);

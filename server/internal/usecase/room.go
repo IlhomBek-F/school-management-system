@@ -22,7 +22,13 @@ func NewRoomUsecase(roomRepo repository.RoomRepository) RoomUsecase {
 }
 
 func (r roomUsecase) GetList(query domain.RoomQuery) ([]domain.Room, domain.Meta, error) {
-	rooms, meta, err := r.roomRepo.GetList(query)
+	rooms, total, err := r.roomRepo.GetList(query)
+
+	meta := domain.Meta{
+		PerPage:     query.PerPage,
+		Total:       int(total),
+		CurrentPage: query.Page,
+	}
 
 	return rooms, meta, err
 }

@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, signal, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal, type OnInit } from '@angular/core';
 import { Button } from "primeng/button";
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
 import { TextInputComponent } from '@shared/components/dynamic-form/text-input/text-input.component';
 import { SchoolStatsCardComponent } from '@shared/components/stats-card/stats-card.component';
@@ -20,6 +20,12 @@ import { ConfirmationService } from 'primeng/api';
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { ToastService } from '@core/services/toast.service';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
+import { StudentsService } from '../services/students.service';
+import { StudentListSuccessRes, UpsertStudentPayload } from '../models';
+import { untilDestroyed } from '@ngneat/until-destroy';
+import { finalize } from 'rxjs';
+import { Meta } from '@core/models/base';
+import { GRADES } from 'app/utils/constants';
 
 type Student = any
 
@@ -30,194 +36,118 @@ type Student = any
   imports: [PageTitleComponent,
     Button, CommonModule,
     TableModule, TagModule,
-    DropdownModule, FormsModule,
+    DropdownModule, FormsModule, ReactiveFormsModule,
     InputTextModule, StudentGridViewListComponent,
     SchoolStatsCardComponent, EmptyListComponent,
     StudentTableViewListComponent, TextInputComponent, SelectInputComponent],
-    providers: [DialogService],
+  providers: [DialogService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentsComponent implements OnInit {
-  loading = signal(true)
+  loading = signal(false)
   VIEW_MODE = ViewModeEnum;
+  viewMode = signal(ViewModeEnum.GRID);
+  grades = GRADES;
 
-  students: Student[] = [
-    {
-      id: 1,
-      name: 'Emma Thompson',
-      grade: '10th Grade',
-      class: '10-A',
-      email: 'emma.t@school.edu',
-      phone: '+1 234-567-8901',
-      avatar: 'ET',
-      gpa: 3.8,
-      attendance: 95,
-      color: 'bg-purple-500'
-    },
-    {
-      id: 2,
-      name: 'Liam Chen',
-      grade: '11th Grade',
-      class: '11-B',
-      email: 'liam.c@school.edu',
-      phone: '+1 234-567-8902',
-      avatar: 'LC',
-      gpa: 3.9,
-      attendance: 98,
-      color: 'bg-blue-500'
-    },
-    {
-      id: 3,
-      name: 'Sophia Rodriguez',
-      grade: '9th Grade',
-      class: '9-C',
-      email: 'sophia.r@school.edu',
-      phone: '+1 234-567-8903',
-      avatar: 'SR',
-      gpa: 3.7,
-      attendance: 92,
-      color: 'bg-pink-500'
-    },
-    {
-      id: 4,
-      name: 'Noah Williams',
-      grade: '12th Grade',
-      class: '12-A',
-      email: 'noah.w@school.edu',
-      phone: '+1 234-567-8904',
-      avatar: 'NW',
-      gpa: 4.0,
-      attendance: 99,
-      color: 'bg-green-500'
-    },
-    {
-      id: 5,
-      name: 'Ava Martinez',
-      grade: '10th Grade',
-      class: '10-B',
-      email: 'ava.m@school.edu',
-      phone: '+1 234-567-8905',
-      avatar: 'AM',
-      gpa: 3.6,
-      attendance: 94,
-      color: 'bg-orange-500'
-    },
-    {
-      id: 6,
-      name: 'Oliver Brown',
-      grade: '11th Grade',
-      class: '11-A',
-      email: 'oliver.b@school.edu',
-      phone: '+1 234-567-8906',
-      avatar: 'OB',
-      gpa: 3.85,
-      attendance: 96,
-      color: 'bg-indigo-500'
-    }
-  ];
+  filterFormGroup = new FormGroup({
+    search: new FormControl("", { nonNullable: true }),
+    grade_id: new FormControl(0, { nonNullable: true }),
+    page: new FormControl(1, { nonNullable: true }),
+  })
 
+  students: WritableSignal<Student[]> = signal([]);
 
-  filteredStudents: Student[] = [];
-  searchTerm: string = '';
-  selectedGrade: string = 'all';
-  viewMode: string = ViewModeEnum.GRID;
-
-  grades: any[] = [
-    { label: 'All Grades', value: 'all' },
-    { label: '9th Grade', value: '9th Grade' },
-    { label: '10th Grade', value: '10th Grade' },
-    { label: '11th Grade', value: '11th Grade' },
-    { label: '12th Grade', value: '12th Grade' }
-  ];
-
-  totalStudents: number = 0;
-  avgAttendance: number = 0;
-  avgGPA: number = 0;
-  activeClasses: number = 12;
+  studentsMeta: WritableSignal<Meta> = signal({
+    total: 0,
+    per_page: this.filterFormGroup.get('per_page')?.value || 5,
+    current_page: this.filterFormGroup.get('page')?.value || 1
+  })
 
   private _dialogService = inject(DialogService)
   private _router = inject(Router)
   private _activeRoute = inject(ActivatedRoute)
   private _confirmService = inject(DeleteConfirmDialogService)
   private _messageService = inject(ToastService)
+  private _studentsService = inject(StudentsService)
 
   ngOnInit(): void {
-    setTimeout(() => this.loading.set(false), 3000)
-    this.filteredStudents = [...this.students];
-    this.calculateStats();
-  }
-
-  calculateStats(): void {
-    this.totalStudents = this.students.length;
-    this.avgAttendance = Math.round(
-      this.students.reduce((sum, s) => sum + s.attendance, 0) / this.students.length
-    );
-    this.avgGPA = parseFloat(
-      (this.students.reduce((sum, s) => sum + s.gpa, 0) / this.students.length).toFixed(1)
-    );
-  }
-
-  filterStudents(): void {
-    this.filteredStudents = this.students.filter(student => {
-      const matchesSearch =
-        student.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.class.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesGrade =
-        this.selectedGrade === 'all' || student.grade === this.selectedGrade;
-      return matchesSearch && matchesGrade;
-    });
-  }
-
-  onSearchChange(value: string): void {
-    this.searchTerm = value;
-    this.filterStudents();
-  }
-
-  onGradeChange(view: string): void {
-    this.selectedGrade = view;
-    this.filterStudents();
-  }
-
-  setViewMode(mode: string): void {
-    this.viewMode = mode;
+    this._getStudentList()
   }
 
   addStudent(): void {
-    const dialogRef = this._dialogService.open<any>(UpsertStudentModalComponent, {
-       focusOnShow: false,
-       dismissableMask: true,
-       modal: true,
-       header: 'Add new student',
-       width: '45%',
-       data: {
-         footer: {
-           onConfirm: (formValue: any) => console.log(formValue),
-           onCancel: () => dialogRef.close()
-         }
-       }
-     })
+    const loading = signal(false);
+
+    const dialogRef = this._dialogService.open(UpsertStudentModalComponent, {
+      focusOnShow: false,
+      dismissableMask: true,
+      modal: true,
+      header: 'Add new student',
+      width: '45%',
+      data: {
+        loading,
+        footer: {
+          onConfirm: (formValue: any) => {
+            loading.set(true)
+            this._createStudent(formValue, loading, dialogRef)
+          },
+          onCancel: () => dialogRef.close()
+        }
+      }
+    })
   }
 
   viewProfile(student: Student): void {
-    this._router.navigate([student.id], {relativeTo: this._activeRoute})
+    this._router.navigate([student.id], { relativeTo: this._activeRoute })
   }
 
-  deleteStudent(student: any) {
-      this._confirmService.confirm((ref: ConfirmationService) => {
-        this._confirmService.loading$.next(true)
-        setTimeout(() => {
-          this._confirmService.loading$.next(false);
-          this.filteredStudents = this.filteredStudents.filter(({id}) => student.id !== id)
-          this._messageService.success("Teacher deleted successfully")
-          ref.close()
-        }, 3000)
-      })
+  deleteStudent(student: Student) {
+    const deleteConfirm = (ref: ConfirmationService) => {
+      this._confirmService.loading$.next(true)
+      this._studentsService.delete(student.id)
+        .pipe(
+          finalize(() => this._confirmService.loading$.next(false)),
+          untilDestroyed(this)
+        ).subscribe({
+          next: () => {
+            this._messageService.success("Student deleted successfully");
+            ref.close();
+          }, error: (err) => {
+            this._messageService.error(err.message || "Failed deleting student")
+          }
+        })
     }
 
-  acceptDeleteRecord(ref: ConfirmationService): void {
-        setTimeout(() => {
-          this._confirmService.loading$.next(false);
-          ref.close()
-        }, 3000)
+    this._confirmService.confirm(deleteConfirm)
+  }
+
+  private _getStudentList() {
+    this.loading.set(true)
+    this._studentsService.retrieveAll<StudentListSuccessRes>({})
+      .pipe(
+        finalize(() => this.loading.set(false)),
+        untilDestroyed(this)
+      ).subscribe({
+        next: (res) => {
+          this.students.set(res.data)
+          this.studentsMeta.set(res.meta)
+        }, error: (err) => {
+          this._messageService.error(err.message || "Failed getting student list")
+        }
+      })
+  }
+
+  private _createStudent(formValue: UpsertStudentPayload, loading: WritableSignal<boolean>, dialogref: DynamicDialogRef) {
+    this._studentsService.retrieveAll<StudentListSuccessRes>({})
+      .pipe(
+        finalize(() => loading.set(false)),
+        untilDestroyed(this)
+      ).subscribe({
+        next: (res) => {
+          this._messageService.success("Added new student")
+          dialogref.close()
+        }, error: (err) => {
+          this._messageService.error(err.message || "Failed creating new student")
+        }
+      })
   }
 }

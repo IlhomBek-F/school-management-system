@@ -36,7 +36,6 @@ export class DynamicFormModalComponent implements OnInit{
   }
 
   confirm() {
-    console.log(this.form())
     this._dialogConfig.data.footer.onConfirm(this.form().getRawValue())
   }
 
