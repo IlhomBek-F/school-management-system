@@ -43,15 +43,22 @@ func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, domain.M
 		db = db.Where("name ILIKE ?", "%"+query.QueryTerm+"%")
 	}
 
+	var total int64
+	resultCount := db.Count(&total)
+
 	result := db.Scopes(bootstrap.QueryScope(&paginator)).
 		Preload("Building").
 		Preload("RoomType").
 		Preload("Facilities").
 		Find(&rooms)
 
+	if resultCount.Error != nil {
+		return []domain.Room{}, domain.Meta{}, resultCount.Error
+	}
+
 	meta := domain.Meta{
 		PerPage:     paginator.PerPage,
-		Total:       int(result.RowsAffected),
+		Total:       int(total),
 		CurrentPage: query.Page,
 	}
 

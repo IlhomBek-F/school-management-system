@@ -28,7 +28,7 @@ import { Room, RoomDropdownOptionsSuccess, RoomListSuccessRes, RoomQuery, RoomSu
 import { Building } from '@core/models/building';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Facility } from '@core/models/facility';
-import { debounceTime, finalize, forkJoin } from 'rxjs';
+import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, finalize, forkJoin, map } from 'rxjs';
 import { makeDropdownOption } from 'app/utils/helper';
 import { RoomStats, RoomStatsSuccessRes } from '@core/models/stats';
 import { StatsService } from '@core/services/stats.service';
@@ -68,14 +68,14 @@ export class RoomsComponent {
     room_type_id: new FormControl(0, {nonNullable: true}),
     status: new FormControl('', {nonNullable: true}),
     page: new FormControl(1, {nonNullable: true}),
-    per_page: new FormControl(10, {nonNullable: true})
+    per_page: new FormControl(5, {nonNullable: true})
   })
 
   rooms: WritableSignal<Room[]> = signal([]);
 
   roomsMeta: WritableSignal<Meta> = signal({
     total: 0,
-    per_page: this.filterFormGroup.get('per_page')?.value || 10,
+    per_page: this.filterFormGroup.get('per_page')?.value || 5,
     current_page: this.filterFormGroup.get('page')?.value || 1
   })
 
@@ -152,7 +152,8 @@ export class RoomsComponent {
   }
 
   onPageChange({page = 0}: PaginatorState) {
-    this.filterFormGroup.get("page")?.patchValue(page + 1)
+    this.filterFormGroup.patchValue({...this.filterFormGroup.getRawValue(), page: page + 1}, {emitEvent: false})
+    this._getRoomList()
   }
 
   private _getRoomStats() {
@@ -221,8 +222,12 @@ export class RoomsComponent {
     this.filterFormGroup.valueChanges
       .pipe(
         debounceTime(300),
+        distinctUntilChanged((prev, curr) => {
+          return prev.search === curr.search && prev.status === curr.status && prev.room_type_id === curr.room_type_id
+        }),
         untilDestroyed(this)
-      ).subscribe(() => {
+      ).subscribe((value) => {
+        this.filterFormGroup.patchValue({...value, page: 1}, {emitEvent: false})
         this._getRoomList()
       })
   }
