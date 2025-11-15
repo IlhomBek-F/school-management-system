@@ -21,14 +21,13 @@ import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog
 import { ToastService } from '@core/services/toast.service';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { StudentsService } from '../services/students.service';
-import { StudentListSuccessRes, UpsertStudentPayload } from '../models';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { Student, StudentListSuccessRes, UpsertStudentPayload } from '../models';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { finalize } from 'rxjs';
 import { Meta } from '@core/models/base';
 import { GRADES } from 'app/utils/constants';
 
-type Student = any
-
+@UntilDestroy()
 @Component({
   selector: 'school-students',
   templateUrl: './students.component.html',
@@ -40,7 +39,7 @@ type Student = any
     InputTextModule, StudentGridViewListComponent,
     SchoolStatsCardComponent, EmptyListComponent,
     StudentTableViewListComponent, TextInputComponent, SelectInputComponent],
-  providers: [DialogService],
+  providers: [DialogService, StudentsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentsComponent implements OnInit {
@@ -137,7 +136,7 @@ export class StudentsComponent implements OnInit {
   }
 
   private _createStudent(formValue: UpsertStudentPayload, loading: WritableSignal<boolean>, dialogref: DynamicDialogRef) {
-    this._studentsService.retrieveAll<StudentListSuccessRes>({})
+    this._studentsService.create<StudentListSuccessRes, UpsertStudentPayload>(formValue)
       .pipe(
         finalize(() => loading.set(false)),
         untilDestroyed(this)

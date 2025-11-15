@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
 import { FormContainer } from '@core/models/question-base';
+import { TabItem } from '../../models';
 
 @Component({
   selector: 'school-upsert-student-modal.component',
@@ -27,7 +28,7 @@ import { FormContainer } from '@core/models/question-base';
 })
 export class UpsertStudentModalComponent implements OnInit {
   form!: FormGroup;
-  tabItems!: { title: string, value: string, formContainers: FormContainer[] }[];
+  tabItems!: TabItem[];
   loading!: WritableSignal<boolean>
 
   private _dialogConfig = inject(DynamicDialogConfig);
@@ -40,7 +41,12 @@ export class UpsertStudentModalComponent implements OnInit {
   }
 
   confirm() {
-    this._dialogConfig.data.footer.onConfirm(this.form.getRawValue());
+    const formValue = this.tabItems.reduce((prev: Record<string, any>, curr) => {
+      prev[curr.value] = curr.form.getRawValue();
+      return prev
+    }, {})
+
+    this._dialogConfig.data.footer.onConfirm(formValue);
   }
 
   cancel() {
@@ -51,17 +57,17 @@ export class UpsertStudentModalComponent implements OnInit {
     this.tabItems = [
       {
         title: 'Personal Information',
-        value: 'personal_information',
+        value: 'personal_info',
         formContainers: this._getPersonalFormContainer(),
+        form: this._questionControlService.toFormGroup(this._getPersonalFormContainer())
       },
       {
         title: 'Academic Information',
-        value: 'academic_information',
+        value: 'academic_info',
         formContainers: this._getAcademicFormContainer(),
+        form: this._questionControlService.toFormGroup(this._getAcademicFormContainer())
       },
     ]
-
-    this.form = this._questionControlService.toFormGroup(this.tabItems.flatMap(t => t.formContainers))
   }
 
   private _getPersonalFormContainer(): FormContainer[] {
@@ -100,7 +106,7 @@ export class UpsertStudentModalComponent implements OnInit {
             value: 'male',
           }),
           new QuestionSelectInput({
-            key: 'blood_group',
+            key: 'blood_group_id',
             label: 'Blood group',
             required: true,
             options: [
@@ -126,7 +132,7 @@ export class UpsertStudentModalComponent implements OnInit {
             type: QuestionFieldTypeEnum.Email,
           }),
           new QuestionTextInput({
-            key: 'phone',
+            key: 'phone_number',
             label: 'Phone Number',
             required: true,
             type: QuestionFieldTypeEnum.Email,
@@ -136,7 +142,7 @@ export class UpsertStudentModalComponent implements OnInit {
       {
         containers: [
           new QuestionTextInput({
-            key: 'address',
+            key: 'street_address',
             label: 'Street Address',
             placeholder: 'Enter street address',
             required: true,
@@ -161,17 +167,16 @@ export class UpsertStudentModalComponent implements OnInit {
             label: 'Student ID',
             placeholder: 'STU-2024-001',
             required: true,
-            type: QuestionFieldTypeEnum.Number,
           }),
           new QuestionSelectInput({
-            key: 'grade',
+            key: 'grade_id',
             label: 'Grade',
             required: true,
             options: [
-              { label: '9th Grade', value: '9' },
-              { label: '10th Grade', value: '10' },
-              { label: '11th Grade', value: '11' },
-              { label: '12th Grade', value: '12' },
+              { label: '9th Grade', value: 9 },
+              { label: '10th Grade', value: 10 },
+              { label: '11th Grade', value: 11 },
+              { label: '12th Grade', value: 12 },
             ],
           }),
         ],
@@ -179,13 +184,13 @@ export class UpsertStudentModalComponent implements OnInit {
       {
         containers: [
           new QuestionSelectInput({
-            key: 'class',
+            key: 'class_section_id',
             label: 'Class Section',
             required: true,
             options: [
-              { label: 'Class A', value: 'A' },
-              { label: 'Class B', value: 'B' },
-              { label: 'Class C', value: 'C' },
+              { label: 'Class A', value: 1 },
+              { label: 'Class B', value: 2 },
+              { label: 'Class C', value: 3 },
             ],
           }),
           new QuestionDatePicker({
@@ -198,7 +203,7 @@ export class UpsertStudentModalComponent implements OnInit {
       {
         containers: [
           new QuestionTextInput({
-            key: 'previous_school',
+            key: 'prev_school',
             label: 'Previous School',
             placeholder: 'Enter previous school name'
           }),

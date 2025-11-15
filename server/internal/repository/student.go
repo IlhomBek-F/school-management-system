@@ -23,9 +23,13 @@ func NewStudentRepository(db *gorm.DB) StudentRepository {
 }
 
 func (r studentRepository) Create(payload domain.StudentCreatePayload) (domain.Student, error) {
-	result := r.Db.Create(&payload)
+	student := domain.Student{
+		PersonalInfo: payload.PersonalInfo,
+		AcademicInfo: payload.AcademicInfo,
+	}
+	result := r.Db.Create(&student)
 
-	return payload, result.Error
+	return student, result.Error
 }
 
 func (r studentRepository) Update(payload domain.StudentUpdatePayload) (domain.Student, error) {

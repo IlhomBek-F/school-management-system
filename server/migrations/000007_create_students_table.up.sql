@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS students (
     student_id VARCHAR(50) UNIQUE NOT NULL,
     date_of_birth VARCHAR(10) NOT NULL,
     gender VARCHAR(10) NOT NULL,
-    blood_group_id INT NOT NULL,
+    blood_group_id VARCHAR(10) NOT NULL,
     email VARCHAR(30),
     phone_number VARCHAR(20) NOT NULL,
     street_address VARCHAR(50) NOT NULL,
@@ -14,5 +14,7 @@ CREATE TABLE IF NOT EXISTS students (
     class_section_id INT NOT NULL,
     admission_date VARCHAR(10) NOT NULL,
     prev_school VARCHAR(50),
-    emergency_contact VARCHAR(20) NOT NULL
+    emergency_contact VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

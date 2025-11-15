@@ -46,7 +46,8 @@ export class DatepickerComponent implements ControlValueAccessor{
   }
 
   handleChange(event: any) {
-    this.value = event;
+    const date = new Date(event)
+    this.value = [date.getDay(), date.getMonth(), date.getFullYear()].join("-");
     this.onChange(this.value);
     this.onChangeEmit.emit(this.value)
     this.onTouched();
