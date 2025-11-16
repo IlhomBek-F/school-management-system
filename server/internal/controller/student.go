@@ -26,7 +26,7 @@ type StudentController struct {
 //	@Failure		500		{object}	error
 //	@Router			/student/list [get]
 func (s StudentController) GetStudentList(c *gin.Context) {
-	students, err := s.StudentUsecase.GetList()
+	students, meta, err := s.StudentUsecase.GetList()
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrInternalServer])
@@ -37,11 +37,7 @@ func (s StudentController) GetStudentList(c *gin.Context) {
 		Status:  http.StatusOK,
 		Message: "success",
 		Data:    students,
-		Meta: domain.Meta{
-			Total:       0,
-			PerPage:     10,
-			CurrentPage: 1,
-		},
+		Meta:    meta,
 	}
 
 	c.JSON(http.StatusCreated, successRes)
@@ -195,5 +191,5 @@ func (s StudentController) DeleteStudent(c *gin.Context) {
 		Message: "success",
 	}
 
-	c.JSON(http.StatusBadRequest, successRes)
+	c.JSON(http.StatusOK, successRes)
 }

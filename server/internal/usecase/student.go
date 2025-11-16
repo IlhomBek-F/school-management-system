@@ -1,8 +1,11 @@
 package usecase
 
 import (
+	"errors"
 	"school/domain"
 	"school/internal/repository"
+
+	"gorm.io/gorm"
 )
 
 type StudentUsecase interface {
@@ -10,7 +13,7 @@ type StudentUsecase interface {
 	Update(payload domain.StudentUpdatePayload) (domain.Student, error)
 	Delete(id int) error
 	GetById(id int) (domain.Student, error)
-	GetList() ([]domain.Student, error)
+	GetList() ([]domain.Student, domain.Meta, error)
 }
 
 type studentUsecase struct {
@@ -27,10 +30,16 @@ func (s studentUsecase) Create(payload domain.StudentCreatePayload) (domain.Stud
 	return student, err
 }
 
-func (s studentUsecase) GetList() ([]domain.Student, error) {
-	students, err := s.studentRespository.GetList()
+func (s studentUsecase) GetList() ([]domain.Student, domain.Meta, error) {
+	students, total, err := s.studentRespository.GetList()
 
-	return students, err
+	meta := domain.Meta{
+		PerPage:     10,
+		CurrentPage: 1,
+		Total:       total,
+	}
+
+	return students, meta, err
 }
 
 func (s studentUsecase) Update(payload domain.StudentUpdatePayload) (domain.Student, error) {
@@ -46,7 +55,16 @@ func (s studentUsecase) GetById(id int) (domain.Student, error) {
 }
 
 func (s studentUsecase) Delete(id int) error {
-	err := s.studentRespository.Delete(id)
+
+	student, err := s.studentRespository.GetById(id)
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return domain.ErrStudentNotFound
+	} else if err != nil {
+		return domain.ErrInternalServer
+	}
+
+	err = s.studentRespository.Delete(student.ID)
 
 	return err
 }

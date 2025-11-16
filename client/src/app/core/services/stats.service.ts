@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BaseService } from "./base.service";
 import { Observable } from "rxjs";
-import { QuickStatsSuccessRes, RoomStatsSuccessRes } from "@core/models/stats";
+import { QuickStatsSuccessRes, RoomStatsSuccessRes, StudentStatsSuccessRes } from "@core/models/stats";
 
 @Injectable({providedIn: "root"})
 export class StatsService extends BaseService {
@@ -13,5 +13,9 @@ export class StatsService extends BaseService {
 
  getRoomStats(): Observable<RoomStatsSuccessRes> {
   return this.http.get<RoomStatsSuccessRes>(`${this.baseUrl}/room`)
+ }
+
+ getStudentStats(): Observable<StudentStatsSuccessRes> {
+  return this.http.get<StudentStatsSuccessRes>(`${this.baseUrl}/student`)
  }
 }

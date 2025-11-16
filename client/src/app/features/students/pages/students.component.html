@@ -3,29 +3,29 @@
     <school-page-title title="Students" subTitle="Manage and view all student information"/>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
        <school-stats-card title="Total Students"
-                                 [value]="0"
-                                 [loading]="loading()"
+                                 [value]="studentStats().total_students"
+                                 [loading]="loadingStats()"
                                  icon="pi pi-users"></school-stats-card>
 
       <school-stats-card title="Avg. Attendance"
                                  rootClassName="border-l-4 border-green-500"
                                  iconWrapperClassName="bg-green-100"
-                                 [value]="0 + '%'"
-                                 [loading]="loading()"
+                                 [value]="studentStats().avg_attendance + '%'"
+                                 [loading]="loadingStats()"
                                  icon="pi pi-calendar text-green-600"></school-stats-card>
 
       <school-stats-card title="Avg. GPA"
                                  rootClassName="border-purple-500"
                                  iconWrapperClassName="bg-purple-100"
-                                 [value]="0"
-                                 [loading]="loading()"
+                                 [value]="studentStats().avg_gpa"
+                                 [loading]="loadingStats()"
                                  icon="pi pi-star text-purple-600"></school-stats-card>
 
       <school-stats-card title="Active Classes"
                                  rootClassName="border-orange-500"
                                  iconWrapperClassName="bg-orange-100"
-                                 [value]="0"
-                                 [loading]="loading()"
+                                 [value]="studentStats().active_classes"
+                                 [loading]="loadingStats()"
                                  icon="pi pi-book text-orange-600"></school-stats-card>
     </div>
 

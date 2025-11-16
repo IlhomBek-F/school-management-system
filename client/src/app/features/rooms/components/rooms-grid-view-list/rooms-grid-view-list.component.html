@@ -9,7 +9,7 @@
 
     <div class="flex items-start justify-between mb-4">
       <div class="flex items-center gap-3">
-        <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center text-white ' + ['bg-blue-500', 'bg-green-500', 'bg-purple-500'][(rooms().length - 1 - $index) % 3]">
+        <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center text-white ' + (rooms().length | schoolRandomBgColor: $index)">
           <i [class]="'pi ' + (room.room_type.name | schoolRoomTypeIcon) + ' text-xl'"></i>
         </div>
         <div>

@@ -7,10 +7,11 @@ import { Room } from '../../models';
 import { RoomTypeIconPipe } from '../../pipes/room-type-icon-pipe';
 import { RoomStatus } from '../../enums';
 import { StatusSeverityPipe } from '../../pipes/status-severity-pipe';
+import { RandomBgColorPipe } from '@core/pipes/random-bg-color-pipe';
 
 @Component({
   selector: 'school-rooms-grid-view-list',
-  imports: [ButtonModule, TagModule, CommonModule, RoomsGridViewSkeletonComponent, RoomTypeIconPipe, StatusSeverityPipe],
+  imports: [ButtonModule, TagModule, CommonModule, RoomsGridViewSkeletonComponent, RoomTypeIconPipe, StatusSeverityPipe, RandomBgColorPipe],
   templateUrl: './rooms-grid-view-list.component.html',
   styleUrl: './rooms-grid-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

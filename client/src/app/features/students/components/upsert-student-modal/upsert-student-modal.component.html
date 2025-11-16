@@ -15,5 +15,5 @@
 
 <footer class="flex justify-end gap-3 mt-5">
   <button pButton (click)="cancel()" outlined icon="pi pi-times-circle">cancel</button>
-  <button pButton (click)="confirm()"  icon="pi pi-save">save</button>
+  <button pButton (click)="confirm()" label="save" icon="pi pi-save" [loading]="loading()" [disabled]="tabItems[0].form.invalid || tabItems[1].form.invalid"></button>
 </footer>

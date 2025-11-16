@@ -54,7 +54,7 @@ func (s StatsController) GetQuickStats(c *gin.Context) {
 //	@Failure		500		{object}	error
 //	@Router			/stats/room [get]
 func (s StatsController) GetRoomStats(c *gin.Context) {
-	quickStats, err := s.StatsUsecase.GetRoomStats()
+	roomStats, err := s.StatsUsecase.GetRoomStats()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.ErrorResponseMap[domain.ErrInternalServer])
@@ -64,7 +64,36 @@ func (s StatsController) GetRoomStats(c *gin.Context) {
 	successRes := domain.RoomStatsResSuccess{
 		Status:  http.StatusOK,
 		Message: "success",
-		Data:    quickStats,
+		Data:    roomStats,
+	}
+
+	c.JSON(http.StatusOK, successRes)
+}
+
+// Get student stats godoc
+//
+//	@Summary		Get student stats
+//	@Description	Get student stats
+//	@Tags			Stats
+//	@Accept			json
+//	@Security       JWT
+//	@Produce		json
+//	@Success		201		{object}	domain.StudentStatsResSuccess "student stats"
+//	@Failure		400		{object}	error
+//	@Failure		500		{object}	error
+//	@Router			/stats/student [get]
+func (s StatsController) GetStudentStats(c *gin.Context) {
+	studentStats, err := s.StatsUsecase.GetStudentStats()
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponseMap[domain.ErrInternalServer])
+		return
+	}
+
+	successRes := domain.StudentStatsResSuccess{
+		Status:  http.StatusOK,
+		Message: "success",
+		Data:    studentStats,
 	}
 
 	c.JSON(http.StatusOK, successRes)

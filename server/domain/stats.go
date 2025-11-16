@@ -12,5 +12,13 @@ type RoomStats struct {
 	AvgOccupancy   int `json:"avg_occupancy"`
 }
 
+type StudentStats struct {
+	TotalStudents int `json:"total_students"`
+	AvgAttendance int `json:"avg_attendance"`
+	AvgGpa        int `json:"avg_gpa"`
+	ActiveClasses int `json:"active_classes"`
+}
+
 type QuickStatsResSuccess = SuccessResponseWithData[QuickStats]
 type RoomStatsResSuccess = SuccessResponseWithData[RoomStats]
+type StudentStatsResSuccess = SuccessResponseWithData[StudentStats]

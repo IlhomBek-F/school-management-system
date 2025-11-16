@@ -8,6 +8,7 @@ import (
 type StatsUsecase interface {
 	GetQuickStats() (domain.QuickStats, error)
 	GetRoomStats() (domain.RoomStats, error)
+	GetStudentStats() (domain.StudentStats, error)
 }
 
 type statsUsecase struct {
@@ -28,4 +29,10 @@ func (s statsUsecase) GetRoomStats() (domain.RoomStats, error) {
 	roomStats, err := s.statsRepo.GetRoomStats()
 
 	return roomStats, err
+}
+
+func (s statsUsecase) GetStudentStats() (domain.StudentStats, error) {
+	studentStats, err := s.statsRepo.GetStudentStats()
+
+	return studentStats, err
 }

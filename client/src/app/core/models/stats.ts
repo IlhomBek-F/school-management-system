@@ -12,5 +12,13 @@ export interface RoomStats {
   avg_occupancy: number
 }
 
+export interface StudentStats {
+  total_students: number;
+  avg_attendance: number;
+  avg_gpa: number;
+  active_classes: number
+}
+
 export type QuickStatsSuccessRes = ResData<QuickStats>
 export type RoomStatsSuccessRes = ResData<RoomStats>
+export type StudentStatsSuccessRes = ResData<StudentStats>

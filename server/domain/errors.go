@@ -7,6 +7,7 @@ import (
 
 var (
 	ErrUserNotFound        = errors.New("user not found")
+	ErrStudentNotFound     = errors.New("student not found")
 	ErrTeacherNotFound     = errors.New("teacher not found")
 	ErrInvalidCredential   = errors.New("invalid credentials")
 	ErrInternalServer      = errors.New("internal server error")
@@ -21,6 +22,7 @@ var (
 
 var ErrorResponseMap = map[error]ErrorResponse{
 	ErrUserNotFound:        {Status: http.StatusNotFound, Message: ErrUserNotFound.Error()},
+	ErrStudentNotFound:     {Status: http.StatusNotFound, Message: ErrStudentNotFound.Error()},
 	ErrInvalidCredential:   {Status: http.StatusUnauthorized, Message: ErrInvalidCredential.Error()},
 	ErrInternalServer:      {Status: http.StatusInternalServerError, Message: ErrInternalServer.Error()},
 	ErrGenerateAccessToken: {Status: http.StatusInternalServerError, Message: ErrGenerateAccessToken.Error()},

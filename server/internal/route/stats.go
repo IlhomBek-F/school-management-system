@@ -16,4 +16,5 @@ func NewStatsRoute(app bootstrap.Application, routerGroup *gin.RouterGroup) {
 
 	routerGroup.GET("/stats/quick", statsController.GetQuickStats)
 	routerGroup.GET("/stats/room", statsController.GetRoomStats)
+	routerGroup.GET("/stats/student", statsController.GetStudentStats)
 }

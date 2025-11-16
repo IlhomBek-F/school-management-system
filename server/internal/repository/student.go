@@ -10,7 +10,7 @@ type StudentRepository interface {
 	Create(payload domain.StudentCreatePayload) (domain.Student, error)
 	Update(payload domain.StudentUpdatePayload) (domain.Student, error)
 	GetById(id int) (domain.Student, error)
-	GetList() ([]domain.Student, error)
+	GetList() ([]domain.Student, int, error)
 	Delete(id int) error
 }
 
@@ -44,11 +44,23 @@ func (r studentRepository) Delete(id int) error {
 	return result.Error
 }
 
-func (r studentRepository) GetList() ([]domain.Student, error) {
+func (r studentRepository) GetList() ([]domain.Student, int, error) {
 	var students []domain.Student
+	var total int64
+
 	result := r.Db.Find(&students)
 
-	return students, result.Error
+	if result.Error != nil {
+		return []domain.Student{}, 0, result.Error
+	}
+
+	totalResult := r.Db.Model(&students).Count(&total)
+
+	if totalResult.Error != nil {
+		return []domain.Student{}, 0, totalResult.Error
+	}
+
+	return students, int(total), nil
 }
 
 func (r studentRepository) GetById(id int) (domain.Student, error) {

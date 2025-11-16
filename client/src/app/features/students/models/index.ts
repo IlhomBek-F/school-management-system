@@ -11,7 +11,7 @@ export interface PersonalInfo {
   first_name: string;
   last_name: string;
   email: string;
-  phone: string;
+  phone_number: string;
   date_of_birth: string;
   gender: string;
   blood_group_id: number;

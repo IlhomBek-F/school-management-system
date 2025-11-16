@@ -53,6 +53,10 @@ export class UpsertStudentModalComponent implements OnInit {
     this._dialogConfig.data.footer.onCancel();
   }
 
+  isValid(): boolean {
+    return !this.tabItems.every(({form}) => form.invalid)
+  }
+
   private _createTabItems() {
     this.tabItems = [
       {
