@@ -72,5 +72,14 @@
      @if (studentsMeta().total === 0) {
        <school-empty-list title="No students found"></school-empty-list>
      }
+
+     @if (studentsMeta().total > studentsMeta().per_page) {
+      <div class="mt-2">
+      <p-paginator (onPageChange)="onPageChange($event)"
+                 [first]="0" [rows]="studentsMeta().per_page"
+                 [totalRecords]="studentsMeta().total"
+                />
+     </div>
+    }
   </div>
 </div>

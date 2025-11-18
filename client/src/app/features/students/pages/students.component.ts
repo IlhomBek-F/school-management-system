@@ -23,11 +23,12 @@ import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { StudentsService } from '../services/students.service';
 import { Student, StudentListSuccessRes, UpsertStudentPayload } from '../models';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { finalize } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { Meta } from '@core/models/base';
 import { GRADES } from 'app/utils/constants';
 import { StudentStats } from '@core/models/stats';
 import { StatsService } from '@core/services/stats.service';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 @UntilDestroy()
 @Component({
@@ -37,6 +38,7 @@ import { StatsService } from '@core/services/stats.service';
   imports: [PageTitleComponent,
     Button, CommonModule,
     TableModule, TagModule,
+    PaginatorModule,
     DropdownModule, FormsModule, ReactiveFormsModule,
     InputTextModule, StudentGridViewListComponent,
     SchoolStatsCardComponent, EmptyListComponent,
@@ -83,6 +85,7 @@ export class StudentsComponent implements OnInit {
   ngOnInit(): void {
     this._getStudentList()
     this._getStudentStats()
+    this._handleFilterRoom()
   }
 
   addStudent(): void {
@@ -130,6 +133,25 @@ export class StudentsComponent implements OnInit {
     }
 
     this._confirmService.confirm(deleteConfirm)
+  }
+
+  onPageChange({page = 0}: PaginatorState) {
+    this.filterFormGroup.patchValue({...this.filterFormGroup.getRawValue(), page: page + 1}, {emitEvent: false})
+    this._getStudentList()
+  }
+
+  private _handleFilterRoom() {
+      this.filterFormGroup.valueChanges
+        .pipe(
+          debounceTime(300),
+          distinctUntilChanged((prev, curr) => {
+            return prev.search === curr.search && prev.grade_id === curr.grade_id
+          }),
+          untilDestroyed(this)
+        ).subscribe((value) => {
+          this.filterFormGroup.patchValue({...value, page: 1}, {emitEvent: false})
+          this._getStudentList()
+        })
   }
 
   private _getStudentList() {
