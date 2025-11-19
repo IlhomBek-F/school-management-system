@@ -13,7 +13,7 @@ type StudentUsecase interface {
 	Update(payload domain.StudentUpdatePayload) (domain.Student, error)
 	Delete(id int) error
 	GetById(id int) (domain.Student, error)
-	GetList() ([]domain.Student, domain.Meta, error)
+	GetList(query domain.StudentQuery) ([]domain.Student, domain.Meta, error)
 }
 
 type studentUsecase struct {
@@ -30,8 +30,8 @@ func (s studentUsecase) Create(payload domain.StudentCreatePayload) (domain.Stud
 	return student, err
 }
 
-func (s studentUsecase) GetList() ([]domain.Student, domain.Meta, error) {
-	students, total, err := s.studentRespository.GetList()
+func (s studentUsecase) GetList(query domain.StudentQuery) ([]domain.Student, domain.Meta, error) {
+	students, total, err := s.studentRespository.GetList(query)
 
 	meta := domain.Meta{
 		PerPage:     10,

@@ -26,7 +26,16 @@ type StudentController struct {
 //	@Failure		500		{object}	error
 //	@Router			/student/list [get]
 func (s StudentController) GetStudentList(c *gin.Context) {
-	students, meta, err := s.StudentUsecase.GetList()
+	var queryStudent domain.StudentQuery
+
+	err := c.ShouldBindQuery(&queryStudent)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrBadRequest])
+		return
+	}
+
+	students, meta, err := s.StudentUsecase.GetList(queryStudent)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrInternalServer])

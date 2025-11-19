@@ -17,6 +17,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
 import { FormContainer } from '@core/models/question-base';
 import { TabItem } from '../../models';
+import { GRADES } from 'app/utils/constants';
 
 @Component({
   selector: 'school-upsert-student-modal.component',
@@ -176,12 +177,7 @@ export class UpsertStudentModalComponent implements OnInit {
             key: 'grade_id',
             label: 'Grade',
             required: true,
-            options: [
-              { label: '9th Grade', value: 9 },
-              { label: '10th Grade', value: 10 },
-              { label: '11th Grade', value: 11 },
-              { label: '12th Grade', value: 12 },
-            ],
+            options: GRADES
           }),
         ],
       },

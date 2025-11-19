@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"school/bootstrap"
 	"school/domain"
 
 	"gorm.io/gorm"
@@ -10,7 +11,7 @@ type StudentRepository interface {
 	Create(payload domain.StudentCreatePayload) (domain.Student, error)
 	Update(payload domain.StudentUpdatePayload) (domain.Student, error)
 	GetById(id int) (domain.Student, error)
-	GetList() ([]domain.Student, int, error)
+	GetList(query domain.StudentQuery) ([]domain.Student, int, error)
 	Delete(id int) error
 }
 
@@ -44,17 +45,27 @@ func (r studentRepository) Delete(id int) error {
 	return result.Error
 }
 
-func (r studentRepository) GetList() ([]domain.Student, int, error) {
+func (r studentRepository) GetList(query domain.StudentQuery) ([]domain.Student, int, error) {
 	var students []domain.Student
 	var total int64
+	paginator := domain.Paginator{PerPage: query.PerPage, Page: query.Page}
 
-	result := r.Db.Find(&students)
+	db := r.Db.Model(&students)
+
+	if query.QueryTerm != "" {
+		db = db.Where("first_name LIKE  ? OR last_name LIKE  ?", "%"+query.QueryTerm+"%", "%"+query.QueryTerm+"%")
+	}
+
+	if query.GradeId != 0 {
+		db = db.Where("grade_id = ?", query.GradeId)
+	}
+
+	totalResult := db.Count(&total)
+	result := db.Scopes(bootstrap.QueryScope(&paginator)).Find(&students)
 
 	if result.Error != nil {
 		return []domain.Student{}, 0, result.Error
 	}
-
-	totalResult := r.Db.Model(&students).Count(&total)
 
 	if totalResult.Error != nil {
 		return []domain.Student{}, 0, totalResult.Error

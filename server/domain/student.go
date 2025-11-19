@@ -32,6 +32,12 @@ type AcademicInfo struct {
 	EmergencyContact string `json:"emergency_contact" binding:"required"`
 }
 
+type StudentQuery struct {
+	Paginator
+	GradeId   int    `form:"grade_id"`
+	QueryTerm string `form:"search"`
+}
+
 type StudentCreatePayload = StudentFields
 type StudentUpdatePayload = Student
 type StudentSuccessRes = SuccessResponseWithData[Student]

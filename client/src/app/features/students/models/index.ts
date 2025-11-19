@@ -31,8 +31,8 @@ export interface AcademicInfo {
 export type Student = UpsertStudentPayload
 
 export interface StudentQuery extends Paginator {
+  search: string;
   grade_id: number;
-  search: string
 }
 
 export interface TabItem {

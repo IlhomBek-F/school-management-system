@@ -21,7 +21,7 @@ import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog
 import { ToastService } from '@core/services/toast.service';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { StudentsService } from '../services/students.service';
-import { Student, StudentListSuccessRes, UpsertStudentPayload } from '../models';
+import { Student, StudentListSuccessRes, StudentQuery, UpsertStudentPayload } from '../models';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { Meta } from '@core/models/base';
@@ -56,8 +56,9 @@ export class StudentsComponent implements OnInit {
 
   filterFormGroup = new FormGroup({
     search: new FormControl('', { nonNullable: true }),
-    grade_id: new FormControl('', { nonNullable: true }),
+    grade_id: new FormControl(0, { nonNullable: true }),
     page: new FormControl(1, { nonNullable: true }),
+    per_page: new FormControl(10, {nonNullable: true})
   })
 
   students: WritableSignal<Student[]> = signal([]);
@@ -155,8 +156,10 @@ export class StudentsComponent implements OnInit {
   }
 
   private _getStudentList() {
+    const filterValue: StudentQuery = this.filterFormGroup.getRawValue();
+
     this.loading.set(true)
-    this._studentsService.retrieveAll<StudentListSuccessRes>({})
+    this._studentsService.retrieveAll<StudentListSuccessRes>(filterValue)
       .pipe(
         finalize(() => this.loading.set(false)),
         untilDestroyed(this)
