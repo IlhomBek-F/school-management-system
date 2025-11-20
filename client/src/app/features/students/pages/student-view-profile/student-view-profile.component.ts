@@ -3,7 +3,7 @@ import { TagModule } from "primeng/tag";
 import { ChartModule } from "primeng/chart";
 import { ButtonModule } from "primeng/button";
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { OverviewComponent } from '../../components/tabs/overview/overview.component';
 import { SubjectsComponent } from '../../components/tabs/subjects/subjects.component';
@@ -12,8 +12,10 @@ import { ActivityComponent } from '../../components/tabs/activity/activity.compo
 import { StudentViewDetailHeaderComponent } from "../../components/view-detail/student-view-detail-header/student-view-detail-header.component";
 import { TabViewModule } from "primeng/tabview";
 import { BreadcrumbComponent } from "@shared/components/breadcrumb/breadcrumb.component";
-import { finalize } from 'rxjs';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { finalize, switchMap } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { StudentsService } from '../../services/students.service';
+import { ToastService } from '@core/services/toast.service';
 
 interface Student {
   id: number;
@@ -64,12 +66,13 @@ interface ActivityLog {
   color: string;
 }
 
+@UntilDestroy()
 @Component({
   selector: 'school-student-view-profile',
   imports: [TagModule, ChartModule, ButtonModule, CommonModule, OverviewComponent, SubjectsComponent, AttendanceComponent, ActivityComponent, StudentViewDetailHeaderComponent, TabViewModule, BreadcrumbComponent],
   templateUrl: './student-view-profile.component.html',
   styleUrl: './student-view-profile.component.scss',
-  providers: [DialogService],
+  providers: [DialogService, StudentsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentViewProfileComponent {
@@ -218,6 +221,9 @@ export class StudentViewProfileComponent {
     }
   ];
 
+  private _activeRoute = inject(ActivatedRoute)
+  private _studentsService = inject(StudentsService)
+  private _messageService = inject(ToastService)
   // Chart Data
   performanceChartData: any;
   performanceChartOptions: any;
@@ -228,6 +234,23 @@ export class StudentViewProfileComponent {
   ngOnInit(): void {
     setTimeout(() => this.loading.set(false), 4000)
     this.initializeCharts();
+
+    this._activeRoute.paramMap
+    .pipe(
+      switchMap((p: ParamMap) => {
+        const studentId = p.get("student_id") as string
+
+        return this._studentsService.retrieveById(+studentId)
+      }),
+      untilDestroyed(this)
+    )
+    .subscribe({
+      next: (res) => {
+        console.log(res)
+      }, error: (err) => {
+        this._messageService.error("Error getting student by id")
+      }
+    })
   }
 
   initializeCharts(): void {

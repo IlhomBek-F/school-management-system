@@ -164,7 +164,7 @@ func (s StudentController) GetStudentById(c *gin.Context) {
 		Data:    student,
 	}
 
-	c.JSON(http.StatusBadRequest, successRes)
+	c.JSON(http.StatusOK, successRes)
 }
 
 // Delete student godoc
