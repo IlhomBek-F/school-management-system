@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Student } from 'app/features/students/models';
 import { ChartModule } from "primeng/chart";
 import { SkeletonModule } from "primeng/skeleton";
 
@@ -13,7 +14,7 @@ import { SkeletonModule } from "primeng/skeleton";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent {
-  student = input.required<any>()
+  student = input.required<Student>()
   performanceChartData = input.required<any>()
   performanceChartOptions = input.required<any>()
   loading = input(false)

@@ -6,6 +6,7 @@ import { UpsertStudentModalComponent } from '../../upsert-student-modal/upsert-s
 import { StudentViewDetailStatusCardsComponent } from "../student-view-detail-status-cards/student-view-detail-status-cards.component";
 import { SkeletonModule } from "primeng/skeleton";
 import { CommonModule } from '@angular/common';
+import { Student } from 'app/features/students/models';
 
 @Component({
   selector: 'school-student-view-detail-header',
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentViewDetailHeaderComponent {
-  student = input.required<any>()
+  student = input.required<Student>()
   loading = input(false)
 
   private _dialogService = inject(DialogService)

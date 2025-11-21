@@ -4,12 +4,12 @@
           <school-breadcrumb />
     </div>
 
-    <school-student-view-detail-header [student]="student" [loading]="loading()" />
+    <school-student-view-detail-header [student]="student()" [loading]="loading()" />
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 mb-6">
       <p-tabView [(activeIndex)]="activeIndex">
         <p-tabPanel header="Overview" leftIcon="pi pi-home" class="bg-transparent">
-            <school-overview [student]="student" [loading]="loading()" [performanceChartData]="performanceChartData"
+            <school-overview [student]="student()" [loading]="loading()" [performanceChartData]="performanceChartData"
               [performanceChartOptions]="performanceChartOptions" />
         </p-tabPanel>
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
 import { TagModule } from "primeng/tag";
 import { ChartModule } from "primeng/chart";
 import { ButtonModule } from "primeng/button";
@@ -16,29 +16,7 @@ import { finalize, switchMap } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StudentsService } from '../../services/students.service';
 import { ToastService } from '@core/services/toast.service';
-
-interface Student {
-  id: number;
-  first_name: string;
-  last_name: string;
-  student_id: string;
-  email: string;
-  phone: string;
-  date_of_birth: string;
-  gender: string;
-  blood_group: string;
-  address: string;
-  city: string;
-  grade: string;
-  class: string;
-  admission_date: string;
-  previous_school: string;
-  gpa: number;
-  attendance: number;
-  status: string;
-  avatar: string;
-  color: string;
-}
+import { Student, StudentSuccessRes } from '../../models';
 
 interface Subject {
   id: number;
@@ -77,7 +55,7 @@ interface ActivityLog {
 })
 export class StudentViewProfileComponent {
   activeIndex: number = 0;
-  loading = signal(true)
+  loading = signal(false)
 
   tabItems = [
     {
@@ -102,28 +80,8 @@ export class StudentViewProfileComponent {
     },
   ];
 
-  student: Student = {
-    id: 1,
-    first_name: 'Emma',
-    last_name: 'Thompson',
-    student_id: 'STU-2024-001',
-    email: 'emma.thompson@school.edu',
-    phone: '+1 234-567-8901',
-    date_of_birth: '2007-05-15',
-    gender: 'Female',
-    blood_group: 'A+',
-    address: '123 Main Street, Apartment 4B',
-    city: 'New York',
-    grade: '10th Grade',
-    class: '10-A',
-    admission_date: '2020-09-01',
-    previous_school: 'Central Middle School',
-    gpa: 3.8,
-    attendance: 95,
-    status: 'Active',
-    avatar: 'ET',
-    color: 'bg-purple-500'
-  };
+
+  student: WritableSignal<Student> = signal({} as Student)
 
   subjects: Subject[] = [
     {
@@ -232,25 +190,30 @@ export class StudentViewProfileComponent {
   attendanceChartOptions: any;
 
   ngOnInit(): void {
-    setTimeout(() => this.loading.set(false), 4000)
     this.initializeCharts();
+    this._getStudentDetail()
+  }
 
+  private _getStudentDetail() {
     this._activeRoute.paramMap
     .pipe(
       switchMap((p: ParamMap) => {
-        const studentId = p.get("student_id") as string
+          this.loading.set(true)
+          const studentId = p.get("student_id") as string
 
-        return this._studentsService.retrieveById(+studentId)
-      }),
-      untilDestroyed(this)
-    )
-    .subscribe({
-      next: (res) => {
-        console.log(res)
-      }, error: (err) => {
-        this._messageService.error("Error getting student by id")
-      }
-    })
+          return this._studentsService.retrieveById<StudentSuccessRes>(+studentId)
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe({
+        next: (res) => {
+          this.student.set(res.data)
+          this.loading.set(false)
+        }, error: (err) => {
+          this.loading.set(false)
+          this._messageService.error("Error getting student by id")
+        }
+      })
   }
 
   initializeCharts(): void {
@@ -318,14 +281,5 @@ export class StudentViewProfileComponent {
         }
       }
     };
-  }
-
-  getAttendanceStatusColor(status: string): string {
-    switch (status) {
-      case 'Present': return 'text-green-600 bg-green-50';
-      case 'Absent': return 'text-red-600 bg-red-50';
-      case 'Late': return 'text-orange-600 bg-orange-50';
-      default: return 'text-gray-600 bg-gray-50';
-    }
   }
 }

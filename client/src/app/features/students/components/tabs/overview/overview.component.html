@@ -1,6 +1,9 @@
 @if (loading()) {
 <ng-container *ngTemplateOutlet="skeleton"></ng-container>
 } @else {
+  @let personalInfo = student().personal_info;
+  @let academicInfo = student().academic_info;
+
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-3">
   <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
     <i class="pi pi-user text-indigo-600"></i>
@@ -11,21 +14,21 @@
       <i class="pi pi-calendar text-gray-400 mt-1"></i>
       <div>
         <p class="text-xs text-gray-500">Date of Birth</p>
-        <p class="font-semibold text-gray-800">{{ student().date_of_birth }}</p>
+        <p class="font-semibold text-gray-800">{{ personalInfo.date_of_birth }}</p>
       </div>
     </div>
     <div class="flex items-start gap-3">
       <i class="pi pi-user text-gray-400 mt-1"></i>
       <div>
         <p class="text-xs text-gray-500">Gender</p>
-        <p class="font-semibold text-gray-800">{{ student().gender }}</p>
+        <p class="font-semibold text-gray-800">{{ personalInfo.gender }}</p>
       </div>
     </div>
     <div class="flex items-start gap-3">
       <i class="pi pi-heart text-gray-400 mt-1"></i>
       <div>
         <p class="text-xs text-gray-500">Blood Group</p>
-        <p class="font-semibold text-gray-800">{{ student().blood_group }}</p>
+        <p class="font-semibold text-gray-800">{{ personalInfo.blood_group_id }}</p>
       </div>
     </div>
   </div>
@@ -41,8 +44,8 @@
       <i class="pi pi-home text-gray-400 mt-1"></i>
       <div>
         <p class="text-xs text-gray-500">Address</p>
-        <p class="font-semibold text-gray-800">{{ student().address }}</p>
-        <p class="text-sm text-gray-600">{{ student().city }}</p>
+        <p class="font-semibold text-gray-800">{{ personalInfo.street_address }}</p>
+        <p class="text-sm text-gray-600">{{ personalInfo.city }}</p>
       </div>
     </div>
   </div>
@@ -58,14 +61,14 @@
       <i class="pi pi-calendar-plus text-gray-400 mt-1"></i>
       <div>
         <p class="text-xs text-gray-500">Admission Date</p>
-        <p class="font-semibold text-gray-800">{{ student().admission_date }}</p>
+        <p class="font-semibold text-gray-800">{{ academicInfo.admission_date }}</p>
       </div>
     </div>
     <div class="flex items-start gap-3">
       <i class="pi pi-building text-gray-400 mt-1"></i>
       <div>
         <p class="text-xs text-gray-500">Previous School</p>
-        <p class="font-semibold text-gray-800">{{ student().previous_school || 'N/A' }}</p>
+        <p class="font-semibold text-gray-800">{{ academicInfo.prev_school || 'N/A' }}</p>
       </div>
     </div>
   </div>

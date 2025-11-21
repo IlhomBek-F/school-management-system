@@ -4,10 +4,13 @@
     @if (loading()) {
         <ng-container *ngTemplateOutlet="skeleton"></ng-container>
     } @else {
+    @let personalInfo = student().personal_info;
+    @let academicInfo = student().academic_info;
+
     <div class="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-16">
       <div
-        [class]="'w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-4xl shadow-xl border-4 border-white ' + student().color">
-        {{ student().avatar }}
+        [class]="'w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-4xl shadow-xl border-4 border-white bg-purple-500'">
+        {{ personalInfo.first_name[0] }}{{personalInfo.last_name[0]}}
       </div>
 
       <div class="flex-1">
@@ -15,27 +18,25 @@
           <div>
             <div class="flex items-center gap-3 mb-2">
               <h1 class="text-3xl font-bold text-gray-800">
-                {{ student().first_name }} {{ student().last_name }}
+                {{ personalInfo.first_name }} {{ personalInfo.last_name }}
               </h1>
-              <p-tag [value]="student().status"
-                [severity]="student().status === 'Active' ? 'success' : 'warning'"></p-tag>
             </div>
             <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
               <span class="flex items-center gap-2">
                 <i class="pi pi-id-card"></i>
-                {{ student().student_id }}
+                {{ academicInfo.student_id }}
               </span>
               <span class="flex items-center gap-2">
                 <i class="pi pi-graduation-cap"></i>
-                {{ student().grade }} - {{ student().class }}
+                {{ academicInfo.grade_id }} - {{ academicInfo.class_section_id }}
               </span>
               <span class="flex items-center gap-2">
                 <i class="pi pi-envelope"></i>
-                {{ student().email }}
+                {{ personalInfo.email }}
               </span>
               <span class="flex items-center gap-2">
                 <i class="pi pi-phone"></i>
-                {{ student().phone }}
+                {{ personalInfo.phone_number }}
               </span>
             </div>
           </div>
