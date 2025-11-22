@@ -16,7 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
 import { FormContainer } from '@core/models/question-base';
-import { TabItem } from '../../models';
+import { Student, TabItem } from '../../models';
 import { GRADES } from 'app/utils/constants';
 
 @Component({
@@ -38,7 +38,6 @@ export class UpsertStudentModalComponent implements OnInit {
   ngOnInit(): void {
     this._createTabItems();
     this.loading = this._dialogConfig.data.loading
-
   }
 
   confirm() {
@@ -76,6 +75,7 @@ export class UpsertStudentModalComponent implements OnInit {
   }
 
   private _getPersonalFormContainer(): FormContainer[] {
+    const {personal_info}: Student = this._dialogConfig.data.student
     return [
       {
         containers: [
@@ -83,12 +83,14 @@ export class UpsertStudentModalComponent implements OnInit {
             key: 'first_name',
             label: 'First Name',
             required: true,
+            value: personal_info.first_name,
             placeholder: 'Enter first name'
           }),
           new QuestionTextInput({
             key: 'last_name',
             label: 'Last Name',
             required: true,
+            value: personal_info.last_name,
             placeholder: 'Enter last name'
           }),
         ],
@@ -99,6 +101,7 @@ export class UpsertStudentModalComponent implements OnInit {
             key: 'date_of_birth',
             label: 'Date of birth',
             required: true,
+            value: personal_info.date_of_birth
           }),
           new QuestionSelectInput({
             key: 'gender',
@@ -108,7 +111,7 @@ export class UpsertStudentModalComponent implements OnInit {
               { label: 'Male', value: 'male' },
               { label: 'Female', value: 'female' },
             ],
-            value: 'male',
+            value: personal_info.gender,
           }),
           new QuestionSelectInput({
             key: 'blood_group_id',
@@ -124,7 +127,7 @@ export class UpsertStudentModalComponent implements OnInit {
               { label: 'O+', value: 'O+' },
               { label: 'O-', value: 'O-' },
             ],
-            value: 'A+',
+            value: personal_info.blood_group_id,
           }),
         ],
       },
@@ -135,11 +138,13 @@ export class UpsertStudentModalComponent implements OnInit {
             label: 'Email Address',
             placeholder: 'student@example.com',
             type: QuestionFieldTypeEnum.Email,
+            value: personal_info.email
           }),
           new QuestionTextInput({
             key: 'phone_number',
             label: 'Phone Number',
             required: true,
+            value: personal_info.phone_number,
             type: QuestionFieldTypeEnum.Email,
           }),
         ],
@@ -150,12 +155,14 @@ export class UpsertStudentModalComponent implements OnInit {
             key: 'street_address',
             label: 'Street Address',
             placeholder: 'Enter street address',
+            value: personal_info.street_address,
             required: true,
           }),
           new QuestionTextInput({
             key: 'city',
             label: 'City',
             placeholder: 'Enter city',
+            value: personal_info.city,
             required: true,
           }),
         ],
@@ -164,6 +171,14 @@ export class UpsertStudentModalComponent implements OnInit {
   }
 
   private _getAcademicFormContainer(): FormContainer[] {
+    const {academic_info: {
+                          student_id,grade_id,
+                          class_section_id,
+                          admission_date,
+                          prev_school,
+                          emergency_contact
+                        }
+          }: Student = this._dialogConfig.data.student;
     return [
       {
         containers: [
@@ -171,11 +186,13 @@ export class UpsertStudentModalComponent implements OnInit {
             key: 'student_id',
             label: 'Student ID',
             placeholder: 'STU-2024-001',
+            value: student_id,
             required: true,
           }),
           new QuestionSelectInput({
             key: 'grade_id',
             label: 'Grade',
+            value: grade_id,
             required: true,
             options: GRADES
           }),
@@ -187,6 +204,7 @@ export class UpsertStudentModalComponent implements OnInit {
             key: 'class_section_id',
             label: 'Class Section',
             required: true,
+            value: class_section_id,
             options: [
               { label: 'Class A', value: 1 },
               { label: 'Class B', value: 2 },
@@ -196,6 +214,7 @@ export class UpsertStudentModalComponent implements OnInit {
           new QuestionDatePicker({
             key: 'admission_date',
             label: 'Admission Date',
+            value: admission_date,
             required: true,
           }),
         ],
@@ -205,11 +224,13 @@ export class UpsertStudentModalComponent implements OnInit {
           new QuestionTextInput({
             key: 'prev_school',
             label: 'Previous School',
+            value: prev_school,
             placeholder: 'Enter previous school name'
           }),
           new QuestionTextInput({
             key: 'emergency_contact',
             required: true,
+            value: emergency_contact,
             label: 'Emergency contact'
           })
         ]

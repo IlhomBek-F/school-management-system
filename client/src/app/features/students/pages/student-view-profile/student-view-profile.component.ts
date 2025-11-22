@@ -16,7 +16,8 @@ import { finalize, switchMap } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StudentsService } from '../../services/students.service';
 import { ToastService } from '@core/services/toast.service';
-import { Student, StudentSuccessRes } from '../../models';
+import { Student, StudentSuccessRes, UpsertStudentPayload } from '../../models';
+import { UpsertStudentModalComponent } from '../../components/upsert-student-modal/upsert-student-modal.component';
 
 interface Subject {
   id: number;
@@ -182,6 +183,7 @@ export class StudentViewProfileComponent {
   private _activeRoute = inject(ActivatedRoute)
   private _studentsService = inject(StudentsService)
   private _messageService = inject(ToastService)
+  private _dialogService = inject(DialogService)
   // Chart Data
   performanceChartData: any;
   performanceChartOptions: any;
@@ -192,6 +194,44 @@ export class StudentViewProfileComponent {
   ngOnInit(): void {
     this.initializeCharts();
     this._getStudentDetail()
+  }
+
+  editStudent() {
+    const loading = signal(false)
+    const dialogRef = this._dialogService.open<any>(UpsertStudentModalComponent, {
+      focusOnShow: false,
+      dismissableMask: true,
+      modal: true,
+      header: 'Edit student info',
+      width: '45%',
+      data: {
+        loading,
+        student: this.student(),
+        footer: {
+          onConfirm: (formValue: UpsertStudentPayload) => {
+            formValue.id = this.student().id
+            formValue.created_at = this.student().created_at
+            formValue.updated_at = this.student().updated_at
+
+            loading.set(true)
+            this._studentsService.update<StudentSuccessRes, UpsertStudentPayload>(formValue)
+             .pipe(
+              finalize(() => loading.set(false)),
+              untilDestroyed(this)
+             ).subscribe({
+              next: () => {
+                 this._messageService.success("Student updated successfully")
+                 this._getStudentDetail()
+                 dialogRef.close()
+              }, error: () => {
+                 this._messageService.success("Failed updating student")
+              }
+             })
+          },
+          onCancel: () => dialogRef.close()
+        }
+      }
+    })
   }
 
   private _getStudentDetail() {

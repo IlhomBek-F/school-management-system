@@ -34,7 +34,13 @@ func (r studentRepository) Create(payload domain.StudentCreatePayload) (domain.S
 }
 
 func (r studentRepository) Update(payload domain.StudentUpdatePayload) (domain.Student, error) {
-	result := r.Db.Updates(&payload)
+	student, err := r.GetById(payload.ID)
+
+	if err != nil {
+		return domain.Student{}, err
+	}
+
+	result := r.Db.Where("id = ?", student.ID).Updates(&payload)
 
 	return payload, result.Error
 }

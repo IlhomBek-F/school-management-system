@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
-import { DialogService } from 'primeng/dynamicdialog';
-import { UpsertStudentModalComponent } from '../../upsert-student-modal/upsert-student-modal.component';
 import { StudentViewDetailStatusCardsComponent } from "../student-view-detail-status-cards/student-view-detail-status-cards.component";
 import { SkeletonModule } from "primeng/skeleton";
 import { CommonModule } from '@angular/common';
@@ -18,8 +16,7 @@ import { Student } from 'app/features/students/models';
 export class StudentViewDetailHeaderComponent {
   student = input.required<Student>()
   loading = input(false)
-
-  private _dialogService = inject(DialogService)
+  studentUpdatedEmit = output()
 
   downloadReport(): void {
     console.log('Download report');
@@ -27,22 +24,5 @@ export class StudentViewDetailHeaderComponent {
 
   sendMessage(): void {
     console.log('Send message');
-  }
-
-  editStudent(): void {
-    const dialogRef = this._dialogService.open<any>(UpsertStudentModalComponent, {
-      focusOnShow: false,
-      dismissableMask: true,
-      modal: true,
-      header: 'Edit student info',
-      width: '45%',
-      data: {
-        student: this.student(),
-        footer: {
-          onConfirm: (formValue: any) => console.log(formValue),
-          onCancel: () => dialogRef.close()
-        }
-      }
-    })
   }
 }

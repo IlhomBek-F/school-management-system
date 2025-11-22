@@ -4,7 +4,9 @@
           <school-breadcrumb />
     </div>
 
-    <school-student-view-detail-header [student]="student()" [loading]="loading()" />
+    <school-student-view-detail-header [student]="student()"
+                                       (studentUpdatedEmit)="editStudent()"
+                                       [loading]="loading()" />
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 mb-6">
       <p-tabView [(activeIndex)]="activeIndex">
