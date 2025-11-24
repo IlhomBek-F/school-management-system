@@ -19,13 +19,19 @@ type PersonalInformation struct {
 }
 
 type ProfessionalInformation struct {
-	TeacherId      string `json:"teacher_id" binding:"required"`
-	DepartmentId   int    `json:"department_id" binding:"required"`
-	SubjectIds     []int  `json:"subject_ids" binding:"required"`
-	Qualification  string `json:"qualification" binding:"required"`
-	UniOrInsName   string `json:"uni_or_ins_name"`
-	GraduationYear int    `json:"graduation_year"`
-	Experience     int    `json:"experience"`
+	TeacherId      string           `json:"teacher_id" binding:"required"`
+	DepartmentId   int              `json:"department_id" binding:"required"`
+	Subjects       []TeacherSubject `json:"subjects" binding:"required" gorm:"many2many:teacher_subjects"`
+	Qualification  string           `json:"qualification" binding:"required"`
+	UniOrInsName   string           `json:"uni_or_ins_name"`
+	GraduationYear int              `json:"graduation_year"`
+	Experience     int              `json:"experience"`
+}
+
+type TeacherSubject struct {
+	Id        int `json:"id"`
+	TeacherId int `json:"teacher_id"`
+	SubjectId int `json:"subject_id"`
 }
 
 type EmploymentDetail struct {
