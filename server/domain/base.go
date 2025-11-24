@@ -3,9 +3,10 @@ package domain
 import "time"
 
 type Base struct {
-	ID         int       `json:"id"`
-	Created_at time.Time `json:"created_at" gorm:"autoCreateTime"`
-	Updated_at time.Time `json:"updated_at" gorm:"autoUpdateTime"`
+	ID        int       `json:"id"`
+	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime"`
+	DeletedAt time.Time `json:"deleted_at" gorm:"gorm.DeletedAt"`
 }
 
 type ErrorResponse struct {

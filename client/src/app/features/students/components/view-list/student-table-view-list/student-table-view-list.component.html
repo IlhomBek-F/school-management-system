@@ -21,8 +21,8 @@
                 <span class="font-medium text-gray-800">{{ student.personal_info.first_name }} {{ student.personal_info.last_name }}</span>
               </div>
             </td>
-            <td class="text-gray-600">{{ student.academic_info.grade_id }}</td>
-            <td class="text-gray-600">{{ student.academic_info.class_section_id }}</td>
+            <td class="text-gray-600">{{ GRADES_MAP[student.academic_info.grade_id]  }}</td>
+            <td class="text-gray-600">{{ CLASS_SECTION_MAP[student.academic_info.class_section_id] }}</td>
             <td>
               <div class="text-sm text-gray-600">
                 <div class="truncate max-w-xs">{{ student.personal_info.email }}</div>

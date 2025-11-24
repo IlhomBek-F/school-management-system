@@ -3,6 +3,7 @@ import { TableModule } from "primeng/table";
 import { ButtonModule } from "primeng/button";
 import { Student } from 'app/features/students/models';
 import { RandomBgColorPipe } from '@core/pipes/random-bg-color-pipe';
+import { CLASS_SECTION_MAP, GRADES_MAP } from 'app/utils/constants';
 
 @Component({
   selector: 'school-student-table-view-list',
@@ -15,6 +16,9 @@ export class StudentTableViewListComponent {
   studentList = input.required<Student[]>()
   viewDetailEmitEvent = output<Student>()
   deleteEventEmit = output<Student>()
+
+  GRADES_MAP = GRADES_MAP;
+  CLASS_SECTION_MAP = CLASS_SECTION_MAP;
 
   viewProfile(student: Student): void {
     this.viewDetailEmitEvent.emit(student)

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 
 const VALUE_ACCESSOR_PROVIDER = {
@@ -11,7 +11,7 @@ const VALUE_ACCESSOR_PROVIDER = {
 
 @Component({
   selector: 'school-datepicker',
-  imports: [DatePickerModule, CommonModule],
+  imports: [DatePickerModule, CommonModule, FormsModule],
   templateUrl: './datepicker.component.html',
   styleUrl: './datepicker.component.scss',
   providers: [VALUE_ACCESSOR_PROVIDER],

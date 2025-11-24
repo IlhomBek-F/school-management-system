@@ -5,6 +5,8 @@
   <p-datepicker [iconDisplay]="'input'"
                 [ngClass]="{'ng-invalid ng-dirty': required() && !value}"
                 [showIcon]="true"
+                [ngModel]="value"
+                dateFormat="dd-mm-yy"
                 (onSelect)="handleChange($event)"
                 appendTo="body"
                 inputId="icondisplay" />

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Student } from 'app/features/students/models';
 import { SkeletonModule } from "primeng/skeleton";
 
 @Component({
@@ -9,6 +10,6 @@ import { SkeletonModule } from "primeng/skeleton";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentViewDetailStatusCardsComponent {
-  student = input.required<any>()
+  student = input.required<Student>()
   loading = input(false)
 }

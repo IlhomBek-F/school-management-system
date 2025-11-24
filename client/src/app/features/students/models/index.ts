@@ -28,7 +28,11 @@ export interface AcademicInfo {
   emergency_contact: string;
 }
 
-export type Student = UpsertStudentPayload
+export type Student = UpsertStudentPayload & {
+  gpa: number;
+  attendance: number;
+  subjects: number;
+}
 
 export interface StudentQuery extends Paginator {
   search: string;
