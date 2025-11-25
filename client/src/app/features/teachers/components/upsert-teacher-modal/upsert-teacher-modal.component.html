@@ -7,7 +7,7 @@
         <p-tabpanels>
             @for (tab of tabItems; track tab.value) {
                 <p-tabpanel [value]="tab.value">
-                    <school-dynamic-form [form]="form" [formContainer]="tab.formContainers"/>
+                    <school-dynamic-form [form]="tab.form" [formContainer]="tab.formContainers"/>
                 </p-tabpanel>
             }
         </p-tabpanels>
@@ -15,5 +15,5 @@
 
 <footer class="flex justify-end gap-3 mt-5">
   <button pButton (click)="cancel()" outlined icon="pi pi-times-circle">cancel</button>
-  <button pButton (click)="confirm()" [disabled]="form.invalid" icon="pi pi-save">save</button>
+  <button pButton (click)="confirm()" [disabled]="tabItems[0].form.invalid || tabItems[1].form.invalid" icon="pi pi-save">save</button>
 </footer>

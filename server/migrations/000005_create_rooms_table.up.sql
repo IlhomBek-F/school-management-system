@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS rooms (
     status VARCHAR(20),
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP DEFAULT NULL,
     description VARCHAR(250),
     area INT,
     CONSTRAINT "rooms_room_type_id_fk" FOREIGN KEY (room_type_id) REFERENCES room_types(id),

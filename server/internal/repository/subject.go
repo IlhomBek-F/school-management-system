@@ -23,9 +23,14 @@ func NewSubjectRepository(db *gorm.DB) SubjectRepository {
 }
 
 func (r subjectRepository) Create(payload domain.CreateSubjectPayload) (domain.Subject, error) {
-	result := r.db.Create(&payload)
+	subject := domain.Subject{
+		Name:        payload.Name,
+		Description: payload.Description,
+	}
 
-	return payload, result.Error
+	result := r.db.Create(&subject)
+
+	return subject, result.Error
 }
 
 func (r subjectRepository) GetList() ([]domain.Subject, error) {

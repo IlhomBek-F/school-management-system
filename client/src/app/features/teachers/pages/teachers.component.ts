@@ -10,7 +10,7 @@ import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-ca
 import { EmptyListComponent } from "@shared/components/empty-list/empty-list.component";
 import { TextInputComponent } from "@shared/components/dynamic-form/text-input/text-input.component";
 import { SelectInputComponent } from "@shared/components/dynamic-form/select-input/select-input.component";
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpsertTeacherModalComponent } from '../components/upsert-teacher-modal/upsert-teacher-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeacherTableViewListComponent } from '../components/view-list/teacher-table-view-list/teacher-table-view-list.component';
@@ -21,9 +21,12 @@ import { ToastService } from '@core/services/toast.service';
 import { DropdownOption, Meta } from '@core/models/base';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { TeachersService } from '../services/teachers.service';
-import { Teacher, TeacherStats } from '../models';
+import { Teacher, TeacherStats, TeacherSuccessRes, UpsertTeacherPayload } from '../models';
 import { DEPARTMENTS } from 'app/utils/constants';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { finalize } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'school-teachers',
   imports: [PageTitleComponent, TagModule,
@@ -191,6 +194,8 @@ export class TeachersComponent implements OnInit {
   }
 
   upsertTeacher(teacher?: any): void {
+    const loading = signal(false);
+
     const dialogRef = this._dialogService.open<any>(UpsertTeacherModalComponent, {
       focusOnShow: false,
       dismissableMask: true,
@@ -198,9 +203,13 @@ export class TeachersComponent implements OnInit {
       header: 'Add new teacher',
       width: '45%',
       data: {
+        loading,
         teacher,
         footer: {
-          onConfirm: (formValue: any) => console.log(formValue),
+          onConfirm: (formValue: any) => {
+            loading.set(true)
+            this._addNewTeacher(formValue, loading, dialogRef)
+          },
           onCancel: () => dialogRef.close()
         }
       }
@@ -222,5 +231,20 @@ export class TeachersComponent implements OnInit {
         this._confirmService.loading$.next(false);
         ref.close()
       }, 3000)
+  }
+
+  private _addNewTeacher(teacherPayload: UpsertTeacherPayload, loading: WritableSignal<boolean>, dialogRef: DynamicDialogRef) {
+    this._teachersService.create<TeacherSuccessRes, UpsertTeacherPayload>(teacherPayload)
+     .pipe(
+      finalize(() => loading.set(false)),
+      untilDestroyed(this)
+     ).subscribe({
+      next: () => {
+         this._messageService.success("Added new teacher")
+         dialogRef.close()
+      }, error: (err) => {
+         this._messageService.error("Failed adding new teacher")
+      }
+     })
   }
 }

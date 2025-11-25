@@ -1,11 +1,9 @@
-import { FormGroup } from "@angular/forms";
 import { Base, Paginator, ResData, ResDataWithMeta } from "@core/models/base";
-import { FormContainer } from "@core/models/question-base";
 
 export interface UpsertTeacherPayload extends Base {
   personal_info: PersonalInfo;
   professional_info: ProfessionalInfo;
-  employment_detail: any
+  employment_detail: EmploymentDetail
 }
 
 export interface PersonalInfo {
@@ -26,7 +24,14 @@ export interface ProfessionalInfo {
   qualification: string;
   uni_or_ins_name: string;
   graduation_year: string;
-  experience: string;
+  experience: number;
+}
+
+export interface EmploymentDetail {
+  joining_date: string;
+  employment_type: string;
+  salary: number;
+  contract_end_date: string
 }
 
 export type Teacher = UpsertTeacherPayload & {
@@ -36,10 +41,10 @@ export type Teacher = UpsertTeacherPayload & {
 }
 
 export interface TeacherStats {
-    total_teachers: number,
-    avg_experience: number,
-    total_students: number,
-    avg_rating: number
+  total_teachers: number;
+  avg_experience: number;
+  total_students: number;
+  avg_rating: number;
 }
 
 export interface TeacherQuery extends Paginator {

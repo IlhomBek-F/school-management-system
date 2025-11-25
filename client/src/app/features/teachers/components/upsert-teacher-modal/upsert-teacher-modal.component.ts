@@ -1,12 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, WritableSignal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
+import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
 import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
+import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
+import { TabItem } from '@core/models/base';
 import { FormContainer } from '@core/models/question-base';
 import { QuestionControlService } from '@core/services/question-control.service';
 import { DynamicFormComponent } from '@shared/components/dynamic-form/dynamic-form.component';
+import { StudentsService } from 'app/features/students/services/students.service';
+import { DEPARTMENTS } from 'app/utils/constants';
 import {  ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { TabsModule } from "primeng/tabs";
@@ -20,22 +25,24 @@ import { TabsModule } from "primeng/tabs";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpsertTeacherModalComponent implements OnInit {
-  form!: FormGroup;
-  tabItems!: { title: string, value: string, formContainers: FormContainer[]}[];
+  tabItems!: TabItem[]
+  loading!: WritableSignal<boolean>
 
   private _questionControlService = inject(QuestionControlService)
   private _dialogConfig = inject(DynamicDialogConfig)
 
   ngOnInit(): void {
     this._createTabItems()
-
-    if (this._dialogConfig.data.teacher) {
-      this.form.patchValue(this._dialogConfig.data.teacher)
-    }
+    this.loading = this._dialogConfig.data.loading;
   }
 
   confirm() {
-    this._dialogConfig.data.footer.onConfirm(this.form.getRawValue());
+    const formValue = this.tabItems.reduce((prev: Record<string, any>, curr) => {
+      prev[curr.value] = curr.form.getRawValue();
+      return prev
+    }, {})
+
+    this._dialogConfig.data.footer.onConfirm(formValue);
   }
 
   cancel() {
@@ -43,25 +50,30 @@ export class UpsertTeacherModalComponent implements OnInit {
   }
 
   private _createTabItems() {
+    const personalInfoFormContainers = this._getPersonalFormContainer()
+    const professionalFormContainers = this._getProfessionalFormContainer()
+    const employmentFormContainers = this._getEmploymentFormContainer()
+
     this.tabItems = [
       {
         title: 'Personal Information',
         value: 'personal_info',
-        formContainers: this._getPersonalFormContainer(),
+        formContainers: personalInfoFormContainers,
+        form: this._questionControlService.toFormGroup(personalInfoFormContainers)
       },
       {
         title: 'Professional Information',
-        value: 'academic_info',
-        formContainers: this._getProfessionalFormContainer(),
+        value: 'professional_info',
+        formContainers: professionalFormContainers,
+        form: this._questionControlService.toFormGroup(professionalFormContainers)
       },
       {
         title: 'Employment details',
         value: 'employment_details',
-        formContainers: this._getEmploymentFormContainer()
+        formContainers: employmentFormContainers,
+        form:  this._questionControlService.toFormGroup(employmentFormContainers)
       }
     ];
-
-    this.form = this._questionControlService.toFormGroup(this.tabItems.flatMap(t => t.formContainers))
   }
 
   private _getPersonalFormContainer(): FormContainer[] {
@@ -110,7 +122,7 @@ export class UpsertTeacherModalComponent implements OnInit {
             type: QuestionFieldTypeEnum.Email,
           }),
           new QuestionTextInput({
-            key: 'phone',
+            key: 'phone_number',
             label: 'Phone Number',
             required: true,
             type: QuestionFieldTypeEnum.Email,
@@ -120,7 +132,7 @@ export class UpsertTeacherModalComponent implements OnInit {
       {
         containers: [
           new QuestionTextInput({
-            key: 'address',
+            key: 'street_address',
             label: 'Street Address',
             placeholder: 'Enter street address',
             required: true,
@@ -145,41 +157,23 @@ export class UpsertTeacherModalComponent implements OnInit {
             label: 'Teacher ID',
             placeholder: 'STU-2024-001',
             required: true,
-            type: QuestionFieldTypeEnum.Number,
           }),
           new QuestionSelectInput({
-            key: 'department',
+            key: 'department_id',
             label: 'Department',
             required: true,
-            options: [
-                { label: 'Science & Math', value: 'science_math' },
-                { label: 'Languages', value: 'languages' },
-                { label: 'Social Studies', value: 'social_studies' },
-                { label: 'Arts', value: 'arts' },
-                { label: 'Physical Education', value: 'physical_education' },
-                { label: 'Computer Science', value: 'computer_science' }
-            ],
+            options: DEPARTMENTS
           }),
         ],
       },
       {
         containers: [
-          new QuestionSelectInput({
+          new QuestionMultiSelect({
             key: 'subjects',
             label: 'Subjects',
             required: true,
-            options: [
-              { label: 'Mathematics', value: 'mathematics' },
-              { label: 'Physics', value: 'physics' },
-              { label: 'Chemistry', value: 'chemistry' },
-              { label: 'Biology', value: 'biology' },
-              { label: 'English', value: 'english' },
-              { label: 'Spanish', value: 'spanish' },
-              { label: 'History', value: 'history' },
-              { label: 'Geography', value: 'geography' },
-              { label: 'Computer Science', value: 'computer_science' },
-              { label: 'Physical Education', value: 'physical_education' }
-            ],
+            optionType: OptionTypeEnum.ASYNC,
+
           }),
           new QuestionSelectInput({
             key: 'qualification',
@@ -197,7 +191,7 @@ export class UpsertTeacherModalComponent implements OnInit {
       {
         containers: [
           new QuestionTextInput({
-            key: 'university',
+            key: 'uni_or_ins_name',
             label: 'University/Institution',
             placeholder: 'Enter university name'
           }),

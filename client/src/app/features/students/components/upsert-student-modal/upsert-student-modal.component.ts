@@ -58,18 +58,21 @@ export class UpsertStudentModalComponent implements OnInit {
   }
 
   private _createTabItems() {
+    const personalInfoFormContainer = this._getPersonalFormContainer()
+    const academicInfoFormContainer = this._getAcademicFormContainer()
+
     this.tabItems = [
       {
         title: 'Personal Information',
         value: 'personal_info',
-        formContainers: this._getPersonalFormContainer(),
-        form: this._questionControlService.toFormGroup(this._getPersonalFormContainer())
+        formContainers: personalInfoFormContainer,
+        form: this._questionControlService.toFormGroup(personalInfoFormContainer)
       },
       {
         title: 'Academic Information',
         value: 'academic_info',
-        formContainers: this._getAcademicFormContainer(),
-        form: this._questionControlService.toFormGroup(this._getAcademicFormContainer())
+        formContainers: academicInfoFormContainer,
+        form: this._questionControlService.toFormGroup(academicInfoFormContainer)
       },
     ]
   }

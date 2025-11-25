@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-card.component";
 import { ButtonModule } from "primeng/button";

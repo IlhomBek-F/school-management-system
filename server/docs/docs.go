@@ -1222,6 +1222,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/stats/student": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get student stats",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get student stats",
+                "responses": {
+                    "201": {
+                        "description": "student stats",
+                        "schema": {
+                            "$ref": "#/definitions/domain.StudentStatsResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/student/create": {
             "post": {
                 "security": [
@@ -1882,22 +1918,22 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "admission_date",
-                "class_section",
+                "class_section_id",
                 "emergency_contact",
-                "grade"
+                "grade_id"
             ],
             "properties": {
                 "admission_date": {
                     "type": "string"
                 },
-                "class_section": {
-                    "type": "string"
+                "class_section_id": {
+                    "type": "integer"
                 },
                 "emergency_contact": {
                     "type": "string"
                 },
-                "grade": {
-                    "type": "string"
+                "grade_id": {
+                    "type": "integer"
                 },
                 "prev_school": {
                     "type": "string"
@@ -1966,6 +2002,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -2011,6 +2050,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -2035,6 +2077,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -2057,6 +2102,9 @@ const docTemplate = `{
                     "$ref": "#/definitions/domain.BasicInformation"
                 },
                 "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "id": {
@@ -2117,6 +2165,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -2130,20 +2181,11 @@ const docTemplate = `{
         },
         "domain.CreateSubjectPayload": {
             "type": "object",
+            "required": [
+                "name"
+            ],
             "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
                 "name": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2172,6 +2214,9 @@ const docTemplate = `{
             ],
             "properties": {
                 "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "id": {
@@ -2239,6 +2284,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -2295,17 +2343,17 @@ const docTemplate = `{
         "domain.PersonalInfo": {
             "type": "object",
             "required": [
-                "blood_group",
+                "blood_group_id",
                 "city",
                 "date_of_birth",
                 "first_name",
-                "ggnder",
+                "gender",
                 "last_name",
-                "phone",
+                "phone_number",
                 "street_address"
             ],
             "properties": {
-                "blood_group": {
+                "blood_group_id": {
                     "type": "string"
                 },
                 "city": {
@@ -2320,13 +2368,13 @@ const docTemplate = `{
                 "first_name": {
                     "type": "string"
                 },
-                "ggnder": {
+                "gender": {
                     "type": "string"
                 },
                 "last_name": {
                     "type": "string"
                 },
-                "phone": {
+                "phone_number": {
                     "type": "string"
                 },
                 "street_address": {
@@ -2342,7 +2390,7 @@ const docTemplate = `{
                 "first_name",
                 "gender",
                 "last_name",
-                "phone",
+                "phone_number",
                 "street_address"
             ],
             "properties": {
@@ -2364,7 +2412,7 @@ const docTemplate = `{
                 "last_name": {
                     "type": "string"
                 },
-                "phone": {
+                "phone_number": {
                     "type": "string"
                 },
                 "street_address": {
@@ -2377,7 +2425,7 @@ const docTemplate = `{
             "required": [
                 "department_id",
                 "qualification",
-                "subject_ids",
+                "subjects",
                 "teacher_id"
             ],
             "properties": {
@@ -2393,10 +2441,10 @@ const docTemplate = `{
                 "qualification": {
                     "type": "string"
                 },
-                "subject_ids": {
+                "subjects": {
                     "type": "array",
                     "items": {
-                        "type": "integer"
+                        "$ref": "#/definitions/domain.TeacherSubject"
                     }
                 },
                 "teacher_id": {
@@ -2460,6 +2508,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "description": {
@@ -2621,6 +2672,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -2686,6 +2740,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -2712,9 +2769,6 @@ const docTemplate = `{
                 "area": {
                     "type": "integer"
                 },
-                "building": {
-                    "$ref": "#/definitions/domain.Building"
-                },
                 "building_id": {
                     "type": "integer"
                 },
@@ -2725,6 +2779,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "description": {
@@ -2747,9 +2804,6 @@ const docTemplate = `{
                 },
                 "number": {
                     "type": "integer"
-                },
-                "room_type": {
-                    "$ref": "#/definitions/domain.RoomType"
                 },
                 "room_type_id": {
                     "type": "integer"
@@ -2820,14 +2874,26 @@ const docTemplate = `{
                 "academic_info": {
                     "$ref": "#/definitions/domain.AcademicInfo"
                 },
+                "attendance": {
+                    "type": "integer"
+                },
                 "created_at": {
                     "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "gpa": {
+                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "personal_info": {
                     "$ref": "#/definitions/domain.PersonalInfo"
+                },
+                "subjects": {
+                    "type": "integer"
                 },
                 "updated_at": {
                     "type": "string"
@@ -2844,17 +2910,8 @@ const docTemplate = `{
                 "academic_info": {
                     "$ref": "#/definitions/domain.AcademicInfo"
                 },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
                 "personal_info": {
                     "$ref": "#/definitions/domain.PersonalInfo"
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },
@@ -2872,6 +2929,37 @@ const docTemplate = `{
                 },
                 "meta": {
                     "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.StudentStats": {
+            "type": "object",
+            "properties": {
+                "active_classes": {
+                    "type": "integer"
+                },
+                "avg_attendance": {
+                    "type": "integer"
+                },
+                "avg_gpa": {
+                    "type": "integer"
+                },
+                "total_students": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.StudentStatsResSuccess": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.StudentStats"
+                },
+                "message": {
+                    "type": "string"
                 },
                 "status": {
                     "type": "integer"
@@ -2902,14 +2990,26 @@ const docTemplate = `{
                 "academic_info": {
                     "$ref": "#/definitions/domain.AcademicInfo"
                 },
+                "attendance": {
+                    "type": "integer"
+                },
                 "created_at": {
                     "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "gpa": {
+                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "personal_info": {
                     "$ref": "#/definitions/domain.PersonalInfo"
+                },
+                "subjects": {
+                    "type": "integer"
                 },
                 "updated_at": {
                     "type": "string"
@@ -2918,8 +3018,14 @@ const docTemplate = `{
         },
         "domain.Subject": {
             "type": "object",
+            "required": [
+                "name"
+            ],
             "properties": {
                 "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "description": {
@@ -2992,6 +3098,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "employment_detail": {
                     "$ref": "#/definitions/domain.EmploymentDetail"
                 },
@@ -3018,6 +3127,9 @@ const docTemplate = `{
             ],
             "properties": {
                 "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "employment_detail": {
@@ -3057,6 +3169,20 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.TeacherSubject": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "subject_id": {
+                    "type": "integer"
+                },
+                "teacher_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "domain.TeacherSuccessRes": {
             "type": "object",
             "properties": {
@@ -3082,6 +3208,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "employment_detail": {
                     "$ref": "#/definitions/domain.EmploymentDetail"
                 },
@@ -3101,8 +3230,14 @@ const docTemplate = `{
         },
         "domain.UpdateSubjectPayload": {
             "type": "object",
+            "required": [
+                "name"
+            ],
             "properties": {
                 "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "description": {
