@@ -12,10 +12,6 @@ export class BaseService {
   protected apiUrl = environment.apiUrl;
   protected baseUrl!: string;
 
-  retrieve<T>(): Observable<T> {
-    return this.http.get<T>(this.baseUrl)
-  }
-
   retrieveAll<T>(query: any): Observable<T> {
     return this.http.get<T>(`${this.baseUrl}/list`, {params: query})
   }

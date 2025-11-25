@@ -14,6 +14,14 @@ export const CLASS_SECTIONS: DropdownOption[] = [
   { label: 'Class C', value: 3 },
 ]
 
+export const DEPARTMENTS: DropdownOption[] = [
+  { label: 'All Departments', value: 'all' },
+  { label: 'Science & Math', value: 'Science & Math' },
+  { label: 'Languages', value: 'Languages' },
+  { label: 'Social Studies', value: 'Social Studies' },
+  { label: 'Sports', value: 'Sports' }
+];
+
 export const CLASS_SECTION_MAP = CLASS_SECTIONS.reduce((prev: Record<number, string>, curr: DropdownOption) => {
   prev[curr.value] = curr.label
   return prev

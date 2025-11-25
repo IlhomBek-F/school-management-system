@@ -1,3 +1,6 @@
+import { FormGroup } from "@angular/forms";
+import { FormContainer } from "./question-base";
+
 export interface Base {
   id: number;
   created_at: string;
@@ -34,4 +37,10 @@ export interface Paginator {
   per_page: number
 }
 
+export interface TabItem {
+  title: string,
+  value: string,
+  formContainers: FormContainer[],
+  form: FormGroup
+}
 

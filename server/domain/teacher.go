@@ -13,7 +13,7 @@ type PersonalInformation struct {
 	DateOfBirth   string `json:"date_of_birth" binding:"required"`
 	Gender        string `json:"gender" binding:"required"`
 	Email         string `json:"email"`
-	Phone         string `json:"phone" binding:"required"`
+	Phone         string `json:"phone_number" binding:"required"`
 	StreetAddress string `json:"street_address" binding:"required"`
 	City          string `json:"city" binding:"required"`
 }
