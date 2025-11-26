@@ -1,7 +1,3 @@
--- Create gender enum
-DROP TYPE IF EXISTS gender;
-CREATE TYPE gender AS ENUM ('male', 'female');
-
 CREATE TABLE IF NOT EXISTS teachers (
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -10,8 +6,8 @@ CREATE TABLE IF NOT EXISTS teachers (
 
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
-    date_of_birth DATE NOT NULL,
-    gender gender NOT NULL DEFAULT 'male',
+    date_of_birth VARCHAR(10) NOT NULL,
+    gender VARCHAR(10) NOT NULL DEFAULT 'male',
     email VARCHAR(100) UNIQUE,
     phone_number VARCHAR(20) NOT NULL,
     street_address VARCHAR(250) NOT NULL,
@@ -23,8 +19,8 @@ CREATE TABLE IF NOT EXISTS teachers (
     uni_or_ins_name VARCHAR(150),
     graduation_year INT,
     experience INT,
-    joining_date DATE,
+    joining_date VARCHAR(10),
     employment_type_id INT,
     salary INT,
-    contract_end_date DATE
+    contract_end_date VARCHAR(10)
 );

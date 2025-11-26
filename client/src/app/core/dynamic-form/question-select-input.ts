@@ -21,7 +21,7 @@ interface SelectInputOptionsBase extends QuestionOptionsModel{
   options?: any,
   optionType?: OptionTypeEnum;
   asyncOptionType?: any;
-  normalizeValue?: (value: any) => any
+  normalizeValue?: (options: any, value: any) => any
 }
 
 export type SelectInputOptions = SelectInputOptionsAsync | SelectInputOptionsEager;
@@ -34,7 +34,7 @@ export class QuestionSelectInput extends QuestionBase {
   options: any[];
   optionType?: OptionTypeEnum;
   asyncOptionType?: AsyncOptionEnum;
-  normalizeValue?: <T = any>(value: any) => T
+  normalizeValue?: <T = any>(value: any, options?: any) => T
 
   constructor(options: SelectInputOptions) {
     super(options)

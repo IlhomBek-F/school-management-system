@@ -9,6 +9,7 @@ import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { TabItem } from '@core/models/base';
 import { FormContainer } from '@core/models/question-base';
+import { Subject } from '@core/models/subject';
 import { QuestionControlService } from '@core/services/question-control.service';
 import { DynamicFormComponent } from '@shared/components/dynamic-form/dynamic-form.component';
 import { StudentsService } from 'app/features/students/services/students.service';
@@ -176,7 +177,10 @@ export class UpsertTeacherModalComponent implements OnInit {
             optionValue: "id",
             optionLabel: "name",
             optionType: OptionTypeEnum.ASYNC,
-            asyncOptionType: AsyncOptionEnum.SUBJECTS
+            asyncOptionType: AsyncOptionEnum.SUBJECTS,
+            normalizeValue: (subject_ids: number[], options: Subject[]) => {
+              return options.filter(({ id }) => subject_ids.includes(id))
+            },
           }),
           new QuestionSelectInput({
             key: 'qualification',
@@ -201,6 +205,7 @@ export class UpsertTeacherModalComponent implements OnInit {
           new QuestionDatePicker({
             key: 'graduation_year',
             label: 'Graduation year',
+            view: 'year'
           }),
           new QuestionTextInput({
             key: 'experience',
@@ -221,12 +226,12 @@ export class UpsertTeacherModalComponent implements OnInit {
             label: 'Joining date'
           }),
           new QuestionSelectInput({
-            key: 'employment_type',
+            key: 'employment_type_id',
             label: 'Employment type',
             options: [
-              { label: 'Full-Time', value: 'full_time' },
-              { label: 'Part-Time', value: 'part_time' },
-              { label: 'Contract', value: 'contract' },
+              { label: 'Full-Time', value: 1 },
+              { label: 'Part-Time', value: 2 },
+              { label: 'Contract', value: 3 },
             ]
           })
         ]

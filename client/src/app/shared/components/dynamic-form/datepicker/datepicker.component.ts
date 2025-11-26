@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DatePickerModule } from 'primeng/datepicker';
+import { DatePickerModule, DatePickerTypeView } from 'primeng/datepicker';
 
 const VALUE_ACCESSOR_PROVIDER = {
   provide: NG_VALUE_ACCESSOR,
@@ -21,7 +21,7 @@ export class DatepickerComponent implements ControlValueAccessor{
   label = input();
   onChangeEmit = output<any>()
   required = input()
-
+  view = input<DatePickerTypeView>("date")
   value: any;
   disabled = false;
 
@@ -47,8 +47,12 @@ export class DatepickerComponent implements ControlValueAccessor{
 
   handleChange(event: any) {
     const date = new Date(event)
-    this.value = [date.getDay(), date.getMonth(), date.getFullYear()].join("-");
-    this.onChange(this.value);
+    const dates = [date.getDay(), date.getMonth(), date.getFullYear()];
+    const formatedValue = this.view() === 'year' ? dates[3] : this.view() === 'month' ? dates[2] : dates.join('-')
+
+    this.value = event;
+
+    this.onChange(formatedValue);
     this.onChangeEmit.emit(this.value)
     this.onTouched();
   }

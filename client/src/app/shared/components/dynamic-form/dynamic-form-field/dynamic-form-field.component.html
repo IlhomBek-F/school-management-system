@@ -47,7 +47,9 @@
       }
       @case (QuestionTypeEnum.DatePicker) {
         <school-datepicker [formControlName]="question().key"
-                           [required]="question().required"/>
+                           [required]="question().required"
+                           [view]="$any(question()).view"
+                           />
       }
       @case (QuestionTypeEnum.TextArea) {
         <school-textarea-input [formControlName]="question().key"

@@ -13,19 +13,19 @@ type PersonalInformation struct {
 	DateOfBirth   string `json:"date_of_birth" binding:"required"`
 	Gender        string `json:"gender" binding:"required"`
 	Email         string `json:"email"`
-	Phone         string `json:"phone_number" binding:"required"`
+	PhoneNumber   string `json:"phone_number" binding:"required"`
 	StreetAddress string `json:"street_address" binding:"required"`
 	City          string `json:"city" binding:"required"`
 }
 
 type ProfessionalInformation struct {
-	TeacherId      string           `json:"teacher_id" binding:"required"`
-	DepartmentId   int              `json:"department_id" binding:"required"`
-	Subjects       []TeacherSubject `json:"subjects" binding:"required" gorm:"many2many:teacher_subjects"`
-	Qualification  string           `json:"qualification" binding:"required"`
-	UniOrInsName   string           `json:"uni_or_ins_name"`
-	GraduationYear int              `json:"graduation_year"`
-	Experience     int              `json:"experience"`
+	TeacherId      string    `json:"teacher_id" binding:"required"`
+	DepartmentId   int       `json:"department_id" binding:"required"`
+	Subjects       []Subject `json:"subjects" binding:"required" gorm:"many2many:teacher_subjects"`
+	Qualification  string    `json:"qualification" binding:"required"`
+	UniOrInsName   string    `json:"uni_or_ins_name"`
+	GraduationYear int       `json:"graduation_year"`
+	Experience     int       `json:"experience"`
 }
 
 type TeacherSubject struct {
@@ -35,13 +35,19 @@ type TeacherSubject struct {
 }
 
 type EmploymentDetail struct {
-	JoiningDate     string `json:"joing_date"`
-	EmploymentType  string `json:"employment_type"`
-	Salary          int    `json:"salary"`
-	ContractEndDate string `json:"conrtact_end_date"`
+	JoiningDate      string `json:"joining_date"`
+	EmploymentTypeId int    `json:"employment_type_id"`
+	Salary           int    `json:"salary"`
+	ContractEndDate  string `json:"contract_end_date"`
 }
 
-type TeacherCreatePayload = Teacher
+type TeacherFields struct {
+	PersonalInfo     PersonalInformation     `json:"personal_info" gorm:"embedded" binding:"required"`
+	ProfessionalInfo ProfessionalInformation `json:"professional_info" gorm:"embedded" binding:"required"`
+	EmploymentDetail EmploymentDetail        `json:"employment_details" gorm:"embedded" binding:"required"`
+}
+
+type TeacherCreatePayload = TeacherFields
 type TeacherUpdatePayload = Teacher
 type TeacherSuccessRes = SuccessResponseWithData[Teacher]
 type TeacherListRes = SuccessResponseWithMeta[[]Teacher]

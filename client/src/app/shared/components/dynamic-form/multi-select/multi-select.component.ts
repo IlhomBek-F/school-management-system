@@ -6,7 +6,7 @@ import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { AsyncOptionsService } from '@core/services/async-option.service';
 import { ToastService } from '@core/services/toast.service';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { catchError, finalize, Observable, of, throwError } from 'rxjs';
+import { catchError, finalize, Observable, of, tap, throwError } from 'rxjs';
 
 const VALUE_ACCESSOR_PROVIDER = {
   provide: NG_VALUE_ACCESSOR,
@@ -39,12 +39,14 @@ export class MultiSelectComponent implements ControlValueAccessor, OnInit {
   loading = false
   private _asyncOptionService = inject(AsyncOptionsService)
   private _messageService = inject(ToastService)
+  private _options: any[] = [];
 
   asyncOptionsPipe$ = computed(() => {
     if (this.optionType() === OptionTypeEnum.ASYNC) {
       this.loading = true;
      return this._asyncOptionService.getAsyncOptionsRequest(this.asyncOptionType() as AsyncOptionEnum)
         .pipe(
+          tap((data) => this._options = data),
           finalize(() => this.loading = false),
           catchError((err) => {
             this._messageService.error(`Failed fetchin async ${this.label()} options`)
@@ -53,6 +55,7 @@ export class MultiSelectComponent implements ControlValueAccessor, OnInit {
         )
     }
 
+    this._options = this.options();
     return of(this.options())
   })
 
@@ -84,7 +87,7 @@ export class MultiSelectComponent implements ControlValueAccessor, OnInit {
     const _normalizeValueFc = this.normalizeValue()
 
     if (_normalizeValueFc instanceof Function) {
-      const normalizedValue = _normalizeValueFc(this.value)
+      const normalizedValue = _normalizeValueFc(this.value, this._options)
       this.onChange(normalizedValue);
       this.onChangeEmit.emit(normalizedValue)
     } else {

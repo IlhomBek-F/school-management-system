@@ -12,7 +12,7 @@ export class QuestionMultiSelect extends QuestionBase {
   options: any[];
   optionType?: OptionTypeEnum;
   asyncOptionType?: AsyncOptionEnum;
-  normalizeValue?: (value: any) => any
+  normalizeValue?: (value: any, options?: any[]) => any
 
   constructor(options: SelectInputOptions) {
       super(options)

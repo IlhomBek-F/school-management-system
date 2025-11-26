@@ -30,9 +30,15 @@ func (r teacherRepository) GetList() ([]domain.Teacher, error) {
 }
 
 func (r teacherRepository) Create(payload domain.TeacherCreatePayload) (domain.Teacher, error) {
-	result := r.Db.Create(&payload)
+	teacher := domain.Teacher{
+		PersonalInfo:     payload.PersonalInfo,
+		ProfessionalInfo: payload.ProfessionalInfo,
+		EmploymentDetail: payload.EmploymentDetail,
+	}
 
-	return payload, result.Error
+	result := r.Db.Create(&teacher)
+
+	return teacher, result.Error
 }
 
 func (r teacherRepository) Update(payload domain.TeacherUpdatePayload) (domain.Teacher, error) {
