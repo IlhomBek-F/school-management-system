@@ -1,16 +1,8 @@
-import { QuestionOptionsModel } from '@core/models/question-base';
 import { QuestionTypeEnum } from '../enums/question-type.enum';
 import {QuestionBase} from './question-base';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
-
-export interface SelectInputOptions extends QuestionOptionsModel{
-  loading?: boolean;
-  optionLabel?: string;
-  optionValue?: string;
-  options?: any,
-  optionType?: OptionTypeEnum
-  normalizeValue?: (value: any) => any
-}
+import { AsyncOptionEnum } from '@core/enums/async-option.enum';
+import { SelectInputOptions } from './question-select-input';
 
 export class QuestionMultiSelect extends QuestionBase {
   override controlType = QuestionTypeEnum.MultiSelect;
@@ -18,7 +10,8 @@ export class QuestionMultiSelect extends QuestionBase {
   optionLabel: string;
   optionValue: string;
   options: any[];
-  optionType?: OptionTypeEnum
+  optionType?: OptionTypeEnum;
+  asyncOptionType?: AsyncOptionEnum;
   normalizeValue?: (value: any) => any
 
   constructor(options: SelectInputOptions) {
@@ -28,6 +21,9 @@ export class QuestionMultiSelect extends QuestionBase {
       this.optionValue = options.optionValue || 'value'
       this.options = options.options
       this.optionType = options.optionType || OptionTypeEnum.EAGER
+      if(this.optionType === OptionTypeEnum.ASYNC) {
+        this.asyncOptionType = options.asyncOptionType
+      }
       this.normalizeValue = options.normalizeValue
     }
 }

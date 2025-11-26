@@ -1,14 +1,30 @@
 import { QuestionOptionsModel } from '@core/models/question-base';
 import { QuestionTypeEnum } from '../enums/question-type.enum';
 import {QuestionBase} from './question-base';
+import { OptionTypeEnum } from '@core/enums/option-type.enum';
+import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 
-export interface SelectInputOptions extends QuestionOptionsModel{
+interface SelectInputOptionsAsync extends SelectInputOptionsBase {
+  optionType: OptionTypeEnum.ASYNC;
+  asyncOptionType: AsyncOptionEnum;
+}
+
+interface SelectInputOptionsEager extends SelectInputOptionsBase {
+  optionType?: OptionTypeEnum.EAGER;
+  asyncOptionType?: never;
+}
+
+interface SelectInputOptionsBase extends QuestionOptionsModel{
   loading?: boolean;
   optionLabel?: string;
   optionValue?: string;
   options?: any,
+  optionType?: OptionTypeEnum;
+  asyncOptionType?: any;
   normalizeValue?: (value: any) => any
 }
+
+export type SelectInputOptions = SelectInputOptionsAsync | SelectInputOptionsEager;
 
 export class QuestionSelectInput extends QuestionBase {
   override controlType = QuestionTypeEnum.SelectInput;
@@ -16,6 +32,8 @@ export class QuestionSelectInput extends QuestionBase {
   optionLabel: string;
   optionValue: string;
   options: any[];
+  optionType?: OptionTypeEnum;
+  asyncOptionType?: AsyncOptionEnum;
   normalizeValue?: <T = any>(value: any) => T
 
   constructor(options: SelectInputOptions) {
@@ -24,6 +42,10 @@ export class QuestionSelectInput extends QuestionBase {
     this.optionLabel = options.optionLabel || 'label'
     this.optionValue = options.optionValue || 'value'
     this.options = options.options
+    this.optionType = options.optionType || OptionTypeEnum.EAGER
+    if(this.optionType === OptionTypeEnum.ASYNC) {
+      this.asyncOptionType = options.asyncOptionType
+    }
     this.normalizeValue = options.normalizeValue
   }
 }

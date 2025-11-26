@@ -4,6 +4,7 @@ import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
 import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
+import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { TabItem } from '@core/models/base';
@@ -172,8 +173,10 @@ export class UpsertTeacherModalComponent implements OnInit {
             key: 'subjects',
             label: 'Subjects',
             required: true,
+            optionValue: "id",
+            optionLabel: "name",
             optionType: OptionTypeEnum.ASYNC,
-
+            asyncOptionType: AsyncOptionEnum.SUBJECTS
           }),
           new QuestionSelectInput({
             key: 'qualification',

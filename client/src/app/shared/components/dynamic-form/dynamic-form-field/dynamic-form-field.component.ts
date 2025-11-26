@@ -10,6 +10,7 @@ import { DatepickerComponent } from '../datepicker/datepicker.component';
 import { PasswordInputComponent } from '../password-input/password-input.component';
 import { QuestionBaseType } from '@core/models/question-base';
 import { NumberInputComponent } from '../text-input-number/number-input.component';
+import { OptionTypeEnum } from '@core/enums/option-type.enum';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class DynamicFormFieldComponent {
   readonly form = input.required<FormGroup>();
   readonly QuestionTypeEnum = QuestionTypeEnum;
   readonly QuestionFieldTypeEnum = QuestionFieldTypeEnum
+  readonly OptionTypeEnum = OptionTypeEnum
 
   get isValid() {
     return this.form().controls[this.question().key].valid;
