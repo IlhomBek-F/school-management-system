@@ -5,7 +5,7 @@ import { ButtonModule } from "primeng/button";
 import { TableModule } from "primeng/table";
 import { DropdownModule } from "primeng/dropdown";
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SchoolStatsCardComponent } from "@shared/components/stats-card/stats-card.component";
 import { EmptyListComponent } from "@shared/components/empty-list/empty-list.component";
 import { TextInputComponent } from "@shared/components/dynamic-form/text-input/text-input.component";
@@ -21,7 +21,7 @@ import { ToastService } from '@core/services/toast.service';
 import { DropdownOption, Meta } from '@core/models/base';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { TeachersService } from '../services/teachers.service';
-import { Teacher, TeacherStats, TeacherSuccessRes, UpsertTeacherPayload } from '../models';
+import { Teacher, TeacherListSuccessRes, TeacherStats, TeacherSuccessRes, UpsertTeacherPayload } from '../models';
 import { DEPARTMENTS } from 'app/utils/constants';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { finalize } from 'rxjs';
@@ -29,7 +29,7 @@ import { finalize } from 'rxjs';
 @UntilDestroy()
 @Component({
   selector: 'school-teachers',
-  imports: [PageTitleComponent, TagModule,
+  imports: [PageTitleComponent, TagModule, ReactiveFormsModule,
     ButtonModule, TableModule,
     DropdownModule, CommonModule,
     FormsModule, SchoolStatsCardComponent,
@@ -40,7 +40,7 @@ import { finalize } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeachersComponent implements OnInit {
-  loading = signal(true)
+  loading = signal(false)
   VIEW_MODE = ViewModeEnum;
   viewMode = signal(this.VIEW_MODE.GRID)
   departments: DropdownOption[] = DEPARTMENTS
@@ -66,122 +66,6 @@ export class TeachersComponent implements OnInit {
     current_page: this.filterFormGroup.get('page')?.value || 1
   })
 
-  // teachers: any[] = [
-  //   {
-  //     id: 1,
-  //     name: 'Dr. Sarah Johnson',
-  //     subject: 'Mathematics',
-  //     department: 'Science & Math',
-  //     email: 'sarah.j@school.edu',
-  //     phone: '+1 234-567-8901',
-  //     avatar: 'SJ',
-  //     experience: 12,
-  //     students: 145,
-  //     rating: 4.8,
-  //     status: 'Active',
-  //     color: 'bg-blue-500'
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Prof. Michael Chen',
-  //     subject: 'Physics',
-  //     department: 'Science & Math',
-  //     email: 'michael.c@school.edu',
-  //     phone: '+1 234-567-8902',
-  //     avatar: 'MC',
-  //     experience: 15,
-  //     students: 132,
-  //     rating: 4.9,
-  //     status: 'Active',
-  //     color: 'bg-purple-500'
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'Ms. Emily Rodriguez',
-  //     subject: 'English Literature',
-  //     department: 'Languages',
-  //     email: 'emily.r@school.edu',
-  //     phone: '+1 234-567-8903',
-  //     avatar: 'ER',
-  //     experience: 8,
-  //     students: 128,
-  //     rating: 4.7,
-  //     status: 'Active',
-  //     color: 'bg-pink-500'
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'Mr. David Wilson',
-  //     subject: 'History',
-  //     department: 'Social Studies',
-  //     email: 'david.w@school.edu',
-  //     phone: '+1 234-567-8904',
-  //     avatar: 'DW',
-  //     experience: 10,
-  //     students: 118,
-  //     rating: 4.6,
-  //     status: 'Active',
-  //     color: 'bg-green-500'
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'Dr. Lisa Anderson',
-  //     subject: 'Chemistry',
-  //     department: 'Science & Math',
-  //     email: 'lisa.a@school.edu',
-  //     phone: '+1 234-567-8905',
-  //     avatar: 'LA',
-  //     experience: 14,
-  //     students: 140,
-  //     rating: 4.9,
-  //     status: 'Active',
-  //     color: 'bg-orange-500'
-  //   },
-  //   {
-  //     id: 6,
-  //     name: 'Mr. James Brown',
-  //     subject: 'Physical Education',
-  //     department: 'Sports',
-  //     email: 'james.b@school.edu',
-  //     phone: '+1 234-567-8906',
-  //     avatar: 'JB',
-  //     experience: 7,
-  //     students: 200,
-  //     rating: 4.5,
-  //     status: 'On Leave',
-  //     color: 'bg-indigo-500'
-  //   },
-  //   {
-  //     id: 7,
-  //     name: 'Ms. Maria Garcia',
-  //     subject: 'Spanish',
-  //     department: 'Languages',
-  //     email: 'maria.g@school.edu',
-  //     phone: '+1 234-567-8907',
-  //     avatar: 'MG',
-  //     experience: 9,
-  //     students: 95,
-  //     rating: 4.8,
-  //     status: 'Active',
-  //     color: 'bg-red-500'
-  //   },
-  //   {
-  //     id: 8,
-  //     name: 'Dr. Robert Taylor',
-  //     subject: 'Biology',
-  //     department: 'Science & Math',
-  //     email: 'robert.t@school.edu',
-  //     phone: '+1 234-567-8908',
-  //     avatar: 'RT',
-  //     experience: 16,
-  //     students: 138,
-  //     rating: 4.9,
-  //     status: 'Active',
-  //     color: 'bg-teal-500'
-  //   }
-  // ];
-
-
   private _dialogService = inject(DialogService)
   private _router = inject(Router)
   private _activeRoute = inject(ActivatedRoute)
@@ -191,6 +75,7 @@ export class TeachersComponent implements OnInit {
   private _teachersService = inject(TeachersService)
 
   ngOnInit(): void {
+    this._getTeacherList()
   }
 
   upsertTeacher(teacher?: any): void {
@@ -220,9 +105,22 @@ export class TeachersComponent implements OnInit {
     this._router.navigate([teacher.id], {relativeTo: this._activeRoute})
   }
 
-  deleteTeacher(teacher: any) {
+  deleteTeacher(teacher: Teacher) {
     this._confirmService.confirm((ref: ConfirmationService) => {
       this._confirmService.loading$.next(true)
+      this._teachersService.delete(teacher.id)
+       .pipe(
+        finalize(() => this._confirmService.loading$.next(false)),
+        untilDestroyed(this)
+       ).subscribe({
+        next: () => {
+          this._messageService.success("Teacher deleted successfully")
+          this._getTeacherList()
+          ref.close()
+        }, error: (err) => {
+          this._messageService.error(err.message)
+        }
+       })
     })
   }
 
@@ -244,6 +142,23 @@ export class TeachersComponent implements OnInit {
          dialogRef.close()
       }, error: (err) => {
          this._messageService.error("Failed adding new teacher")
+      }
+     })
+  }
+
+  private _getTeacherList() {
+    this.loading.set(true)
+    this._teachersService.retrieveAll<TeacherListSuccessRes>()
+     .pipe(
+      finalize(() => this.loading.set(false)),
+      untilDestroyed(this)
+     ).subscribe({
+      next: (res) => {
+        console.log(res.data)
+         this.teachers.set(res.data)
+         this.teachersMeta.set(res.meta)
+      }, error: (err) => {
+        this._messageService.error("Failed getting teacher list")
       }
      })
   }

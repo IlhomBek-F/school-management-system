@@ -1,4 +1,5 @@
 import { Base, Paginator, ResData, ResDataWithMeta } from "@core/models/base";
+import { Subject } from "@core/models/subject";
 
 export interface UpsertTeacherPayload extends Base {
   personal_info: PersonalInfo;
@@ -20,7 +21,7 @@ export interface PersonalInfo {
 export interface ProfessionalInfo {
   teacher_id: string;
   department_id: number;
-  subjects: number;
+  subjects: Subject[];
   qualification: string;
   uni_or_ins_name: string;
   graduation_year: string;

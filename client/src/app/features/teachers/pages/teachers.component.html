@@ -17,10 +17,10 @@
     </div>
 
     <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-      <div class="flex flex-col md:flex-row gap-4">
-        <school-text-input icon="pi pi-search" placeholder="Search teachers by name or subject..."
+      <div class="flex flex-col md:flex-row gap-4" [formGroup]="filterFormGroup">
+        <school-text-input icon="pi pi-search" formControlName="search" placeholder="Search teachers by name or subject..."
            />
-        <school-select-input [options]="departments" />
+        <school-select-input [options]="departments" formControlName="department_id" />
 
         <div class="flex gap-2">
           <p-button label="Grid" [outlined]="viewMode() !== VIEW_MODE.GRID" (onClick)="viewMode.set(VIEW_MODE.GRID)"

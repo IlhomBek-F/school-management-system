@@ -13,37 +13,41 @@
             <th>Action</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-teacher>
+        <ng-template pTemplate="body" let-teacher let-rowIndex="rowIndex">
           <tr class="hover:bg-gray-50">
             <td>
               <div class="flex items-center gap-3">
-                <div [class]="'w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ' + teacher.color">
-                  {{ teacher.avatar }}
+                <div [class]="'w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ' + (teacherList().length | schoolRandomBgColor: rowIndex)">
+                  {{ teacher.personal_info.first_name[0] }}
                 </div>
-                <span class="font-medium text-gray-800">{{ teacher.name }}</span>
+                <span class="font-medium text-gray-800">{{ teacher.personal_info.first_name }}</span>
               </div>
             </td>
-            <td class="text-gray-600">{{ teacher.subject }}</td>
+            <td class="text-gray-600">
+              @for (subject of teacher.professional_info.subjects; track $index) {
+                {{subject.name}}
+              }
+            </td>
             <td>
-              <p-tag [value]="teacher.department" severity="info" [rounded]="true"></p-tag>
+              <p-tag [value]="DEPARTMENT_MAP[teacher.professional_info.department_id]" severity="info" [rounded]="true"></p-tag>
             </td>
             <td>
               <div class="text-sm text-gray-600">
-                <div class="truncate max-w-xs">{{ teacher.email }}</div>
-                <div>{{ teacher.phone }}</div>
+                <div class="truncate max-w-xs">{{ teacher.personal_info.email }}</div>
+                <div>{{ teacher.personal_info.phone_number }}</div>
               </div>
             </td>
             <td>
-              <span class="font-semibold text-gray-800">{{ teacher.experience }} years</span>
+              <span class="font-semibold text-gray-800">{{ teacher.professional_info.experience }} years</span>
             </td>
             <td>
-              <span class="font-semibold text-gray-800">{{ teacher.students }}</span>
+              <span class="font-semibold text-gray-800">{{ 100 }}</span>
             </td>
             <td>
               <div class="flex items-center gap-2">
-                <span class="font-semibold text-amber-600">{{ teacher.rating }}</span>
+                <span class="font-semibold text-amber-600">{{ 4 }}</span>
                 <div class="flex gap-1">
-                   @for (star of getRatingStars(teacher.rating); track $index) {
+                   @for (star of getRatingStars(4); track $index) {
                     <i [class]="star === 'full' ? 'pi pi-star-fill text-amber-400 text-xs' :
                               star === 'half' ? 'pi pi-star-half-fill text-amber-400 text-xs' :
                               'pi pi-star text-gray-300 text-xs'">
@@ -54,11 +58,11 @@
             </td>
             <td>
               <p-tag
-                [value]="teacher.status"
-                [severity]="teacher.status === 'Active' ? 'success' : 'warning'">
+                [value]="'Active'"
+                [severity]="'Active' === 'Active' ? 'success' : 'warning'">
               </p-tag>
             </td>
-            <td class="space-x-2">
+            <td class="space-x-2 flex">
               <p-button
                 label="View"
                 [outlined]="true"

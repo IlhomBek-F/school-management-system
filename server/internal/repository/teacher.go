@@ -24,7 +24,7 @@ func NewTeacherRepository(db *gorm.DB) TeacherRepository {
 
 func (r teacherRepository) GetList() ([]domain.Teacher, error) {
 	var teachers []domain.Teacher
-	result := r.Db.Find(&teachers)
+	result := r.Db.Preload("Subjects").Find(&teachers)
 
 	return teachers, result.Error
 }
@@ -48,7 +48,7 @@ func (r teacherRepository) Update(payload domain.TeacherUpdatePayload) (domain.T
 }
 
 func (r teacherRepository) Delete(id int) error {
-	result := r.Db.Delete(domain.Teacher{}, id)
+	result := r.Db.Delete(&domain.Teacher{}, id)
 
 	return result.Error
 }

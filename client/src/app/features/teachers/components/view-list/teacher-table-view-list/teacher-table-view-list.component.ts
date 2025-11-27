@@ -3,18 +3,22 @@ import { TableModule } from "primeng/table";
 import { Tag } from "primeng/tag";
 import { Button } from "primeng/button";
 import { CommonModule } from '@angular/common';
+import { RandomBgColorPipe } from '@core/pipes/random-bg-color-pipe';
+import { Teacher } from 'app/features/teachers/models';
+import { DEPARTMENTS_MAP } from 'app/utils/constants';
 
 @Component({
   selector: 'school-teacher-table-view-list',
-  imports: [TableModule, Tag, Button, CommonModule],
+  imports: [TableModule, Tag, Button, CommonModule, RandomBgColorPipe],
   templateUrl: './teacher-table-view-list.component.html',
   styleUrl: './teacher-table-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeacherTableViewListComponent {
-  teacherList = input.required<any[]>()
+  teacherList = input.required<Teacher[]>()
   viewDetailEmitEvent = output<any>()
   deleteEmitEvent = output<any>()
+  DEPARTMENT_MAP = DEPARTMENTS_MAP;
 
   viewProfile(teacher: any): void {
     this.viewDetailEmitEvent.emit(teacher)

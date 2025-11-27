@@ -6,19 +6,23 @@ import { CommonModule } from '@angular/common';
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { of, timeout } from 'rxjs';
 import { ConfirmationService } from 'primeng/api';
+import { Teacher } from 'app/features/teachers/models';
+import { DEPARTMENTS_MAP } from 'app/utils/constants';
+import { RandomBgColorPipe } from '@core/pipes/random-bg-color-pipe';
 
 @Component({
   selector: 'school-teacher-grid-view-list',
-  imports: [Tag, Button, SkeletonModule, CommonModule],
+  imports: [Tag, Button, SkeletonModule, CommonModule, RandomBgColorPipe],
   templateUrl: './teacher-grid-view-list.component.html',
   styleUrl: './teacher-grid-view-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeacherGridViewListComponent {
   loading = input(false)
-  teachers = input.required<any[]>()
+  teachers = input.required<Teacher[]>()
   viewDetailEmitEvent = output<any>()
   deleteEmitEvent = output<any>()
+  DEPARTMENTS_MAP = DEPARTMENTS_MAP;
 
   getRatingStars(rating: number): string[] {
     const stars = [];

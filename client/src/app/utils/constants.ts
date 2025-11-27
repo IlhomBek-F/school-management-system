@@ -22,6 +22,11 @@ export const DEPARTMENTS: DropdownOption[] = [
   { label: 'Sports', value: 4 }
 ];
 
+export const DEPARTMENTS_MAP = DEPARTMENTS.reduce((prev: Record<number, string>, curr: DropdownOption) => {
+  prev[curr.value] = curr.label
+  return prev
+}, {})
+
 export const CLASS_SECTION_MAP = CLASS_SECTIONS.reduce((prev: Record<number, string>, curr: DropdownOption) => {
   prev[curr.value] = curr.label
   return prev

@@ -16,7 +16,7 @@ interface Auth {
   providedIn: "root"
 })
 export class AuthService extends BaseService implements Auth {
-  private _url = `${this.baseUrl}/auth/refresh_token`
+  private _url = `${this.apiUrl}/auth/refresh_token`
 
   private readonly ACCESS_TOKEN_KEY = 'ACCESS_TOKEN_KEY'
   private readonly REFRESH_TOKEN_KEY = 'REFRESH_TOKEN_KEY'
