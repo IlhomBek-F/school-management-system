@@ -47,6 +47,15 @@
                                       (viewDetailEmitEvent)="viewProfile($event)"/>
     }
 
+     @if (teachersMeta().total > teachersMeta().per_page) {
+      <div class="mt-2">
+      <p-paginator (onPageChange)="onPageChange($event)"
+                 [first]="0" [rows]="teachersMeta().per_page"
+                 [totalRecords]="teachersMeta().total"
+                />
+     </div>
+    }
+
     @if (teachersMeta().total === 0) {
     <school-empty-list title="No teachers found" />
     }

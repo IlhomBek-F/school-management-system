@@ -26,7 +26,7 @@ import { DEPARTMENTS } from 'app/utils/constants';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { StatsService } from '@core/services/stats.service';
-import { PaginatorState } from 'primeng/paginator';
+import { PaginatorState, PaginatorModule } from 'primeng/paginator';
 
 @UntilDestroy()
 @Component({
@@ -35,7 +35,7 @@ import { PaginatorState } from 'primeng/paginator';
     ButtonModule, TableModule,
     DropdownModule, CommonModule,
     FormsModule, SchoolStatsCardComponent,
-    EmptyListComponent, TextInputComponent, SelectInputComponent, TeacherTableViewListComponent, TeacherGridViewListComponent],
+    EmptyListComponent, TextInputComponent, SelectInputComponent, TeacherTableViewListComponent, TeacherGridViewListComponent, PaginatorModule],
   templateUrl: './teachers.component.html',
   styleUrl: './teachers.component.scss',
   providers: [DialogService, TeachersService],
