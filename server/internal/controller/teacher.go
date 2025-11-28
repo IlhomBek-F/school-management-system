@@ -26,7 +26,14 @@ type TeacherController struct {
 //	@Failure		500		{object}	error
 //	@Router			/teacher/list [get]
 func (t TeacherController) GetTeacherList(c *gin.Context) {
-	teachers, err := t.TeacherUsecase.GetList()
+	var teacherQuery domain.TeacherQuery
+
+	if err := c.ShouldBindQuery(&teacherQuery); err != nil {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrBadRequest])
+		return
+	}
+
+	teachers, meta, err := t.TeacherUsecase.GetList(teacherQuery)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrInternalServer])
@@ -37,11 +44,7 @@ func (t TeacherController) GetTeacherList(c *gin.Context) {
 		Status:  http.StatusOK,
 		Message: "success",
 		Data:    teachers,
-		Meta: domain.Meta{
-			Total:       0,
-			PerPage:     10,
-			CurrentPage: 1,
-		},
+		Meta:    meta,
 	}
 
 	c.JSON(http.StatusCreated, successRes)

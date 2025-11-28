@@ -47,6 +47,12 @@ type TeacherFields struct {
 	EmploymentDetail EmploymentDetail        `json:"employment_details" gorm:"embedded" binding:"required"`
 }
 
+type TeacherQuery struct {
+	Paginator
+	DepartmentId int    `form:"department_id"`
+	QueryTerm    string `form:"search"`
+}
+
 type TeacherCreatePayload = TeacherFields
 type TeacherUpdatePayload = Teacher
 type TeacherSuccessRes = SuccessResponseWithData[Teacher]

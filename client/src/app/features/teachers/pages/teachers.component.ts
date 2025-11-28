@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal, WritableSignal, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal, type OnInit } from '@angular/core';
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
@@ -21,11 +21,12 @@ import { ToastService } from '@core/services/toast.service';
 import { DropdownOption, Meta } from '@core/models/base';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { TeachersService } from '../services/teachers.service';
-import { Teacher, TeacherListSuccessRes, TeacherStats, TeacherSuccessRes, UpsertTeacherPayload } from '../models';
+import { Teacher, TeacherListSuccessRes, TeacherQuery, TeacherStats, TeacherSuccessRes, UpsertTeacherPayload } from '../models';
 import { DEPARTMENTS } from 'app/utils/constants';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { finalize } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { StatsService } from '@core/services/stats.service';
+import { PaginatorState } from 'primeng/paginator';
 
 @UntilDestroy()
 @Component({
@@ -51,7 +52,7 @@ export class TeachersComponent implements OnInit {
     search: new FormControl('', { nonNullable: true }),
     department_id: new FormControl(0, { nonNullable: true }),
     page: new FormControl(1, { nonNullable: true }),
-    per_page: new FormControl(10, {nonNullable: true})
+    per_page: new FormControl(10, { nonNullable: true })
   })
 
   teachers: WritableSignal<Teacher[]> = signal([]);
@@ -72,7 +73,6 @@ export class TeachersComponent implements OnInit {
   private _router = inject(Router)
   private _activeRoute = inject(ActivatedRoute)
   private _confirmService = inject(DeleteConfirmDialogService);
-  private _cdr = inject(ChangeDetectorRef);
   private _messageService = inject(ToastService)
   private _teachersService = inject(TeachersService)
   private _statsService = inject(StatsService)
@@ -80,6 +80,7 @@ export class TeachersComponent implements OnInit {
   ngOnInit(): void {
     this._getTeacherList()
     this._getTeacherStats()
+    this._handleFilterTeacher()
   }
 
   upsertTeacher(teacher?: any): void {
@@ -106,79 +107,93 @@ export class TeachersComponent implements OnInit {
   }
 
   viewProfile(teacher: any): void {
-    this._router.navigate([teacher.id], {relativeTo: this._activeRoute})
+    this._router.navigate([teacher.id], { relativeTo: this._activeRoute })
   }
 
   deleteTeacher(teacher: Teacher) {
     this._confirmService.confirm((ref: ConfirmationService) => {
       this._confirmService.loading$.next(true)
       this._teachersService.delete(teacher.id)
-       .pipe(
-        finalize(() => this._confirmService.loading$.next(false)),
-        untilDestroyed(this)
-       ).subscribe({
-        next: () => {
-          this._messageService.success("Teacher deleted successfully")
-          this._getTeacherList()
-          ref.close()
-        }, error: (err) => {
-          this._messageService.error(err.message)
-        }
-       })
+        .pipe(
+          finalize(() => this._confirmService.loading$.next(false)),
+          untilDestroyed(this)
+        ).subscribe({
+          next: () => {
+            this._messageService.success("Teacher deleted successfully")
+            this._getTeacherList()
+            ref.close()
+          }, error: (err) => {
+            this._messageService.error(err.message)
+          }
+        })
     })
   }
 
-   acceptDeleteRecord(ref: ConfirmationService): void {
-      setTimeout(() => {
-        this._confirmService.loading$.next(false);
-        ref.close()
-      }, 3000)
+  onPageChange({ page = 0 }: PaginatorState) {
+    this.filterFormGroup.patchValue({ ...this.filterFormGroup.getRawValue(), page: page + 1 }, { emitEvent: false })
+    this._getTeacherList()
+  }
+
+  private _handleFilterTeacher() {
+    this.filterFormGroup.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged((prev, curr) => {
+          return prev.search === curr.search && prev.department_id === curr.department_id
+        }),
+        untilDestroyed(this)
+      ).subscribe((value) => {
+        this.filterFormGroup.patchValue({ ...value, page: 1 }, { emitEvent: false })
+        this._getTeacherList()
+      })
   }
 
   private _addNewTeacher(teacherPayload: UpsertTeacherPayload, loading: WritableSignal<boolean>, dialogRef: DynamicDialogRef) {
     this._teachersService.create<TeacherSuccessRes, UpsertTeacherPayload>(teacherPayload)
-     .pipe(
-      finalize(() => loading.set(false)),
-      untilDestroyed(this)
-     ).subscribe({
-      next: () => {
-         this._messageService.success("Added new teacher")
-         dialogRef.close()
-      }, error: () => {
-         this._messageService.error("Failed adding new teacher")
-      }
-     })
+      .pipe(
+        finalize(() => loading.set(false)),
+        untilDestroyed(this)
+      ).subscribe({
+        next: () => {
+          this._messageService.success("Added new teacher")
+          this._getTeacherList()
+          dialogRef.close()
+        }, error: () => {
+          this._messageService.error("Failed adding new teacher")
+        }
+      })
   }
 
   private _getTeacherStats() {
     this.loadingStats.set(true)
     this._statsService.getTeacherStats()
-     .pipe(
-      finalize(() => this.loadingStats.set(false)),
-      untilDestroyed(this)
-     ).subscribe({
-      next: (res) => {
-        this.teacherStats.set(res.data)
-      }, error: (err) => {
-        this._messageService.error("Failed getting teacher stats")
-      }
-     })
+      .pipe(
+        finalize(() => this.loadingStats.set(false)),
+        untilDestroyed(this)
+      ).subscribe({
+        next: (res) => {
+          this.teacherStats.set(res.data)
+        }, error: (err) => {
+          this._messageService.error("Failed getting teacher stats")
+        }
+      })
   }
 
   private _getTeacherList() {
     this.loading.set(true)
-    this._teachersService.retrieveAll<TeacherListSuccessRes>()
-     .pipe(
-      finalize(() => this.loading.set(false)),
-      untilDestroyed(this)
-     ).subscribe({
-      next: (res) => {
-        console.log(res.data)
-         this.teachers.set(res.data)
-         this.teachersMeta.set(res.meta)
-      }, error: (err) => {
-        this._messageService.error("Failed getting teacher list")
-      }
-     })
+    const filterValue: TeacherQuery = this.filterFormGroup.getRawValue();
+
+    this._teachersService.retrieveAll<TeacherListSuccessRes>(filterValue)
+      .pipe(
+        finalize(() => this.loading.set(false)),
+        untilDestroyed(this)
+      ).subscribe({
+        next: (res) => {
+          this.teachers.set(res.data)
+          this.teachersMeta.set(res.meta)
+        }, error: (err) => {
+          this._messageService.error("Failed getting teacher list")
+        }
+      })
   }
 }

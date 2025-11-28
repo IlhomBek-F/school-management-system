@@ -13,7 +13,7 @@ type TeacherUsecase interface {
 	Update(payload domain.TeacherUpdatePayload) (domain.Teacher, error)
 	Delete(id int) error
 	GetById(id int) (domain.Teacher, error)
-	GetList() ([]domain.Teacher, error)
+	GetList(query domain.TeacherQuery) ([]domain.Teacher, domain.Meta, error)
 }
 
 type teacherUsecase struct {
@@ -24,10 +24,16 @@ func NewTeacherUsecase(teacherRepo repository.TeacherRepository) TeacherUsecase 
 	return teacherUsecase{teacherRepo: teacherRepo}
 }
 
-func (t teacherUsecase) GetList() ([]domain.Teacher, error) {
-	teachers, err := t.teacherRepo.GetList()
+func (t teacherUsecase) GetList(query domain.TeacherQuery) ([]domain.Teacher, domain.Meta, error) {
+	teachers, total, err := t.teacherRepo.GetList(query)
 
-	return teachers, err
+	meta := domain.Meta{
+		PerPage:     query.PerPage,
+		CurrentPage: query.Page,
+		Total:       total,
+	}
+
+	return teachers, meta, err
 }
 
 func (t teacherUsecase) Create(payload domain.TeacherCreatePayload) (domain.Teacher, error) {
