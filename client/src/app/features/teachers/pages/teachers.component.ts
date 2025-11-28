@@ -25,6 +25,7 @@ import { Teacher, TeacherListSuccessRes, TeacherStats, TeacherSuccessRes, Upsert
 import { DEPARTMENTS } from 'app/utils/constants';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { finalize } from 'rxjs';
+import { StatsService } from '@core/services/stats.service';
 
 @UntilDestroy()
 @Component({
@@ -41,6 +42,7 @@ import { finalize } from 'rxjs';
 })
 export class TeachersComponent implements OnInit {
   loading = signal(false)
+  loadingStats = signal(false)
   VIEW_MODE = ViewModeEnum;
   viewMode = signal(this.VIEW_MODE.GRID)
   departments: DropdownOption[] = DEPARTMENTS
@@ -73,9 +75,11 @@ export class TeachersComponent implements OnInit {
   private _cdr = inject(ChangeDetectorRef);
   private _messageService = inject(ToastService)
   private _teachersService = inject(TeachersService)
+  private _statsService = inject(StatsService)
 
   ngOnInit(): void {
     this._getTeacherList()
+    this._getTeacherStats()
   }
 
   upsertTeacher(teacher?: any): void {
@@ -140,8 +144,23 @@ export class TeachersComponent implements OnInit {
       next: () => {
          this._messageService.success("Added new teacher")
          dialogRef.close()
-      }, error: (err) => {
+      }, error: () => {
          this._messageService.error("Failed adding new teacher")
+      }
+     })
+  }
+
+  private _getTeacherStats() {
+    this.loadingStats.set(true)
+    this._statsService.getTeacherStats()
+     .pipe(
+      finalize(() => this.loadingStats.set(false)),
+      untilDestroyed(this)
+     ).subscribe({
+      next: (res) => {
+        this.teacherStats.set(res.data)
+      }, error: (err) => {
+        this._messageService.error("Failed getting teacher stats")
       }
      })
   }

@@ -3,16 +3,16 @@
     <school-page-title title="Teachers" subTitle="Manage faculty members and their information" />
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <school-stats-card [loading]="loading()" title="Total Teachers" [value]="teacherStats().total_teachers" icon="pi pi-user text-indigo-600"
+      <school-stats-card [loading]="loadingStats()" title="Total Teachers" [value]="teacherStats().total_teachers" icon="pi pi-user text-indigo-600"
         rootClassName="border-indigo-500" iconWrapperClassName="bg-indigo-100" />
 
-      <school-stats-card [loading]="loading()" title="Avg. Experience" [value]="teacherStats().avg_experience + 'yrs'" icon="pi pi-briefcase text-purple-600"
+      <school-stats-card [loading]="loadingStats()" title="Avg. Experience" [value]="teacherStats().avg_experience + ' yrs'" icon="pi pi-briefcase text-purple-600"
         rootClassName="border-purple-500" iconWrapperClassName="bg-purple-100 " />
 
-      <school-stats-card [loading]="loading()" title="Total Students" [value]="teacherStats().total_students" icon="pi pi-users text-pink-600"
+      <school-stats-card [loading]="loadingStats()" title="Total Students" [value]="teacherStats().total_students" icon="pi pi-users text-pink-600"
         rootClassName="border-pink-500" iconWrapperClassName="bg-pink-100" />
 
-      <school-stats-card [loading]="loading()" title="Avg. Rating" [value]="teacherStats().avg_rating" icon="pi pi-star-fill !text-amber-600"
+      <school-stats-card [loading]="loadingStats()" title="Avg. Rating" [value]="teacherStats().avg_rating" icon="pi pi-star-fill !text-amber-600"
         rootClassName="!border-amber-500" iconWrapperClassName="!bg-amber-100" />
     </div>
 

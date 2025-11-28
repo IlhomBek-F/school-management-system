@@ -98,3 +98,32 @@ func (s StatsController) GetStudentStats(c *gin.Context) {
 
 	c.JSON(http.StatusOK, successRes)
 }
+
+// Get teacher stats godoc
+//
+//	@Summary		Get teacher stats
+//	@Description	Get teacher stats
+//	@Tags			Stats
+//	@Accept			json
+//	@Security       JWT
+//	@Produce		json
+//	@Success		201		{object}	domain.TeacherStatsResSuccess "teacher stats"
+//	@Failure		400		{object}	error
+//	@Failure		500		{object}	error
+//	@Router			/stats/teacher [get]
+func (s StatsController) GetTeacherStats(c *gin.Context) {
+	teacherStats, err := s.StatsUsecase.GetTeacherStats()
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponseMap[domain.ErrInternalServer])
+		return
+	}
+
+	successRes := domain.TeacherStatsResSuccess{
+		Status:  http.StatusOK,
+		Message: "success",
+		Data:    teacherStats,
+	}
+
+	c.JSON(http.StatusOK, successRes)
+}

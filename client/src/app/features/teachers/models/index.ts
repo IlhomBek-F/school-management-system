@@ -54,4 +54,5 @@ export interface TeacherQuery extends Paginator {
 }
 
 export type TeacherSuccessRes = ResData<Teacher>
+export type TeacherStatsSuccessRes = ResData<TeacherStats>
 export type TeacherListSuccessRes = ResDataWithMeta<Teacher[]>

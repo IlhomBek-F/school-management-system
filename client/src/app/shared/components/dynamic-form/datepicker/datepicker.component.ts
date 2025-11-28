@@ -48,7 +48,7 @@ export class DatepickerComponent implements ControlValueAccessor{
   handleChange(event: any) {
     const date = new Date(event)
     const dates = [date.getDay(), date.getMonth(), date.getFullYear()];
-    const formatedValue = this.view() === 'year' ? dates[3] : this.view() === 'month' ? dates[2] : dates.join('-')
+    const formatedValue = this.view() === 'year' ? dates[2] : this.view() === 'month' ? dates[1] : dates.join('-')
 
     this.value = event;
 

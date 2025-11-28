@@ -43,7 +43,7 @@ export class UpsertTeacherModalComponent implements OnInit {
       prev[curr.value] = curr.form.getRawValue();
       return prev
     }, {})
-
+    console.log(formValue)
     this._dialogConfig.data.footer.onConfirm(formValue);
   }
 
@@ -120,6 +120,7 @@ export class UpsertTeacherModalComponent implements OnInit {
           new QuestionTextInput({
             key: 'email',
             label: 'Email Address',
+            required: true,
             placeholder: 'student@example.com',
             type: QuestionFieldTypeEnum.Email,
           }),

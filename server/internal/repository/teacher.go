@@ -42,9 +42,25 @@ func (r teacherRepository) Create(payload domain.TeacherCreatePayload) (domain.T
 }
 
 func (r teacherRepository) Update(payload domain.TeacherUpdatePayload) (domain.Teacher, error) {
-	result := r.Db.Updates(&payload)
+	teacher, err := r.GetById(payload.ID)
 
-	return payload, result.Error
+	if err != nil {
+		return domain.Teacher{}, err
+	}
+
+	result := r.Db.Model(&teacher).Select("*").Updates(&payload)
+
+	if result.Error != nil {
+		return domain.Teacher{}, result.Error
+	}
+
+	err = r.Db.Model(&teacher).Association("Subjects").Replace(payload.ProfessionalInfo.Subjects)
+
+	if err != nil {
+		return domain.Teacher{}, err
+	}
+
+	return r.GetById(payload.ID)
 }
 
 func (r teacherRepository) Delete(id int) error {
