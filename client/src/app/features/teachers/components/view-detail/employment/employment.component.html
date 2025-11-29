@@ -9,19 +9,19 @@
   <div class="space-y-4">
     <div>
       <p class="text-xs text-gray-500 mb-1">Joining Date</p>
-      <p class="font-semibold text-gray-800">{{ teacher().joining_date }}</p>
+      <p class="font-semibold text-gray-800">{{ teacher().employment_detail.joining_date || 'N/A' }}</p>
     </div>
     <div>
       <p class="text-xs text-gray-500 mb-1">Employment Type</p>
-      <p class="font-semibold text-gray-800">{{ teacher().employment_type }}</p>
+      <p class="font-semibold text-gray-800">{{ teacher().employment_detail.employment_type_id || 'N/A' }}</p>
     </div>
     <div>
       <p class="text-xs text-gray-500 mb-1">Years of Service</p>
-      <p class="font-semibold text-gray-800">{{ teacher().experience }} years</p>
+      <p class="font-semibold text-gray-800">{{ teacher().professional_info.experience || 'N/A' }} years</p>
     </div>
     <div class="pt-4 border-t border-gray-200">
       <p class="text-xs text-gray-500 mb-1">Department</p>
-      <p-tag [value]="teacher().department" severity="info" styleClass="w-full justify-center"></p-tag>
+      <p-tag [value]="DEPARTMENTS_MAP[teacher().professional_info.department_id]" severity="info" styleClass="w-full justify-center"></p-tag>
     </div>
   </div>
 </div>

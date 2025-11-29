@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Subject } from '@core/models/subject';
 import { SkeletonModule } from "primeng/skeleton";
 
 @Component({
@@ -12,6 +13,8 @@ import { SkeletonModule } from "primeng/skeleton";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubjectsComponent {
-  teacher = input.required<any>()
+  subjects = input.required<Subject[]>()
   loading = input(false)
+
+
 }

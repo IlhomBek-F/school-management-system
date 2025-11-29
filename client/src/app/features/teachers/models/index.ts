@@ -24,13 +24,13 @@ export interface ProfessionalInfo {
   subjects: Subject[];
   qualification: string;
   uni_or_ins_name: string;
-  graduation_year: string;
+  graduation_year: number;
   experience: number;
 }
 
 export interface EmploymentDetail {
   joining_date: string;
-  employment_type: string;
+  employment_type_id: string;
   salary: number;
   contract_end_date: string
 }

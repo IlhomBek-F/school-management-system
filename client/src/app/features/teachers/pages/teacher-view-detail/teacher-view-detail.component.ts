@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { TagModule } from "primeng/tag";
 import { ChartModule } from "primeng/chart";
 import { ButtonModule } from "primeng/button";
@@ -13,33 +13,13 @@ import { TeacherViewDetailHeaderComponent } from '../../components/view-detail/t
 import { QuickActionsComponent } from "../../components/view-detail/quick-actions/quick-actions.component";
 import { EmploymentComponent } from "../../components/view-detail/employment/employment.component";
 import { SubjectsComponent } from "../../components/view-detail/subjects/subjects.component";
-
-interface Teacher {
-  id: number;
-  first_name: string;
-  last_name: string;
-  teacher_id: string;
-  email: string;
-  phone: string;
-  date_of_birth: string;
-  gender: string;
-  address: string;
-  city: string;
-  country: string;
-  department: string;
-  subjects: string[];
-  qualification: string;
-  experience: number;
-  joining_date: string;
-  employment_type: string;
-  salary: number;
-  rating: number;
-  total_students: number;
-  total_classes: number;
-  status: string;
-  avatar: string;
-  color: string;
-}
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Teacher, TeacherSuccessRes } from '../../models';
+import { TeachersService } from '../../services/teachers.service';
+import { ToastService } from '@core/services/toast.service';
+import { StudentsService } from 'app/features/students/services/students.service';
 
 interface Class {
   id: number;
@@ -83,19 +63,21 @@ interface ActivityLog {
   color: string;
 }
 
+@UntilDestroy()
 @Component({
   selector: 'school-teacher-view-detail',
   imports: [TagModule, ChartModule, ButtonModule, CommonModule,
     OverviewComponent, ClassesComponent, ScheduleComponent,
     StudentsComponent, ActivityComponent, TabViewModule, TeacherViewDetailHeaderComponent, QuickActionsComponent,
     EmploymentComponent, SubjectsComponent],
+  providers: [TeachersService],
   templateUrl: './teacher-view-detail.component.html',
   styleUrl: './teacher-view-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeacherViewDetailComponent {
   activeIndex = 0;
-  loading = signal(true)
+  loading = signal(false)
 
   tabItems = [
     {
@@ -125,32 +107,7 @@ export class TeacherViewDetailComponent {
     },
   ];
 
-  teacher: Teacher = {
-    id: 1,
-    first_name: 'Sarah',
-    last_name: 'Johnson',
-    teacher_id: 'TCH-2024-001',
-    email: 'sarah.johnson@school.edu',
-    phone: '+1 234-567-8901',
-    date_of_birth: '1985-03-15',
-    gender: 'Female',
-    address: '456 Education Avenue, Suite 12',
-    city: 'New York',
-    country: 'United States',
-    department: 'Science & Math',
-    subjects: ['Mathematics', 'Statistics', 'Calculus'],
-    qualification: 'PhD in Mathematics',
-    experience: 12,
-    joining_date: '2012-09-01',
-    employment_type: 'Full-Time',
-    salary: 75000,
-    rating: 4.8,
-    total_students: 145,
-    total_classes: 6,
-    status: 'Active',
-    avatar: 'SJ',
-    color: 'bg-blue-500'
-  };
+  teacher = signal<Teacher>({} as Teacher)
 
   classes: Class[] = [
     {
@@ -337,9 +294,13 @@ export class TeacherViewDetailComponent {
   studentProgressChartData: any;
   studentProgressChartOptions: any;
 
+  private _activeRoute = inject(ActivatedRoute)
+  private _teachersService = inject(TeachersService)
+  private _messageService = inject(ToastService)
+
   ngOnInit(): void {
-    setTimeout(() => this.loading.set(false), 3000)
     this.initializeCharts();
+    this._getTeacherDetail()
   }
 
   initializeCharts(): void {
@@ -401,5 +362,27 @@ export class TeacherViewDetailComponent {
         }
       }
     };
+  }
+
+    private _getTeacherDetail() {
+    this._activeRoute.paramMap
+    .pipe(
+      switchMap((p: ParamMap) => {
+          this.loading.set(true)
+          const teacher_id = p.get("teacher_id") as string
+
+          return this._teachersService.retrieveById<TeacherSuccessRes>(+teacher_id)
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe({
+        next: (res) => {
+          this.teacher.set(res.data)
+          this.loading.set(false)
+        }, error: (err) => {
+          this.loading.set(false)
+          this._messageService.error("Error getting student by id")
+        }
+      })
   }
 }

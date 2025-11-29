@@ -6,8 +6,8 @@
     } @else {
     <div class="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-16">
       <div
-        [class]="'w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-4xl shadow-xl border-4 border-white ' + teacher().color">
-        {{ teacher().avatar }}
+        [class]="'w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-4xl shadow-xl border-4 border-white ' + (teacher().id | schoolRandomBgColor: 0)">
+        {{ teacher().personal_info.first_name[0] }}{{ teacher().personal_info.last_name[0] }}
       </div>
 
       <div class="flex-1">
@@ -15,38 +15,38 @@
           <div>
             <div class="flex items-center gap-3 mb-2">
               <h1 class="text-3xl font-bold text-gray-800">
-                {{ teacher().first_name }} {{ teacher().last_name }}
+                {{ teacher().personal_info.first_name }} {{ teacher().personal_info.last_name }}
               </h1>
-              <p-tag [value]="teacher().status"
-                [severity]="teacher().status === 'Active' ? 'success' : 'warning'"></p-tag>
+              <p-tag [value]="'Active'"
+                [severity]="'Active' === 'Active' ? 'success' : 'warning'"></p-tag>
             </div>
             <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
               <span class="flex items-center gap-2">
                 <i class="pi pi-id-card"></i>
-                {{ teacher().student_id }}
+                {{ teacher().professional_info.teacher_id }}
               </span>
               <span class="flex items-center gap-2">
                 <i class="pi pi-briefcase"></i>
-                {{ teacher().department}}
+                {{ DEPARTMENTS_MAP[teacher().professional_info.department_id]}}
               </span>
               <span class="flex items-center gap-2">
                 <i class="pi pi-envelope"></i>
-                {{ teacher().email }}
+                {{ teacher().personal_info.email }}
               </span>
               <span class="flex items-center gap-2">
                 <i class="pi pi-phone"></i>
-                {{ teacher().phone }}
+                {{ teacher().personal_info.phone_number }}
               </span>
             </div>
             <div class="flex items-center gap-2">
                   <span class="text-sm text-gray-600">Rating:</span>
                   <div class="flex gap-1">
-                    <i *ngFor="let star of getRatingStars(teacher().rating)" [class]="star === 'full' ? 'pi pi-star-fill text-amber-400' :
+                    <i *ngFor="let star of getRatingStars(4)" [class]="star === 'full' ? 'pi pi-star-fill text-amber-400' :
                                 star === 'half' ? 'pi pi-star-half-fill text-amber-400' :
                                 'pi pi-star text-gray-300'">
                     </i>
                   </div>
-                  <span class="text-sm font-semibold text-gray-800">{{ teacher().rating }}</span>
+                  <span class="text-sm font-semibold text-gray-800">{{ 4 }}</span>
                 </div>
           </div>
 

@@ -1,11 +1,11 @@
 <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6">
   <div class="w-full mx-auto">
-    <school-teacher-view-detail-header [teacher]="teacher" [loading]="loading()"/>
+    <school-teacher-view-detail-header [teacher]="teacher()" [loading]="loading()"/>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <p-tabView [(activeIndex)]="activeIndex">
         <p-tabPanel header="Overview" leftIcon="pi pi-home" >
-             <school-overview [teacher]="teacher" [performanceChartData]="performanceChartData" [loading]="loading()"
+             <school-overview [teacher]="teacher()" [performanceChartData]="performanceChartData" [loading]="loading()"
           [performanceChartOptions]="performanceChartOptions" />
         </p-tabPanel>
 
@@ -29,8 +29,8 @@
 
       <!-- Sidebar -->
       <div class="space-y-6">
-         <school-employment [teacher]="teacher" [loading]="loading()"/>
-         <school-subjects [teacher]="teacher" [loading]="loading()"/>
+         <school-employment [teacher]="teacher()" [loading]="loading()"/>
+         <school-subjects [subjects]="teacher().professional_info?.subjects || []" [loading]="loading()"/>
          <school-quick-actions />
       </div>
     </div>

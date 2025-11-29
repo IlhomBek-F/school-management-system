@@ -94,7 +94,7 @@ func (r teacherRepository) Delete(id int) error {
 func (r teacherRepository) GetById(id int) (domain.Teacher, error) {
 	var teacher domain.Teacher
 
-	result := r.Db.Where("id = ?", id).First(&teacher)
+	result := r.Db.Where("id = ?", id).Preload("Subjects").First(&teacher)
 
 	return teacher, result.Error
 }

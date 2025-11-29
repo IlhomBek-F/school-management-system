@@ -17,6 +17,7 @@ import { DEPARTMENTS } from 'app/utils/constants';
 import {  ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { TabsModule } from "primeng/tabs";
+import { Teacher } from '../../models';
 
 @Component({
   selector: 'school-upsert-teacher-modal',
@@ -79,6 +80,7 @@ export class UpsertTeacherModalComponent implements OnInit {
   }
 
   private _getPersonalFormContainer(): FormContainer[] {
+    const teacher: Teacher = this._dialogConfig.data.teacher
     return [
       {
         containers: [
@@ -86,12 +88,14 @@ export class UpsertTeacherModalComponent implements OnInit {
             key: 'first_name',
             label: 'First Name',
             required: true,
+            value: teacher.personal_info.first_name,
             placeholder: 'Enter first name'
           }),
           new QuestionTextInput({
             key: 'last_name',
             label: 'Last Name',
             required: true,
+            value: teacher.personal_info.last_name,
             placeholder: 'Enter last name'
           }),
         ],
@@ -101,17 +105,18 @@ export class UpsertTeacherModalComponent implements OnInit {
           new QuestionDatePicker({
             key: 'date_of_birth',
             label: 'Date of birth',
+            value: teacher.personal_info.date_of_birth,
             required: true,
           }),
           new QuestionSelectInput({
             key: 'gender',
             label: 'Gender',
             required: true,
+            value: teacher.personal_info.gender,
             options: [
               { label: 'Male', value: 'male' },
               { label: 'Female', value: 'female' },
             ],
-            value: 'male',
           }),
         ],
       },
@@ -121,6 +126,7 @@ export class UpsertTeacherModalComponent implements OnInit {
             key: 'email',
             label: 'Email Address',
             required: true,
+            value: teacher.personal_info.email,
             placeholder: 'student@example.com',
             type: QuestionFieldTypeEnum.Email,
           }),
@@ -128,6 +134,7 @@ export class UpsertTeacherModalComponent implements OnInit {
             key: 'phone_number',
             label: 'Phone Number',
             required: true,
+            value: teacher.personal_info.phone_number,
             type: QuestionFieldTypeEnum.Email,
           }),
         ],
@@ -137,12 +144,14 @@ export class UpsertTeacherModalComponent implements OnInit {
           new QuestionTextInput({
             key: 'street_address',
             label: 'Street Address',
+            value: teacher.personal_info.street_address,
             placeholder: 'Enter street address',
             required: true,
           }),
           new QuestionTextInput({
             key: 'city',
             label: 'City',
+            value: teacher.personal_info.city,
             placeholder: 'Enter city',
             required: true,
           }),
@@ -152,6 +161,7 @@ export class UpsertTeacherModalComponent implements OnInit {
   }
 
   private _getProfessionalFormContainer(): FormContainer[] {
+    const teacher: Teacher = this._dialogConfig.data.teacher
     return [
       {
         containers: [
@@ -159,12 +169,14 @@ export class UpsertTeacherModalComponent implements OnInit {
             key: 'teacher_id',
             label: 'Teacher ID',
             placeholder: 'STU-2024-001',
+            value: teacher.professional_info.teacher_id,
             required: true,
           }),
           new QuestionSelectInput({
             key: 'department_id',
             label: 'Department',
             required: true,
+            value: teacher.professional_info.department_id,
             options: DEPARTMENTS
           }),
         ],
@@ -177,6 +189,7 @@ export class UpsertTeacherModalComponent implements OnInit {
             required: true,
             optionValue: "id",
             optionLabel: "name",
+            value: teacher.professional_info.subjects,
             optionType: OptionTypeEnum.ASYNC,
             asyncOptionType: AsyncOptionEnum.SUBJECTS,
             normalizeValue: (subject_ids: number[], options: Subject[]) => {
@@ -187,6 +200,7 @@ export class UpsertTeacherModalComponent implements OnInit {
             key: 'qualification',
             label: 'Highest Qualification',
             required: true,
+            value: teacher.professional_info.qualification,
             options: [
               { label: 'Bachelor\'s Degree', value: 'bachelors' },
               { label: 'Master\'s Degree', value: 'masters' },
@@ -201,17 +215,20 @@ export class UpsertTeacherModalComponent implements OnInit {
           new QuestionTextInput({
             key: 'uni_or_ins_name',
             label: 'University/Institution',
+            value: teacher.professional_info.uni_or_ins_name,
             placeholder: 'Enter university name'
           }),
           new QuestionDatePicker({
             key: 'graduation_year',
             label: 'Graduation year',
+            value: teacher.professional_info.graduation_year,
             view: 'year'
           }),
           new QuestionTextInput({
             key: 'experience',
             label: 'Years of Experience',
             required: true,
+            value: teacher.professional_info.experience,
             type: QuestionFieldTypeEnum.Number,
           })
         ]
@@ -219,16 +236,20 @@ export class UpsertTeacherModalComponent implements OnInit {
     ];
   }
   private _getEmploymentFormContainer(): FormContainer[] {
+    const teacher: Teacher = this._dialogConfig.data.teacher;
+
     return [
       {
         containers: [
           new QuestionDatePicker({
             key: 'joining_date',
-            label: 'Joining date'
+            label: 'Joining date',
+            value: teacher.employment_detail.joining_date
           }),
           new QuestionSelectInput({
             key: 'employment_type_id',
             label: 'Employment type',
+            value: teacher.employment_detail.employment_type_id,
             options: [
               { label: 'Full-Time', value: 1 },
               { label: 'Part-Time', value: 2 },
@@ -242,10 +263,12 @@ export class UpsertTeacherModalComponent implements OnInit {
           new QuestionTextInput({
             key: 'salary',
             label: 'Salary',
+            value: teacher.employment_detail.salary,
             type: QuestionFieldTypeEnum.Number
           }),
           new QuestionDatePicker({
             key: 'contract_end_date',
+            value: teacher.employment_detail.contract_end_date,
             label: 'Contract end date'
           })
         ]
