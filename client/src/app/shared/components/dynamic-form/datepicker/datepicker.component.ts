@@ -30,7 +30,11 @@ export class DatepickerComponent implements ControlValueAccessor{
   onTouched = () => {};
 
   writeValue(value: any): void {
-    this.value = value;
+    if(this.view() === 'year') {
+      this.value = new Date(value, 0, 1);
+    } else {
+      this.value = value
+    }
   }
 
   registerOnChange(fn: any): void {

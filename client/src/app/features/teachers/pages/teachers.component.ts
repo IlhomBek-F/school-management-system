@@ -96,7 +96,7 @@ export class TeachersComponent implements OnInit {
         loading,
         teacher,
         footer: {
-          onConfirm: (formValue: any) => {
+          onConfirm: (formValue: UpsertTeacherPayload) => {
             loading.set(true)
             this._addNewTeacher(formValue, loading, dialogRef)
           },

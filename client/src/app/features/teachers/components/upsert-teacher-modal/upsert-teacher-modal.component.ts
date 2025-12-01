@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, WritableSignal } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
@@ -12,9 +11,8 @@ import { FormContainer } from '@core/models/question-base';
 import { Subject } from '@core/models/subject';
 import { QuestionControlService } from '@core/services/question-control.service';
 import { DynamicFormComponent } from '@shared/components/dynamic-form/dynamic-form.component';
-import { StudentsService } from 'app/features/students/services/students.service';
 import { DEPARTMENTS } from 'app/utils/constants';
-import {  ButtonModule } from 'primeng/button';
+import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { TabsModule } from "primeng/tabs";
 import { Teacher } from '../../models';
@@ -74,13 +72,17 @@ export class UpsertTeacherModalComponent implements OnInit {
         title: 'Employment details',
         value: 'employment_details',
         formContainers: employmentFormContainers,
-        form:  this._questionControlService.toFormGroup(employmentFormContainers)
+        form: this._questionControlService.toFormGroup(employmentFormContainers)
       }
     ];
   }
 
   private _getPersonalFormContainer(): FormContainer[] {
-    const teacher: Teacher = this._dialogConfig.data.teacher
+    const teacher: Teacher = this._dialogConfig.data.teacher || {
+      personal_info: {},
+      professional_info: {},
+      employment_detail: {}
+    }
     return [
       {
         containers: [
@@ -161,7 +163,12 @@ export class UpsertTeacherModalComponent implements OnInit {
   }
 
   private _getProfessionalFormContainer(): FormContainer[] {
-    const teacher: Teacher = this._dialogConfig.data.teacher
+    const teacher: Teacher = this._dialogConfig.data.teacher || {
+      personal_info: {},
+      professional_info: {},
+      employment_detail: {}
+    }
+
     return [
       {
         containers: [
@@ -236,7 +243,11 @@ export class UpsertTeacherModalComponent implements OnInit {
     ];
   }
   private _getEmploymentFormContainer(): FormContainer[] {
-    const teacher: Teacher = this._dialogConfig.data.teacher;
+    const teacher: Teacher = this._dialogConfig.data.teacher || {
+      personal_info: {},
+      professional_info: {},
+      employment_detail: {}
+    }
 
     return [
       {

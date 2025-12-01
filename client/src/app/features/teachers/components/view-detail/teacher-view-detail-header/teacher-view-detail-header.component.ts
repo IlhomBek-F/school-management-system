@@ -1,15 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal, WritableSignal } from '@angular/core';
 import { SkeletonModule } from "primeng/skeleton";
 import { TeacherStatusCardsComponent } from "../teacher-status-cards/teacher-status-cards.component";
 import { CommonModule } from '@angular/common';
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpsertTeacherModalComponent } from '../../upsert-teacher-modal/upsert-teacher-modal.component';
-import { Teacher } from 'app/features/teachers/models';
+import { Teacher, TeacherSuccessRes, UpsertTeacherPayload } from 'app/features/teachers/models';
 import { RandomBgColorPipe } from '@core/pipes/random-bg-color-pipe';
 import { DEPARTMENTS_MAP } from 'app/utils/constants';
+import { TeachersService } from 'app/features/teachers/services/teachers.service';
+import { finalize } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ToastService } from '@core/services/toast.service';
 
+@UntilDestroy()
 @Component({
   selector: 'school-teacher-view-detail-header',
   imports: [SkeletonModule, TeacherStatusCardsComponent, CommonModule, TagModule, ButtonModule, RandomBgColorPipe],
@@ -21,6 +26,8 @@ export class TeacherViewDetailHeaderComponent {
   loading = input(false)
   DEPARTMENTS_MAP = DEPARTMENTS_MAP;
   private _dialogService = inject(DialogService)
+  private _teachersService = inject(TeachersService)
+  private _messageService = inject(ToastService)
 
   getRatingStars(rating: number): string[] {
     const stars = [];
@@ -51,7 +58,10 @@ export class TeacherViewDetailHeaderComponent {
         loading,
         teacher: this.teacher(),
         footer: {
-          onConfirm: (formValue: any) => console.log(formValue),
+          onConfirm: (formValue: UpsertTeacherPayload) => {
+            loading.set(true)
+            this._updateTeacher(formValue, loading, dialogRef)
+          },
           onCancel: () => dialogRef.close()
         }
       }
@@ -64,5 +74,21 @@ export class TeacherViewDetailHeaderComponent {
 
   sendMessage(): void {
     console.log('Send message');
+  }
+
+  private _updateTeacher(formValue: UpsertTeacherPayload, loading: WritableSignal<boolean>, dialogRef: DynamicDialogRef) {
+    const { id, created_at, updated_at } = this.teacher();
+    this._teachersService.update<TeacherSuccessRes, UpsertTeacherPayload>({ ...formValue, id, created_at, updated_at })
+      .pipe(
+        finalize(() => loading.set(false)),
+        untilDestroyed(this)
+      ).subscribe({
+        next: () => {
+          this._messageService.success("Teacher updated successfully")
+          dialogRef.close()
+        }, error: () => {
+          this._messageService.error("Failed updating teacher")
+        }
+      })
   }
 }
