@@ -7,7 +7,12 @@ import { DeleteConfirmDialogComponent } from "@shared/components/delete-confirm-
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, ToastComponent, ConfirmDialogModule, DeleteConfirmDialogComponent],
+  imports: [RouterOutlet,
+            CommonModule,
+            ToastComponent,
+            ConfirmDialogModule,
+            DeleteConfirmDialogComponent,
+          ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

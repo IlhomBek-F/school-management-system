@@ -51,5 +51,8 @@ const SchoolPreset = definePreset(Aura, {
 export const PRIMENG_PROVIDER = providePrimeNG({
   theme: {
     preset: SchoolPreset,
+    options: {
+      darkModeSelector: ".p-dark"
+    }
   },
 });
