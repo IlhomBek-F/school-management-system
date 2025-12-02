@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, forwardRef, inject, input, OnInit, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, forwardRef, inject, input, OnInit, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { AsyncOptionsService } from '@core/services/async-option.service';
 import { ToastService } from '@core/services/toast.service';
+import { handleAsyncOption } from 'app/utils/helper';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { catchError, finalize, Observable, of, tap, throwError } from 'rxjs';
+import { of } from 'rxjs';
 
 const VALUE_ACCESSOR_PROVIDER = {
   provide: NG_VALUE_ACCESSOR,
@@ -22,7 +23,7 @@ const VALUE_ACCESSOR_PROVIDER = {
   providers: [VALUE_ACCESSOR_PROVIDER],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MultiSelectComponent implements ControlValueAccessor, OnInit {
+export class MultiSelectComponent implements ControlValueAccessor {
   label = input<string>();
   options = input.required<any[]>();
   optionLabel = input('label');
@@ -41,26 +42,7 @@ export class MultiSelectComponent implements ControlValueAccessor, OnInit {
   private _messageService = inject(ToastService)
   private _options: any[] = [];
 
-  asyncOptionsPipe$ = computed(() => {
-    if (this.optionType() === OptionTypeEnum.ASYNC) {
-      this.loading = true;
-     return this._asyncOptionService.getAsyncOptionsRequest(this.asyncOptionType() as AsyncOptionEnum)
-        .pipe(
-          tap((data) => this._options = data),
-          finalize(() => this.loading = false),
-          catchError((err) => {
-            this._messageService.error(`Failed fetchin async ${this.label()} options`)
-            return throwError(() => err)
-          })
-        )
-    }
-
-    this._options = this.options();
-    return of(this.options())
-  })
-
-  ngOnInit(): void {
-  }
+  asyncOptionsPipe$ = computed(handleAsyncOption.bind(this))
 
   // Callbacks
   onChange = (value: any) => { };

@@ -9,9 +9,9 @@ type Student struct {
 	Base
 	PersonalInfo PersonalInfo `json:"personal_info" gorm:"embedded" binding:"required"`
 	AcademicInfo AcademicInfo `json:"academic_info" gorm:"embedded" binding:"required"`
-	Gpa          int          `json:"gpa"`
-	Attendance   int          `json:"attendance"`
-	Subjects     int          `json:"subjects"`
+	Gpa          int          `json:"gpa" gorm:"-"`
+	Attendance   int          `json:"attendance" gorm:"-"`
+	Subjects     int          `json:"subjects" gorm:"-"`
 }
 
 type PersonalInfo struct {

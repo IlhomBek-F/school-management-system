@@ -28,11 +28,13 @@ import { Room, RoomDropdownOptionsSuccess, RoomListSuccessRes, RoomQuery, RoomSu
 import { Building } from '@core/models/building';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Facility } from '@core/models/facility';
-import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, finalize, forkJoin, map } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, forkJoin } from 'rxjs';
 import { makeDropdownOption } from 'app/utils/helper';
 import { RoomStats, RoomStatsSuccessRes } from '@core/models/stats';
 import { StatsService } from '@core/services/stats.service';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { OptionTypeEnum } from '@core/enums/option-type.enum';
+import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 
 @UntilDestroy()
 @Component({
@@ -58,6 +60,9 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 export class RoomsComponent {
   readonly VIEW_MODE = ViewModeEnum;
   viewMode: WritableSignal<ViewModeEnum> = signal(ViewModeEnum.GRID);
+  optionType = OptionTypeEnum;
+  asyncOptionType = AsyncOptionEnum;
+
   loading = signal(false)
   loadingOptions = signal(false)
   loadingRoomStats = signal(false)
@@ -94,7 +99,6 @@ export class RoomsComponent {
   private _roomsService = inject(RoomsService)
   private _statsService = inject(StatsService);
   private _buildingOptions: WritableSignal<Building[]> = signal([]);
-  private _facilities: WritableSignal<Facility[]> = signal([]);
 
   ngOnInit(): void {
     this._getRoomList();
@@ -236,15 +240,13 @@ export class RoomsComponent {
     this.loadingOptions.set(true)
     forkJoin([
       this._roomsService.getBuildings(),
-      this._roomsService.getFacilities(),
       this._roomsService.getRoomTypes()
     ]).pipe(
       finalize(() => this.loadingOptions.set(false)),
       untilDestroyed(this)
     ).subscribe({
-      next: ([buildingRes, facilityRes, roomTypeRes]: RoomDropdownOptionsSuccess) => {
+      next: ([buildingRes, roomTypeRes]: RoomDropdownOptionsSuccess) => {
         this._buildingOptions.set(buildingRes.data)
-        this._facilities.set(facilityRes.data)
         this.roomTypeOptions.update((prev) => [...prev, ...roomTypeRes.data.map(({name, id}) => makeDropdownOption(name, id))])
       }, error: (err) => {
         this._messageService.error(err.message || "Failed getting room dropdown options")
@@ -283,7 +285,10 @@ export class RoomsComponent {
             label: 'Room type',
             required: true,
             value: room?.room_type.id,
-            options: this.roomTypeOptions()
+            optionValue: 'id',
+            optionLabel: 'name',
+            optionType: OptionTypeEnum.ASYNC,
+            asyncOptionType: AsyncOptionEnum.ROOM_TYPES,
           }),
           new QuestionSelectInput({
             key: 'building_id',
@@ -316,10 +321,11 @@ export class RoomsComponent {
             optionLabel: "name",
             optionValue: 'id',
             value: room?.facilities,
-            normalizeValue: (facility_ids: number[]) => {
-              return this._facilities().filter(({ id }) => facility_ids.includes(id))
+            optionType: OptionTypeEnum.ASYNC,
+            asyncOptionType: AsyncOptionEnum.FACILITIES,
+            normalizeValue: (facility_ids: number[], options: Facility[]) => {
+              return options.filter(({ id }) => facility_ids.includes(id))
             },
-            options: this._facilities()
           })
         ]
       },

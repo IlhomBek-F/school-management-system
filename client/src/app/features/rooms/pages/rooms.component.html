@@ -39,7 +39,12 @@
      <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
       <div class="flex flex-col md:flex-row gap-4" [formGroup]="filterFormGroup">
           <school-text-input icon="pi pi-search" formControlName="search" placeholder="Search by room name, code, or building..."/>
-          <school-select-input formControlName="room_type_id" [options]="roomTypeOptions()" [loading]="loadingOptions()"/>
+          <school-select-input formControlName="room_type_id"
+                               [optionType]="optionType.ASYNC"
+                               [optionValue]="'id'"
+                               [optionLabel]="'name'"
+                               [asyncOptionType]="asyncOptionType.ROOM_TYPES"
+                               />
 
         <div class="flex gap-2">
           <school-select-input formControlName="status" [options]="statuses"/>
@@ -80,7 +85,7 @@
                                     (deleteEmitEvent)="deleteRoom($event)"/>
     }
 
-    @if (roomsMeta().total === 0) {
+    @if (!loading() && roomsMeta().total === 0) {
       <school-empty-list title="No rooms found"/>
     }
 

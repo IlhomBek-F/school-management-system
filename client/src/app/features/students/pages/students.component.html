@@ -69,7 +69,7 @@
                                         (viewDetailEmitEvent)="viewProfile($event)"></school-student-table-view-list>
      }
 
-     @if (studentsMeta().total === 0) {
+     @if (!loading() && studentsMeta().total === 0) {
        <school-empty-list title="No students found"></school-empty-list>
      }
 

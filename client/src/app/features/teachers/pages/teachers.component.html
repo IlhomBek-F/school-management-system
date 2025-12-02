@@ -56,7 +56,7 @@
      </div>
     }
 
-    @if (teachersMeta().total === 0) {
+    @if (!loading() && teachersMeta().total === 0) {
     <school-empty-list title="No teachers found" />
     }
   </div>

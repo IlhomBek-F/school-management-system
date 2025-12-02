@@ -28,7 +28,6 @@ export type SelectInputOptions = SelectInputOptionsAsync | SelectInputOptionsEag
 
 export class QuestionSelectInput extends QuestionBase {
   override controlType = QuestionTypeEnum.SelectInput;
-  loading: boolean;
   optionLabel: string;
   optionValue: string;
   options: any[];
@@ -38,7 +37,6 @@ export class QuestionSelectInput extends QuestionBase {
 
   constructor(options: SelectInputOptions) {
     super(options)
-    this.loading = options.loading || false;
     this.optionLabel = options.optionLabel || 'label'
     this.optionValue = options.optionValue || 'value'
     this.options = options.options

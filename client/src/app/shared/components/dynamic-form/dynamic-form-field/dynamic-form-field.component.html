@@ -29,9 +29,10 @@
                              [required]="question().required"
                              [optionLabel]="$any(question()).optionLabel"
                              [optionValue]="$any(question()).optionValue"
+                             [optionType]="$any(question()).optionType"
+                             [asyncOptionType]="$any(question()).asyncOptionType"
                              [placeholder]="question().placeholder"
                              [normalizeValue]="$any(question()).normalizeValue"
-                             [loading]="$any(question()).loading"
                              />
       }
       @case (QuestionTypeEnum.MultiSelect) {

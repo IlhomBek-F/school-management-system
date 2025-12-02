@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, forwardRef, inject, input, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AsyncOptionEnum } from '@core/enums/async-option.enum';
+import { OptionTypeEnum } from '@core/enums/option-type.enum';
+import { AsyncOptionsService } from '@core/services/async-option.service';
+import { ToastService } from '@core/services/toast.service';
+import { handleAsyncOption } from 'app/utils/helper';
 import { SelectModule } from 'primeng/select';
 
 const VALUE_ACCESSOR_PROVIDER = {
@@ -19,17 +24,26 @@ const VALUE_ACCESSOR_PROVIDER = {
 })
 export class SelectInputComponent implements ControlValueAccessor {
    label = input();
-   options = input.required<any[]>();
+   options = input();
    optionLabel = input('label');
    optionValue = input('value');
    normalizeValue = input<Function>()
    placeholder = input('');
-   loading = input(false)
    onChangeEmit = output<any>()
    required = input()
+   optionType = input<OptionTypeEnum>(OptionTypeEnum.EAGER)
+   asyncOptionType = input<AsyncOptionEnum>()
 
-  value: any;
-  disabled = false;
+   loading = false;
+
+   private _asyncOptionService = inject(AsyncOptionsService)
+   private _messageService = inject(ToastService)
+   private _options: any[] = [];
+
+  asyncOptionsPipe$ = computed(handleAsyncOption.bind(this))
+
+   value: any;
+   disabled = false;
 
   // Callbacks
   onChange = (value: any) => {};

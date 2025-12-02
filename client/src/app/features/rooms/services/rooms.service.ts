@@ -5,7 +5,7 @@ import { RoomTypesSuccessWithMeta } from "@core/models/room-types";
 import { BaseService } from "@core/services/base.service";
 import { Observable } from "rxjs";
 
-@Injectable()
+@Injectable({providedIn: "root"})
 export class RoomsService extends BaseService {
   override baseUrl = `${this.apiUrl}/room`
 

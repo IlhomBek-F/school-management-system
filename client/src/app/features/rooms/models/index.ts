@@ -34,4 +34,4 @@ export interface RoomQuery extends Paginator {
 
 export type RoomSuccessRes = ResData<Room>
 export type RoomListSuccessRes = ResDataWithMeta<Room[]>
-export type RoomDropdownOptionsSuccess = [BuildingSuccessWithMeta, FacilitySuccessWithMeta, RoomTypesSuccessWithMeta]
+export type RoomDropdownOptionsSuccess = [BuildingSuccessWithMeta, RoomTypesSuccessWithMeta]

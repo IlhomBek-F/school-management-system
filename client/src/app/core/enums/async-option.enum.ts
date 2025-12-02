@@ -1,3 +1,5 @@
 export enum AsyncOptionEnum {
-  SUBJECTS = 'subjects'
+  SUBJECTS = 'subjects',
+  FACILITIES = 'facilities',
+  ROOM_TYPES = 'room_types'
 }
