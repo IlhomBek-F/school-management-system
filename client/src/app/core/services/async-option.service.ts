@@ -15,6 +15,7 @@ export class AsyncOptionsService {
     [AsyncOptionEnum.SUBJECTS, this._subjectsService.retrieveAll<SubjectSuccessWithMeta>()],
     [AsyncOptionEnum.FACILITIES, this._roomsService.getFacilities()],
     [AsyncOptionEnum.ROOM_TYPES, this._roomsService.getRoomTypes()],
+    [AsyncOptionEnum.BUILDINGS, this._roomsService.getBuildings()],
   ])
 
   getAsyncOptionsRequest(asyncType: AsyncOptionEnum): Observable<any> {

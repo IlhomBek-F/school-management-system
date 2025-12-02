@@ -24,12 +24,10 @@ import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { RoomsService } from '../services/rooms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Room, RoomDropdownOptionsSuccess, RoomListSuccessRes, RoomQuery, RoomSuccessRes, UpsertRoomPayload } from '../models';
-import { Building } from '@core/models/building';
+import { Room, RoomListSuccessRes, RoomQuery, RoomSuccessRes, UpsertRoomPayload } from '../models';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Facility } from '@core/models/facility';
-import { debounceTime, distinctUntilChanged, finalize, forkJoin } from 'rxjs';
-import { makeDropdownOption } from 'app/utils/helper';
+import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { RoomStats, RoomStatsSuccessRes } from '@core/models/stats';
 import { StatsService } from '@core/services/stats.service';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
@@ -66,7 +64,6 @@ export class RoomsComponent {
   loading = signal(false)
   loadingOptions = signal(false)
   loadingRoomStats = signal(false)
-  roomTypeOptions: WritableSignal<DropdownOption[]> = signal([{ label: 'All Types', value: 0 }]);
 
   filterFormGroup = new FormGroup({
     search: new FormControl("", {nonNullable: true}),
@@ -98,12 +95,10 @@ export class RoomsComponent {
   private _messageService = inject(ToastService)
   private _roomsService = inject(RoomsService)
   private _statsService = inject(StatsService);
-  private _buildingOptions: WritableSignal<Building[]> = signal([]);
 
   ngOnInit(): void {
     this._getRoomList();
     this._getRoomStats();
-    this._getRoomDropdownOptions();
     this._handleFilterRoom();
   }
 
@@ -236,24 +231,6 @@ export class RoomsComponent {
       })
   }
 
-  private _getRoomDropdownOptions() {
-    this.loadingOptions.set(true)
-    forkJoin([
-      this._roomsService.getBuildings(),
-      this._roomsService.getRoomTypes()
-    ]).pipe(
-      finalize(() => this.loadingOptions.set(false)),
-      untilDestroyed(this)
-    ).subscribe({
-      next: ([buildingRes, roomTypeRes]: RoomDropdownOptionsSuccess) => {
-        this._buildingOptions.set(buildingRes.data)
-        this.roomTypeOptions.update((prev) => [...prev, ...roomTypeRes.data.map(({name, id}) => makeDropdownOption(name, id))])
-      }, error: (err) => {
-        this._messageService.error(err.message || "Failed getting room dropdown options")
-      }
-    })
-  }
-
   private _getRoomFormContainer(room?: Room): FormContainer[] {
     return [
       {
@@ -297,9 +274,9 @@ export class RoomsComponent {
             value: room?.building.id,
             optionLabel: "name",
             optionValue: "id",
-            options: this._buildingOptions()
+            optionType: OptionTypeEnum.ASYNC,
+            asyncOptionType: AsyncOptionEnum.BUILDINGS,
           }),
-
         ]
       },
       {
