@@ -1,3 +1,6 @@
 <school-toast />
+<p-button [icon]="theme() === themeEnum.DARK ? 'pi pi-moon' : 'pi pi-sun'"
+          class="absolute right-6 top-4"
+          (onClick)="toggle()"/>
 <school-delete-confirm-dialog />
 <router-outlet></router-outlet>

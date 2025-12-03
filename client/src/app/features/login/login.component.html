@@ -1,4 +1,4 @@
-<div class="flex min-h-screen items-center justify-center dark:bg-gray-900 px-4">
+<div class="info-box flex min-h-screen items-center justify-center dark:bg-gray-900 px-4">
   <div class="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden">
     <div class="flex flex-col items-center py-8 bg-blue-600 dark:bg-blue-500">
       <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -13,7 +13,7 @@
       <school-password-input formControlName="password" label="Password" [required]="true"/>
 
       <button pButton label="Login" (click)="login()" [disabled]="formGroup.invalid" [loading]="loading()"
-        class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold mt-8 py-2 rounded-lg"></button>
+        class="w-full bg-blue-600 hover:bg-blue-700 !dark:bg-black-100 dark:hover:bg-blue-600 text-white font-semibold mt-8 py-2 rounded-lg"></button>
     </div>
 
     <div class="p-6 bg-blue-50 dark:bg-gray-900 text-center">

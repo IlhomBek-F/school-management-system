@@ -3,7 +3,12 @@
 
 @use 'tailwindcss';
 
+/* whatever class you add to enable dark mode */
+html.dark, body.dark, .p-theme-dark {
+  --my-surface-card: #1f2937;
+  --my-text-color: #f7f7f7;
+}
+
 body {
-  background-color: #eff6ff;
   height: 100vh;
 }

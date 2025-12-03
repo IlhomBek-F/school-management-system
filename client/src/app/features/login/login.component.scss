@@ -6,5 +6,16 @@
       width: 100%;
     }
   }
+
+
+.info-box {
+  padding: 1rem;
+  border-radius: 12px;
+  background: var(--my-surface-card);        /* light: white | dark: dark gray */
+  color: var(--text-color);               /* light: black | dark: white */
+  transition: background 0.3s ease;
 }
+}
+
+
 
