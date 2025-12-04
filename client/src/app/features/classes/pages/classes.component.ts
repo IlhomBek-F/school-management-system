@@ -3,7 +3,7 @@ import { PageTitleComponent } from "@shared/components/page-title/page-title.com
 import { DropdownModule } from "primeng/dropdown";
 import { Button } from "primeng/button";
 import { TableModule } from "primeng/table";
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UpsertClassModalCompoment } from '@components/upsert-class-modal/upsert-class-modal.compoment';
@@ -17,186 +17,41 @@ import { ClassesGridViewListComponent } from '@components/classes-grid-view-list
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { ToastService } from '@core/services/toast.service';
 import { ConfirmationService } from 'primeng/api';
-import { Class } from '../models';
-import { DropdownOption } from '@core/models/base';
+import { DropdownOption, Meta } from '@core/models/base';
 import { ClassStatus } from '../enums';
 import { StatusSeverityEnum } from '@core/enums/status-severity.enum';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
+import { GRADES } from 'app/utils/constants';
+import { ClassListRes, ClassModel, ClassStats, UpsertClassPayload } from '../models';
+import { ClassesService } from '../services/classes.services';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { finalize } from 'rxjs';
+import { StatsService } from '@core/services/stats.service';
 
+@UntilDestroy()
 @Component({
   selector: 'school-classes.component',
-  imports: [PageTitleComponent, DropdownModule, Button,
-    TableModule, FormsModule, CommonModule, SchoolStatsCardComponent,
-    ClassesGridViewListComponent, TextInputComponent, SelectInputComponent, ClassesTableViewListComponent, EmptyListComponent],
+  imports: [
+    PageTitleComponent,
+    DropdownModule, Button,
+    TableModule, FormsModule,
+    CommonModule, SchoolStatsCardComponent,
+    ClassesGridViewListComponent, TextInputComponent,
+    SelectInputComponent, ClassesTableViewListComponent, EmptyListComponent],
   templateUrl: './classes.component.html',
   styleUrl: './classes.component.scss',
+  providers: [ClassesService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class ClassesComponent implements OnInit {
-  loading = signal(true)
+  loading = signal(false);
+  loadingStats = signal(false);
   VIEW_MODE = ViewModeEnum;
+  classes = signal<ClassModel[]>([]);
 
-  classes: Class[] = [
-    {
-      id: 1,
-      name: 'Advanced Mathematics',
-      code: 'MATH-401',
-      subject: 'Mathematics',
-      teacher: 'Dr. Sarah Johnson',
-      grade: '12th Grade',
-      schedule: 'Mon, Wed, Fri - 9:00 AM',
-      room: 'Room 201',
-      students: 28,
-      capacity: 30,
-      duration: '50 min',
-      startDate: '2024-09-01',
-      endDate: '2025-05-30',
-      status: 'Active',
-      color: 'bg-blue-500',
-      description: 'test class'
-    },
-    {
-      id: 2,
-      name: 'Physics Lab',
-      code: 'PHY-301',
-      subject: 'Physics',
-      teacher: 'Prof. Michael Chen',
-      grade: '11th Grade',
-      schedule: 'Tue, Thu - 10:30 AM',
-      room: 'Lab 3',
-      students: 24,
-      capacity: 25,
-      duration: '90 min',
-      startDate: '2024-09-01',
-      endDate: '2025-05-30',
-      status: 'Active',
-      color: 'bg-purple-500',
-      description: 'test class'
-    },
-    {
-      id: 3,
-      name: 'English Literature',
-      code: 'ENG-201',
-      subject: 'English',
-      teacher: 'Ms. Emily Rodriguez',
-      grade: '10th Grade',
-      schedule: 'Mon, Wed, Fri - 11:00 AM',
-      room: 'Room 105',
-      students: 30,
-      capacity: 30,
-      duration: '45 min',
-      startDate: '2024-09-01',
-      endDate: '2025-05-30',
-      status: 'Active',
-      color: 'bg-pink-500',
-      description: 'test class'
-    },
-    {
-      id: 4,
-      name: 'World History',
-      code: 'HIST-301',
-      subject: 'History',
-      teacher: 'Mr. David Wilson',
-      grade: '11th Grade',
-      schedule: 'Tue, Thu - 1:00 PM',
-      room: 'Room 108',
-      students: 25,
-      capacity: 28,
-      duration: '50 min',
-      startDate: '2024-09-01',
-      endDate: '2025-05-30',
-      status: 'Active',
-      color: 'bg-green-500',
-      description: 'test class'
-    },
-    {
-      id: 5,
-      name: 'Chemistry Fundamentals',
-      code: 'CHEM-201',
-      subject: 'Chemistry',
-      teacher: 'Dr. Lisa Anderson',
-      grade: '10th Grade',
-      schedule: 'Mon, Wed - 2:00 PM',
-      room: 'Lab 1',
-      students: 22,
-      capacity: 26,
-      duration: '60 min',
-      startDate: '2024-09-01',
-      endDate: '2025-05-30',
-      status: 'Active',
-      color: 'bg-orange-500',
-      description: 'test class'
-    },
-    {
-      id: 6,
-      name: 'Physical Education',
-      code: 'PE-101',
-      subject: 'Sports',
-      teacher: 'Mr. James Brown',
-      grade: '9th Grade',
-      schedule: 'Daily - 3:30 PM',
-      room: 'Gymnasium',
-      students: 45,
-      capacity: 50,
-      duration: '45 min',
-      startDate: '2024-09-01',
-      endDate: '2025-05-30',
-      status: 'Cancelled',
-      color: 'bg-indigo-500',
-      description: 'test class'
-    },
-    {
-      id: 7,
-      name: 'Spanish Language',
-      code: 'SPAN-201',
-      subject: 'Spanish',
-      teacher: 'Ms. Maria Garcia',
-      grade: '10th Grade',
-      schedule: 'Tue, Thu - 8:30 AM',
-      room: 'Room 210',
-      students: 20,
-      capacity: 25,
-      duration: '50 min',
-      startDate: '2024-09-01',
-      endDate: '2025-05-30',
-      status: 'Active',
-      color: 'bg-red-500',
-      description: 'test class'
-    },
-    {
-      id: 8,
-      name: 'Biology Advanced',
-      code: 'BIO-401',
-      subject: 'Biology',
-      teacher: 'Dr. Robert Taylor',
-      grade: '12th Grade',
-      schedule: 'Mon, Wed, Fri - 1:30 PM',
-      room: 'Lab 2',
-      students: 26,
-      capacity: 28,
-      duration: '55 min',
-      startDate: '2024-09-01',
-      endDate: '2025-05-30',
-      status: 'Active',
-      color: 'bg-teal-500',
-      description: 'test class'
-    }
-  ];
-
-  filteredClasses: Class[] = [];
-  searchTerm: string = '';
-  selectedGrade: string = 'all';
-  selectedStatus: string = 'all';
   viewMode: string = ViewModeEnum.GRID;
-
-  grades: DropdownOption[] = [
-    { label: 'All Grades', value: 'all' },
-    { label: '9th Grade', value: '9th Grade' },
-    { label: '10th Grade', value: '10th Grade' },
-    { label: '11th Grade', value: '11th Grade' },
-    { label: '12th Grade', value: '12th Grade' }
-  ];
+  grades: DropdownOption[] = GRADES;
 
   statuses: DropdownOption[] = [
     { label: 'All Status', value: 'all' },
@@ -204,65 +59,44 @@ export class ClassesComponent implements OnInit {
     { label: 'Cancelled', value: ClassStatus.CANCELLED }
   ];
 
-  totalClasses: number = 0;
-  activeClasses: number = 0;
-  totalStudents: number = 0;
-  avgCapacity: number = 0;
+  filterFormGroup = new FormGroup({
+    search: new FormControl('', { nonNullable: true }),
+    grade_id: new FormControl(0, { nonNullable: true }),
+    page: new FormControl(1, { nonNullable: true }),
+    per_page: new FormControl(10, {nonNullable: true})
+  })
+
+  classMeta = signal<Meta>({
+    total: 0,
+    per_page: this.filterFormGroup.get('per_page')?.value || 5,
+    current_page: this.filterFormGroup.get('page')?.value || 1
+  });
+
+  classStats = signal<ClassStats>({
+     total_classes: 0,
+     active_classes: 0,
+     total_enrollments: 0,
+     avg_capacity: 0
+  })
 
   private _dialogService = inject(DialogService)
   private _router = inject(Router)
   private _activeRoute = inject(ActivatedRoute)
   private _confirmService = inject(DeleteConfirmDialogService)
   private _messageService = inject(ToastService)
+  private _classessService = inject(ClassesService)
+  private _statsService = inject(StatsService)
 
   ngOnInit(): void {
-    setTimeout(() => this.loading.set(false), 3000)
-    this.filteredClasses = [...this.classes];
-    this.calculateStats();
-  }
-
-  calculateStats(): void {
-    this.totalClasses = this.classes.length;
-    this.activeClasses = this.classes.filter(c => c.status === ClassStatus.ACTIVE).length;
-    this.totalStudents = this.classes.reduce((sum, c) => sum + c.students, 0);
-    this.avgCapacity = Math.round(
-      (this.classes.reduce((sum, c) => sum + (c.students / c.capacity * 100), 0) / this.classes.length)
-    );
-  }
-
-  filterClasses(): void {
-    this.filteredClasses = this.classes.filter(cls => {
-      const matchesSearch =
-        cls.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        cls.code.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        cls.teacher.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesGrade =
-        this.selectedGrade === 'all' || cls.grade === this.selectedGrade;
-      const matchesStatus =
-        this.selectedStatus === 'all' || cls.status === this.selectedStatus;
-      return matchesSearch && matchesGrade && matchesStatus;
-    });
-  }
-
-  onSearchChange(term: string): void {
-    this.searchTerm = term
-    this.filterClasses();
-  }
-
-  onGradeChange(grade: string): void {
-    this.selectedGrade = grade;
-    this.filterClasses();
-  }
-
-  onStatusChange(): void {
-    this.filterClasses();
+    this._getClassess();
+    this._getClassStats();
   }
 
   setViewMode(mode: string): void {
     this.viewMode = mode;
   }
 
-  upsertClass(classObj?: Class): void {
+  upsertClass(classObj?: UpsertClassPayload): void {
     const dialogRef = this._dialogService.open(UpsertClassModalCompoment, {
       focusOnShow: false,
       dismissableMask: true,
@@ -279,7 +113,7 @@ export class ClassesComponent implements OnInit {
     })
   }
 
-  viewDetails(cls: Class): void {
+  viewDetails(cls: ClassModel): void {
    this._router.navigate([cls.id], {relativeTo: this._activeRoute})
   }
 
@@ -288,12 +122,11 @@ export class ClassesComponent implements OnInit {
           this._confirmService.loading$.next(true)
           setTimeout(() => {
             this._confirmService.loading$.next(false);
-            this.filteredClasses = this.filteredClasses.filter(({id}) => classObj.id !== id)
             this._messageService.success("Class deleted successfully")
             ref.close()
           }, 3000)
         })
-      }
+  }
 
   getStatusSeverity(status: string): string {
     switch(status) {
@@ -312,4 +145,35 @@ export class ClassesComponent implements OnInit {
     if (percentage >= 70) return StatusSeverityEnum.WARNING;
     return StatusSeverityEnum.SUCCESS;
   }
-}
+
+  private _getClassess() {
+    this.loading.set(true);
+    this._classessService.retrieveAll<ClassListRes>()
+     .pipe(
+      finalize(() => this.loading.set(false)),
+      untilDestroyed(this)
+     ).subscribe({
+      next: (res) => {
+        this.classes.set(res.data);
+        this.classMeta.set(res.meta);
+      }, error: (err) => {
+        this._messageService.error("Failed fetching classes")
+      }
+     })
+  }
+
+  private _getClassStats() {
+    this.loadingStats.set(true)
+    this._statsService.getClassStats()
+     .pipe(
+      finalize(() => this.loadingStats.set(false)),
+      untilDestroyed(this)
+     ).subscribe({
+      next: (res) => {
+        this.classStats.set(res.data)
+      }, error: () => {
+        this._messageService.error("Failed fetching class stats")
+      }
+     })
+  }
+ }

@@ -69,7 +69,7 @@ export class StudentsComponent implements OnInit {
     avg_gpa: 0
   })
 
-  studentsMeta: WritableSignal<Meta> = signal({
+  studentsMeta = signal<Meta>({
     total: 0,
     per_page: this.filterFormGroup.get('per_page')?.value || 5,
     current_page: this.filterFormGroup.get('page')?.value || 1

@@ -3,6 +3,7 @@ import { BaseService } from "./base.service";
 import { Observable } from "rxjs";
 import { QuickStatsSuccessRes, RoomStatsSuccessRes, StudentStatsSuccessRes } from "@core/models/stats";
 import { TeacherStatsSuccessRes } from "app/features/teachers/models";
+import { ClassStatsRes } from "app/features/classes/models";
 
 @Injectable({providedIn: "root"})
 export class StatsService extends BaseService {
@@ -22,5 +23,9 @@ export class StatsService extends BaseService {
 
  getTeacherStats(): Observable<TeacherStatsSuccessRes> {
   return this.http.get<TeacherStatsSuccessRes>(`${this.baseUrl}/teacher`)
+ }
+
+ getClassStats(): Observable<ClassStatsRes> {
+  return this.http.get<ClassStatsRes>(`${this.baseUrl}/class`)
  }
 }
