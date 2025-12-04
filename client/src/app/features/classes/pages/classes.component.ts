@@ -63,7 +63,7 @@ export class ClassesComponent implements OnInit {
     search: new FormControl('', { nonNullable: true }),
     grade_id: new FormControl(0, { nonNullable: true }),
     page: new FormControl(1, { nonNullable: true }),
-    per_page: new FormControl(10, {nonNullable: true})
+    per_page: new FormControl(10, { nonNullable: true })
   })
 
   classMeta = signal<Meta>({
@@ -73,10 +73,10 @@ export class ClassesComponent implements OnInit {
   });
 
   classStats = signal<ClassStats>({
-     total_classes: 0,
-     active_classes: 0,
-     total_enrollments: 0,
-     avg_capacity: 0
+    total_classes: 0,
+    active_classes: 0,
+    total_enrollments: 0,
+    avg_capacity: 0
   })
 
   private _dialogService = inject(DialogService)
@@ -114,22 +114,30 @@ export class ClassesComponent implements OnInit {
   }
 
   viewDetails(cls: ClassModel): void {
-   this._router.navigate([cls.id], {relativeTo: this._activeRoute})
+    this._router.navigate([cls.id], { relativeTo: this._activeRoute })
   }
 
-  deleteClass(classObj: any) {
-        this._confirmService.confirm((ref: ConfirmationService) => {
-          this._confirmService.loading$.next(true)
-          setTimeout(() => {
-            this._confirmService.loading$.next(false);
-            this._messageService.success("Class deleted successfully")
-            ref.close()
-          }, 3000)
+  deleteClass(classObj: ClassModel) {
+    this._confirmService.confirm((ref: ConfirmationService) => {
+      this._confirmService.loading$.next(true)
+      this._classessService.delete(classObj.id)
+        .pipe(
+          finalize(() => this._confirmService.loading$.next(false)),
+          untilDestroyed(this)
+        ).subscribe({
+          next: () => {
+            this._messageService.success("Class deleted successfully");
+            this._getClassess();
+            ref.close();
+          }, error: () => {
+            this._messageService.error("Failed deleting class")
+          }
         })
+    })
   }
 
   getStatusSeverity(status: string): string {
-    switch(status) {
+    switch (status) {
       case ClassStatus.ACTIVE: return StatusSeverityEnum.SUCCESS;
       case ClassStatus.CANCELLED: return StatusSeverityEnum.DANGER;
       default: return StatusSeverityEnum.INFO;
@@ -149,31 +157,31 @@ export class ClassesComponent implements OnInit {
   private _getClassess() {
     this.loading.set(true);
     this._classessService.retrieveAll<ClassListRes>()
-     .pipe(
-      finalize(() => this.loading.set(false)),
-      untilDestroyed(this)
-     ).subscribe({
-      next: (res) => {
-        this.classes.set(res.data);
-        this.classMeta.set(res.meta);
-      }, error: (err) => {
-        this._messageService.error("Failed fetching classes")
-      }
-     })
+      .pipe(
+        finalize(() => this.loading.set(false)),
+        untilDestroyed(this)
+      ).subscribe({
+        next: (res) => {
+          this.classes.set(res.data);
+          this.classMeta.set(res.meta);
+        }, error: (err) => {
+          this._messageService.error("Failed fetching classes")
+        }
+      })
   }
 
   private _getClassStats() {
     this.loadingStats.set(true)
     this._statsService.getClassStats()
-     .pipe(
-      finalize(() => this.loadingStats.set(false)),
-      untilDestroyed(this)
-     ).subscribe({
-      next: (res) => {
-        this.classStats.set(res.data)
-      }, error: () => {
-        this._messageService.error("Failed fetching class stats")
-      }
-     })
+      .pipe(
+        finalize(() => this.loadingStats.set(false)),
+        untilDestroyed(this)
+      ).subscribe({
+        next: (res) => {
+          this.classStats.set(res.data)
+        }, error: () => {
+          this._messageService.error("Failed fetching class stats")
+        }
+      })
   }
- }
+}

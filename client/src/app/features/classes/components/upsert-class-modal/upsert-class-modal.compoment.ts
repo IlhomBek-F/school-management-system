@@ -13,6 +13,10 @@ import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { ButtonModule } from 'primeng/button';
 import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
 import { FormContainer } from '@core/models/question-base';
+import { TabItem } from '@core/models/base';
+import { OptionTypeEnum } from '@core/enums/option-type.enum';
+import { AsyncOptionEnum } from '@core/enums/async-option.enum';
+import { GRADES } from 'app/utils/constants';
 
 @Component({
   selector: 'school-upsert-class-modal',
@@ -24,7 +28,7 @@ import { FormContainer } from '@core/models/question-base';
 })
 export class UpsertClassModalCompoment {
   form!: FormGroup;
-  tabItems!: { title: string, value: string, formContainers: FormContainer[]}[];
+  tabItems!: TabItem[];
 
   private _questionControlService = inject(QuestionControlService)
   private _dialogConfig = inject(DynamicDialogConfig)
@@ -46,16 +50,21 @@ export class UpsertClassModalCompoment {
   }
 
   private _createTabItems() {
+    const basicFormContainer = this._getBasicFormContainer();
+    const scheduleFormContainer = this._getScheduleFormContainer();
+
     this.tabItems = [
       {
         title: 'Basic Information',
         value: 'basic_info',
-        formContainers: this._getBasicFormContainer(),
+        formContainers: basicFormContainer,
+        form: this._questionControlService.toFormGroup(basicFormContainer)
       },
       {
         title: 'Schedule Information',
         value: 'schedule_info',
-        formContainers: this._getScheduleFormContainer(),
+        formContainers: scheduleFormContainer,
+        form: this._questionControlService.toFormGroup(scheduleFormContainer)
       },
     ];
 
@@ -72,7 +81,7 @@ export class UpsertClassModalCompoment {
             required: true,
           }),
           new QuestionTextInput({
-            key: 'code',
+            key: 'class_code',
             label: 'Class code',
             required: true,
           })
@@ -81,55 +90,35 @@ export class UpsertClassModalCompoment {
       {
         containers: [
           new QuestionSelectInput({
-            key: 'subject',
+            key: 'subject_id',
             label: 'Subject',
             required: true,
-            options: [
-              { label: 'Mathematics', value: 'mathematics' },
-              { label: 'Chemistry', value: 'chemistry' },
-              { label: 'Physics', value: 'physics' },
-              { label: 'English', value: 'english' },
-              { label: 'Biology', value: 'biology' },
-              { label: 'French', value: 'french' },
-              { label: 'Spanish', value: 'spanish' },
-              { label: 'Geography', value: 'geography' },
-              { label: 'History', value: 'history' },
-              { label: 'Physical Education', value: 'pe' },
-              { label: 'Computer Science', value: 'cs' },
-              { label: 'Music', value: 'music' },
-              { label: 'Art', value: 'art' },
-            ]
+            optionValue: "id",
+            optionLabel: "name",
+            optionType: OptionTypeEnum.ASYNC,
+            asyncOptionType: AsyncOptionEnum.SUBJECTS,
           }),
           new QuestionSelectInput({
-            key: 'teacher',
+            key: 'teacher_id',
             label: 'Teacher',
             required: true,
-            options: [
-              { label: 'Dr. Sarah Johnson - Mathematics', value: 'teacher_1' },
-              { label: 'Prof. Michael Chen - Physics', value: 'teacher_2' },
-              { label: 'Ms. Emily Rodriguez - English', value: 'teacher_3' },
-              { label: 'Mr. David Wilson - History', value: 'teacher_4' },
-              { label: 'Dr. Lisa Anderson - Chemistry', value: 'teacher_5' },
-              { label: 'Mr. James Brown - Physical Education', value: 'teacher_6' }
-            ]
+            optionValue: "id",
+            optionLabel: "full_name",
+            optionType: OptionTypeEnum.ASYNC,
+            asyncOptionType: AsyncOptionEnum.TEACHERS
           })
         ],
       },
       {
         containers: [
           new QuestionSelectInput({
-            key: 'grade',
+            key: 'grade_id',
             label: 'Grade',
             required: true,
-            options: [
-              { label: '9th Grade', value: '9' },
-              { label: '11th Grade', value: '11' },
-              { label: '10th Grade', value: '10' },
-              { label: '12th Grade', value: '12' }
-            ]
+            options: GRADES,
           }),
           new QuestionSelectInput({
-            key: 'section',
+            key: 'section_id',
             label: 'Section',
             required: true,
             options: [
@@ -140,15 +129,13 @@ export class UpsertClassModalCompoment {
             ]
           }),
           new QuestionSelectInput({
-            key: 'type',
+            key: 'class_type_id',
             label: 'Class type',
             required: true,
-            options: [
-                { label: 'Theory', value: 'theory' },
-                { label: 'Practical', value: 'practical' },
-                { label: 'Lab', value: 'lab' },
-                { label: 'Tutorial', value: 'tutorial' }
-            ]
+            optionValue: "id",
+            optionLabel: "name",
+            optionType: OptionTypeEnum.ASYNC,
+            asyncOptionType: AsyncOptionEnum.CLASS_TYPES,
           })
         ]
       },
@@ -216,10 +203,13 @@ export class UpsertClassModalCompoment {
             ]
           }),
           new QuestionSelectInput({
-            key: 'room',
+            key: 'room_id',
             label: 'Room',
             required: true,
-            options: []
+            optionValue: "id",
+            optionLabel: "name",
+            optionType: OptionTypeEnum.ASYNC,
+            asyncOptionType: AsyncOptionEnum.ROOMS,
           })
         ]
       },
