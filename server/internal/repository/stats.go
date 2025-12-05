@@ -11,6 +11,7 @@ type StatsRepository interface {
 	GetRoomStats() (domain.RoomStats, error)
 	GetStudentStats() (domain.StudentStats, error)
 	GetTeacherStats() (domain.TeacherStats, error)
+	GetClassStats() (domain.ClassStats, error)
 }
 
 type statsRepository struct {
@@ -35,4 +36,8 @@ func (r statsRepository) GetStudentStats() (domain.StudentStats, error) {
 
 func (r statsRepository) GetTeacherStats() (domain.TeacherStats, error) {
 	return domain.TeacherStats{}, nil
+}
+
+func (r statsRepository) GetClassStats() (domain.ClassStats, error) {
+	return domain.ClassStats{}, nil
 }

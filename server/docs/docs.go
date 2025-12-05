@@ -1150,6 +1150,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/stats/class": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get class stats",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get class stats",
+                "responses": {
+                    "201": {
+                        "description": "class stats",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ClassStatsResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/stats/quick": {
             "get": {
                 "security": [
@@ -1245,6 +1281,42 @@ const docTemplate = `{
                         "description": "student stats",
                         "schema": {
                             "$ref": "#/definitions/domain.StudentStatsResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/stats/teacher": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get teacher stats",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get teacher stats",
+                "responses": {
+                    "201": {
+                        "description": "teacher stats",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TeacherStatsResSuccess"
                         }
                     },
                     "400": {
@@ -1954,68 +2026,6 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.BasicInformation": {
-            "type": "object",
-            "required": [
-                "class_type_id",
-                "code",
-                "description",
-                "grade_id",
-                "name",
-                "section_id",
-                "subject_id",
-                "teacher_id"
-            ],
-            "properties": {
-                "class_type_id": {
-                    "type": "integer"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "grade_id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "section_id": {
-                    "type": "integer"
-                },
-                "subject_id": {
-                    "type": "integer"
-                },
-                "teacher_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "domain.Building": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "domain.BuildingCreatePayload": {
             "type": "object",
             "required": [
@@ -2028,110 +2038,45 @@ const docTemplate = `{
             }
         },
         "domain.BuildingSuccessRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/domain.Building"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
+            "type": "object"
         },
         "domain.BuildingUpdatePayload": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.Class": {
-            "type": "object",
-            "required": [
-                "basic_info",
-                "schedule_info"
-            ],
-            "properties": {
-                "basic_info": {
-                    "$ref": "#/definitions/domain.BasicInformation"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "schedule_info": {
-                    "$ref": "#/definitions/domain.ScheduleInformation"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.ClassCreatePayload": {
+            "type": "object"
+        },
+        "domain.ClassListRes": {
+            "type": "object"
+        },
+        "domain.ClassStats": {
             "type": "object",
-            "required": [
-                "basic_info",
-                "schedule_info"
-            ],
             "properties": {
-                "basic_info": {
-                    "$ref": "#/definitions/domain.BasicInformation"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
+                "active_classes": {
                     "type": "integer"
                 },
-                "schedule_info": {
-                    "$ref": "#/definitions/domain.ScheduleInformation"
+                "avg_capacity": {
+                    "type": "integer"
                 },
-                "updated_at": {
-                    "type": "string"
+                "total_classes": {
+                    "type": "integer"
+                },
+                "total_enrollments": {
+                    "type": "integer"
                 }
             }
         },
-        "domain.ClassListRes": {
+        "domain.ClassStatsResSuccess": {
             "type": "object",
             "properties": {
                 "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Class"
-                    }
+                    "$ref": "#/definitions/domain.ClassStats"
                 },
                 "message": {
                     "type": "string"
-                },
-                "meta": {
-                    "$ref": "#/definitions/domain.Meta"
                 },
                 "status": {
                     "type": "integer"
@@ -2153,31 +2098,7 @@ const docTemplate = `{
             }
         },
         "domain.ClassUpdatePayload": {
-            "type": "object",
-            "required": [
-                "basic_info",
-                "schedule_info"
-            ],
-            "properties": {
-                "basic_info": {
-                    "$ref": "#/definitions/domain.BasicInformation"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "schedule_info": {
-                    "$ref": "#/definitions/domain.ScheduleInformation"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.CreateSubjectPayload": {
             "type": "object",
@@ -2185,6 +2106,9 @@ const docTemplate = `{
                 "name"
             ],
             "properties": {
+                "description": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 }
@@ -2193,13 +2117,13 @@ const docTemplate = `{
         "domain.EmploymentDetail": {
             "type": "object",
             "properties": {
-                "conrtact_end_date": {
+                "contract_end_date": {
                     "type": "string"
                 },
-                "employment_type": {
-                    "type": "string"
+                "employment_type_id": {
+                    "type": "integer"
                 },
-                "joing_date": {
+                "joining_date": {
                     "type": "string"
                 },
                 "salary": {
@@ -2208,27 +2132,7 @@ const docTemplate = `{
             }
         },
         "domain.Facility": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.FacilityCreatePayload": {
             "type": "object",
@@ -2242,24 +2146,7 @@ const docTemplate = `{
             }
         },
         "domain.FacilityListRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Facility"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                },
-                "meta": {
-                    "$ref": "#/definitions/domain.Meta"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
+            "type": "object"
         },
         "domain.FacilitySuccessRes": {
             "type": "object",
@@ -2276,27 +2163,7 @@ const docTemplate = `{
             }
         },
         "domain.FacilityUpdatePayload": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.LoginRequest": {
             "type": "object",
@@ -2322,20 +2189,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "type": "integer"
-                }
-            }
-        },
-        "domain.Meta": {
-            "type": "object",
-            "properties": {
-                "current_page": {
-                    "type": "integer"
-                },
-                "per_page": {
-                    "type": "integer"
-                },
-                "total": {
                     "type": "integer"
                 }
             }
@@ -2387,6 +2240,7 @@ const docTemplate = `{
             "required": [
                 "city",
                 "date_of_birth",
+                "email",
                 "first_name",
                 "gender",
                 "last_name",
@@ -2404,6 +2258,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "first_name": {
+                    "type": "string"
+                },
+                "full_name": {
                     "type": "string"
                 },
                 "gender": {
@@ -2444,7 +2301,7 @@ const docTemplate = `{
                 "subjects": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/domain.TeacherSubject"
+                        "$ref": "#/definitions/domain.Subject"
                     }
                 },
                 "teacher_id": {
@@ -2481,72 +2338,7 @@ const docTemplate = `{
             }
         },
         "domain.Room": {
-            "type": "object",
-            "required": [
-                "building_id",
-                "code",
-                "facilities",
-                "floor_id",
-                "name",
-                "room_type_id",
-                "status"
-            ],
-            "properties": {
-                "area": {
-                    "type": "integer"
-                },
-                "building": {
-                    "$ref": "#/definitions/domain.Building"
-                },
-                "building_id": {
-                    "type": "integer"
-                },
-                "capacity": {
-                    "type": "integer"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "facilities": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Facility"
-                    }
-                },
-                "floor_id": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "number": {
-                    "type": "integer"
-                },
-                "room_type": {
-                    "$ref": "#/definitions/domain.RoomType"
-                },
-                "room_type_id": {
-                    "type": "integer"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.RoomCreatePayload": {
             "type": "object",
@@ -2599,24 +2391,7 @@ const docTemplate = `{
             }
         },
         "domain.RoomListRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Room"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                },
-                "meta": {
-                    "$ref": "#/definitions/domain.Meta"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
+            "type": "object"
         },
         "domain.RoomStats": {
             "type": "object",
@@ -2664,27 +2439,7 @@ const docTemplate = `{
             }
         },
         "domain.RoomType": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.RoomTypeCreatePayload": {
             "type": "object",
@@ -2698,24 +2453,7 @@ const docTemplate = `{
             }
         },
         "domain.RoomTypeListRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.RoomType"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                },
-                "meta": {
-                    "$ref": "#/definitions/domain.Meta"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
+            "type": "object"
         },
         "domain.RoomTypeSuccessRes": {
             "type": "object",
@@ -2732,173 +2470,13 @@ const docTemplate = `{
             }
         },
         "domain.RoomTypeUpdatePayload": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.RoomUpdatePayload": {
-            "type": "object",
-            "required": [
-                "building_id",
-                "code",
-                "facilities",
-                "floor_id",
-                "name",
-                "room_type_id",
-                "status"
-            ],
-            "properties": {
-                "area": {
-                    "type": "integer"
-                },
-                "building_id": {
-                    "type": "integer"
-                },
-                "capacity": {
-                    "type": "integer"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "facilities": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Facility"
-                    }
-                },
-                "floor_id": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "number": {
-                    "type": "integer"
-                },
-                "room_type_id": {
-                    "type": "integer"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "domain.ScheduleInformation": {
-            "type": "object",
-            "required": [
-                "class_days_ids",
-                "duration",
-                "end_date",
-                "end_time",
-                "max_capacity",
-                "room_id",
-                "start_date",
-                "start_time"
-            ],
-            "properties": {
-                "class_days_ids": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "current_enrollment": {
-                    "type": "integer"
-                },
-                "duration": {
-                    "type": "integer"
-                },
-                "end_date": {
-                    "type": "string"
-                },
-                "end_time": {
-                    "type": "string"
-                },
-                "max_capacity": {
-                    "type": "integer"
-                },
-                "min_capacity": {
-                    "type": "integer"
-                },
-                "room_id": {
-                    "type": "integer"
-                },
-                "start_date": {
-                    "type": "string"
-                },
-                "start_time": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.Student": {
-            "type": "object",
-            "required": [
-                "academic_info",
-                "personal_info"
-            ],
-            "properties": {
-                "academic_info": {
-                    "$ref": "#/definitions/domain.AcademicInfo"
-                },
-                "attendance": {
-                    "type": "integer"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "gpa": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "personal_info": {
-                    "$ref": "#/definitions/domain.PersonalInfo"
-                },
-                "subjects": {
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.StudentCreatePayload": {
             "type": "object",
@@ -2916,24 +2494,7 @@ const docTemplate = `{
             }
         },
         "domain.StudentListRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Student"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                },
-                "meta": {
-                    "$ref": "#/definitions/domain.Meta"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
+            "type": "object"
         },
         "domain.StudentStats": {
             "type": "object",
@@ -2981,86 +2542,13 @@ const docTemplate = `{
             }
         },
         "domain.StudentUpdatePayload": {
-            "type": "object",
-            "required": [
-                "academic_info",
-                "personal_info"
-            ],
-            "properties": {
-                "academic_info": {
-                    "$ref": "#/definitions/domain.AcademicInfo"
-                },
-                "attendance": {
-                    "type": "integer"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "gpa": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "personal_info": {
-                    "$ref": "#/definitions/domain.PersonalInfo"
-                },
-                "subjects": {
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.Subject": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.SubjectListRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Subject"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                },
-                "meta": {
-                    "$ref": "#/definitions/domain.Meta"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
+            "type": "object"
         },
         "domain.SubjectSuccessRes": {
             "type": "object",
@@ -3088,97 +2576,57 @@ const docTemplate = `{
             }
         },
         "domain.Teacher": {
-            "type": "object",
-            "required": [
-                "employment_detail",
-                "personal_info",
-                "professional_info"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "employment_detail": {
-                    "$ref": "#/definitions/domain.EmploymentDetail"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "personal_info": {
-                    "$ref": "#/definitions/domain.PersonalInformation"
-                },
-                "professional_info": {
-                    "$ref": "#/definitions/domain.ProfessionalInformation"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.TeacherCreatePayload": {
             "type": "object",
             "required": [
-                "employment_detail",
+                "employment_details",
                 "personal_info",
                 "professional_info"
             ],
             "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "employment_detail": {
+                "employment_details": {
                     "$ref": "#/definitions/domain.EmploymentDetail"
-                },
-                "id": {
-                    "type": "integer"
                 },
                 "personal_info": {
                     "$ref": "#/definitions/domain.PersonalInformation"
                 },
                 "professional_info": {
                     "$ref": "#/definitions/domain.ProfessionalInformation"
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },
         "domain.TeacherListRes": {
+            "type": "object"
+        },
+        "domain.TeacherStats": {
             "type": "object",
             "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Teacher"
-                    }
+                "avg_experience": {
+                    "type": "integer"
                 },
-                "message": {
-                    "type": "string"
+                "avg_rating": {
+                    "type": "integer"
                 },
-                "meta": {
-                    "$ref": "#/definitions/domain.Meta"
+                "total_students": {
+                    "type": "integer"
                 },
-                "status": {
+                "total_teachers": {
                     "type": "integer"
                 }
             }
         },
-        "domain.TeacherSubject": {
+        "domain.TeacherStatsResSuccess": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "integer"
+                "data": {
+                    "$ref": "#/definitions/domain.TeacherStats"
                 },
-                "subject_id": {
-                    "type": "integer"
+                "message": {
+                    "type": "string"
                 },
-                "teacher_id": {
+                "status": {
                     "type": "integer"
                 }
             }
@@ -3198,61 +2646,10 @@ const docTemplate = `{
             }
         },
         "domain.TeacherUpdatePayload": {
-            "type": "object",
-            "required": [
-                "employment_detail",
-                "personal_info",
-                "professional_info"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "employment_detail": {
-                    "$ref": "#/definitions/domain.EmploymentDetail"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "personal_info": {
-                    "$ref": "#/definitions/domain.PersonalInformation"
-                },
-                "professional_info": {
-                    "$ref": "#/definitions/domain.ProfessionalInformation"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "domain.UpdateSubjectPayload": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         }
     },
     "securityDefinitions": {

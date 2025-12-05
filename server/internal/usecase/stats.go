@@ -10,6 +10,7 @@ type StatsUsecase interface {
 	GetRoomStats() (domain.RoomStats, error)
 	GetStudentStats() (domain.StudentStats, error)
 	GetTeacherStats() (domain.TeacherStats, error)
+	GetClassStats() (domain.ClassStats, error)
 }
 
 type statsUsecase struct {
@@ -42,4 +43,10 @@ func (s statsUsecase) GetTeacherStats() (domain.TeacherStats, error) {
 	teacherStats, err := s.statsRepo.GetTeacherStats()
 
 	return teacherStats, err
+}
+
+func (s statsUsecase) GetClassStats() (domain.ClassStats, error) {
+	classStats, err := s.statsRepo.GetClassStats()
+
+	return classStats, err
 }

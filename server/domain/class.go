@@ -23,14 +23,22 @@ type ScheduleInformation struct {
 	StartTime         string `json:"start_time" gorm:"embedded" binding:"required"`
 	EndTime           string `json:"end_time" gorm:"embedded" binding:"required"`
 	Duration          int    `json:"duration" gorm:"embedded" binding:"required"`
-	ClassDaysIds      []int  `json:"class_days_ids" gorm:"embedded, type:integer[]" binding:"required"`
+	ClassDaysIds      []int  `json:"class_days_ids" gorm:"type:integer[]" binding:"required"`
 	RoomId            int    `json:"room_id" gorm:"embedded" binding:"required"`
 	MaxCapacity       int    `json:"max_capacity" gorm:"embedded" binding:"required"`
 	MinCapacity       int    `json:"min_capacity" gorm:"embedded"`
 	CurrentEnrollment int    `json:"current_enrollment" gorm:"embedded"`
 }
 
+type ClassStats struct {
+	TotalClasses     int `json:"total_classes"`
+	ActiveClasses    int `json:"active_classes"`
+	TotalEnrollments int `json:"total_enrollments"`
+	AvgCapacity      int `json:"avg_capacity"`
+}
+
 type ClassCreatePayload = Class
 type ClassUpdatePayload = Class
 type ClassSuccessRes = SuccessResponseWithData[Class]
 type ClassListRes = SuccessResponseWithMeta[[]Class]
+type ClassStatsResSuccess = SuccessResponseWithData[ClassStats]

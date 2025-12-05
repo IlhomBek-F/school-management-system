@@ -27,49 +27,6 @@ definitions:
       refresh_token:
         type: string
     type: object
-  domain.BasicInformation:
-    properties:
-      class_type_id:
-        type: integer
-      code:
-        type: string
-      description:
-        type: string
-      grade_id:
-        type: integer
-      name:
-        type: string
-      section_id:
-        type: integer
-      subject_id:
-        type: integer
-      teacher_id:
-        type: integer
-    required:
-    - class_type_id
-    - code
-    - description
-    - grade_id
-    - name
-    - section_id
-    - subject_id
-    - teacher_id
-    type: object
-  domain.Building:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - name
-    type: object
   domain.BuildingCreatePayload:
     properties:
       name:
@@ -78,75 +35,32 @@ definitions:
     - name
     type: object
   domain.BuildingSuccessRes:
-    properties:
-      data:
-        $ref: '#/definitions/domain.Building'
-      message:
-        type: string
-      status:
-        type: integer
     type: object
   domain.BuildingUpdatePayload:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - name
     type: object
   domain.Class:
-    properties:
-      basic_info:
-        $ref: '#/definitions/domain.BasicInformation'
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      schedule_info:
-        $ref: '#/definitions/domain.ScheduleInformation'
-      updated_at:
-        type: string
-    required:
-    - basic_info
-    - schedule_info
     type: object
   domain.ClassCreatePayload:
-    properties:
-      basic_info:
-        $ref: '#/definitions/domain.BasicInformation'
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      schedule_info:
-        $ref: '#/definitions/domain.ScheduleInformation'
-      updated_at:
-        type: string
-    required:
-    - basic_info
-    - schedule_info
     type: object
   domain.ClassListRes:
+    type: object
+  domain.ClassStats:
+    properties:
+      active_classes:
+        type: integer
+      avg_capacity:
+        type: integer
+      total_classes:
+        type: integer
+      total_enrollments:
+        type: integer
+    type: object
+  domain.ClassStatsResSuccess:
     properties:
       data:
-        items:
-          $ref: '#/definitions/domain.Class'
-        type: array
+        $ref: '#/definitions/domain.ClassStats'
       message:
         type: string
-      meta:
-        $ref: '#/definitions/domain.Meta'
       status:
         type: integer
     type: object
@@ -160,25 +74,11 @@ definitions:
         type: integer
     type: object
   domain.ClassUpdatePayload:
-    properties:
-      basic_info:
-        $ref: '#/definitions/domain.BasicInformation'
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      schedule_info:
-        $ref: '#/definitions/domain.ScheduleInformation'
-      updated_at:
-        type: string
-    required:
-    - basic_info
-    - schedule_info
     type: object
   domain.CreateSubjectPayload:
     properties:
+      description:
+        type: string
       name:
         type: string
     required:
@@ -186,29 +86,16 @@ definitions:
     type: object
   domain.EmploymentDetail:
     properties:
-      conrtact_end_date:
+      contract_end_date:
         type: string
-      employment_type:
-        type: string
-      joing_date:
+      employment_type_id:
+        type: integer
+      joining_date:
         type: string
       salary:
         type: integer
     type: object
   domain.Facility:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - name
     type: object
   domain.FacilityCreatePayload:
     properties:
@@ -218,17 +105,6 @@ definitions:
     - name
     type: object
   domain.FacilityListRes:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Facility'
-        type: array
-      message:
-        type: string
-      meta:
-        $ref: '#/definitions/domain.Meta'
-      status:
-        type: integer
     type: object
   domain.FacilitySuccessRes:
     properties:
@@ -240,19 +116,6 @@ definitions:
         type: integer
     type: object
   domain.FacilityUpdatePayload:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - name
     type: object
   domain.LoginRequest:
     properties:
@@ -270,15 +133,6 @@ definitions:
       message:
         type: string
       status:
-        type: integer
-    type: object
-  domain.Meta:
-    properties:
-      current_page:
-        type: integer
-      per_page:
-        type: integer
-      total:
         type: integer
     type: object
   domain.PersonalInfo:
@@ -321,6 +175,8 @@ definitions:
         type: string
       first_name:
         type: string
+      full_name:
+        type: string
       gender:
         type: string
       last_name:
@@ -332,6 +188,7 @@ definitions:
     required:
     - city
     - date_of_birth
+    - email
     - first_name
     - gender
     - last_name
@@ -350,7 +207,7 @@ definitions:
         type: string
       subjects:
         items:
-          $ref: '#/definitions/domain.TeacherSubject'
+          $ref: '#/definitions/domain.Subject'
         type: array
       teacher_id:
         type: string
@@ -379,51 +236,6 @@ definitions:
         type: integer
     type: object
   domain.Room:
-    properties:
-      area:
-        type: integer
-      building:
-        $ref: '#/definitions/domain.Building'
-      building_id:
-        type: integer
-      capacity:
-        type: integer
-      code:
-        type: string
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      description:
-        type: string
-      facilities:
-        items:
-          $ref: '#/definitions/domain.Facility'
-        type: array
-      floor_id:
-        type: integer
-      id:
-        type: integer
-      name:
-        type: string
-      number:
-        type: integer
-      room_type:
-        $ref: '#/definitions/domain.RoomType'
-      room_type_id:
-        type: integer
-      status:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - building_id
-    - code
-    - facilities
-    - floor_id
-    - name
-    - room_type_id
-    - status
     type: object
   domain.RoomCreatePayload:
     properties:
@@ -461,17 +273,6 @@ definitions:
     - status
     type: object
   domain.RoomListRes:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Room'
-        type: array
-      message:
-        type: string
-      meta:
-        $ref: '#/definitions/domain.Meta'
-      status:
-        type: integer
     type: object
   domain.RoomStats:
     properties:
@@ -503,19 +304,6 @@ definitions:
         type: integer
     type: object
   domain.RoomType:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - name
     type: object
   domain.RoomTypeCreatePayload:
     properties:
@@ -525,17 +313,6 @@ definitions:
     - name
     type: object
   domain.RoomTypeListRes:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.RoomType'
-        type: array
-      message:
-        type: string
-      meta:
-        $ref: '#/definitions/domain.Meta'
-      status:
-        type: integer
     type: object
   domain.RoomTypeSuccessRes:
     properties:
@@ -547,120 +324,10 @@ definitions:
         type: integer
     type: object
   domain.RoomTypeUpdatePayload:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - name
     type: object
   domain.RoomUpdatePayload:
-    properties:
-      area:
-        type: integer
-      building_id:
-        type: integer
-      capacity:
-        type: integer
-      code:
-        type: string
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      description:
-        type: string
-      facilities:
-        items:
-          $ref: '#/definitions/domain.Facility'
-        type: array
-      floor_id:
-        type: integer
-      id:
-        type: integer
-      name:
-        type: string
-      number:
-        type: integer
-      room_type_id:
-        type: integer
-      status:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - building_id
-    - code
-    - facilities
-    - floor_id
-    - name
-    - room_type_id
-    - status
-    type: object
-  domain.ScheduleInformation:
-    properties:
-      class_days_ids:
-        items:
-          type: integer
-        type: array
-      current_enrollment:
-        type: integer
-      duration:
-        type: integer
-      end_date:
-        type: string
-      end_time:
-        type: string
-      max_capacity:
-        type: integer
-      min_capacity:
-        type: integer
-      room_id:
-        type: integer
-      start_date:
-        type: string
-      start_time:
-        type: string
-    required:
-    - class_days_ids
-    - duration
-    - end_date
-    - end_time
-    - max_capacity
-    - room_id
-    - start_date
-    - start_time
     type: object
   domain.Student:
-    properties:
-      academic_info:
-        $ref: '#/definitions/domain.AcademicInfo'
-      attendance:
-        type: integer
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      gpa:
-        type: integer
-      id:
-        type: integer
-      personal_info:
-        $ref: '#/definitions/domain.PersonalInfo'
-      subjects:
-        type: integer
-      updated_at:
-        type: string
-    required:
-    - academic_info
-    - personal_info
     type: object
   domain.StudentCreatePayload:
     properties:
@@ -673,17 +340,6 @@ definitions:
     - personal_info
     type: object
   domain.StudentListRes:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Student'
-        type: array
-      message:
-        type: string
-      meta:
-        $ref: '#/definitions/domain.Meta'
-      status:
-        type: integer
     type: object
   domain.StudentStats:
     properties:
@@ -715,58 +371,10 @@ definitions:
         type: integer
     type: object
   domain.StudentUpdatePayload:
-    properties:
-      academic_info:
-        $ref: '#/definitions/domain.AcademicInfo'
-      attendance:
-        type: integer
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      gpa:
-        type: integer
-      id:
-        type: integer
-      personal_info:
-        $ref: '#/definitions/domain.PersonalInfo'
-      subjects:
-        type: integer
-      updated_at:
-        type: string
-    required:
-    - academic_info
-    - personal_info
     type: object
   domain.Subject:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      description:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - name
     type: object
   domain.SubjectListRes:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Subject'
-        type: array
-      message:
-        type: string
-      meta:
-        $ref: '#/definitions/domain.Meta'
-      status:
-        type: integer
     type: object
   domain.SubjectSuccessRes:
     properties:
@@ -785,67 +393,40 @@ definitions:
         type: integer
     type: object
   domain.Teacher:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      employment_detail:
-        $ref: '#/definitions/domain.EmploymentDetail'
-      id:
-        type: integer
-      personal_info:
-        $ref: '#/definitions/domain.PersonalInformation'
-      professional_info:
-        $ref: '#/definitions/domain.ProfessionalInformation'
-      updated_at:
-        type: string
-    required:
-    - employment_detail
-    - personal_info
-    - professional_info
     type: object
   domain.TeacherCreatePayload:
     properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      employment_detail:
+      employment_details:
         $ref: '#/definitions/domain.EmploymentDetail'
-      id:
-        type: integer
       personal_info:
         $ref: '#/definitions/domain.PersonalInformation'
       professional_info:
         $ref: '#/definitions/domain.ProfessionalInformation'
-      updated_at:
-        type: string
     required:
-    - employment_detail
+    - employment_details
     - personal_info
     - professional_info
     type: object
   domain.TeacherListRes:
+    type: object
+  domain.TeacherStats:
     properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Teacher'
-        type: array
-      message:
-        type: string
-      meta:
-        $ref: '#/definitions/domain.Meta'
-      status:
+      avg_experience:
+        type: integer
+      avg_rating:
+        type: integer
+      total_students:
+        type: integer
+      total_teachers:
         type: integer
     type: object
-  domain.TeacherSubject:
+  domain.TeacherStatsResSuccess:
     properties:
-      id:
-        type: integer
-      subject_id:
-        type: integer
-      teacher_id:
+      data:
+        $ref: '#/definitions/domain.TeacherStats'
+      message:
+        type: string
+      status:
         type: integer
     type: object
   domain.TeacherSuccessRes:
@@ -858,42 +439,8 @@ definitions:
         type: integer
     type: object
   domain.TeacherUpdatePayload:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      employment_detail:
-        $ref: '#/definitions/domain.EmploymentDetail'
-      id:
-        type: integer
-      personal_info:
-        $ref: '#/definitions/domain.PersonalInformation'
-      professional_info:
-        $ref: '#/definitions/domain.ProfessionalInformation'
-      updated_at:
-        type: string
-    required:
-    - employment_detail
-    - personal_info
-    - professional_info
     type: object
   domain.UpdateSubjectPayload:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      description:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - name
     type: object
 host: localhost:8080
 info:
@@ -1632,6 +1179,29 @@ paths:
       summary: Update roomType
       tags:
       - RoomType
+  /stats/class:
+    get:
+      consumes:
+      - application/json
+      description: Get class stats
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: class stats
+          schema:
+            $ref: '#/definitions/domain.ClassStatsResSuccess'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get class stats
+      tags:
+      - Stats
   /stats/quick:
     get:
       consumes:
@@ -1699,6 +1269,29 @@ paths:
       security:
       - JWT: []
       summary: Get student stats
+      tags:
+      - Stats
+  /stats/teacher:
+    get:
+      consumes:
+      - application/json
+      description: Get teacher stats
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: teacher stats
+          schema:
+            $ref: '#/definitions/domain.TeacherStatsResSuccess'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - JWT: []
+      summary: Get teacher stats
       tags:
       - Stats
   /student/{student_id}:
