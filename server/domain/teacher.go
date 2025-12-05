@@ -10,6 +10,7 @@ type Teacher struct {
 type PersonalInformation struct {
 	FirstName     string `json:"first_name" binding:"required"`
 	LastName      string `json:"last_name" binding:"required"`
+	FullName      string `json:"full_name" gorm:"-"`
 	DateOfBirth   string `json:"date_of_birth" binding:"required"`
 	Gender        string `json:"gender" binding:"required"`
 	Email         string `json:"email" binding:"required"`

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, forwardRef, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, forwardRef, inject, input, OnInit, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
@@ -22,7 +22,7 @@ const VALUE_ACCESSOR_PROVIDER = {
   providers: [VALUE_ACCESSOR_PROVIDER],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectInputComponent implements ControlValueAccessor {
+export class SelectInputComponent implements ControlValueAccessor{
    label = input();
    options = input();
    optionLabel = input('label');

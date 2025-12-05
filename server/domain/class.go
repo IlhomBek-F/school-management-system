@@ -23,7 +23,7 @@ type ScheduleInformation struct {
 	StartTime         string `json:"start_time" gorm:"embedded" binding:"required"`
 	EndTime           string `json:"end_time" gorm:"embedded" binding:"required"`
 	Duration          int    `json:"duration" gorm:"embedded" binding:"required"`
-	ClassDaysIds      []int  `json:"class_days_ids" gorm:"embedded" binding:"required"`
+	ClassDaysIds      []int  `json:"class_days_ids" gorm:"embedded, type:integer[]" binding:"required"`
 	RoomId            int    `json:"room_id" gorm:"embedded" binding:"required"`
 	MaxCapacity       int    `json:"max_capacity" gorm:"embedded" binding:"required"`
 	MinCapacity       int    `json:"min_capacity" gorm:"embedded"`

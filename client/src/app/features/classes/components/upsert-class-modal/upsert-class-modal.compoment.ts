@@ -103,7 +103,7 @@ export class UpsertClassModalCompoment {
             label: 'Teacher',
             required: true,
             optionValue: "id",
-            optionLabel: "full_name",
+            optionLabel: "personal_info.full_name",
             optionType: OptionTypeEnum.ASYNC,
             asyncOptionType: AsyncOptionEnum.TEACHERS
           })
@@ -132,10 +132,7 @@ export class UpsertClassModalCompoment {
             key: 'class_type_id',
             label: 'Class type',
             required: true,
-            optionValue: "id",
-            optionLabel: "name",
-            optionType: OptionTypeEnum.ASYNC,
-            asyncOptionType: AsyncOptionEnum.CLASS_TYPES,
+            options: []
           })
         ]
       },

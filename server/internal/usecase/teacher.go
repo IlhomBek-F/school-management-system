@@ -27,6 +27,10 @@ func NewTeacherUsecase(teacherRepo repository.TeacherRepository) TeacherUsecase 
 func (t teacherUsecase) GetList(query domain.TeacherQuery) ([]domain.Teacher, domain.Meta, error) {
 	teachers, total, err := t.teacherRepo.GetList(query)
 
+	for index, teacher := range teachers {
+		teachers[index].PersonalInfo.FullName = teacher.PersonalInfo.FirstName + " " + teacher.PersonalInfo.LastName
+	}
+
 	meta := domain.Meta{
 		PerPage:     query.PerPage,
 		CurrentPage: query.Page,
