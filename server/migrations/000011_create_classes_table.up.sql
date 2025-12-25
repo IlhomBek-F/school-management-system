@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS classes (
     end_time VARCHAR(5) NOT NULL,
     duration INT NOT NULL,
     class_days_ids INT[] NOT NULL,
+    current_enrollments INT,
     room_id INT NOT NULL,
     max_capacity INT,
     min_capacity INT,

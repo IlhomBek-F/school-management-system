@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { TabsModule } from "primeng/tabs";
 import { DynamicFormComponent } from "@shared/components/dynamic-form/dynamic-form.component";
-import { FormGroup } from '@angular/forms';
 import { QuestionControlService } from '@core/services/question-control.service';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
@@ -27,22 +26,24 @@ import { GRADES } from 'app/utils/constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpsertClassModalCompoment {
-  form!: FormGroup;
   tabItems!: TabItem[];
+  loading = signal<boolean>(false);
 
   private _questionControlService = inject(QuestionControlService)
   private _dialogConfig = inject(DynamicDialogConfig)
 
   ngOnInit(): void {
     this._createTabItems()
-
-    if (this._dialogConfig.data.class) {
-      this.form.patchValue(this._dialogConfig.data.class)
-    }
+    this.loading = this._dialogConfig.data.loading;
   }
 
   confirm() {
-    this._dialogConfig.data.footer.onConfirm(this.form.getRawValue());
+    const formValue = this.tabItems.reduce((acc: Record<string, any>, item: TabItem) => {
+       acc[item.value] = item.form.getRawValue();
+       return acc;
+    }, {})
+
+    this._dialogConfig.data.footer.onConfirm(formValue);
   }
 
   cancel() {
@@ -67,8 +68,6 @@ export class UpsertClassModalCompoment {
         form: this._questionControlService.toFormGroup(scheduleFormContainer)
       },
     ];
-
-    this.form = this._questionControlService.toFormGroup(this.tabItems.flatMap(t => t.formContainers))
   }
 
   private _getBasicFormContainer(): FormContainer[] {
@@ -81,7 +80,7 @@ export class UpsertClassModalCompoment {
             required: true,
           }),
           new QuestionTextInput({
-            key: 'class_code',
+            key: 'code',
             label: 'Class code',
             required: true,
           })
@@ -122,17 +121,22 @@ export class UpsertClassModalCompoment {
             label: 'Section',
             required: true,
             options: [
-                { label: 'Section A', value: 'A' },
-                { label: 'Section B', value: 'B' },
-                { label: 'Section C', value: 'C' },
-                { label: 'Section D', value: 'D' }
+                { label: 'Section A', value: 1 },
+                { label: 'Section B', value: 2 },
+                { label: 'Section C', value: 3 },
+                { label: 'Section D', value: 4 }
             ]
           }),
           new QuestionSelectInput({
             key: 'class_type_id',
             label: 'Class type',
             required: true,
-            options: []
+            options: [
+                { label: 'Section A', value: 1 },
+                { label: 'Section B', value: 2 },
+                { label: 'Section C', value: 3 },
+                { label: 'Section D', value: 4 }
+            ]
           })
         ]
       },
@@ -187,16 +191,16 @@ export class UpsertClassModalCompoment {
             required: true,
           }),
           new QuestionMultiSelect({
-            key: 'days',
+            key: 'class_days_ids',
             label: 'Class Days',
             required: true,
             options: [
-              { label: 'Monday', value: 'monday' },
-              { label: 'Tuesday', value: 'tuesday' },
-              { label: 'Wednesday', value: 'wednesday' },
-              { label: 'Thursday', value: 'thursday' },
-              { label: 'Friday', value: 'friday' },
-              { label: 'Saturday', value: 'saturday' }
+              { label: 'Monday', value: 0 },
+              { label: 'Tuesday', value: 1 },
+              { label: 'Wednesday', value: 2 },
+              { label: 'Thursday', value: 3 },
+              { label: 'Friday', value: 4 },
+              { label: 'Saturday', value: 5 }
             ]
           }),
           new QuestionSelectInput({
@@ -224,7 +228,7 @@ export class UpsertClassModalCompoment {
             type: QuestionFieldTypeEnum.Number
           }),
           new QuestionTextInput({
-            key: 'current_enrollment',
+            key: 'current_enrollments',
             label: 'Current enrollment',
             type: QuestionFieldTypeEnum.Number
           }),

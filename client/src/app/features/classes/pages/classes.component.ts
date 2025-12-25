@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, signal, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal, type OnInit } from '@angular/core';
 import { PageTitleComponent } from "@shared/components/page-title/page-title.component";
 import { DropdownModule } from "primeng/dropdown";
 import { Button } from "primeng/button";
 import { TableModule } from "primeng/table";
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpsertClassModalCompoment } from '@components/upsert-class-modal/upsert-class-modal.compoment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SchoolStatsCardComponent } from '@shared/components/stats-card/stats-card.component';
@@ -97,6 +97,7 @@ export class ClassesComponent implements OnInit {
   }
 
   upsertClass(classObj?: UpsertClassPayload): void {
+    const loading = signal(false);
     const dialogRef = this._dialogService.open(UpsertClassModalCompoment, {
       focusOnShow: false,
       dismissableMask: true,
@@ -104,9 +105,10 @@ export class ClassesComponent implements OnInit {
       header: classObj ? 'Edit class' : 'Add new class',
       width: '45%',
       data: {
+        loading,
         class: classObj,
         footer: {
-          onConfirm: (formValue: any) => console.log(formValue),
+          onConfirm: (formValue: UpsertClassPayload) => this._createClass(formValue, loading, dialogRef),
           onCancel: () => dialogRef.close()
         }
       }
@@ -152,6 +154,22 @@ export class ClassesComponent implements OnInit {
     if (percentage >= 90) return StatusSeverityEnum.DANGER;
     if (percentage >= 70) return StatusSeverityEnum.WARNING;
     return StatusSeverityEnum.SUCCESS;
+  }
+
+  private _createClass(formValue: UpsertClassPayload, loading: WritableSignal<boolean>, dialogRef: DynamicDialogRef) {
+    this._classessService.create(formValue)
+     .pipe(
+      finalize(() => loading.set(false)),
+      untilDestroyed(this)
+     ).subscribe({
+      next: () => {
+         this._getClassess();
+         dialogRef.close();
+         this._messageService.success("Class created successfully")
+      }, error: () => {
+         this._messageService.error("Failed creating class")
+      }
+     })
   }
 
   private _getClassess() {

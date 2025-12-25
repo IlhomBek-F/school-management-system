@@ -47,8 +47,10 @@ export class TimePickerComponent implements ControlValueAccessor{
   }
 
   handleChange(event: any) {
+    const date = new Date(event)
+    const dates = [date.getMinutes(), date.getHours()];
     this.value = event;
-    this.onChange(this.value);
+    this.onChange(`${dates[1]}:${dates[0]}`);
     this.onChangeEmit.emit(this.value)
     this.onTouched();
   }
