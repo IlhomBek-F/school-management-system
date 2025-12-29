@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { TagModule } from "primeng/tag";
 import { Button } from "primeng/button";
 import { ClassesGridViewSkeletonComponent } from "../classes-grid-view-skeleton/classes-grid-view-skeleton.component";
+import { ClassModel } from '../../models';
 
 @Component({
   selector: 'school-classes-grid-view-list',
@@ -12,15 +13,11 @@ import { ClassesGridViewSkeletonComponent } from "../classes-grid-view-skeleton/
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassesGridViewListComponent {
-  classList = input.required<any>()
+  classList = input.required<ClassModel[]>()
   editEmitEvent = output<any>()
   viewDetailEmitEvent = output<any>()
   deleteEmitEvent = output<any>()
   loading = input(false)
-
-   addClass(): void {
-    console.log('Add class clicked');
-  }
 
   viewDetails(cls: any): void {
     this.viewDetailEmitEvent.emit(cls)

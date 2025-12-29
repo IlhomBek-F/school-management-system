@@ -10,7 +10,7 @@ type ClassUsecase interface {
 	Update(payload domain.ClassUpdatePayload) (domain.Class, error)
 	Delete(id int) error
 	GetById(id int) (domain.Class, error)
-	GetList() ([]domain.Class, error)
+	GetList() ([]domain.Class, domain.Meta, error)
 }
 
 type classUsecase struct {
@@ -27,10 +27,16 @@ func (s classUsecase) Create(payload domain.ClassCreatePayload) (domain.Class, e
 	return class, err
 }
 
-func (s classUsecase) GetList() ([]domain.Class, error) {
-	classes, err := s.classRepo.GetList()
+func (s classUsecase) GetList() ([]domain.Class, domain.Meta, error) {
+	classes, total, err := s.classRepo.GetList()
 
-	return classes, err
+	meta := domain.Meta{
+		PerPage:     10,
+		CurrentPage: 1,
+		Total:       total,
+	}
+
+	return classes, meta, err
 }
 
 func (s classUsecase) Update(payload domain.ClassUpdatePayload) (domain.Class, error) {

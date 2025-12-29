@@ -11,7 +11,7 @@ type ClassRepository interface {
 	Update(payload domain.ClassUpdatePayload) (domain.Class, error)
 	Delete(id int) error
 	GetById(id int) (domain.Class, error)
-	GetList() ([]domain.Class, error)
+	GetList() ([]domain.Class, int, error)
 }
 
 type classRepository struct {
@@ -28,10 +28,21 @@ func (r classRepository) Create(payload domain.ClassCreatePayload) (domain.Class
 	return payload, result.Error
 }
 
-func (r classRepository) GetList() ([]domain.Class, error) {
+func (r classRepository) GetList() ([]domain.Class, int, error) {
 	var classes []domain.Class
-	result := r.Db.Find(&classes)
-	return classes, result.Error
+	var totalClasses int64
+
+	db := r.Db.Model(&classes)
+
+	total := db.Count(&totalClasses)
+
+	if total.Error != nil {
+		return classes, 0, total.Error
+	}
+
+	result := db.Find(&classes)
+
+	return classes, int(totalClasses), result.Error
 }
 
 func (r classRepository) Update(payload domain.ClassUpdatePayload) (domain.Class, error) {

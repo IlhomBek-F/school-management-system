@@ -5,58 +5,49 @@
   @for (class of classList(); track $index) {
   <div
     class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-6 border-t-4 relative overflow-hidden group"
-    [style.border-top-color]="class.color.replace('bg-', '#')">
+    >
 
     <div class="flex items-start justify-between mb-4">
       <div class="flex-1">
         <div class="flex items-center gap-2 mb-2">
           <div
-            [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm ' + class.color">
+            [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm'">
             <i class="pi pi-book"></i>
           </div>
           <div>
-            <h3 class="font-bold text-gray-800 text-lg leading-tight">{{ class.name }}</h3>
-            <p class="text-gray-500 text-sm">{{ class.code }}</p>
+            <h3 class="font-bold text-gray-800 text-lg leading-tight">{{ class.basic_info.name }}</h3>
+            <p class="text-gray-500 text-sm">{{ class.basic_info.class_code }}</p>
           </div>
         </div>
       </div>
-      <p-tag [value]="class.status" [severity]="getStatusSeverity(class.status)" [rounded]="true">
-      </p-tag>
     </div>
 
     <div class="mb-4 pb-4 border-b border-gray-100">
       <div class="flex items-center gap-2 text-gray-600 text-sm mb-2">
         <i class="pi pi-user text-gray-400"></i>
-        <span class="font-medium">{{ class.teacher }}</span>
+        <span class="font-medium">{{ 'Teacher' }}</span>
       </div>
       <div class="flex items-center gap-2 text-gray-600 text-sm">
         <i class="pi pi-graduation-cap text-gray-400"></i>
-        <span>{{ class.grade }} • {{ class.subject }}</span>
+        <!-- <span>{{ class.grade }} • {{ class. }}</span> -->
       </div>
     </div>
 
     <div class="space-y-2 mb-4 pb-4 border-b border-gray-100">
       <div class="flex items-center gap-2 text-gray-600 text-sm">
         <i class="pi pi-clock text-gray-400"></i>
-        <span>{{ class.schedule }}</span>
+        <!-- <span>{{ class.schedule }}</span> -->
       </div>
       <div class="flex items-center gap-2 text-gray-600 text-sm">
         <i class="pi pi-map-marker text-gray-400"></i>
-        <span>{{ class.room }} • {{ class.duration }}</span>
+        <!-- <span>{{ class.room }} • {{ class.duration }}</span> -->
       </div>
     </div>
 
     <div class="mb-4">
       <div class="flex items-center justify-between text-sm mb-2">
         <span class="text-gray-600">Capacity</span>
-        <span class="font-semibold text-gray-800">{{ class.students }}/{{ class.capacity }}</span>
-      </div>
-      <div class="w-full bg-gray-200 rounded-full h-2">
-        <div [class]="'h-2 rounded-full transition-all ' +
-                      (getCapacityPercentage(class.students, class.capacity) >= 90 ? 'bg-red-500' :
-                       getCapacityPercentage(class.students, class.capacity) >= 70 ? 'bg-amber-500' : 'bg-green-500')"
-          [style.width.%]="getCapacityPercentage(class.students, class.capacity)">
-        </div>
+        <!-- <span class="font-semibold text-gray-800">{{ class.students }}/{{ class.capacity }}</span> -->
       </div>
     </div>
 

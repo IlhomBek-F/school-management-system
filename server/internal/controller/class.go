@@ -26,7 +26,7 @@ type ClassController struct {
 //	@Failure		500		{object}	error
 //	@Router			/class/list [get]
 func (s ClassController) GetClassList(c *gin.Context) {
-	classes, err := s.ClassUsecase.GetList()
+	classes, meta, err := s.ClassUsecase.GetList()
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrInternalServer])
@@ -37,11 +37,7 @@ func (s ClassController) GetClassList(c *gin.Context) {
 		Status:  http.StatusOK,
 		Message: "success",
 		Data:    classes,
-		Meta: domain.Meta{
-			Total:       0,
-			PerPage:     10,
-			CurrentPage: 1,
-		},
+		Meta:    meta,
 	}
 
 	c.JSON(http.StatusCreated, successRes)

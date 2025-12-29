@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS classes (
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
-    deleted_at TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP DEFAULT NULL,
     name VARCHAR(50) NOT NULL,
     code VARCHAR(20) UNIQUE NOT NULL,
     subject_id INT NOT NULL,
