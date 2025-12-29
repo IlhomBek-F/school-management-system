@@ -22,6 +22,13 @@ export const DEPARTMENTS: DropdownOption[] = [
   { label: 'Sports', value: 4 }
 ];
 
+export const CLASS_SECTION_TYPES: DropdownOption[] = [
+  { label: 'Section A', value: 1 },
+  { label: 'Section B', value: 2 },
+  { label: 'Section C', value: 3 },
+  { label: 'Section D', value: 4 }
+]
+
 export const DEPARTMENTS_MAP = DEPARTMENTS.reduce((prev: Record<number, string>, curr: DropdownOption) => {
   prev[curr.value] = curr.label
   return prev
@@ -33,6 +40,11 @@ export const CLASS_SECTION_MAP = CLASS_SECTIONS.reduce((prev: Record<number, str
 }, {})
 
 export const GRADES_MAP = GRADES.reduce((prev: Record<number, string>, curr: DropdownOption) => {
+  prev[curr.value] = curr.label
+  return prev
+}, {})
+
+export const CLASS_SECTION_TYPE_MAP = CLASS_SECTION_TYPES.reduce((prev: Record<number, string>, curr: DropdownOption) => {
   prev[curr.value] = curr.label
   return prev
 }, {})

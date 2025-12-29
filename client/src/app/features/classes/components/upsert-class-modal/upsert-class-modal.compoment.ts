@@ -15,7 +15,7 @@ import { FormContainer } from '@core/models/question-base';
 import { TabItem } from '@core/models/base';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { AsyncOptionEnum } from '@core/enums/async-option.enum';
-import { GRADES } from 'app/utils/constants';
+import { CLASS_SECTION_TYPES, CLASS_SECTIONS, GRADES } from 'app/utils/constants';
 
 @Component({
   selector: 'school-upsert-class-modal',
@@ -120,23 +120,13 @@ export class UpsertClassModalCompoment {
             key: 'section_id',
             label: 'Section',
             required: true,
-            options: [
-                { label: 'Section A', value: 1 },
-                { label: 'Section B', value: 2 },
-                { label: 'Section C', value: 3 },
-                { label: 'Section D', value: 4 }
-            ]
+            options: CLASS_SECTIONS
           }),
           new QuestionSelectInput({
             key: 'class_type_id',
             label: 'Class type',
             required: true,
-            options: [
-                { label: 'Section A', value: 1 },
-                { label: 'Section B', value: 2 },
-                { label: 'Section C', value: 3 },
-                { label: 'Section D', value: 4 }
-            ]
+            options: CLASS_SECTION_TYPES
           })
         ]
       },

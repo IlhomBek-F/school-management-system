@@ -23,9 +23,10 @@ func NewClassRepository(db *gorm.DB) ClassRepository {
 }
 
 func (r classRepository) Create(payload domain.ClassCreatePayload) (domain.Class, error) {
-	result := r.Db.Create(&payload)
+	var class domain.Class
+	result := r.Db.Create(&class)
 
-	return payload, result.Error
+	return class, result.Error
 }
 
 func (r classRepository) GetList() ([]domain.Class, int, error) {
@@ -40,7 +41,11 @@ func (r classRepository) GetList() ([]domain.Class, int, error) {
 		return classes, 0, total.Error
 	}
 
-	result := db.Find(&classes)
+	result := db.
+		Preload("Teacher").
+		Preload("Subject").
+		Preload("Room").
+		Find(&classes)
 
 	return classes, int(totalClasses), result.Error
 }

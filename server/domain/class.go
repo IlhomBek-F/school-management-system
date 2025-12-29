@@ -8,15 +8,28 @@ type Class struct {
 	ScheduleInformation ScheduleInformation `json:"schedule_info" gorm:"embedded" binding:"required"`
 }
 
-type BasicInformation struct {
+type ClassCreate struct {
+	Base
+	BasicInformation    BasicInformationFields `json:"basic_info" gorm:"embedded" binding:"required"`
+	ScheduleInformation ScheduleInformation    `json:"schedule_info" gorm:"embedded" binding:"required"`
+}
+
+type BasicInformationFields struct {
 	Name        string `json:"name" gorm:"embedded" binding:"required"`
 	Code        string `json:"code" gorm:"embedded" binding:"required"`
 	SubjectId   int    `json:"subject_id" gorm:"embedded" binding:"required"`
 	TeacherId   int    `json:"teacher_id" gorm:"embedded" binding:"required"`
-	GradeId     int    `json:"grade_id" gorm:"embedded" binding:"required"`
 	SectionId   int    `json:"section_id" gorm:"embedded" binding:"required"`
 	ClassTypeId int    `json:"class_type_id" gorm:"embedded" binding:"required"`
+	GradeId     int    `json:"grade_id" gorm:"embedded" binding:"required"`
 	Description string `json:"description" gorm:"embedded" binding:"required"`
+}
+
+type BasicInformation struct {
+	BasicInformationFields
+	Teacher Teacher `json:"teacher" gorm:"foreignKey:ID"`
+	Subject Subject `json:"subject" gorm:"foreignKey:ID"`
+	Room    Room    `json:"room" gorm:"foreignKey:ID"`
 }
 
 type ScheduleInformation struct {
@@ -39,7 +52,7 @@ type ClassStats struct {
 	AvgCapacity      int `json:"avg_capacity"`
 }
 
-type ClassCreatePayload = Class
+type ClassCreatePayload = ClassCreate
 type ClassUpdatePayload = Class
 type ClassSuccessRes = SuccessResponseWithData[Class]
 type ClassListRes = SuccessResponseWithMeta[[]Class]

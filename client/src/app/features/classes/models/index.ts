@@ -1,11 +1,21 @@
 import { Base, ResData, ResDataWithMeta } from "@core/models/base";
+import { Subject } from "@core/models/subject";
+import { Teacher } from "app/features/teachers/models";
 
 export interface UpsertClassPayload extends Base{
-  basic_info: BasicInfo;
+  basic_info: BasicInfoFields;
   schedule_info: ScheduleInfo;
 }
 
-export interface BasicInfo {
+export interface ClassPayload extends Base {
+  basic_info: BasicInfoFields & {
+    subject: Subject;
+    teacher: Teacher;
+  };
+  schedule_info: ScheduleInfo;
+}
+
+export interface BasicInfoFields {
   name: string;
   class_code: string;
   subject_id: number;
@@ -36,7 +46,7 @@ export interface ClassStats {
   avg_capacity: number;
 }
 
-export type ClassModel = UpsertClassPayload
+export type ClassModel = ClassPayload
 
 export type ClassSuccessRes = ResData<ClassModel>
 export type ClassListRes = ResDataWithMeta<ClassModel[]>

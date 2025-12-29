@@ -7,49 +7,31 @@
             <th>Grade</th>
             <th>Schedule</th>
             <th>Room</th>
-            <th>Capacity</th>
             <th>Duration</th>
-            <th>Status</th>
             <th>Actions</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-class>
+        <ng-template pTemplate="body" let-class let-rowIndex="rowIndex">
           <tr class="hover:bg-gray-50">
             <td>
               <div class="flex items-center gap-3">
-                <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold ' + class.color">
+                <div [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold ' + ['bg-blue-500', 'bg-green-500', 'bg-purple-500'][(classesList().length - 1 - rowIndex) % 3]">
                   <i class="pi pi-book"></i>
                 </div>
                 <div>
-                  <div class="font-semibold text-gray-800">{{ class.name }}</div>
-                  <div class="text-sm text-gray-500">{{ class.code }} • {{ class.subject }}</div>
+                  <div class="font-semibold text-gray-800">{{ class.basic_info.name }}</div>
+                  <div class="text-sm text-gray-500">{{ class.basic_info.class_code }} • {{ class.basic_info.subject.name }}</div>
                 </div>
               </div>
             </td>
-            <td class="text-gray-600">{{ class.teacher }}</td>
-            <td class="text-gray-600">{{ class.grade }}</td>
-            <td class="text-gray-600 text-sm">{{ class.schedule }}</td>
-            <td class="text-gray-600">{{ class.room }}</td>
-            <td>
-              <div class="flex items-center gap-2">
-                <span class="font-semibold text-gray-800">{{ class.students }}/{{ class.capacity }}</span>
-                <div class="w-16 bg-gray-200 rounded-full h-1.5">
-                  <div
-                    [class]="'h-1.5 rounded-full ' +
-                            (getCapacityPercentage(class.students, class.capacity) >= 90 ? 'bg-red-500' :
-                             getCapacityPercentage(class.students, class.capacity) >= 70 ? 'bg-amber-500' : 'bg-green-500')"
-                    [style.width.%]="getCapacityPercentage(class.students, class.capacity)">
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td class="text-gray-600">{{ class.duration }}</td>
-            <td>
-              <p-tag
-                [value]="class.status"
-                [severity]="getStatusSeverity(class.status)">
-              </p-tag>
-            </td>
+            <td class="text-gray-600">{{ class.basic_info.teacher.personal_info.first_name[0].toUpperCase() }}. {{ class.basic_info.teacher.personal_info.last_name }}</td>
+            <td class="text-gray-600">{{ GRADES_MAP[class.basic_info.grade_id] }}</td>
+            <td class="text-gray-600 text-sm">
+              {{ class.schedule_info.start_time }} -
+              {{ class.schedule_info.end_time }}
+              {{ class.schedule_info.start_date }}</td>
+            <td class="text-gray-600">{{ class.basic_info.room.name }}</td>
+            <td class="text-gray-600">{{ class.schedule_info.duration }}</td>
             <td>
               <div class="flex gap-2">
                 <p-button

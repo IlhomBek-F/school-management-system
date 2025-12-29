@@ -10,11 +10,11 @@
     <div class="flex items-start justify-between mb-4">
       <div class="flex-1">
         <div class="flex items-center gap-2 mb-2">
-          <div
-            [class]="'w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm'">
-            <i class="pi pi-book"></i>
-          </div>
-          <div>
+           <div
+          [class]="'w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg ' + (classList().length | schoolRandomBgColor: $index)">
+          {{ class.basic_info.name[0] }}
+        </div>
+            <div>
             <h3 class="font-bold text-gray-800 text-lg leading-tight">{{ class.basic_info.name }}</h3>
             <p class="text-gray-500 text-sm">{{ class.basic_info.class_code }}</p>
           </div>
@@ -29,25 +29,25 @@
       </div>
       <div class="flex items-center gap-2 text-gray-600 text-sm">
         <i class="pi pi-graduation-cap text-gray-400"></i>
-        <!-- <span>{{ class.grade }} • {{ class. }}</span> -->
+        <span>{{ GRADE_MAP[class.basic_info.grade_id] }} • {{ class.basic_info.subject.name }}</span>
       </div>
     </div>
 
     <div class="space-y-2 mb-4 pb-4 border-b border-gray-100">
       <div class="flex items-center gap-2 text-gray-600 text-sm">
         <i class="pi pi-clock text-gray-400"></i>
-        <!-- <span>{{ class.schedule }}</span> -->
+        <span>{{ class.schedule_info.start_date }} {{ class.schedule_info.start_time }}</span>
       </div>
       <div class="flex items-center gap-2 text-gray-600 text-sm">
         <i class="pi pi-map-marker text-gray-400"></i>
-        <!-- <span>{{ class.room }} • {{ class.duration }}</span> -->
+        <span>{{ class.schedule_info.room_id }} • {{ class.schedule_info.duration }}</span>
       </div>
     </div>
 
     <div class="mb-4">
       <div class="flex items-center justify-between text-sm mb-2">
         <span class="text-gray-600">Capacity</span>
-        <!-- <span class="font-semibold text-gray-800">{{ class.students }}/{{ class.capacity }}</span> -->
+        <!-- <span class="font-semibold text-gray-800">{{ class.students }} / {{ class.capacity }}</span> -->
       </div>
     </div>
 
