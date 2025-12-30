@@ -16,6 +16,7 @@ import { TabItem } from '@core/models/base';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 import { CLASS_SECTION_TYPES, CLASS_SECTIONS, GRADES } from 'app/utils/constants';
+import { BasicInfoFields, ClassModel, ScheduleInfo } from '../../models';
 
 @Component({
   selector: 'school-upsert-class-modal',
@@ -51,8 +52,10 @@ export class UpsertClassModalCompoment {
   }
 
   private _createTabItems() {
-    const basicFormContainer = this._getBasicFormContainer();
-    const scheduleFormContainer = this._getScheduleFormContainer();
+    const {basic_info, schedule_info} = this._dialogConfig.data.class || {basic_info: {}, schedule_info: {}} as ClassModel
+
+    const basicFormContainer = this._getBasicFormContainer(basic_info);
+    const scheduleFormContainer = this._getScheduleFormContainer(schedule_info);
 
     this.tabItems = [
       {
@@ -70,7 +73,8 @@ export class UpsertClassModalCompoment {
     ];
   }
 
-  private _getBasicFormContainer(): FormContainer[] {
+  private _getBasicFormContainer(basic_info: BasicInfoFields): FormContainer[] {
+
     return [
       {
         containers: [
@@ -78,11 +82,13 @@ export class UpsertClassModalCompoment {
             key: 'name',
             label: 'Classname',
             required: true,
+            value: basic_info.name
           }),
           new QuestionTextInput({
             key: 'code',
             label: 'Class code',
             required: true,
+            value: basic_info.code
           })
         ]
       },
@@ -94,6 +100,7 @@ export class UpsertClassModalCompoment {
             required: true,
             optionValue: "id",
             optionLabel: "name",
+            value: basic_info.subject_id,
             optionType: OptionTypeEnum.ASYNC,
             asyncOptionType: AsyncOptionEnum.SUBJECTS,
           }),
@@ -102,6 +109,7 @@ export class UpsertClassModalCompoment {
             label: 'Teacher',
             required: true,
             optionValue: "id",
+            value: basic_info.teacher_id,
             optionLabel: "personal_info.full_name",
             optionType: OptionTypeEnum.ASYNC,
             asyncOptionType: AsyncOptionEnum.TEACHERS
@@ -114,18 +122,21 @@ export class UpsertClassModalCompoment {
             key: 'grade_id',
             label: 'Grade',
             required: true,
+            value: basic_info.grade_id,
             options: GRADES,
           }),
           new QuestionSelectInput({
             key: 'section_id',
             label: 'Section',
             required: true,
+            value: basic_info.section_id,
             options: CLASS_SECTIONS
           }),
           new QuestionSelectInput({
             key: 'class_type_id',
             label: 'Class type',
             required: true,
+            value: basic_info.class_type_id,
             options: CLASS_SECTION_TYPES
           })
         ]
@@ -135,6 +146,7 @@ export class UpsertClassModalCompoment {
           new QuestionTextArea({
             key: 'description',
             label: 'Description',
+            value: basic_info.description,
             required: true,
           })
         ]
@@ -142,7 +154,7 @@ export class UpsertClassModalCompoment {
     ]
   }
 
-  private _getScheduleFormContainer(): FormContainer[] {
+  private _getScheduleFormContainer(schedule_info: ScheduleInfo): FormContainer[] {
     return [
       {
         containers: [
@@ -150,11 +162,13 @@ export class UpsertClassModalCompoment {
             key: 'start_date',
             label: 'Start date',
             required: true,
+            value: schedule_info.start_date
           }),
           new QuestionDatePicker({
             key: 'end_date',
             label: 'End date',
             required: true,
+            value: schedule_info.end_date
           })
         ]
       },
@@ -164,11 +178,13 @@ export class UpsertClassModalCompoment {
             key: 'start_time',
             label: 'Start time',
             required: true,
+            value: schedule_info.start_time
           }),
           new QuestionTimePicker({
             key: 'end_time',
             label: 'End time',
             required: true,
+            value: schedule_info.end_time
           })
         ]
       },
@@ -178,12 +194,14 @@ export class UpsertClassModalCompoment {
             key: 'duration',
             label: 'Duration',
             type: QuestionFieldTypeEnum.Number,
+            value: schedule_info.duration,
             required: true,
           }),
           new QuestionMultiSelect({
             key: 'class_days_ids',
             label: 'Class Days',
             required: true,
+            value: schedule_info.class_days_ids?.map((value) => ({value})),
             options: [
               { label: 'Monday', value: 0 },
               { label: 'Tuesday', value: 1 },
@@ -199,6 +217,7 @@ export class UpsertClassModalCompoment {
             required: true,
             optionValue: "id",
             optionLabel: "name",
+            value: schedule_info.room_id,
             optionType: OptionTypeEnum.ASYNC,
             asyncOptionType: AsyncOptionEnum.ROOMS,
           })
@@ -209,17 +228,20 @@ export class UpsertClassModalCompoment {
           new QuestionTextInput({
             key: 'max_capacity',
             label: 'Max capacity',
+            value: schedule_info.max_capacity,
             required: true,
             type: QuestionFieldTypeEnum.Number
           }),
           new QuestionTextInput({
             key: 'min_capacity',
             label: 'Min capacity',
+            value: schedule_info.min_capacity,
             type: QuestionFieldTypeEnum.Number
           }),
           new QuestionTextInput({
             key: 'current_enrollments',
             label: 'Current enrollment',
+            value: schedule_info.curr_enrollment,
             type: QuestionFieldTypeEnum.Number
           }),
         ]

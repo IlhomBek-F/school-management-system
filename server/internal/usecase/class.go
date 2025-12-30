@@ -7,7 +7,7 @@ import (
 
 type ClassUsecase interface {
 	Create(payload domain.ClassCreatePayload) (domain.Class, error)
-	Update(payload domain.ClassUpdatePayload) (domain.Class, error)
+	Update(payload domain.ClassUpdatePayload) (domain.ClassCreate, error)
 	Delete(id int) error
 	GetById(id int) (domain.Class, error)
 	GetList() ([]domain.Class, domain.Meta, error)
@@ -39,7 +39,7 @@ func (s classUsecase) GetList() ([]domain.Class, domain.Meta, error) {
 	return classes, meta, err
 }
 
-func (s classUsecase) Update(payload domain.ClassUpdatePayload) (domain.Class, error) {
+func (s classUsecase) Update(payload domain.ClassUpdatePayload) (domain.ClassCreate, error) {
 	class, err := s.classRepo.Update(payload)
 
 	return class, err

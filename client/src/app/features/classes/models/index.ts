@@ -1,4 +1,4 @@
-import { Base, ResData, ResDataWithMeta } from "@core/models/base";
+import { Base, DropdownOption, ResData, ResDataWithMeta } from "@core/models/base";
 import { Subject } from "@core/models/subject";
 import { Teacher } from "app/features/teachers/models";
 
@@ -17,7 +17,7 @@ export interface ClassPayload extends Base {
 
 export interface BasicInfoFields {
   name: string;
-  class_code: string;
+  code: string;
   subject_id: number;
   teacher_id: number;
   grade_id: number;
@@ -32,9 +32,9 @@ export interface ScheduleInfo {
   start_time: string;
   end_time: string;
   duration: number;
-  class_days_ids: number[];
+  class_days_ids: {value: number}[];
   room_id: number;
-  capacity: number;
+  max_capacity: number;
   min_capacity: number;
   curr_enrollment: number;
 }

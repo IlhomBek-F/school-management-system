@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DatePickerModule } from "primeng/datepicker";
 
 const VALUE_ACCESSOR_PROVIDER = {
@@ -11,7 +11,7 @@ const VALUE_ACCESSOR_PROVIDER = {
 
 @Component({
   selector: 'school-time-picker',
-  imports: [DatePickerModule, CommonModule],
+  imports: [DatePickerModule, CommonModule, FormsModule],
   templateUrl: './time-picker.component.html',
   styleUrl: './time-picker.component.scss',
   providers: [VALUE_ACCESSOR_PROVIDER],
@@ -31,7 +31,8 @@ export class TimePickerComponent implements ControlValueAccessor{
   onTouched = () => {};
 
   writeValue(value: any): void {
-    this.value = value;
+    const [h, m] = value.split(":").map(Number);
+    this.value = new Date(1970, 0, 1, h, m);
   }
 
   registerOnChange(fn: any): void {

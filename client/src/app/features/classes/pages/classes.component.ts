@@ -108,7 +108,14 @@ export class ClassesComponent implements OnInit {
         loading,
         class: classObj,
         footer: {
-          onConfirm: (formValue: UpsertClassPayload) => this._createClass(formValue, loading, dialogRef),
+          onConfirm: (formValue: UpsertClassPayload) => {
+            if(classObj?.id) {
+              const {updated_at, created_at, id} = classObj;
+              this.updateClass({...formValue, updated_at, created_at, id }, loading, dialogRef)
+            } else {
+              this._createClass(formValue, loading, dialogRef)
+            }
+          },
           onCancel: () => dialogRef.close()
         }
       }
@@ -117,6 +124,23 @@ export class ClassesComponent implements OnInit {
 
   viewDetails(cls: ClassModel): void {
     this._router.navigate([cls.id], { relativeTo: this._activeRoute })
+  }
+
+  updateClass(formValue: UpsertClassPayload, loading: WritableSignal<boolean>, dialogRef: DynamicDialogRef) {
+    loading.set(true)
+    formValue.schedule_info.class_days_ids = formValue.schedule_info.class_days_ids.map((n: any) => n?.value)
+    this._classessService.update(formValue)
+     .pipe(
+      finalize(() => loading.set(false)),
+      untilDestroyed(this)
+     ).subscribe({
+      next: () => {
+        this._messageService.success("Class updated successfully")
+        dialogRef.close()
+      }, error: () => {
+        this._messageService.error("Failed updating class")
+      }
+     })
   }
 
   deleteClass(classObj: ClassModel) {

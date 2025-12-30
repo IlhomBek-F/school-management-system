@@ -112,7 +112,7 @@ func (s ClassController) UpdateClass(c *gin.Context) {
 		return
 	}
 
-	successRes := domain.ClassSuccessRes{
+	successRes := domain.SuccessResponseWithData[domain.ClassCreate]{
 		Status:  http.StatusOK,
 		Message: "success",
 		Data:    updatedClass,

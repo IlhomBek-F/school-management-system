@@ -53,7 +53,7 @@ type ClassStats struct {
 }
 
 type ClassCreatePayload = ClassCreate
-type ClassUpdatePayload = Class
+type ClassUpdatePayload = ClassCreate
 type ClassSuccessRes = SuccessResponseWithData[Class]
 type ClassListRes = SuccessResponseWithMeta[[]Class]
 type ClassStatsResSuccess = SuccessResponseWithData[ClassStats]
