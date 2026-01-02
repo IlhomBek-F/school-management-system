@@ -26,7 +26,16 @@ type ClassController struct {
 //	@Failure		500		{object}	error
 //	@Router			/class/list [get]
 func (s ClassController) GetClassList(c *gin.Context) {
-	classes, meta, err := s.ClassUsecase.GetList()
+	var classQuery domain.ClassQuery
+
+	err := c.ShouldBindQuery(&classQuery)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrBadRequest])
+		return
+	}
+
+	classes, meta, err := s.ClassUsecase.GetList(classQuery)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponseMap[domain.ErrInternalServer])
@@ -149,7 +158,7 @@ func (s ClassController) GetClassById(c *gin.Context) {
 		return
 	}
 
-	successRes := domain.ClassSuccessRes{
+	successRes := domain.SuccessResponseWithData[domain.Class]{
 		Status:  http.StatusOK,
 		Message: "success",
 		Data:    class,
@@ -191,5 +200,5 @@ func (s ClassController) DeleteClass(c *gin.Context) {
 		Message: "success",
 	}
 
-	c.JSON(http.StatusBadRequest, successRes)
+	c.JSON(http.StatusOK, successRes)
 }

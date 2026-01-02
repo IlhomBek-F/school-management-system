@@ -52,8 +52,14 @@ type ClassStats struct {
 	AvgCapacity      int `json:"avg_capacity"`
 }
 
+type ClassQuery struct {
+	Paginator
+	GradeId   int    `form:"grade_id"`
+	QueryTerm string `form:"search"`
+}
+
 type ClassCreatePayload = ClassCreate
 type ClassUpdatePayload = ClassCreate
-type ClassSuccessRes = SuccessResponseWithData[Class]
+type ClassSuccessRes = SuccessResponseWithData[ClassCreate]
 type ClassListRes = SuccessResponseWithMeta[[]Class]
 type ClassStatsResSuccess = SuccessResponseWithData[ClassStats]

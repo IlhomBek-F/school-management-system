@@ -80,5 +80,14 @@
      @if (classMeta().total === 0) {
        <school-empty-list title="No classes found"/>
      }
+
+      @if (classMeta().total > classMeta().per_page) {
+      <div class="mt-2">
+      <p-paginator (onPageChange)="onPageChange($event)"
+                 [first]="0" [rows]="classMeta().per_page"
+                 [totalRecords]="classMeta().total"
+                />
+     </div>
+    }
   </div>
 </div>

@@ -31,8 +31,10 @@ export class TimePickerComponent implements ControlValueAccessor{
   onTouched = () => {};
 
   writeValue(value: any): void {
-    const [h, m] = value.split(":").map(Number);
-    this.value = new Date(1970, 0, 1, h, m);
+    if(value) {
+      const [h, m] = value.split(":").map(Number);
+      this.value = new Date(1970, 0, 1, h, m);
+    }
   }
 
   registerOnChange(fn: any): void {

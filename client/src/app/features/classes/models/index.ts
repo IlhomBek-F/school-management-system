@@ -1,5 +1,6 @@
-import { Base, DropdownOption, ResData, ResDataWithMeta } from "@core/models/base";
+import { Base, DropdownOption, Paginator, ResData, ResDataWithMeta } from "@core/models/base";
 import { Subject } from "@core/models/subject";
+import { Room } from "app/features/rooms/models";
 import { Teacher } from "app/features/teachers/models";
 
 export interface UpsertClassPayload extends Base{
@@ -11,6 +12,7 @@ export interface ClassPayload extends Base {
   basic_info: BasicInfoFields & {
     subject: Subject;
     teacher: Teacher;
+    room: Room;
   };
   schedule_info: ScheduleInfo;
 }
@@ -44,6 +46,11 @@ export interface ClassStats {
   active_classes: number;
   total_enrollments: number;
   avg_capacity: number;
+}
+
+export interface ClassQuery extends Paginator{
+  search: string;
+  grade_id: number;
 }
 
 export type ClassModel = ClassPayload

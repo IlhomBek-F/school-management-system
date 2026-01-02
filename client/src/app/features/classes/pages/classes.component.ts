@@ -20,11 +20,12 @@ import { ConfirmationService } from 'primeng/api';
 import { DropdownOption, Meta } from '@core/models/base';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { GRADES } from 'app/utils/constants';
-import { ClassListRes, ClassModel, ClassStats, UpsertClassPayload } from '../models';
+import { ClassListRes, ClassModel, ClassQuery, ClassStats, UpsertClassPayload } from '../models';
 import { ClassesService } from '../services/classes.services';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { finalize } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { StatsService } from '@core/services/stats.service';
+import { PaginatorState, Paginator } from 'primeng/paginator';
 
 @UntilDestroy()
 @Component({
@@ -35,7 +36,9 @@ import { StatsService } from '@core/services/stats.service';
     TableModule, FormsModule, ReactiveFormsModule,
     CommonModule, SchoolStatsCardComponent,
     ClassesGridViewListComponent, TextInputComponent,
-    SelectInputComponent, ClassesTableViewListComponent, EmptyListComponent],
+    SelectInputComponent, ClassesTableViewListComponent, EmptyListComponent,
+    Paginator
+],
   templateUrl: './classes.component.html',
   styleUrl: './classes.component.scss',
   providers: [ClassesService],
@@ -82,6 +85,7 @@ export class ClassesComponent implements OnInit {
   ngOnInit(): void {
     this._getClassess();
     this._getClassStats();
+    this._handleFilter()
   }
 
   setViewMode(mode: string): void {
@@ -128,6 +132,7 @@ export class ClassesComponent implements OnInit {
      ).subscribe({
       next: () => {
         this._messageService.success("Class updated successfully")
+        this._getClassess()
         dialogRef.close()
       }, error: () => {
         this._messageService.error("Failed updating class")
@@ -154,6 +159,25 @@ export class ClassesComponent implements OnInit {
     })
   }
 
+  onPageChange({page = 0}: PaginatorState) {
+      this.filterFormGroup.patchValue({...this.filterFormGroup.getRawValue(), page: page + 1}, {emitEvent: false})
+      this._getClassess()
+  }
+
+  private _handleFilter() {
+    this.filterFormGroup.valueChanges
+        .pipe(
+          debounceTime(300),
+          distinctUntilChanged((prev, curr) => {
+            return prev.search === curr.search && prev.grade_id === curr.grade_id
+          }),
+          untilDestroyed(this)
+        ).subscribe((value) => {
+          this.filterFormGroup.patchValue({...value, page: 1}, {emitEvent: false})
+          this._getClassess()
+        })
+  }
+
   private _createClass(formValue: UpsertClassPayload, loading: WritableSignal<boolean>, dialogRef: DynamicDialogRef) {
     this._classessService.create(formValue)
      .pipe(
@@ -161,8 +185,8 @@ export class ClassesComponent implements OnInit {
       untilDestroyed(this)
      ).subscribe({
       next: () => {
-         this._getClassess();
-         dialogRef.close();
+        dialogRef.close();
+        this._getClassess();
          this._messageService.success("Class created successfully")
       }, error: () => {
          this._messageService.error("Failed creating class")
@@ -171,8 +195,10 @@ export class ClassesComponent implements OnInit {
   }
 
   private _getClassess() {
+    const filterValue: ClassQuery = this.filterFormGroup.getRawValue();
+
     this.loading.set(true);
-    this._classessService.retrieveAll<ClassListRes>()
+    this._classessService.retrieveAll<ClassListRes>(filterValue)
       .pipe(
         finalize(() => this.loading.set(false)),
         untilDestroyed(this)

@@ -6,11 +6,11 @@ import (
 )
 
 type ClassUsecase interface {
-	Create(payload domain.ClassCreatePayload) (domain.Class, error)
+	Create(payload domain.ClassCreatePayload) (domain.ClassCreate, error)
 	Update(payload domain.ClassUpdatePayload) (domain.ClassCreate, error)
 	Delete(id int) error
 	GetById(id int) (domain.Class, error)
-	GetList() ([]domain.Class, domain.Meta, error)
+	GetList(query domain.ClassQuery) ([]domain.Class, domain.Meta, error)
 }
 
 type classUsecase struct {
@@ -21,14 +21,14 @@ func NewClassUsecase(classRepo repository.ClassRepository) ClassUsecase {
 	return classUsecase{classRepo: classRepo}
 }
 
-func (s classUsecase) Create(payload domain.ClassCreatePayload) (domain.Class, error) {
+func (s classUsecase) Create(payload domain.ClassCreatePayload) (domain.ClassCreate, error) {
 	class, err := s.classRepo.Create(payload)
 
 	return class, err
 }
 
-func (s classUsecase) GetList() ([]domain.Class, domain.Meta, error) {
-	classes, total, err := s.classRepo.GetList()
+func (s classUsecase) GetList(query domain.ClassQuery) ([]domain.Class, domain.Meta, error) {
+	classes, total, err := s.classRepo.GetList(query)
 
 	meta := domain.Meta{
 		PerPage:     10,

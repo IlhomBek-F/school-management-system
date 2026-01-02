@@ -1,17 +1,18 @@
 package repository
 
 import (
+	"school/bootstrap"
 	"school/domain"
 
 	"gorm.io/gorm"
 )
 
 type ClassRepository interface {
-	Create(payload domain.ClassCreatePayload) (domain.Class, error)
+	Create(payload domain.ClassCreatePayload) (domain.ClassCreate, error)
 	Update(payload domain.ClassUpdatePayload) (domain.ClassUpdatePayload, error)
 	Delete(id int) error
 	GetById(id int) (domain.Class, error)
-	GetList() ([]domain.Class, int, error)
+	GetList(query domain.ClassQuery) ([]domain.Class, int, error)
 }
 
 type classRepository struct {
@@ -22,18 +23,26 @@ func NewClassRepository(db *gorm.DB) ClassRepository {
 	return classRepository{Db: db}
 }
 
-func (r classRepository) Create(payload domain.ClassCreatePayload) (domain.Class, error) {
-	var class domain.Class
-	result := r.Db.Create(&class)
+func (r classRepository) Create(payload domain.ClassCreatePayload) (domain.ClassCreatePayload, error) {
+	result := r.Db.Table("classes").Create(&payload)
 
-	return class, result.Error
+	return payload, result.Error
 }
 
-func (r classRepository) GetList() ([]domain.Class, int, error) {
+func (r classRepository) GetList(query domain.ClassQuery) ([]domain.Class, int, error) {
 	var classes []domain.Class
 	var totalClasses int64
+	paginator := domain.Paginator{PerPage: query.PerPage, Page: query.Page}
 
 	db := r.Db.Model(&classes)
+
+	if query.QueryTerm != "" {
+		db = db.Where("name LIKE ? OR code LIKE ?", "%"+query.QueryTerm+"%", "%"+query.QueryTerm+"%")
+	}
+
+	if query.GradeId != 0 {
+		db = db.Where("grade_id = ?", query.GradeId)
+	}
 
 	total := db.Count(&totalClasses)
 
@@ -41,7 +50,7 @@ func (r classRepository) GetList() ([]domain.Class, int, error) {
 		return classes, 0, total.Error
 	}
 
-	result := db.
+	result := db.Scopes(bootstrap.QueryScope(&paginator)).
 		Preload("Teacher").
 		Preload("Subject").
 		Preload("Room").
@@ -63,7 +72,7 @@ func (r classRepository) Update(payload domain.ClassUpdatePayload) (domain.Class
 }
 
 func (r classRepository) Delete(id int) error {
-	result := r.Db.Delete(domain.Class{}, id)
+	result := r.Db.Delete(&domain.Class{}, id)
 
 	return result.Error
 }
