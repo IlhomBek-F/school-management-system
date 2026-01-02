@@ -3,7 +3,7 @@ import { PageTitleComponent } from "@shared/components/page-title/page-title.com
 import { DropdownModule } from "primeng/dropdown";
 import { Button } from "primeng/button";
 import { TableModule } from "primeng/table";
-import { FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpsertClassModalCompoment } from '@components/upsert-class-modal/upsert-class-modal.compoment';
@@ -18,8 +18,6 @@ import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog
 import { ToastService } from '@core/services/toast.service';
 import { ConfirmationService } from 'primeng/api';
 import { DropdownOption, Meta } from '@core/models/base';
-import { ClassStatus } from '../enums';
-import { StatusSeverityEnum } from '@core/enums/status-severity.enum';
 import { ViewModeEnum } from '@core/enums/view-mode.enum';
 import { GRADES } from 'app/utils/constants';
 import { ClassListRes, ClassModel, ClassStats, UpsertClassPayload } from '../models';
@@ -34,7 +32,7 @@ import { StatsService } from '@core/services/stats.service';
   imports: [
     PageTitleComponent,
     DropdownModule, Button,
-    TableModule, FormsModule,
+    TableModule, FormsModule, ReactiveFormsModule,
     CommonModule, SchoolStatsCardComponent,
     ClassesGridViewListComponent, TextInputComponent,
     SelectInputComponent, ClassesTableViewListComponent, EmptyListComponent],
@@ -52,12 +50,6 @@ export class ClassesComponent implements OnInit {
 
   viewMode: string = ViewModeEnum.GRID;
   grades: DropdownOption[] = GRADES;
-
-  statuses: DropdownOption[] = [
-    { label: 'All Status', value: 'all' },
-    { label: 'Active', value: ClassStatus.ACTIVE },
-    { label: 'Cancelled', value: ClassStatus.CANCELLED }
-  ];
 
   filterFormGroup = new FormGroup({
     search: new FormControl('', { nonNullable: true }),
@@ -160,24 +152,6 @@ export class ClassesComponent implements OnInit {
           }
         })
     })
-  }
-
-  getStatusSeverity(status: string): string {
-    switch (status) {
-      case ClassStatus.ACTIVE: return StatusSeverityEnum.SUCCESS;
-      case ClassStatus.CANCELLED: return StatusSeverityEnum.DANGER;
-      default: return StatusSeverityEnum.INFO;
-    }
-  }
-
-  getCapacityPercentage(students: number, capacity: number): number {
-    return Math.round((students / capacity) * 100);
-  }
-
-  getCapacitySeverity(percentage: number): string {
-    if (percentage >= 90) return StatusSeverityEnum.DANGER;
-    if (percentage >= 70) return StatusSeverityEnum.WARNING;
-    return StatusSeverityEnum.SUCCESS;
   }
 
   private _createClass(formValue: UpsertClassPayload, loading: WritableSignal<boolean>, dialogRef: DynamicDialogRef) {
