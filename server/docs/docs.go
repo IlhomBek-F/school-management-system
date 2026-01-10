@@ -1916,7 +1916,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.TeacherUpdatePayload"
+                            "$ref": "#/definitions/domain.Teacher"
                         }
                     }
                 ],
@@ -2686,9 +2686,6 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
-        },
-        "domain.TeacherUpdatePayload": {
-            "type": "object"
         },
         "domain.UpdateSubjectPayload": {
             "type": "object"

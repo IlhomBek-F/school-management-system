@@ -97,7 +97,7 @@ func (t TeacherController) CreateTeacher(c *gin.Context) {
 //	@Accept			json
 //	@Security       JWT
 //	@Produce		json
-//	@Param			payload	body		domain.TeacherUpdatePayload	true "teacher"
+//	@Param			payload	body		domain.Teacher	true "teacher"
 //	@Success		201		{object}	domain.TeacherSuccessRes		"Updated teacher"
 //	@Failure		400		{object}	error
 //	@Failure		500		{object}	error

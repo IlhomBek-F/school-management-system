@@ -438,8 +438,6 @@ definitions:
       status:
         type: integer
     type: object
-  domain.TeacherUpdatePayload:
-    type: object
   domain.UpdateSubjectPayload:
     type: object
 host: localhost:8080
@@ -1723,7 +1721,7 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/domain.TeacherUpdatePayload'
+          $ref: '#/definitions/domain.Teacher'
       produces:
       - application/json
       responses:

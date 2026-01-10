@@ -1914,7 +1914,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.TeacherUpdatePayload"
+                            "$ref": "#/definitions/domain.Teacher"
                         }
                     }
                 ],
@@ -2684,9 +2684,6 @@
                     "type": "integer"
                 }
             }
-        },
-        "domain.TeacherUpdatePayload": {
-            "type": "object"
         },
         "domain.UpdateSubjectPayload": {
             "type": "object"
