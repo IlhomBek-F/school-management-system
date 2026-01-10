@@ -60,6 +60,48 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/refresh_token": {
+            "post": {
+                "description": "Refresh token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Refresh token",
+                "parameters": [
+                    {
+                        "description": "User credentials",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Logged in",
+                        "schema": {
+                            "$ref": "#/definitions/domain.LoginRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/building/create": {
             "post": {
                 "security": [
@@ -2043,7 +2085,7 @@ const docTemplate = `{
         "domain.BuildingUpdatePayload": {
             "type": "object"
         },
-        "domain.Class": {
+        "domain.ClassCreate": {
             "type": "object"
         },
         "domain.ClassCreatePayload": {
@@ -2087,7 +2129,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/domain.Class"
+                    "$ref": "#/definitions/domain.ClassCreate"
                 },
                 "message": {
                     "type": "string"

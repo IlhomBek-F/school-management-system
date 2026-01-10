@@ -47,6 +47,6 @@ export class AuthService extends BaseService implements Auth {
   }
 
   refreshAccessToken(): Observable<any> {
-    return this.http.get(this._url)
+    return this.http.post(this._url, {refresh_token: this.getRefreshToken(), access_token: this.getAccessToken()})
   }
 }

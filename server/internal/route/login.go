@@ -17,4 +17,5 @@ func NewLoginRoute(app bootstrap.Application, routerGroupe *gin.RouterGroup) {
 	loginControler := controller.LoginController{LoginUsecase: userUsecase, Env: *app.Env}
 
 	routerGroupe.POST("/auth/login", loginControler.Login)
+	routerGroupe.POST("/auth/refresh_token", loginControler.RefreshToken)
 }

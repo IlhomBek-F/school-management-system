@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
+import { AuthTokens, ResData } from "@core/models/base";
 import { AuthService } from "@core/services/auth.service";
 import { BehaviorSubject, catchError, delay, filter, Observable, switchMap, take, throwError } from "rxjs";
 
@@ -58,14 +59,16 @@ function handle401Error(req: HttpRequest<unknown>, next: HttpHandlerFn, authServ
     }
 
     return authService.refreshAccessToken().pipe(
-      switchMap((newToken) => {
+      switchMap((res: ResData<AuthTokens>) => {
+        const {access_token} = res.data
         isRefreshing = false
-        refreshTokenSubject.next(newToken)
-        authService.saveAccessToken(newToken)
+        refreshTokenSubject.next(access_token)
+
+        authService.saveAccessToken(access_token)
 
         const retryReq = req.clone({
           setHeaders: {
-            Authorization: `Bearer ${newToken}`
+            Authorization: `Bearer ${access_token}`
           }
         })
 

@@ -38,7 +38,7 @@ definitions:
     type: object
   domain.BuildingUpdatePayload:
     type: object
-  domain.Class:
+  domain.ClassCreate:
     type: object
   domain.ClassCreatePayload:
     type: object
@@ -67,7 +67,7 @@ definitions:
   domain.ClassSuccessRes:
     properties:
       data:
-        $ref: '#/definitions/domain.Class'
+        $ref: '#/definitions/domain.ClassCreate'
       message:
         type: string
       status:
@@ -477,6 +477,34 @@ paths:
           description: Internal Server Error
           schema: {}
       summary: Login in to account
+      tags:
+      - Authentication
+  /auth/refresh_token:
+    post:
+      consumes:
+      - application/json
+      description: Refresh token
+      parameters:
+      - description: User credentials
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Logged in
+          schema:
+            $ref: '#/definitions/domain.LoginRes'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Refresh token
       tags:
       - Authentication
   /building/{building_id}:
