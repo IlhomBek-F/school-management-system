@@ -2068,6 +2068,113 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.BasicInformation": {
+            "type": "object",
+            "required": [
+                "class_type_id",
+                "code",
+                "description",
+                "grade_id",
+                "name",
+                "section_id",
+                "subject_id",
+                "teacher_id"
+            ],
+            "properties": {
+                "class_type_id": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "grade_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "room": {
+                    "$ref": "#/definitions/domain.Room"
+                },
+                "section_id": {
+                    "type": "integer"
+                },
+                "subject": {
+                    "$ref": "#/definitions/domain.Subject"
+                },
+                "subject_id": {
+                    "type": "integer"
+                },
+                "teacher": {
+                    "$ref": "#/definitions/domain.Teacher"
+                },
+                "teacher_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.BasicInformationFields": {
+            "type": "object",
+            "required": [
+                "class_type_id",
+                "code",
+                "description",
+                "grade_id",
+                "name",
+                "section_id",
+                "subject_id",
+                "teacher_id"
+            ],
+            "properties": {
+                "class_type_id": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "grade_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "section_id": {
+                    "type": "integer"
+                },
+                "subject_id": {
+                    "type": "integer"
+                },
+                "teacher_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Building": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.BuildingCreatePayload": {
             "type": "object",
             "required": [
@@ -2080,16 +2187,86 @@ const docTemplate = `{
             }
         },
         "domain.BuildingSuccessRes": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.Building"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
         },
         "domain.BuildingUpdatePayload": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.ClassCreate": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "basic_info",
+                "schedule_info"
+            ],
+            "properties": {
+                "basic_info": {
+                    "$ref": "#/definitions/domain.BasicInformationFields"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "schedule_info": {
+                    "$ref": "#/definitions/domain.ScheduleInformation"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.ClassCreatePayload": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "basic_info",
+                "schedule_info"
+            ],
+            "properties": {
+                "basic_info": {
+                    "$ref": "#/definitions/domain.BasicInformationFields"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "schedule_info": {
+                    "$ref": "#/definitions/domain.ScheduleInformation"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.ClassListRes": {
             "type": "object"
@@ -2140,7 +2317,28 @@ const docTemplate = `{
             }
         },
         "domain.ClassUpdatePayload": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "basic_info",
+                "schedule_info"
+            ],
+            "properties": {
+                "basic_info": {
+                    "$ref": "#/definitions/domain.BasicInformationFields"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "schedule_info": {
+                    "$ref": "#/definitions/domain.ScheduleInformation"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.CreateSubjectPayload": {
             "type": "object",
@@ -2174,7 +2372,24 @@ const docTemplate = `{
             }
         },
         "domain.Facility": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.FacilityCreatePayload": {
             "type": "object",
@@ -2188,7 +2403,24 @@ const docTemplate = `{
             }
         },
         "domain.FacilityListRes": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Facility"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
         },
         "domain.FacilitySuccessRes": {
             "type": "object",
@@ -2205,7 +2437,24 @@ const docTemplate = `{
             }
         },
         "domain.FacilityUpdatePayload": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.LoginRequest": {
             "type": "object",
@@ -2231,6 +2480,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Meta": {
+            "type": "object",
+            "properties": {
+                "current_page": {
+                    "type": "integer"
+                },
+                "per_page": {
+                    "type": "integer"
+                },
+                "total": {
                     "type": "integer"
                 }
             }
@@ -2380,7 +2643,69 @@ const docTemplate = `{
             }
         },
         "domain.Room": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "building_id",
+                "code",
+                "facilities",
+                "floor_id",
+                "name",
+                "room_type_id",
+                "status"
+            ],
+            "properties": {
+                "area": {
+                    "type": "integer"
+                },
+                "building": {
+                    "$ref": "#/definitions/domain.Building"
+                },
+                "building_id": {
+                    "type": "integer"
+                },
+                "capacity": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "facilities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Facility"
+                    }
+                },
+                "floor_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "integer"
+                },
+                "room_type": {
+                    "$ref": "#/definitions/domain.RoomType"
+                },
+                "room_type_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.RoomCreatePayload": {
             "type": "object",
@@ -2433,7 +2758,24 @@ const docTemplate = `{
             }
         },
         "domain.RoomListRes": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Room"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
         },
         "domain.RoomStats": {
             "type": "object",
@@ -2481,7 +2823,24 @@ const docTemplate = `{
             }
         },
         "domain.RoomType": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.RoomTypeCreatePayload": {
             "type": "object",
@@ -2495,7 +2854,24 @@ const docTemplate = `{
             }
         },
         "domain.RoomTypeListRes": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.RoomType"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
         },
         "domain.RoomTypeSuccessRes": {
             "type": "object",
@@ -2512,13 +2888,119 @@ const docTemplate = `{
             }
         },
         "domain.RoomTypeUpdatePayload": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.RoomUpdatePayload": {
+            "type": "object",
+            "required": [
+                "building_id",
+                "code",
+                "facilities",
+                "floor_id",
+                "name",
+                "room_type_id",
+                "status"
+            ],
+            "properties": {
+                "area": {
+                    "type": "integer"
+                },
+                "building_id": {
+                    "type": "integer"
+                },
+                "capacity": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "facilities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Facility"
+                    }
+                },
+                "floor_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "integer"
+                },
+                "room_type_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ScheduleInformation": {
             "type": "object"
         },
         "domain.Student": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "academic_info",
+                "personal_info"
+            ],
+            "properties": {
+                "academic_info": {
+                    "$ref": "#/definitions/domain.AcademicInfo"
+                },
+                "attendance": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "gpa": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "personal_info": {
+                    "$ref": "#/definitions/domain.PersonalInfo"
+                },
+                "subjects": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.StudentCreatePayload": {
             "type": "object",
@@ -2536,7 +3018,24 @@ const docTemplate = `{
             }
         },
         "domain.StudentListRes": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Student"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
         },
         "domain.StudentStats": {
             "type": "object",
@@ -2584,13 +3083,80 @@ const docTemplate = `{
             }
         },
         "domain.StudentUpdatePayload": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "academic_info",
+                "personal_info"
+            ],
+            "properties": {
+                "academic_info": {
+                    "$ref": "#/definitions/domain.AcademicInfo"
+                },
+                "attendance": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "gpa": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "personal_info": {
+                    "$ref": "#/definitions/domain.PersonalInfo"
+                },
+                "subjects": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.Subject": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.SubjectListRes": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Subject"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
         },
         "domain.SubjectSuccessRes": {
             "type": "object",
@@ -2618,7 +3184,32 @@ const docTemplate = `{
             }
         },
         "domain.Teacher": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "employment_detail",
+                "personal_info",
+                "professional_info"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "employment_detail": {
+                    "$ref": "#/definitions/domain.EmploymentDetail"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "personal_info": {
+                    "$ref": "#/definitions/domain.PersonalInformation"
+                },
+                "professional_info": {
+                    "$ref": "#/definitions/domain.ProfessionalInformation"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "domain.TeacherCreatePayload": {
             "type": "object",
@@ -2640,7 +3231,24 @@ const docTemplate = `{
             }
         },
         "domain.TeacherListRes": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Teacher"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/domain.Meta"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
         },
         "domain.TeacherStats": {
             "type": "object",
@@ -2688,7 +3296,27 @@ const docTemplate = `{
             }
         },
         "domain.UpdateSubjectPayload": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         }
     },
     "securityDefinitions": {
