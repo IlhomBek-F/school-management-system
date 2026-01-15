@@ -192,7 +192,6 @@ export class ClassViewDetailComponent {
   }
 ];
 
-
  assignments: Assignment[] = [
   {
     id: 1,
@@ -236,9 +235,7 @@ export class ClassViewDetailComponent {
   }
 ];
 
-
-
-  announcements: Announcement[] = [
+announcements: Announcement[] = [
   {
     id: 1,
     title: 'Exam Schedule Released',
@@ -301,30 +298,6 @@ private _router = inject(Router)
     this._router.navigate([`/teachers/${teacher_id}`])
   }
 
-  getRandomColor(): string {
-    const colors = ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#06B6D4'];
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
-
-  getPerformanceClass(performance: string): string {
-    switch (performance) {
-      case ClassPerfomanceStatus.EXCELLENT: return 'bg-green-100 text-green-700';
-      case ClassPerfomanceStatus.GOOD: return 'bg-blue-100 text-blue-700';
-      case ClassPerfomanceStatus.AVERAGE: return 'bg-orange-100 text-orange-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  }
-
-  getStatusClass(status: string): string {
-    switch (status) {
-      case ClassStatus.ACTIVE: return 'bg-blue-100 text-blue-700';
-      case ClassStatus.COMPLETED: return 'bg-green-100 text-green-700';
-      case ClassStatus.OVERDUE: return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  }
-
-
   onEditClass(): void {
     console.log('Edit class clicked');
   }
@@ -332,6 +305,4 @@ private _router = inject(Router)
   onEnrollStudent(): void {
     console.log('Enroll student clicked');
   }
-
-
 }

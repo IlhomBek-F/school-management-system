@@ -1,4 +1,4 @@
-import { Base, DropdownOption, Paginator, ResData, ResDataWithMeta } from "@core/models/base";
+import { Base, Paginator, ResData, ResDataWithMeta } from "@core/models/base";
 import { Subject } from "@core/models/subject";
 import { Room } from "app/features/rooms/models";
 import { Teacher } from "app/features/teachers/models";
