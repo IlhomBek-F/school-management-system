@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'school-not-found',
-  imports: [],
   templateUrl: './not-found.component.html',
   styleUrl: './not-found.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,17 +1,4 @@
-<p-tabs value="personal_info">
-        <p-tablist>
-            @for (tab of tabItems; track tab.value) {
-                <p-tab [value]="tab.value">{{ tab.title }}</p-tab>
-            }
-        </p-tablist>
-        <p-tabpanels>
-            @for (tab of tabItems; track tab.value) {
-                <p-tabpanel [value]="tab.value">
-                    <school-dynamic-form [form]="tab.form" [formContainer]="tab.formContainers"/>
-                </p-tabpanel>
-            }
-        </p-tabpanels>
-</p-tabs>
+<school-form-tabs defaultValue="personal_info" [tabItems]="tabItems"/>
 
 <footer class="flex justify-end gap-3 mt-5">
   <button pButton (click)="cancel()" outlined icon="pi pi-times-circle">cancel</button>

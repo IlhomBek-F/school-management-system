@@ -4,7 +4,7 @@ import { TagModule } from "primeng/tag";
 import { Button } from "primeng/button";
 import { ClassesGridViewSkeletonComponent } from "../classes-grid-view-skeleton/classes-grid-view-skeleton.component";
 import { ClassModel } from '../../models';
-import { RandomBgColorPipe } from "../../../../core/pipes/random-bg-color-pipe";
+import { RandomBgColorPipe } from "@core/pipes/random-bg-color-pipe";
 import { GRADES_MAP } from 'app/utils/constants';
 
 @Component({
@@ -34,21 +34,4 @@ export class ClassesGridViewListComponent {
     this.deleteEmitEvent.emit(classObj)
   }
 
-  getStatusSeverity(status: string): string {
-    switch(status) {
-      case 'Active': return 'success';
-      case 'Cancelled': return 'danger';
-      default: return 'info';
-    }
-  }
-
-  getCapacityPercentage(students: number, capacity: number): number {
-    return Math.round((students / capacity) * 100);
-  }
-
-  getCapacitySeverity(percentage: number): string {
-    if (percentage >= 90) return 'danger';
-    if (percentage >= 70) return 'warning';
-    return 'success';
-  }
 }

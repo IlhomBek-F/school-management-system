@@ -16,10 +16,11 @@ import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { TabsModule } from "primeng/tabs";
 import { Teacher } from '../../models';
+import { FormTabsComponent } from "@shared/components/form-tabs/form-tabs.component";
 
 @Component({
   selector: 'school-upsert-teacher-modal',
-  imports: [TabsModule, DynamicFormComponent, TabsModule, ButtonModule],
+  imports: [TabsModule, TabsModule, ButtonModule, FormTabsComponent],
   templateUrl: './upsert-teacher-modal.component.html',
   styleUrl: './upsert-teacher-modal.component.scss',
   providers: [QuestionControlService],

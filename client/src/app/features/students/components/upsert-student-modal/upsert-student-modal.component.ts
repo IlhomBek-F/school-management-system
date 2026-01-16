@@ -11,17 +11,17 @@ import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { QuestionControlService } from '@core/services/question-control.service';
 import { FormGroup } from '@angular/forms';
-import { DynamicFormComponent } from '@shared/components/dynamic-form/dynamic-form.component';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
 import { FormContainer } from '@core/models/question-base';
 import { Student, TabItem } from '../../models';
 import { CLASS_SECTIONS, GRADES } from 'app/utils/constants';
+import { FormTabsComponent } from "@shared/components/form-tabs/form-tabs.component";
 
 @Component({
   selector: 'school-upsert-student-modal.component',
-  imports: [TabsModule, DynamicFormComponent, ButtonModule],
+  imports: [TabsModule, ButtonModule, FormTabsComponent],
   templateUrl: './upsert-student-modal.component.html',
   styleUrl: './upsert-student-modal.component.scss',
   providers: [QuestionControlService],

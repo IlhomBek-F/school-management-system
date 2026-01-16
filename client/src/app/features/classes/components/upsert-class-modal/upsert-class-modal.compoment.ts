@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { TabsModule } from "primeng/tabs";
-import { DynamicFormComponent } from "@shared/components/dynamic-form/dynamic-form.component";
 import { QuestionControlService } from '@core/services/question-control.service';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
@@ -17,10 +16,11 @@ import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 import { CLASS_SECTION_TYPES, CLASS_SECTIONS, GRADES } from 'app/utils/constants';
 import { BasicInfoFields, ClassModel, ScheduleInfo } from '../../models';
+import { FormTabsComponent } from "@shared/components/form-tabs/form-tabs.component";
 
 @Component({
   selector: 'school-upsert-class-modal',
-  imports: [TabsModule, DynamicFormComponent, ButtonModule],
+  imports: [TabsModule, ButtonModule, FormTabsComponent],
   templateUrl: './upsert-class-modal.compoment.html',
   styleUrl: './upsert-class-modal.compoment.scss',
   providers: [QuestionControlService],
