@@ -1,6 +1,6 @@
 import { FormGroup } from "@angular/forms";
 import { Base, Paginator, ResData, ResDataWithMeta } from "@core/models/base";
-import { FormContainer } from "@core/models/question-base";
+import { FormContainer } from "@ilhombek/base-form";
 
 export interface UpsertStudentPayload extends Base {
   personal_info: PersonalInfo;

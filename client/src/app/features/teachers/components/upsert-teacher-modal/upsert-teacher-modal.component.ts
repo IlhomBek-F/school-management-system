@@ -1,16 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, WritableSignal } from '@angular/core';
-import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
-import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
-import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
-import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
+import { QuestionDatePicker, QuestionMultiSelect, QuestionSelectInput, QuestionTextInput, FormContainer} from '@ilhombek/base-form';
 import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { TabItem } from '@core/models/base';
-import { FormContainer } from '@core/models/question-base';
 import { Subject } from '@core/models/subject';
 import { QuestionControlService } from '@core/services/question-control.service';
-import { DynamicFormComponent } from '@shared/components/dynamic-form/dynamic-form.component';
 import { DEPARTMENTS } from 'app/utils/constants';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';

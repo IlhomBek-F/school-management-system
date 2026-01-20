@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SelectInputComponent } from "../../../../shared/components/dynamic-form/select-input/select-input.component";
+import { SelectInputComponent } from '@ilhombek/base-form';
 import { ButtonModule } from "primeng/button";
 
 @Component({

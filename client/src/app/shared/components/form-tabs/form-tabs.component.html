@@ -7,7 +7,7 @@
   <p-tabpanels>
     @for (tab of tabItems(); track tab.value) {
     <p-tabpanel [value]="tab.value">
-      <school-dynamic-form [form]="tab.form" [formContainer]="tab.formContainers" />
+      <base-form-dynamic-form [form]="tab.form" [formContainer]="tab.formContainers" />
     </p-tabpanel>
     }
   </p-tabpanels>

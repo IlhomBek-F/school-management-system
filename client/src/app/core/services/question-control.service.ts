@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {QuestionBase} from '../dynamic-form/question-base';
+import {QuestionBase} from '@ilhombek/base-form';
 import { debounceTime } from 'rxjs';
-import { FormContainer } from '@core/models/question-base';
+import { FormContainer } from '@ilhombek/base-form';
 
 @Injectable()
 export class QuestionControlService {

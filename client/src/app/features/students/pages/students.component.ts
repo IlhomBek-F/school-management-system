@@ -8,9 +8,8 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
-import { TextInputComponent } from '@shared/components/dynamic-form/text-input/text-input.component';
+import { TextInputComponent, SelectInputComponent} from '@ilhombek/base-form';
 import { SchoolStatsCardComponent } from '@shared/components/stats-card/stats-card.component';
-import { SelectInputComponent } from '@shared/components/dynamic-form/select-input/select-input.component';
 import { PageTitleComponent } from '@shared/components/page-title/page-title.component';
 import { StudentTableViewListComponent } from '../components/view-list/student-table-view-list/student-table-view-list.component';
 import { ActivatedRoute, Router } from '@angular/router';

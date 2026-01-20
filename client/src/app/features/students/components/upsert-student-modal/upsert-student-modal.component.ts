@@ -6,15 +6,12 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
-import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
-import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
+import { QuestionSelectInput, QuestionTextInput, QuestionDatePicker, FormContainer} from '@ilhombek/base-form';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { QuestionControlService } from '@core/services/question-control.service';
 import { FormGroup } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
-import { FormContainer } from '@core/models/question-base';
 import { Student, TabItem } from '../../models';
 import { CLASS_SECTIONS, GRADES } from 'app/utils/constants';
 import { FormTabsComponent } from "@shared/components/form-tabs/form-tabs.component";

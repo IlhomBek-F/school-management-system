@@ -1,5 +1,5 @@
 import { FormGroup } from "@angular/forms";
-import { FormContainer } from "./question-base";
+import { FormContainer } from "@ilhombek/base-form";
 
 export interface Base {
   id: number;

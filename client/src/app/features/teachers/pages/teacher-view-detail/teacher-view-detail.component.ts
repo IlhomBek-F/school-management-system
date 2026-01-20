@@ -19,7 +19,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Teacher, TeacherSuccessRes } from '../../models';
 import { TeachersService } from '../../services/teachers.service';
 import { ToastService } from '@core/services/toast.service';
-import { StudentsService } from 'app/features/students/services/students.service';
 
 interface Class {
   id: number;

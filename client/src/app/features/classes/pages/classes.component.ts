@@ -9,10 +9,8 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpsertClassModalCompoment } from '@components/upsert-class-modal/upsert-class-modal.compoment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SchoolStatsCardComponent } from '@shared/components/stats-card/stats-card.component';
-import { SelectInputComponent } from '@shared/components/dynamic-form/select-input/select-input.component';
 import { ClassesTableViewListComponent } from '@components/classes-table-view-list/classes-table-view-list.component';
 import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
-import { TextInputComponent } from '@shared/components/dynamic-form/text-input/text-input.component';
 import { ClassesGridViewListComponent } from '@components/classes-grid-view-list/classes-grid-view-list.component';
 import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
 import { ToastService } from '@core/services/toast.service';
@@ -26,6 +24,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { StatsService } from '@core/services/stats.service';
 import { PaginatorState, Paginator } from 'primeng/paginator';
+import { SelectInputComponent, TextInputComponent } from '@ilhombek/base-form';
 
 @UntilDestroy()
 @Component({

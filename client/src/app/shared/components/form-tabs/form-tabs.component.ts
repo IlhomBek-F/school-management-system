@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
-import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from '@ilhombek/base-form';
 import { TabItem } from '@core/models/base';
 
 @Component({

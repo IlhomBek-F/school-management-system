@@ -2,15 +2,9 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { TabsModule } from "primeng/tabs";
 import { QuestionControlService } from '@core/services/question-control.service';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { QuestionTextInput } from '@core/dynamic-form/question-text-input';
-import { QuestionSelectInput } from '@core/dynamic-form/question-select-input';
-import { QuestionTextArea } from '@core/dynamic-form/question-textarea';
-import { QuestionDatePicker } from '@core/dynamic-form/question-datepicker';
-import { QuestionTimePicker } from '@core/dynamic-form/question-time-picker';
+import { QuestionTextInput, QuestionSelectInput, QuestionTextArea, QuestionDatePicker, QuestionTimePicker, QuestionMultiSelect, FormContainer } from '@ilhombek/base-form';
 import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { ButtonModule } from 'primeng/button';
-import { QuestionMultiSelect } from '@core/dynamic-form/question-multi-select';
-import { FormContainer } from '@core/models/question-base';
 import { TabItem } from '@core/models/base';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { AsyncOptionEnum } from '@core/enums/async-option.enum';

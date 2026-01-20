@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { StudentViewDetailStatusCardsComponent } from "../student-view-detail-status-cards/student-view-detail-status-cards.component";
 import { SkeletonModule } from "primeng/skeleton";
 import { CommonModule } from '@angular/common';
 import { Student } from 'app/features/students/models';
-import { CLASS_SECTION_MAP, CLASS_SECTIONS, GRADES, GRADES_MAP } from 'app/utils/constants';
+import { CLASS_SECTION_MAP, GRADES_MAP } from 'app/utils/constants';
 
 @Component({
   selector: 'school-student-view-detail-header',

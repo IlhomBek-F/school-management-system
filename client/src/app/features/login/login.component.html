@@ -9,8 +9,8 @@
     </div>
 
     <div class="p-8 space-y-4" [formGroup]="formGroup">
-      <school-text-input formControlName="username" label="Username" [required]="true"/>
-      <school-password-input formControlName="password" label="Password" [required]="true"/>
+      <base-form-text-input formControlName="username" label="Username" [required]="true"/>
+      <base-form-password-input formControlName="password" label="Password" [required]="true"/>
 
       <button pButton label="Login" (click)="login()" [disabled]="formGroup.invalid" [loading]="loading()"
         class="w-full bg-blue-600 hover:bg-blue-700 !dark:bg-black-100 dark:hover:bg-blue-600 text-white font-semibold mt-8 py-2 rounded-lg"></button>

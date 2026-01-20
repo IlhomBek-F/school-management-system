@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SelectInputComponent } from '@shared/components/dynamic-form/select-input/select-input.component';
-import { NumberInputComponent } from '@shared/components/dynamic-form/text-input-number/number-input.component';
+import { SelectInputComponent, NumberInputComponent} from '@ilhombek/base-form';
 import { ButtonModule } from "primeng/button";
 import { InputNumberModule } from "primeng/inputnumber";
 

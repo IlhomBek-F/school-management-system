@@ -8,15 +8,14 @@ import { Router } from '@angular/router';
 import { ToastService } from '@core/services/toast.service';
 import { LoginService } from './services/login.service';
 import { AuthService } from '@core/services/auth.service';
-import { QuestionControlService } from '@core/services/question-control.service';
-import { TextInputComponent } from "@shared/components/dynamic-form/text-input/text-input.component";
-import { PasswordInputComponent } from "@shared/components/dynamic-form/password-input/password-input.component";
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { TextInputComponent, PasswordInputComponent, QuestionControlService} from '@ilhombek/base-form';
 
 @UntilDestroy()
 @Component({
   selector: 'school-login',
-  imports: [FormsModule, ReactiveFormsModule, PasswordModule, ButtonModule, ToastModule, CommonModule, TextInputComponent, PasswordInputComponent],
+  imports: [FormsModule, ReactiveFormsModule,
+     PasswordModule, ButtonModule, ToastModule, CommonModule, TextInputComponent, PasswordInputComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   providers: [QuestionControlService],

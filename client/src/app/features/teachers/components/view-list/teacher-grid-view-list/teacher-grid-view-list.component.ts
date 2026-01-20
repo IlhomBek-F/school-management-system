@@ -1,11 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Tag } from "primeng/tag";
 import { Button } from "primeng/button";
 import { SkeletonModule } from "primeng/skeleton";
 import { CommonModule } from '@angular/common';
-import { DeleteConfirmDialogService } from '@core/services/delete-confirm-dialog.service';
-import { of, timeout } from 'rxjs';
-import { ConfirmationService } from 'primeng/api';
 import { Teacher } from 'app/features/teachers/models';
 import { DEPARTMENTS_MAP } from 'app/utils/constants';
 import { RandomBgColorPipe } from '@core/pipes/random-bg-color-pipe';

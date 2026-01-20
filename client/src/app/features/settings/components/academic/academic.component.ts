@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { InputNumberModule } from "primeng/inputnumber";
 import { ButtonModule } from "primeng/button";
-import { NumberInputComponent } from '@shared/components/dynamic-form/text-input-number/number-input.component';
-import { TextInputComponent } from '@shared/components/dynamic-form/text-input/text-input.component';
-import { SelectInputComponent } from '@shared/components/dynamic-form/select-input/select-input.component';
+import { TextInputComponent, SelectInputComponent, NumberInputComponent } from '@ilhombek/base-form';
 
 @Component({
   selector: 'school-academic',
