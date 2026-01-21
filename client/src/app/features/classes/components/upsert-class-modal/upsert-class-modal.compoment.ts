@@ -7,10 +7,11 @@ import { QuestionFieldTypeEnum } from '@core/enums/question-type.enum';
 import { ButtonModule } from 'primeng/button';
 import { TabItem } from '@core/models/base';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
-import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 import { CLASS_SECTION_TYPES, CLASS_SECTIONS, GRADES } from 'app/utils/constants';
 import { BasicInfoFields, ClassModel, ScheduleInfo } from '../../models';
 import { FormTabsComponent } from "@shared/components/form-tabs/form-tabs.component";
+import { AsyncOptionsService } from '@core/services/async-option.service';
+import { AsyncOptionEnum } from '@core/enums/async-option.enum';
 
 @Component({
   selector: 'school-upsert-class-modal',
@@ -26,6 +27,7 @@ export class UpsertClassModalCompoment {
 
   private _questionControlService = inject(QuestionControlService)
   private _dialogConfig = inject(DynamicDialogConfig)
+  private _asyncOptionService = inject(AsyncOptionsService)
 
   ngOnInit(): void {
     this._createTabItems()
@@ -96,7 +98,7 @@ export class UpsertClassModalCompoment {
             optionLabel: "name",
             value: basic_info.subject_id,
             optionType: OptionTypeEnum.ASYNC,
-            asyncOptionType: AsyncOptionEnum.SUBJECTS,
+            asyncOptionObs$: this._asyncOptionService.getAsyncOptionsRequest(AsyncOptionEnum.SUBJECTS),
           }),
           new QuestionSelectInput({
             key: 'teacher_id',
@@ -106,7 +108,7 @@ export class UpsertClassModalCompoment {
             value: basic_info.teacher_id,
             optionLabel: "personal_info.full_name",
             optionType: OptionTypeEnum.ASYNC,
-            asyncOptionType: AsyncOptionEnum.TEACHERS
+            asyncOptionObs$: this._asyncOptionService.getAsyncOptionsRequest(AsyncOptionEnum.TEACHERS),
           })
         ],
       },
@@ -213,7 +215,7 @@ export class UpsertClassModalCompoment {
             optionLabel: "name",
             value: schedule_info.room_id,
             optionType: OptionTypeEnum.ASYNC,
-            asyncOptionType: AsyncOptionEnum.ROOMS,
+            asyncOptionObs$: this._asyncOptionService.getAsyncOptionsRequest(AsyncOptionEnum.ROOMS),
           })
         ]
       },

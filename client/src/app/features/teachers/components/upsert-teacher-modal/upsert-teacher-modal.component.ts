@@ -12,6 +12,8 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { TabsModule } from "primeng/tabs";
 import { Teacher } from '../../models';
 import { FormTabsComponent } from "@shared/components/form-tabs/form-tabs.component";
+import { of } from 'rxjs';
+import { AsyncOptionsService } from '@core/services/async-option.service';
 
 @Component({
   selector: 'school-upsert-teacher-modal',
@@ -27,6 +29,7 @@ export class UpsertTeacherModalComponent implements OnInit {
 
   private _questionControlService = inject(QuestionControlService)
   private _dialogConfig = inject(DynamicDialogConfig)
+  private _asyncOptionsService = inject(AsyncOptionsService)
 
   ngOnInit(): void {
     this._createTabItems()
@@ -194,7 +197,7 @@ export class UpsertTeacherModalComponent implements OnInit {
             optionLabel: "name",
             value: teacher.professional_info.subjects,
             optionType: OptionTypeEnum.ASYNC,
-            asyncOptionType: AsyncOptionEnum.SUBJECTS,
+            asyncOptionObs$: this._asyncOptionsService.getAsyncOptionsRequest(AsyncOptionEnum.SUBJECTS),
             normalizeValue: (subject_ids: number[], options: Subject[]) => {
               return options.filter(({ id }) => subject_ids.includes(id))
             },

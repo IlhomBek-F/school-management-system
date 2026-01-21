@@ -17,7 +17,7 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
-    "@ilhombek/base-form": "^0.0.6",
+    "@ilhombek/base-form": "^0.0.9",
     "@ngneat/until-destroy": "^10.0.0",
     "@primeng/themes": "^20.2.0",
     "@tailwindcss/postcss": "^4.1.16",

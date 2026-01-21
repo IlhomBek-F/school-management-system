@@ -27,6 +27,7 @@ import { StatsService } from '@core/services/stats.service';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { OptionTypeEnum } from '@core/enums/option-type.enum';
 import { AsyncOptionEnum } from '@core/enums/async-option.enum';
+import { AsyncOptionsService } from '@core/services/async-option.service';
 
 @UntilDestroy()
 @Component({
@@ -54,7 +55,6 @@ export class RoomsComponent {
   viewMode: WritableSignal<ViewModeEnum> = signal(ViewModeEnum.GRID);
   optionType = OptionTypeEnum;
   asyncOptionType = AsyncOptionEnum;
-
   loading = signal(false)
   loadingOptions = signal(false)
   loadingRoomStats = signal(false)
@@ -89,6 +89,8 @@ export class RoomsComponent {
   private _messageService = inject(ToastService)
   private _roomsService = inject(RoomsService)
   private _statsService = inject(StatsService);
+  private _asyncOptionService = inject(AsyncOptionsService)
+  roomTypesOption$ = this._asyncOptionService.getAsyncOptionsRequest(AsyncOptionEnum.ROOM_TYPES);
 
   ngOnInit(): void {
     this._getRoomList();
@@ -259,7 +261,7 @@ export class RoomsComponent {
             optionValue: 'id',
             optionLabel: 'name',
             optionType: OptionTypeEnum.ASYNC,
-            asyncOptionType: AsyncOptionEnum.ROOM_TYPES,
+            asyncOptionObs$: this.roomTypesOption$,
           }),
           new QuestionSelectInput({
             key: 'building_id',
@@ -269,7 +271,7 @@ export class RoomsComponent {
             optionLabel: "name",
             optionValue: "id",
             optionType: OptionTypeEnum.ASYNC,
-            asyncOptionType: AsyncOptionEnum.BUILDINGS,
+            asyncOptionObs$: this._asyncOptionService.getAsyncOptionsRequest(AsyncOptionEnum.BUILDINGS),
           }),
         ]
       },
@@ -293,7 +295,7 @@ export class RoomsComponent {
             optionValue: 'id',
             value: room?.facilities,
             optionType: OptionTypeEnum.ASYNC,
-            asyncOptionType: AsyncOptionEnum.FACILITIES,
+            asyncOptionObs$: this._asyncOptionService.getAsyncOptionsRequest(AsyncOptionEnum.FACILITIES),
             normalizeValue: (facility_ids: number[], options: Facility[]) => {
               return options.filter(({ id }) => facility_ids.includes(id))
             },
