@@ -49,9 +49,9 @@ func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, int, err
 		db = db.Where("name ILIKE ?", "%"+query.QueryTerm+"%")
 	}
 
-	resultCount := r.db.WithContext(ctx).Count(&total)
+	resultCount := db.WithContext(ctx).Count(&total)
 
-	result := r.db.WithContext(ctx).Scopes(bootstrap.QueryScope(&paginator)).
+	result := db.WithContext(ctx).Scopes(bootstrap.QueryScope(&paginator)).
 		Preload("Building").
 		Preload("RoomType").
 		Preload("Facilities").
