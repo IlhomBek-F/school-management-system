@@ -7,11 +7,10 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { QuestionControlService } from '@core/services/question-control.service';
 import { ButtonDirective } from 'primeng/button';
 import {  DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { DynamicFormModalDataModel } from '@core/models/dynamic-form-modal-data';
-import { DynamicFormComponent, FormContainer } from '@ilhombek/base-form';
+import { DynamicFormComponent, FormContainer, QuestionControlService } from '@ilhombek/base-form';
 
 @Component({
   selector: 'school-dynamic-modal',

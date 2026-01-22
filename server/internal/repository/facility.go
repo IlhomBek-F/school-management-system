@@ -1,7 +1,9 @@
 package repository
 
 import (
+	"context"
 	"school/domain"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -23,33 +25,48 @@ func NewFacilityRepository(db *gorm.DB) FacilityRepository {
 }
 
 func (r facilityRepository) Create(payload domain.FacilityCreatePayload) (domain.Facility, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	facility := domain.Facility{}
 	facility.Name = payload.Name
 
-	result := r.db.Create(&facility)
+	result := r.db.WithContext(ctx).Create(&facility)
 
 	return facility, result.Error
 }
 
 func (r facilityRepository) GetList() ([]domain.Facility, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	var facilities []domain.Facility
-	result := r.db.Find(&facilities)
+	result := r.db.WithContext(ctx).Find(&facilities)
 
 	return facilities, result.Error
 }
 
 func (r facilityRepository) GetByID(id int) (domain.Facility, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	var facility domain.Facility
-	result := r.db.Where("id = ?", id).First(&facility)
+	result := r.db.WithContext(ctx).Where("id = ?", id).First(&facility)
 
 	return facility, result.Error
 }
 
 func (r facilityRepository) Update(payload domain.FacilityUpdatePayload) (domain.Facility, error) {
-	result := r.db.Updates(&payload)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	result := r.db.WithContext(ctx).Updates(&payload)
 	return payload, result.Error
 }
 
 func (r facilityRepository) Delete(id int) error {
-	return r.db.Delete(domain.Facility{}, id).Error
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	return r.db.WithContext(ctx).Delete(domain.Facility{}, id).Error
 }

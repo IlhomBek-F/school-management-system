@@ -1,7 +1,9 @@
 package repository
 
 import (
+	"context"
 	"school/domain"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -25,16 +27,23 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 func (r userRepository) Create(user domain.User) error {
 	return nil
 }
+
 func (r userRepository) GetByID(id int) (domain.User, error) {
+	context, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	var user domain.User
-	result := r.db.Where("id = ?", id).First(&user)
+	result := r.db.WithContext(context).Where("id = ?", id).First(&user)
 
 	return user, result.Error
 }
 
 func (r userRepository) GetByUsername(username string) (domain.User, error) {
+	context, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	var user domain.User
-	result := r.db.Where("username = ?", username).First(&user)
+	result := r.db.WithContext(context).Where("username = ?", username).First(&user)
 
 	return user, result.Error
 }

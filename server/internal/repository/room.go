@@ -1,8 +1,10 @@
 package repository
 
 import (
+	"context"
 	"school/bootstrap"
 	"school/domain"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -17,7 +19,8 @@ type RoomRepository interface {
 }
 
 type roomRepository struct {
-	db *gorm.DB
+	context context.Context
+	db      *gorm.DB
 }
 
 func NewRoomRepository(db *gorm.DB) RoomRepository {
@@ -25,6 +28,9 @@ func NewRoomRepository(db *gorm.DB) RoomRepository {
 }
 
 func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	var rooms []domain.Room
 	var total int64
 	paginator := domain.Paginator{PerPage: query.PerPage, Page: query.Page}
@@ -43,9 +49,9 @@ func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, int, err
 		db = db.Where("name ILIKE ?", "%"+query.QueryTerm+"%")
 	}
 
-	resultCount := db.Count(&total)
+	resultCount := r.db.WithContext(ctx).Count(&total)
 
-	result := db.Scopes(bootstrap.QueryScope(&paginator)).
+	result := r.db.WithContext(ctx).Scopes(bootstrap.QueryScope(&paginator)).
 		Preload("Building").
 		Preload("RoomType").
 		Preload("Facilities").
@@ -59,18 +65,24 @@ func (r roomRepository) GetList(query domain.RoomQuery) ([]domain.Room, int, err
 }
 
 func (r roomRepository) Create(payload domain.RoomCreatePayload) (domain.Room, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	room := domain.Room{
 		RoomFields: payload,
 	}
 
-	result := r.db.Create(&room)
+	result := r.db.WithContext(ctx).Create(&room)
 
 	return room, result.Error
 }
 
 func (r roomRepository) GetByID(id int) (domain.Room, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	var room domain.Room
-	result := r.db.Preload("Facilities").Preload("Building").Preload("RoomType").Where("id = ?", id).First(&room)
+	result := r.db.WithContext(ctx).Preload("Facilities").Preload("Building").Preload("RoomType").Where("id = ?", id).First(&room)
 
 	return room, result.Error
 }
@@ -88,7 +100,10 @@ func (r roomRepository) Update(payload domain.RoomUpdatePayload) (domain.Room, e
 		return domain.Room{}, result.Error
 	}
 
-	err = r.db.Model(&room).Association("Facilities").Replace(payload.Facilities)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	err = r.db.WithContext(ctx).Model(&room).Association("Facilities").Replace(payload.Facilities)
 
 	if err != nil {
 		return domain.Room{}, err
@@ -98,7 +113,10 @@ func (r roomRepository) Update(payload domain.RoomUpdatePayload) (domain.Room, e
 }
 
 func (r roomRepository) Delete(id int) error {
-	return r.db.Delete(domain.Room{}, id).Error
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	return r.db.WithContext(ctx).Delete(domain.Room{}, id).Error
 }
 
 func (r roomRepository) CreateRoomFacility(facilityIds []int, roomId int) error {
@@ -108,5 +126,8 @@ func (r roomRepository) CreateRoomFacility(facilityIds []int, roomId int) error 
 		roomFacilities = append(roomFacilities, domain.RoomFacility{FacilityId: id, RoomId: roomId})
 	}
 
-	return r.db.Create(&roomFacilities).Error
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	return r.db.WithContext(ctx).Create(&roomFacilities).Error
 }

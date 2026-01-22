@@ -1,8 +1,10 @@
 package repository
 
 import (
+	"context"
 	"school/bootstrap"
 	"school/domain"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -16,19 +18,22 @@ type TeacherRepository interface {
 }
 
 type teacherRepository struct {
-	Db *gorm.DB
+	db *gorm.DB
 }
 
 func NewTeacherRepository(db *gorm.DB) TeacherRepository {
-	return teacherRepository{Db: db}
+	return teacherRepository{db: db}
 }
 
 func (r teacherRepository) GetList(query domain.TeacherQuery) ([]domain.Teacher, int, error) {
+	cxt, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	var total int64
 	var teachers []domain.Teacher
 	paginator := domain.Paginator{PerPage: query.PerPage, Page: query.Page}
 
-	db := r.Db.Model(&teachers)
+	db := r.db.Model(&teachers)
 
 	if query.DepartmentId != 0 {
 		db = db.Where("department_id = ?", query.DepartmentId)
@@ -38,9 +43,9 @@ func (r teacherRepository) GetList(query domain.TeacherQuery) ([]domain.Teacher,
 		db = db.Where("first_name ILIKE ?", "%"+query.QueryTerm+"%")
 	}
 
-	resultCount := db.Count(&total)
+	resultCount := db.WithContext(cxt).Count(&total)
 
-	result := db.Scopes(bootstrap.QueryScope(&paginator)).
+	result := db.WithContext(cxt).Scopes(bootstrap.QueryScope(&paginator)).
 		Preload("Subjects").
 		Find(&teachers)
 
@@ -52,31 +57,37 @@ func (r teacherRepository) GetList(query domain.TeacherQuery) ([]domain.Teacher,
 }
 
 func (r teacherRepository) Create(payload domain.TeacherCreatePayload) (domain.Teacher, error) {
+	cxt, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	teacher := domain.Teacher{
 		PersonalInfo:     payload.PersonalInfo,
 		ProfessionalInfo: payload.ProfessionalInfo,
 		EmploymentDetail: payload.EmploymentDetail,
 	}
 
-	result := r.Db.Create(&teacher)
+	result := r.db.WithContext(cxt).Create(&teacher)
 
 	return teacher, result.Error
 }
 
 func (r teacherRepository) Update(payload domain.TeacherUpdatePayload) (domain.Teacher, error) {
+	cxt, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	teacher, err := r.GetById(payload.ID)
 
 	if err != nil {
 		return domain.Teacher{}, err
 	}
 
-	result := r.Db.Model(&teacher).Select("*").Updates(&payload)
+	result := r.db.WithContext(cxt).Model(&teacher).Select("*").Updates(&payload)
 
 	if result.Error != nil {
 		return domain.Teacher{}, result.Error
 	}
 
-	err = r.Db.Model(&teacher).Association("Subjects").Replace(payload.ProfessionalInfo.Subjects)
+	err = r.db.WithContext(cxt).Model(&teacher).Association("Subjects").Replace(payload.ProfessionalInfo.Subjects)
 
 	if err != nil {
 		return domain.Teacher{}, err
@@ -86,15 +97,21 @@ func (r teacherRepository) Update(payload domain.TeacherUpdatePayload) (domain.T
 }
 
 func (r teacherRepository) Delete(id int) error {
-	result := r.Db.Delete(&domain.Teacher{}, id)
+	cxt, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	result := r.db.WithContext(cxt).Delete(&domain.Teacher{}, id)
 
 	return result.Error
 }
 
 func (r teacherRepository) GetById(id int) (domain.Teacher, error) {
+	cxt, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
 	var teacher domain.Teacher
 
-	result := r.Db.Where("id = ?", id).Preload("Subjects").First(&teacher)
+	result := r.db.WithContext(cxt).Where("id = ?", id).Preload("Subjects").First(&teacher)
 
 	return teacher, result.Error
 }
